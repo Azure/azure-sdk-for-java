@@ -141,18 +141,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified namespace of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified namespace of a managed cluster along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedNamespaceInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName) {
@@ -222,17 +211,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             resourceGroupName, resourceName, managedNamespaceName, accept, context);
     }
 
-    /**
-     * Gets the specified namespace of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified namespace of a managed cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedNamespaceInner> getAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName) {
@@ -240,53 +219,20 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified namespace of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified namespace of a managed cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedNamespaceInner> getWithResponse(String resourceGroupName, String resourceName,
         String managedNamespaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, managedNamespaceName, context).block();
     }
 
-    /**
-     * Gets the specified namespace of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified namespace of a managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNamespaceInner get(String resourceGroupName, String resourceName, String managedNamespaceName) {
         return getWithResponse(resourceGroupName, resourceName, managedNamespaceName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters) {
@@ -372,19 +318,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             parameters, context);
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of namespace managed by ARM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedNamespaceInner>, ManagedNamespaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters) {
@@ -420,19 +354,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             this.client.getHttpPipeline(), ManagedNamespaceInner.class, ManagedNamespaceInner.class, context);
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of namespace managed by ARM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedNamespaceInner>, ManagedNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters) {
@@ -440,20 +362,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of namespace managed by ARM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedNamespaceInner>, ManagedNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters,
@@ -462,19 +371,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedNamespaceInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName, ManagedNamespaceInner parameters) {
@@ -504,57 +401,21 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNamespaceInner createOrUpdate(String resourceGroupName, String resourceName,
         String managedNamespaceName, ManagedNamespaceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, managedNamespaceName, parameters).block();
     }
 
-    /**
-     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
-     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters The namespace to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNamespaceInner createOrUpdate(String resourceGroupName, String resourceName,
         String managedNamespaceName, ManagedNamespaceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, managedNamespaceName, parameters, context).block();
     }
 
-    /**
-     * Updates tags on a managed namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters Parameters supplied to the patch namespace operation, we only support patch tags for now.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName, TagsObject parameters) {
@@ -638,18 +499,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             resourceGroupName, resourceName, managedNamespaceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates tags on a managed namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters Parameters supplied to the patch namespace operation, we only support patch tags for now.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedNamespaceInner> updateAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName, TagsObject parameters) {
@@ -657,19 +507,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates tags on a managed namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters Parameters supplied to the patch namespace operation, we only support patch tags for now.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedNamespaceInner> updateWithResponse(String resourceGroupName, String resourceName,
         String managedNamespaceName, TagsObject parameters, Context context) {
@@ -677,18 +515,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .block();
     }
 
-    /**
-     * Updates tags on a managed namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param parameters Parameters supplied to the patch namespace operation, we only support patch tags for now.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace managed by ARM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNamespaceInner update(String resourceGroupName, String resourceName, String managedNamespaceName,
         TagsObject parameters) {
@@ -696,17 +523,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .getValue();
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName) {
@@ -774,17 +591,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             resourceGroupName, resourceName, managedNamespaceName, context);
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName) {
@@ -816,52 +623,21 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             context);
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String managedNamespaceName) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, managedNamespaceName).getSyncPoller();
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String managedNamespaceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, managedNamespaceName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String managedNamespaceName) {
         return beginDeleteAsync(resourceGroupName, resourceName, managedNamespaceName).last()
@@ -887,32 +663,13 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String managedNamespaceName) {
         deleteAsync(resourceGroupName, resourceName, managedNamespaceName).block();
     }
 
-    /**
-     * Deletes a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String managedNamespaceName, Context context) {
         deleteAsync(resourceGroupName, resourceName, managedNamespaceName, context).block();
@@ -995,17 +752,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed namespaces in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed namespaces in the specified managed cluster as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedNamespaceInner> listByManagedClusterAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(() -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName),
@@ -1031,51 +778,20 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             nextLink -> listByManagedClusterNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed namespaces in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed namespaces in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedNamespaceInner> listByManagedCluster(String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Gets a list of managed namespaces in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed namespaces in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedNamespaceInner> listByManagedCluster(String resourceGroupName, String resourceName,
         Context context) {
         return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName, context));
     }
 
-    /**
-     * Lists the credentials of a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CredentialResultsInner>> listCredentialWithResponseAsync(String resourceGroupName,
         String resourceName, String managedNamespaceName) {
@@ -1146,17 +862,7 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             this.client.getSubscriptionId(), resourceGroupName, resourceName, managedNamespaceName, accept, context);
     }
 
-    /**
-     * Lists the credentials of a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CredentialResultsInner> listCredentialAsync(String resourceGroupName, String resourceName,
         String managedNamespaceName) {
@@ -1164,35 +870,14 @@ public final class ManagedNamespacesClientImpl implements ManagedNamespacesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the credentials of a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialResultsInner> listCredentialWithResponse(String resourceGroupName, String resourceName,
         String managedNamespaceName, Context context) {
         return listCredentialWithResponseAsync(resourceGroupName, resourceName, managedNamespaceName, context).block();
     }
 
-    /**
-     * Lists the credentials of a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param managedNamespaceName The name of the managed namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialResultsInner listCredential(String resourceGroupName, String resourceName,
         String managedNamespaceName) {

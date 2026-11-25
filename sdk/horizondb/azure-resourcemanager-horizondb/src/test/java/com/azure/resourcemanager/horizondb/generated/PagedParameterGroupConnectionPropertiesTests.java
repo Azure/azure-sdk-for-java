@@ -12,8 +12,8 @@ public final class PagedParameterGroupConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedParameterGroupConnectionProperties model = BinaryData.fromString(
-            "{\"value\":[{\"poolResourceId\":\"tdzumveekgpw\"},{\"poolResourceId\":\"zuhkfpbsjyof\"},{\"poolResourceId\":\"xl\"}],\"nextLink\":\"sd\"}")
+            "{\"value\":[{\"poolResourceId\":\"uwhhmhykojoxafn\"},{\"poolResourceId\":\"dlpichkoymkcdyhb\"}],\"nextLink\":\"kpw\"}")
             .toObject(PagedParameterGroupConnectionProperties.class);
-        Assertions.assertEquals("sd", model.nextLink());
+        Assertions.assertEquals("kpw", model.nextLink());
     }
 }

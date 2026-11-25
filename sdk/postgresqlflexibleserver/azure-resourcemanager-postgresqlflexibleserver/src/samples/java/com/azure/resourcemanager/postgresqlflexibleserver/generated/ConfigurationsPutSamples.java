@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ConfigurationsPutSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ConfigurationsUpdateUsingPut.json
+     * x-ms-original-file: 2026-10-01/ConfigurationsUpdateUsingPut.json
      */
     /**
      * Sample code: Update, using Put verb, the value assigned to a specific modifiable configuration (also known as

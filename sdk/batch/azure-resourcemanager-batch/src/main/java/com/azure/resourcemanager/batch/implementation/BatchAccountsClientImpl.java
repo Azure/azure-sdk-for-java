@@ -419,20 +419,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Batch account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
         Context context) {
@@ -459,19 +446,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context);
     }
 
-    /**
-     * Gets information about the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
@@ -541,35 +516,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName,
         BatchAccountCreateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, parameters,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, parameters, Context.NONE);
     }
 
     /**
@@ -644,45 +591,14 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             BatchAccountInner.class, BatchAccountInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
-     * should instead be updated with the Update Batch Account API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters Additional parameters for account creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of contains information about an Azure Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchAccountInner>, BatchAccountInner> beginCreate(String resourceGroupName,
         String accountName, BatchAccountCreateParameters parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, accountName, parameters);
-        return this.client.<BatchAccountInner, BatchAccountInner>getLroResult(response, BatchAccountInner.class,
-            BatchAccountInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, accountName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
-     * should instead be updated with the Update Batch Account API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters Additional parameters for account creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of contains information about an Azure Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchAccountInner>, BatchAccountInner> beginCreate(String resourceGroupName,
         String accountName, BatchAccountCreateParameters parameters, Context context) {
@@ -713,47 +629,18 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
-     * should instead be updated with the Update Batch Account API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters Additional parameters for account creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an Azure Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchAccountInner create(String resourceGroupName, String accountName,
         BatchAccountCreateParameters parameters) {
-        return beginCreate(resourceGroupName, accountName, parameters).getFinalResult();
+        return create(resourceGroupName, accountName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
-     * should instead be updated with the Update Batch Account API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters Additional parameters for account creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an Azure Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchAccountInner create(String resourceGroupName, String accountName,
         BatchAccountCreateParameters parameters, Context context) {
-        return beginCreate(resourceGroupName, accountName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, accountName, parameters, context));
     }
 
     /**
@@ -822,21 +709,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the properties of an existing Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters Additional parameters for account update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an Azure Batch account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchAccountInner> updateWithResponse(String resourceGroupName, String accountName,
         BatchAccountUpdateParameters parameters, Context context) {
@@ -870,20 +743,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates the properties of an existing Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters Additional parameters for account update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an Azure Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchAccountInner update(String resourceGroupName, String accountName,
         BatchAccountUpdateParameters parameters) {
@@ -941,26 +801,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1021,39 +862,13 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         Context context) {
@@ -1079,39 +894,16 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
         return beginDeleteAsync(resourceGroupName, accountName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName) {
-        beginDelete(resourceGroupName, accountName).getFinalResult();
+        delete(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, Context context) {
-        beginDelete(resourceGroupName, accountName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, context));
     }
 
     /**
@@ -1175,25 +967,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BatchAccountInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BatchAccountListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1230,33 +1004,13 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about the Batch accounts associated with the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the Batch accounts associated with the specified resource group as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchAccountInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets information about the Batch accounts associated with the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the Batch accounts associated with the specified resource group as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1312,21 +1066,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BatchAccountInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BatchAccountListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1357,29 +1097,13 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about the Batch accounts associated with the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the Batch accounts associated with the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchAccountInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets information about the Batch accounts associated with the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the Batch accounts associated with the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchAccountInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1443,21 +1167,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
-     * key authentication is being used.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> synchronizeAutoStorageKeysWithResponse(String resourceGroupName, String accountName,
         Context context) {
@@ -1483,19 +1193,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, context);
     }
 
-    /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
-     * key authentication is being used.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) {
         synchronizeAutoStorageKeysWithResponse(resourceGroupName, accountName, Context.NONE);
@@ -1578,26 +1276,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates the specified account key for the Batch account.
-     * 
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
-     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
-     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
-     * fail.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters The type of key to regenerate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of Azure Batch account keys along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchAccountKeysInner> regenerateKeyWithResponse(String resourceGroupName, String accountName,
         BatchAccountRegenerateKeyParameters parameters, Context context) {
@@ -1631,25 +1310,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Regenerates the specified account key for the Batch account.
-     * 
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
-     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
-     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
-     * fail.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param parameters The type of key to regenerate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of Azure Batch account keys.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchAccountKeysInner regenerateKey(String resourceGroupName, String accountName,
         BatchAccountRegenerateKeyParameters parameters) {
@@ -1727,27 +1388,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the account keys for the specified Batch account.
-     * 
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
-     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
-     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the account keys for the specified Batch account.
-     * 
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey' along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchAccountKeysInner> getKeysWithResponse(String resourceGroupName, String accountName,
         Context context) {
@@ -1774,25 +1415,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context);
     }
 
-    /**
-     * Gets the account keys for the specified Batch account.
-     * 
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
-     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
-     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the account keys for the specified Batch account.
-     * 
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchAccountKeysInner getKeys(String resourceGroupName, String accountName) {
         return getKeysWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
@@ -1889,30 +1512,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundEnvironmentEndpointInner>
         listOutboundNetworkDependenciesEndpointsSinglePage(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OutboundEnvironmentEndpointCollection> res = service.listOutboundNetworkDependenciesEndpointsSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOutboundNetworkDependenciesEndpointsSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1962,49 +1562,14 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the endpoints that a Batch Compute Node under this Batch Account may call as part of Batch service
-     * administration. If you are deploying a Pool inside of a virtual network that you specify, you must make sure your
-     * network allows outbound access to these endpoints. Failure to allow access to these endpoints may cause Batch to
-     * mark the affected nodes as unusable. For more information about creating a pool inside of a virtual network, see
-     * https://learn.microsoft.com/azure/batch/batch-virtual-network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundEnvironmentEndpointInner>
         listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(
-            () -> listOutboundNetworkDependenciesEndpointsSinglePage(resourceGroupName, accountName),
-            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePage(nextLink));
+        return listOutboundNetworkDependenciesEndpoints(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Lists the endpoints that a Batch Compute Node under this Batch Account may call as part of Batch service
-     * administration. If you are deploying a Pool inside of a virtual network that you specify, you must make sure your
-     * network allows outbound access to these endpoints. Failure to allow access to these endpoints may cause Batch to
-     * mark the affected nodes as unusable. For more information about creating a pool inside of a virtual network, see
-     * https://learn.microsoft.com/azure/batch/batch-virtual-network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundEnvironmentEndpointInner>
         listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String accountName, Context context) {
@@ -2077,21 +1642,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the given detector for a given Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param detectorId The name of the detector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the given detector for a given Batch account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorResponseInner> getDetectorWithResponse(String resourceGroupName, String accountName,
         String detectorId, Context context) {
@@ -2122,20 +1673,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, detectorId, accept, context);
     }
 
-    /**
-     * Gets information about the given detector for a given Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param detectorId The name of the detector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the given detector for a given Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectorResponseInner getDetector(String resourceGroupName, String accountName, String detectorId) {
         return getDetectorWithResponse(resourceGroupName, accountName, detectorId, Context.NONE).getValue();
@@ -2217,30 +1755,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DetectorResponseInner> listDetectorsSinglePage(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<DetectorListResult> res
-            = service.listDetectorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDetectorsSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -2286,41 +1801,13 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about the detectors available for a given Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the detectors available for a given Batch account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listDetectors(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listDetectorsSinglePage(resourceGroupName, accountName),
-            nextLink -> listDetectorsNextSinglePage(nextLink));
+        return listDetectors(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets information about the detectors available for a given Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the detectors available for a given Batch account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listDetectors(String resourceGroupName, String accountName,
         Context context) {
@@ -2368,20 +1855,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BatchAccountInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BatchAccountListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2450,20 +1924,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BatchAccountInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BatchAccountListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2535,20 +1996,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundEnvironmentEndpointInner>
         listOutboundNetworkDependenciesEndpointsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OutboundEnvironmentEndpointCollection> res = service.listOutboundNetworkDependenciesEndpointsNextSync(
-            nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOutboundNetworkDependenciesEndpointsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2618,20 +2066,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DetectorResponseInner> listDetectorsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<DetectorListResult> res
-            = service.listDetectorsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDetectorsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -104,12 +104,7 @@ public final class PolicySetDefinitionVersionImpl
     }
 
     public PolicySetDefinitionVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitionVersions()
-            .createOrUpdateWithResponse(policySetDefinitionName, policyDefinitionVersion, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicySetDefinitionVersion create(Context context) {
@@ -132,12 +127,7 @@ public final class PolicySetDefinitionVersionImpl
     }
 
     public PolicySetDefinitionVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitionVersions()
-            .createOrUpdateWithResponse(policySetDefinitionName, policyDefinitionVersion, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PolicySetDefinitionVersion apply(Context context) {
@@ -155,18 +145,33 @@ public final class PolicySetDefinitionVersionImpl
         this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
             "policySetDefinitionName");
+        if (this.policySetDefinitionName == null) {
+            this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+                "policySetDefinitionName");
+        }
+        if (this.policySetDefinitionName == null) {
+            this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+                "policySetDefinitionName");
+        }
         this.policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
             "policyDefinitionVersion");
+        if (this.policyDefinitionVersion == null) {
+            this.policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+                "policyDefinitionVersion");
+        }
+        if (this.policyDefinitionVersion == null) {
+            this.policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+                "policyDefinitionVersion");
+        }
     }
 
     public PolicySetDefinitionVersion refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitionVersions()
-            .getWithResponse(policySetDefinitionName, policyDefinitionVersion, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicySetDefinitionVersion refresh(Context context) {

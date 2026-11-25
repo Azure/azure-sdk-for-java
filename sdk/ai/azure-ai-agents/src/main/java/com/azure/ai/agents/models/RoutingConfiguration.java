@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Per-request configuration for Model Router inference calls.
@@ -22,7 +23,7 @@ public final class RoutingConfiguration implements JsonSerializable<RoutingConfi
 
     /*
      * Session affinity configuration for reusing an eligible model across requests in the same conversation.
-     * If omitted, sticky affinity is used when a supported conversation identifier is available.
+     * If omitted, adaptive affinity is used when a supported conversation identifier is available.
      */
     @Generated
     @Beta(warningText = "Preview API. ModelRouterControls=V1Preview")
@@ -38,7 +39,7 @@ public final class RoutingConfiguration implements JsonSerializable<RoutingConfi
     /**
      * Get the sessionAffinity property: Session affinity configuration for reusing an eligible model across requests in
      * the same conversation.
-     * If omitted, sticky affinity is used when a supported conversation identifier is available.
+     * If omitted, adaptive affinity is used when a supported conversation identifier is available.
      *
      * @return the sessionAffinity value.
      */
@@ -51,7 +52,7 @@ public final class RoutingConfiguration implements JsonSerializable<RoutingConfi
     /**
      * Set the sessionAffinity property: Session affinity configuration for reusing an eligible model across requests in
      * the same conversation.
-     * If omitted, sticky affinity is used when a supported conversation identifier is available.
+     * If omitted, adaptive affinity is used when a supported conversation identifier is available.
      *
      * @param sessionAffinity the sessionAffinity value to set.
      * @return the RoutingConfiguration object itself.
@@ -71,6 +72,9 @@ public final class RoutingConfiguration implements JsonSerializable<RoutingConfi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("session_affinity", this.sessionAffinity);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeArrayField("models", this.models, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("require_parameters", this.requireParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -91,11 +95,127 @@ public final class RoutingConfiguration implements JsonSerializable<RoutingConfi
                 reader.nextToken();
                 if ("session_affinity".equals(fieldName)) {
                     deserializedRoutingConfiguration.sessionAffinity = SessionAffinityConfiguration.fromJson(reader);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedRoutingConfiguration.mode = ModelRouterMode.fromString(reader.getString());
+                } else if ("models".equals(fieldName)) {
+                    List<String> models = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoutingConfiguration.models = models;
+                } else if ("require_parameters".equals(fieldName)) {
+                    deserializedRoutingConfiguration.requireParameters = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedRoutingConfiguration;
         });
+    }
+
+    /*
+     * Overrides the routing objective for this request. If omitted, the configured routing mode is used.
+     */
+    @Generated
+    private ModelRouterMode mode;
+
+    /*
+     * Model names used to narrow the configured model pool for this request. If omitted, the configured model pool is
+     * used.
+     */
+    @Generated
+    private List<String> models;
+
+    /*
+     * When true, restricts routing to qualified model and serving API combinations that support
+     * all applicable request parameters. Returns 400 (Bad Request) when none qualify.
+     * Defaults to false when omitted. Explicit null and non-boolean values return 400.
+     * Requires the Foundry-Features: ModelRouterControls=V1Preview header.
+     * Applies only to qualified model, API, and adapter mappings, not every provider-native option.
+     * This setting is request-scoped; it does not introduce stored deployment defaults.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. ModelRouterControls=V1Preview")
+    private Boolean requireParameters;
+
+    /**
+     * Get the mode property: Overrides the routing objective for this request. If omitted, the configured routing mode
+     * is used.
+     *
+     * @return the mode value.
+     */
+    @Generated
+    public ModelRouterMode getMode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: Overrides the routing objective for this request. If omitted, the configured routing mode
+     * is used.
+     *
+     * @param mode the mode value to set.
+     * @return the RoutingConfiguration object itself.
+     */
+    @Generated
+    public RoutingConfiguration setMode(ModelRouterMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the models property: Model names used to narrow the configured model pool for this request. If omitted, the
+     * configured model pool is used.
+     *
+     * @return the models value.
+     */
+    @Generated
+    public List<String> getModels() {
+        return this.models;
+    }
+
+    /**
+     * Set the models property: Model names used to narrow the configured model pool for this request. If omitted, the
+     * configured model pool is used.
+     *
+     * @param models the models value to set.
+     * @return the RoutingConfiguration object itself.
+     */
+    @Generated
+    public RoutingConfiguration setModels(List<String> models) {
+        this.models = models;
+        return this;
+    }
+
+    /**
+     * Get the requireParameters property: When true, restricts routing to qualified model and serving API combinations
+     * that support
+     * all applicable request parameters. Returns 400 (Bad Request) when none qualify.
+     * Defaults to false when omitted. Explicit null and non-boolean values return 400.
+     * Requires the Foundry-Features: ModelRouterControls=V1Preview header.
+     * Applies only to qualified model, API, and adapter mappings, not every provider-native option.
+     * This setting is request-scoped; it does not introduce stored deployment defaults.
+     *
+     * @return the requireParameters value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. ModelRouterControls=V1Preview")
+    public Boolean isRequireParameters() {
+        return this.requireParameters;
+    }
+
+    /**
+     * Set the requireParameters property: When true, restricts routing to qualified model and serving API combinations
+     * that support
+     * all applicable request parameters. Returns 400 (Bad Request) when none qualify.
+     * Defaults to false when omitted. Explicit null and non-boolean values return 400.
+     * Requires the Foundry-Features: ModelRouterControls=V1Preview header.
+     * Applies only to qualified model, API, and adapter mappings, not every provider-native option.
+     * This setting is request-scoped; it does not introduce stored deployment defaults.
+     *
+     * @param requireParameters the requireParameters value to set.
+     * @return the RoutingConfiguration object itself.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. ModelRouterControls=V1Preview")
+    public RoutingConfiguration setRequireParameters(Boolean requireParameters) {
+        this.requireParameters = requireParameters;
+        return this;
     }
 }

@@ -212,11 +212,8 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname, VirtualNetworkAddressInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource,
+            Context.NONE);
     }
 
     /**
@@ -265,41 +262,16 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             this.client.getContext());
     }
 
-    /**
-     * Create a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual IP resource belonging to a vm cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkAddressInner>, VirtualNetworkAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudvmclustername, String virtualnetworkaddressname,
         VirtualNetworkAddressInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource);
-        return this.client.<VirtualNetworkAddressInner, VirtualNetworkAddressInner>getLroResult(response,
-            VirtualNetworkAddressInner.class, VirtualNetworkAddressInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual IP resource belonging to a vm cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkAddressInner>, VirtualNetworkAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudvmclustername, String virtualnetworkaddressname,
@@ -330,43 +302,19 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual IP resource belonging to a vm cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkAddressInner createOrUpdate(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname, VirtualNetworkAddressInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource, Context.NONE);
     }
 
-    /**
-     * Create a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual IP resource belonging to a vm cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkAddressInner createOrUpdate(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname, VirtualNetworkAddressInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, resource, context));
     }
 
     /**
@@ -409,18 +357,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VirtualNetworkAddress along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkAddressInner> getWithResponse(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname, Context context) {
@@ -429,17 +366,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             resourceGroupName, cloudvmclustername, virtualnetworkaddressname, accept, context);
     }
 
-    /**
-     * Get a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VirtualNetworkAddress.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkAddressInner get(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname) {
@@ -480,9 +407,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE);
     }
 
     /**
@@ -524,37 +449,14 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             this.client.getContext());
     }
 
-    /**
-     * Delete a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE);
     }
 
-    /**
-     * Delete a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudvmclustername,
         String virtualnetworkaddressname, Context context) {
@@ -581,36 +483,18 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudvmclustername, String virtualnetworkaddressname) {
-        beginDelete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname).getFinalResult();
+        delete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE);
     }
 
-    /**
-     * Delete a VirtualNetworkAddress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param virtualnetworkaddressname Virtual IP address hostname.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudvmclustername, String virtualnetworkaddressname,
         Context context) {
-        beginDelete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context));
     }
 
     /**
@@ -666,12 +550,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkAddressInner> listByCloudVmClusterSinglePage(String resourceGroupName,
         String cloudvmclustername) {
-        final String accept = "application/json";
-        Response<VirtualNetworkAddressListResult> res
-            = service.listByCloudVmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudVmClusterSinglePage(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
     /**
@@ -696,34 +575,14 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List VirtualNetworkAddress resources by CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkAddress list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkAddressInner> listByCloudVmCluster(String resourceGroupName,
         String cloudvmclustername) {
-        return new PagedIterable<>(() -> listByCloudVmClusterSinglePage(resourceGroupName, cloudvmclustername),
-            nextLink -> listByCloudVmClusterNextSinglePage(nextLink));
+        return listByCloudVmCluster(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
-    /**
-     * List VirtualNetworkAddress resources by CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualNetworkAddress list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkAddressInner> listByCloudVmCluster(String resourceGroupName,
         String cloudvmclustername, Context context) {
@@ -763,11 +622,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkAddressInner> listByCloudVmClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualNetworkAddressListResult> res
-            = service.listByCloudVmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudVmClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

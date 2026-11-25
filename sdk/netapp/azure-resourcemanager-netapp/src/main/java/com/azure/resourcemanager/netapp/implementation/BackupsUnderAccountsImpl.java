@@ -24,7 +24,7 @@ public final class BackupsUnderAccountsImpl implements BackupsUnderAccounts {
     }
 
     public void migrateBackups(String resourceGroupName, String accountName, BackupsMigrationRequest body) {
-        this.serviceClient().migrateBackups(resourceGroupName, accountName, body);
+        this.migrateBackups(resourceGroupName, accountName, body, Context.NONE);
     }
 
     public void migrateBackups(String resourceGroupName, String accountName, BackupsMigrationRequest body,

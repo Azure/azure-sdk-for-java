@@ -243,17 +243,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified express route circuit along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCircuitInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String circuitName) {
@@ -272,7 +262,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -310,72 +300,34 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, accept, context);
     }
 
-    /**
-     * Gets information about the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified express route circuit on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitInner> getByResourceGroupAsync(String resourceGroupName, String circuitName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, circuitName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified express route circuit along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCircuitInner> getByResourceGroupWithResponse(String resourceGroupName,
         String circuitName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, circuitName, context).block();
     }
 
-    /**
-     * Gets information about the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified express route circuit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitInner getByResourceGroup(String resourceGroupName, String circuitName) {
         return getByResourceGroupWithResponse(resourceGroupName, circuitName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String circuitName, ExpressRouteCircuitInner parameters) {
@@ -399,7 +351,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -442,7 +394,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -450,17 +402,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             resourceGroupName, circuitName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of expressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
@@ -493,52 +435,21 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             this.client.getHttpPipeline(), ExpressRouteCircuitInner.class, ExpressRouteCircuitInner.class, context);
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner>
         beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, circuitName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, circuitName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitInner> createOrUpdateAsync(String resourceGroupName, String circuitName,
         ExpressRouteCircuitInner parameters) {
@@ -565,52 +476,21 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName,
         ExpressRouteCircuitInner parameters) {
         return createOrUpdateAsync(resourceGroupName, circuitName, parameters).block();
     }
 
-    /**
-     * Creates or updates an express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to the create or update express route circuit operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName,
         ExpressRouteCircuitInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, circuitName, parameters, context).block();
     }
 
-    /**
-     * Updates an express route circuit tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to update express route circuit tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCircuitInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String circuitName, TagsObject parameters) {
@@ -634,7 +514,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -679,7 +559,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -687,17 +567,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             resourceGroupName, circuitName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an express route circuit tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to update express route circuit tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitInner> updateTagsAsync(String resourceGroupName, String circuitName,
         TagsObject parameters) {
@@ -705,50 +575,20 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an express route circuit tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to update express route circuit tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCircuitInner> updateTagsWithResponse(String resourceGroupName, String circuitName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, circuitName, parameters, context).block();
     }
 
-    /**
-     * Updates an express route circuit tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param parameters Parameters supplied to update express route circuit tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitInner updateTags(String resourceGroupName, String circuitName, TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, circuitName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String circuitName) {
         if (this.client.getEndpoint() == null) {
@@ -766,7 +606,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, circuitName, context))
@@ -802,22 +642,13 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             circuitName, context);
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName);
@@ -845,48 +676,20 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context);
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName) {
         return this.beginDeleteAsync(resourceGroupName, circuitName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, circuitName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String circuitName) {
         return beginDeleteAsync(resourceGroupName, circuitName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -909,30 +712,13 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String circuitName) {
         deleteAsync(resourceGroupName, circuitName).block();
     }
 
-    /**
-     * Deletes the specified express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String circuitName, Context context) {
         deleteAsync(resourceGroupName, circuitName, context).block();
@@ -962,7 +748,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -998,7 +784,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1008,15 +794,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the express route circuits in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the express route circuits in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCircuitInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1039,30 +817,13 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the express route circuits in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the express route circuits in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all the express route circuits in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the express route circuits in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1086,7 +847,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1116,7 +877,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1124,13 +885,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the express route circuits in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the express route circuits in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCircuitInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1151,43 +906,19 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the express route circuits in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the express route circuits in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the express route circuits in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the express route circuits in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Gets all the stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the stats from an express route circuit in a resource group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCircuitStatsInner>> getStatsWithResponseAsync(String resourceGroupName,
         String circuitName) {
@@ -1206,7 +937,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStats(this.client.getEndpoint(), apiVersion,
@@ -1244,73 +975,34 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStats(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, accept, context);
     }
 
-    /**
-     * Gets all the stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the stats from an express route circuit in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitStatsInner> getStatsAsync(String resourceGroupName, String circuitName) {
         return getStatsWithResponseAsync(resourceGroupName, circuitName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets all the stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the stats from an express route circuit in a resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCircuitStatsInner> getStatsWithResponse(String resourceGroupName, String circuitName,
         Context context) {
         return getStatsWithResponseAsync(resourceGroupName, circuitName, context).block();
     }
 
-    /**
-     * Gets all the stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the stats from an express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitStatsInner getStats(String resourceGroupName, String circuitName) {
         return getStatsWithResponse(resourceGroupName, circuitName, Context.NONE).getValue();
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param failoverTestType The type of failover test.
-     * @param fetchLatest Fetch only the latest tests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(
         String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest) {
@@ -1329,7 +1021,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCircuitLinkFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
@@ -1369,7 +1061,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCircuitLinkFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
@@ -1377,18 +1069,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context);
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param failoverTestType The type of failover test.
-     * @param fetchLatest Fetch only the latest tests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
@@ -1404,16 +1085,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 }.getJavaType(), this.client.getContext());
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
@@ -1459,16 +1131,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 }.getJavaType(), context);
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
@@ -1481,19 +1144,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param failoverTestType The type of failover test.
-     * @param fetchLatest Fetch only the latest tests.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
@@ -1505,18 +1156,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param failoverTestType The type of failover test.
-     * @param fetchLatest Fetch only the latest tests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>> getCircuitLinkFailoverAllTestsDetailsAsync(
         String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest) {
@@ -1524,16 +1164,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             fetchLatest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
         getCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName) {
@@ -1563,16 +1194,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             fetchLatest, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ExpressRouteLinkFailoverAllTestsDetailsInner>
         getCircuitLinkFailoverAllTestsDetails(String resourceGroupName, String circuitName) {
@@ -1582,19 +1204,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .block();
     }
 
-    /**
-     * Retrieves the details of all the link failover tests performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param failoverTestType The type of failover test.
-     * @param fetchLatest Fetch only the latest tests.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ExpressRouteLinkFailoverAllTestsDetailsInner> getCircuitLinkFailoverAllTestsDetails(
         String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest, Context context) {
@@ -1602,19 +1212,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context).block();
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverSingleTestDetailsWithResponseAsync(
         String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
@@ -1644,7 +1242,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (failoverTestId == null) {
             return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCircuitLinkFailoverSingleTestDetails(this.client.getEndpoint(),
@@ -1696,7 +1294,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (failoverTestId == null) {
             return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCircuitLinkFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
@@ -1704,19 +1302,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             failoverTestId, accept, context);
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
@@ -1762,19 +1348,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 }.getJavaType(), context);
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
@@ -1786,20 +1360,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
@@ -1811,19 +1372,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<ExpressRouteLinkFailoverSingleTestDetailsInner>> getCircuitLinkFailoverSingleTestDetailsAsync(
         String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
@@ -1854,19 +1403,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             circuitTestCategory, failoverTestId, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ExpressRouteLinkFailoverSingleTestDetailsInner> getCircuitLinkFailoverSingleTestDetails(
         String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
@@ -1875,20 +1412,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             circuitTestCategory, failoverTestId).block();
     }
 
-    /**
-     * Retrieves the details of a particular link failover test performed on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param failoverTestId The unique Guid value which identifies the test.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ExpressRouteLinkFailoverSingleTestDetailsInner> getCircuitLinkFailoverSingleTestDetails(
         String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
@@ -1897,18 +1421,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             circuitTestCategory, failoverTestId, context).block();
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
         String circuitName, String linkType, String circuitTestCategory) {
@@ -1934,7 +1447,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
@@ -1981,7 +1494,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
@@ -1989,18 +1502,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context);
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginStartCircuitLinkFailoverTestAsync(String resourceGroupName,
         String circuitName, String linkType, String circuitTestCategory) {
@@ -2033,18 +1535,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context);
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStartCircuitLinkFailoverTest(String resourceGroupName,
         String circuitName, String linkType, String circuitTestCategory) {
@@ -2053,19 +1544,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStartCircuitLinkFailoverTest(String resourceGroupName,
         String circuitName, String linkType, String circuitTestCategory, Context context) {
@@ -2075,18 +1554,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> startCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName, String linkType,
         String circuitTestCategory) {
@@ -2115,37 +1583,14 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String startCircuitLinkFailoverTest(String resourceGroupName, String circuitName, String linkType,
         String circuitTestCategory) {
         return startCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory).block();
     }
 
-    /**
-     * Starts link failover simulation on the express route circuit for the specified link type and test category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param linkType The link type.
-     * @param circuitTestCategory The circuit test category.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String startCircuitLinkFailoverTest(String resourceGroupName, String circuitName, String linkType,
         String circuitTestCategory, Context context) {
@@ -2153,17 +1598,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .block();
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
         String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters) {
@@ -2187,7 +1622,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2232,7 +1667,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2241,17 +1676,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context);
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginStopCircuitLinkFailoverTestAsync(String resourceGroupName,
         String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters) {
@@ -2283,17 +1708,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             context);
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStopCircuitLinkFailoverTest(String resourceGroupName,
         String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters) {
@@ -2301,18 +1716,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStopCircuitLinkFailoverTest(String resourceGroupName,
         String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
@@ -2320,17 +1724,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> stopCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName,
         ExpressRouteLinkFailoverStopApiParameters stopParameters) {
@@ -2357,54 +1751,21 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String stopCircuitLinkFailoverTest(String resourceGroupName, String circuitName,
         ExpressRouteLinkFailoverStopApiParameters stopParameters) {
         return stopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters).block();
     }
 
-    /**
-     * Stops link failover simulation on the express route circuit.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String stopCircuitLinkFailoverTest(String resourceGroupName, String circuitName,
         ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
         return stopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters, context).block();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route circuit in a resource group along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(String resourceGroupName, String circuitName,
         String peeringName, String devicePath) {
@@ -2429,7 +1790,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2476,26 +1837,14 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listArpTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, peeringName, devicePath, accept, context);
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the currently advertised ARP table associated with the express
-     * route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -2536,19 +1885,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 ExpressRouteCircuitsArpTableListResultInner.class, context);
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised ARP table associated with the express
-     * route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -2556,20 +1893,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         return this.beginListArpTableAsync(resourceGroupName, circuitName, peeringName, devicePath).getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised ARP table associated with the express
-     * route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -2579,19 +1903,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route circuit in a resource group on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName,
         String circuitName, String peeringName, String devicePath) {
@@ -2620,56 +1932,21 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName,
         String peeringName, String devicePath) {
         return listArpTableAsync(resourceGroupName, circuitName, peeringName, devicePath).block();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the arpTables.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName,
         String peeringName, String devicePath, Context context) {
         return listArpTableAsync(resourceGroupName, circuitName, peeringName, devicePath, context).block();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route circuit in a resource group along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(String resourceGroupName,
         String circuitName, String peeringName, String devicePath) {
@@ -2694,7 +1971,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listRoutesTable(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, circuitName, peeringName, devicePath, accept, context))
@@ -2739,26 +2016,14 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, peeringName, devicePath, accept, context);
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the currently advertised routes table associated with the express
-     * route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
@@ -2799,19 +2064,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 ExpressRouteCircuitsRoutesTableListResultInner.class, context);
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised routes table associated with the express
-     * route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
@@ -2819,20 +2072,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         return this.beginListRoutesTableAsync(resourceGroupName, circuitName, peeringName, devicePath).getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised routes table associated with the express
-     * route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
@@ -2842,19 +2082,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route circuit in a resource group on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName,
         String circuitName, String peeringName, String devicePath) {
@@ -2883,56 +2111,21 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName,
         String peeringName, String devicePath) {
         return listRoutesTableAsync(resourceGroupName, circuitName, peeringName, devicePath).block();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTables.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName,
         String peeringName, String devicePath, Context context) {
         return listRoutesTableAsync(resourceGroupName, circuitName, peeringName, devicePath, context).block();
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     * group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(String resourceGroupName,
         String circuitName, String peeringName, String devicePath) {
@@ -2957,7 +2150,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listRoutesTableSummary(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, circuitName, peeringName, devicePath, accept, context))
@@ -3002,26 +2195,14 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTableSummary(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, peeringName, devicePath, accept, context);
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the currently advertised routes table summary associated with the
-     * express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -3063,19 +2244,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
                 ExpressRouteCircuitsRoutesTableSummaryListResultInner.class, context);
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised routes table summary associated with the
-     * express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -3085,20 +2254,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised routes table summary associated with the
-     * express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -3108,19 +2264,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     * group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(
         String resourceGroupName, String circuitName, String peeringName, String devicePath) {
@@ -3149,57 +2293,21 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName,
         String circuitName, String peeringName, String devicePath) {
         return listRoutesTableSummaryAsync(resourceGroupName, circuitName, peeringName, devicePath).block();
     }
 
-    /**
-     * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of the express route port.
-     * @param peeringName The name of the peering.
-     * @param devicePath The name of the routeTablesSummary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName,
         String circuitName, String peeringName, String devicePath, Context context) {
         return listRoutesTableSummaryAsync(resourceGroupName, circuitName, peeringName, devicePath, context).block();
     }
 
-    /**
-     * Gets all stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param peeringName The name of the peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all stats from an express route circuit in a resource group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCircuitStatsInner>> getPeeringStatsWithResponseAsync(String resourceGroupName,
         String circuitName, String peeringName) {
@@ -3221,7 +2329,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPeeringStats(this.client.getEndpoint(), apiVersion,
@@ -3263,24 +2371,14 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPeeringStats(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, circuitName, peeringName, accept, context);
     }
 
-    /**
-     * Gets all stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param peeringName The name of the peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all stats from an express route circuit in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitStatsInner> getPeeringStatsAsync(String resourceGroupName, String circuitName,
         String peeringName) {
@@ -3288,35 +2386,14 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets all stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param peeringName The name of the peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all stats from an express route circuit in a resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCircuitStatsInner> getPeeringStatsWithResponse(String resourceGroupName,
         String circuitName, String peeringName, Context context) {
         return getPeeringStatsWithResponseAsync(resourceGroupName, circuitName, peeringName, context).block();
     }
 
-    /**
-     * Gets all stats from an express route circuit in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param circuitName The name of express route circuit.
-     * @param peeringName The name of the peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all stats from an express route circuit in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitStatsInner getPeeringStats(String resourceGroupName, String circuitName,
         String peeringName) {

@@ -18,7 +18,8 @@ import java.util.List;
 @Fluent
 public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlacementScoresInput> {
     /*
-     * The desired regions
+     * The desired regions. If not set, the location from the request URI is used as the desired location. Each location
+     * in this list must be a valid Azure region.
      */
     private List<String> desiredLocations;
 
@@ -28,7 +29,7 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     private List<ResourceSize> desiredSizes;
 
     /*
-     * Desired instance count per region/zone based on the scope.
+     * Desired instance count per region/zone based on the scope. If not set, defaults to 1.
      */
     private Integer desiredCount;
 
@@ -44,7 +45,8 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     }
 
     /**
-     * Get the desiredLocations property: The desired regions.
+     * Get the desiredLocations property: The desired regions. If not set, the location from the request URI is used as
+     * the desired location. Each location in this list must be a valid Azure region.
      * 
      * @return the desiredLocations value.
      */
@@ -53,7 +55,8 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     }
 
     /**
-     * Set the desiredLocations property: The desired regions.
+     * Set the desiredLocations property: The desired regions. If not set, the location from the request URI is used as
+     * the desired location. Each location in this list must be a valid Azure region.
      * 
      * @param desiredLocations the desiredLocations value to set.
      * @return the SpotPlacementScoresInput object itself.
@@ -84,7 +87,8 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     }
 
     /**
-     * Get the desiredCount property: Desired instance count per region/zone based on the scope.
+     * Get the desiredCount property: Desired instance count per region/zone based on the scope. If not set, defaults to
+     * 1.
      * 
      * @return the desiredCount value.
      */
@@ -93,7 +97,8 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     }
 
     /**
-     * Set the desiredCount property: Desired instance count per region/zone based on the scope.
+     * Set the desiredCount property: Desired instance count per region/zone based on the scope. If not set, defaults to
+     * 1.
      * 
      * @param desiredCount the desiredCount value to set.
      * @return the SpotPlacementScoresInput object itself.
@@ -129,9 +134,9 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("desiredSizes", this.desiredSizes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("desiredLocations", this.desiredLocations,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("desiredSizes", this.desiredSizes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("desiredCount", this.desiredCount);
         jsonWriter.writeBooleanField("availabilityZones", this.availabilityZones);
         return jsonWriter.writeEndObject();
@@ -143,6 +148,7 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
      * @param jsonReader The JsonReader being read.
      * @return An instance of SpotPlacementScoresInput if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SpotPlacementScoresInput.
      */
     public static SpotPlacementScoresInput fromJson(JsonReader jsonReader) throws IOException {
@@ -152,12 +158,12 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("desiredLocations".equals(fieldName)) {
-                    List<String> desiredLocations = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSpotPlacementScoresInput.desiredLocations = desiredLocations;
-                } else if ("desiredSizes".equals(fieldName)) {
+                if ("desiredSizes".equals(fieldName)) {
                     List<ResourceSize> desiredSizes = reader.readArray(reader1 -> ResourceSize.fromJson(reader1));
                     deserializedSpotPlacementScoresInput.desiredSizes = desiredSizes;
+                } else if ("desiredLocations".equals(fieldName)) {
+                    List<String> desiredLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpotPlacementScoresInput.desiredLocations = desiredLocations;
                 } else if ("desiredCount".equals(fieldName)) {
                     deserializedSpotPlacementScoresInput.desiredCount = reader.getNullable(JsonReader::getInt);
                 } else if ("availabilityZones".equals(fieldName)) {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class IotHubResourceDeleteSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/iothub_delete.json
+     * x-ms-original-file: 2026-11-01/iothub_delete.json
      */
     /**
      * Sample code: IotHubResource_Delete.

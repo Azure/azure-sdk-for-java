@@ -83,19 +83,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             @BodyParam("application/json") MaintenanceWindowsInner parameters, Context context);
     }
 
-    /**
-     * Gets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance windows settings for a database along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String maintenanceWindowName) {
@@ -174,18 +162,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             resourceGroupName, serverName, databaseName, maintenanceWindowName, accept, context);
     }
 
-    /**
-     * Gets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance windows settings for a database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowsInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String maintenanceWindowName) {
@@ -193,19 +170,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance windows settings for a database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowsInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String maintenanceWindowName, Context context) {
@@ -213,18 +178,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             .block();
     }
 
-    /**
-     * Gets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance windows settings for a database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowsInner get(String resourceGroupName, String serverName, String databaseName,
         String maintenanceWindowName) {
@@ -232,19 +186,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             .getValue();
     }
 
-    /**
-     * Sets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String maintenanceWindowName, MaintenanceWindowsInner parameters) {
@@ -334,19 +276,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             contentType, parameters, context);
     }
 
-    /**
-     * Sets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
         String maintenanceWindowName, MaintenanceWindowsInner parameters) {
@@ -354,20 +284,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Sets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createOrUpdateWithResponse(String resourceGroupName, String serverName, String databaseName,
         String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context) {
@@ -375,18 +292,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
             parameters, context).block();
     }
 
-    /**
-     * Sets maintenance windows settings for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowName Maintenance window name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String maintenanceWindowName, MaintenanceWindowsInner parameters) {

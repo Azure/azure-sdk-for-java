@@ -11,19 +11,25 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SaaSResourceDetailsResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
+import com.azure.resourcemanager.confluent.models.ActivateSaaSParameterRequest;
 import com.azure.resourcemanager.confluent.models.ApiKeyRecord;
 import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
+import com.azure.resourcemanager.confluent.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.ListRegionsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.Organizations;
 import com.azure.resourcemanager.confluent.models.SCClusterRecord;
 import com.azure.resourcemanager.confluent.models.SCEnvironmentRecord;
+import com.azure.resourcemanager.confluent.models.SaaSData;
+import com.azure.resourcemanager.confluent.models.SaaSResourceDetailsResponse;
 import com.azure.resourcemanager.confluent.models.SchemaRegistryClusterRecord;
 
 public final class OrganizationsImpl implements Organizations {
@@ -63,7 +69,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
-        this.serviceClient().deleteClusterApiKey(resourceGroupName, organizationName, apiKeyId);
+        this.deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, Context.NONE);
     }
 
     public Response<OrganizationResource> getByResourceGroupWithResponse(String resourceGroupName,
@@ -84,7 +90,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String organizationName) {
-        this.serviceClient().delete(resourceGroupName, organizationName);
+        this.delete(resourceGroupName, organizationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String organizationName, Context context) {
@@ -92,8 +98,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -103,8 +108,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> list() {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> list(Context context) {
@@ -126,6 +130,52 @@ public final class OrganizationsImpl implements Organizations {
             = this.serviceClient().listRegions(resourceGroupName, organizationName, body);
         if (inner != null) {
             return new ListRegionsSuccessResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OrganizationResource linkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
+        return this.linkSaaS(resourceGroupName, organizationName, body, Context.NONE);
+    }
+
+    public OrganizationResource linkSaaS(String resourceGroupName, String organizationName, SaaSData body,
+        Context context) {
+        OrganizationResourceInner inner
+            = this.serviceClient().linkSaaS(resourceGroupName, organizationName, body, context);
+        if (inner != null) {
+            return new OrganizationResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String organizationName, Context context) {
+        Response<LatestLinkedSaaSResponseInner> inner
+            = this.serviceClient().latestLinkedSaaSWithResponse(resourceGroupName, organizationName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String organizationName) {
+        LatestLinkedSaaSResponseInner inner
+            = this.serviceClient().latestLinkedSaaS(resourceGroupName, organizationName);
+        if (inner != null) {
+            return new LatestLinkedSaaSResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest body) {
+        return this.activateResource(body, Context.NONE);
+    }
+
+    public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest body, Context context) {
+        SaaSResourceDetailsResponseInner inner = this.serviceClient().activateResource(body, context);
+        if (inner != null) {
+            return new SaaSResourceDetailsResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -253,74 +303,30 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public OrganizationResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<OrganizationResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
+            "organizationName", "organizations", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, organizationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        this.delete(resourceGroupName, organizationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
+            "organizationName", "organizations", LOGGER);
         this.delete(resourceGroupName, organizationName, context);
     }
 

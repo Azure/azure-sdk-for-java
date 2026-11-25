@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -25,7 +24,6 @@ import java.util.List;
  * An assistant message item in a Realtime conversation.
  */
 @Fluent
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeConversationItemAssistantMessage extends RealtimeConversationItemMessage {
 
     /*
@@ -45,12 +43,6 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
      */
     @Generated
     private String id;
-
-    /*
-     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
-     */
-    @Generated
-    private RealtimeConversationItemObjectType object;
 
     /*
      * The status of the item. Has no effect on the conversation.
@@ -131,30 +123,6 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
     }
 
     /**
-     * Get the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public RealtimeConversationItemObjectType getObject() {
-        return this.object;
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemAssistantMessage object itself.
-     */
-    @Generated
-    public RealtimeConversationItemAssistantMessage setObject(RealtimeConversationItemObjectType object) {
-        this.object = object;
-        return this;
-    }
-
-    /**
      * Get the status property: The status of the item. Has no effect on the conversation.
      *
      * @return the status value.
@@ -214,7 +182,7 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
         });
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         jsonWriter.writeNumberField("created_at", this.createdAt);
         jsonWriter.writeStringField("response_id", this.responseId);
@@ -264,7 +232,7 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
             RealtimeConversationItemAssistantMessage deserializedRealtimeConversationItemAssistantMessage
                 = new RealtimeConversationItemAssistantMessage(content);
             deserializedRealtimeConversationItemAssistantMessage.id = id;
-            deserializedRealtimeConversationItemAssistantMessage.object = object;
+            deserializedRealtimeConversationItemAssistantMessage.objectType = object;
             deserializedRealtimeConversationItemAssistantMessage.status = status;
             deserializedRealtimeConversationItemAssistantMessage.createdAt = createdAt;
             deserializedRealtimeConversationItemAssistantMessage.responseId = responseId;
@@ -281,6 +249,36 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
     @Generated
     public RealtimeConversationItemAssistantMessage setStatus(Status status) {
         this.status = status;
+        return this;
+    }
+
+    /*
+     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
+     */
+    @Generated
+    private RealtimeConversationItemObjectType objectType;
+
+    /**
+     * Get the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public RealtimeConversationItemObjectType getObjectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Set the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param objectType the objectType value to set.
+     * @return the RealtimeConversationItemAssistantMessage object itself.
+     */
+    @Generated
+    public RealtimeConversationItemAssistantMessage setObjectType(RealtimeConversationItemObjectType objectType) {
+        this.objectType = objectType;
         return this;
     }
 }

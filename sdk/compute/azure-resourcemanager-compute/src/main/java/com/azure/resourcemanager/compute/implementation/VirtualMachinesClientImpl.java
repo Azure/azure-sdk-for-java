@@ -375,20 +375,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     * properties of the virtual machine that is managed by the platform and can change outside of control plane
-     * operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the user
-     * during the VM Create/Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String vmName, InstanceViewTypes expand) {
@@ -455,16 +442,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, expand, accept, context);
     }
 
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInner> getByResourceGroupAsync(String resourceGroupName, String vmName) {
         final InstanceViewTypes expand = null;
@@ -472,59 +450,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     * properties of the virtual machine that is managed by the platform and can change outside of control plane
-     * operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the user
-     * during the VM Create/Update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName, String vmName,
         InstanceViewTypes expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmName, expand, context).block();
     }
 
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInner getByResourceGroup(String resourceGroupName, String vmName) {
         final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, vmName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName,
         VirtualMachineInner parameters, String ifMatch, String ifNoneMatch) {
@@ -606,22 +546,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, ifMatch, ifNoneMatch, contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vmName, VirtualMachineInner parameters, String ifMatch, String ifNoneMatch) {
@@ -631,18 +556,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             VirtualMachineInner.class, VirtualMachineInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
@@ -682,18 +596,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             VirtualMachineInner.class, VirtualMachineInner.class, context);
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner>
         beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
@@ -703,23 +606,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String vmName, VirtualMachineInner parameters, String ifMatch, String ifNoneMatch,
@@ -728,22 +615,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName,
         VirtualMachineInner parameters, String ifMatch, String ifNoneMatch) {
@@ -751,18 +623,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName,
         VirtualMachineInner parameters) {
@@ -796,18 +657,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
         final String ifMatch = null;
@@ -815,44 +665,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return createOrUpdateAsync(resourceGroupName, vmName, parameters, ifMatch, ifNoneMatch).block();
     }
 
-    /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
-     * machine creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters,
         String ifMatch, String ifNoneMatch, Context context) {
         return createOrUpdateAsync(resourceGroupName, vmName, parameters, ifMatch, ifNoneMatch, context).block();
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName,
         VirtualMachineUpdateInner parameters, String ifMatch, String ifNoneMatch) {
@@ -933,21 +753,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             vmName, ifMatch, ifNoneMatch, contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
         String vmName, VirtualMachineUpdateInner parameters, String ifMatch, String ifNoneMatch) {
@@ -957,17 +763,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             VirtualMachineInner.class, VirtualMachineInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
         String vmName, VirtualMachineUpdateInner parameters) {
@@ -1005,17 +801,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             VirtualMachineInner.class, VirtualMachineInner.class, context);
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
         String vmName, VirtualMachineUpdateInner parameters) {
@@ -1024,22 +810,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return this.beginUpdateAsync(resourceGroupName, vmName, parameters, ifMatch, ifNoneMatch).getSyncPoller();
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
         String vmName, VirtualMachineUpdateInner parameters, String ifMatch, String ifNoneMatch, Context context) {
@@ -1047,21 +818,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String vmName,
         VirtualMachineUpdateInner parameters, String ifMatch, String ifNoneMatch) {
@@ -1069,17 +826,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String vmName,
         VirtualMachineUpdateInner parameters) {
@@ -1112,17 +859,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInner update(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters) {
         final String ifMatch = null;
@@ -1130,39 +867,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return updateAsync(resourceGroupName, vmName, parameters, ifMatch, ifNoneMatch).block();
     }
 
-    /**
-     * The operation to update a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine operation.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     * set. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInner update(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters,
         String ifMatch, String ifNoneMatch, Context context) {
         return updateAsync(resourceGroupName, vmName, parameters, ifMatch, ifNoneMatch, context).block();
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName,
         Boolean forceDeletion) {
@@ -1224,17 +936,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             vmName, forceDeletion, context);
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName,
         Boolean forceDeletion) {
@@ -1243,16 +945,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName) {
         final Boolean forceDeletion = null;
@@ -1283,67 +976,28 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName) {
         final Boolean forceDeletion = null;
         return this.beginDeleteAsync(resourceGroupName, vmName, forceDeletion).getSyncPoller();
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
         Boolean forceDeletion, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vmName, forceDeletion, context).getSyncPoller();
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, Boolean forceDeletion) {
         return beginDeleteAsync(resourceGroupName, vmName, forceDeletion).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName) {
         final Boolean forceDeletion = null;
@@ -1369,32 +1023,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmName) {
         final Boolean forceDeletion = null;
         deleteAsync(resourceGroupName, vmName, forceDeletion).block();
     }
 
-    /**
-     * The operation to delete a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmName, Boolean forceDeletion, Context context) {
         deleteAsync(resourceGroupName, vmName, forceDeletion, context).block();
@@ -1483,21 +1119,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
-     * get the next page of virtual machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The system query option to filter VMs returned in the response. Allowed value is
-     * 'virtualMachineScaleSet/id' eq
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'.
-     * @param expand The expand expression to apply on operation. 'instanceView' enables fetching run time status of all
-     * Virtual Machines, this can only be specified if a valid $filter option is specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineInner> listByResourceGroupAsync(String resourceGroupName, String filter,
         ExpandTypeForListVMs expand) {
@@ -1505,16 +1127,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
-     * get the next page of virtual machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
@@ -1546,16 +1159,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
-     * get the next page of virtual machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
@@ -1563,22 +1167,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
-     * get the next page of virtual machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The system query option to filter VMs returned in the response. Allowed value is
-     * 'virtualMachineScaleSet/id' eq
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'.
-     * @param expand The expand expression to apply on operation. 'instanceView' enables fetching run time status of all
-     * Virtual Machines, this can only be specified if a valid $filter option is specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, String filter,
         ExpandTypeForListVMs expand, Context context) {
@@ -1660,35 +1249,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
-     * the next page of virtual machines.
-     * 
-     * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
-     * @param filter The system query option to filter VMs returned in the response. Allowed value is
-     * 'virtualMachineScaleSet/id' eq
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'.
-     * @param expand The expand expression to apply on operation. 'instanceView' enables fetching run time status of all
-     * Virtual Machines, this can only be specified if a valid $filter option is specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineInner> listAsync(String statusOnly, String filter, ExpandTypesForListVMs expand) {
         return new PagedFlux<>(() -> listSinglePageAsync(statusOnly, filter, expand),
             nextLink -> listAllNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
-     * the next page of virtual machines.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineInner> listAsync() {
         final String statusOnly = null;
@@ -1721,14 +1289,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
-     * the next page of virtual machines.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> list() {
         final String statusOnly = null;
@@ -1737,39 +1298,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return new PagedIterable<>(listAsync(statusOnly, filter, expand));
     }
 
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
-     * the next page of virtual machines.
-     * 
-     * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
-     * @param filter The system query option to filter VMs returned in the response. Allowed value is
-     * 'virtualMachineScaleSet/id' eq
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'.
-     * @param expand The expand expression to apply on operation. 'instanceView' enables fetching run time status of all
-     * Virtual Machines, this can only be specified if a valid $filter option is specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> list(String statusOnly, String filter, ExpandTypesForListVMs expand,
         Context context) {
         return new PagedIterable<>(listAsync(statusOnly, filter, expand, context));
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the properties of an AssessPatches result along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> assessPatchesWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -1832,16 +1368,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, accept, context);
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
         beginAssessPatchesAsync(String resourceGroupName, String vmName) {
@@ -1872,49 +1399,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             VirtualMachineAssessPatchesResultInner.class, context);
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
         beginAssessPatches(String resourceGroupName, String vmName) {
         return this.beginAssessPatchesAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
         beginAssessPatches(String resourceGroupName, String vmName, Context context) {
         return this.beginAssessPatchesAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the properties of an AssessPatches result on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineAssessPatchesResultInner> assessPatchesAsync(String resourceGroupName, String vmName) {
         return beginAssessPatchesAsync(resourceGroupName, vmName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1938,50 +1437,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineAssessPatchesResultInner assessPatches(String resourceGroupName, String vmName) {
         return assessPatchesAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * Assess patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineAssessPatchesResultInner assessPatches(String resourceGroupName, String vmName,
         Context context) {
         return assessPatchesAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> attachDetachDataDisksWithResponseAsync(String resourceGroupName,
         String vmName, AttachDetachDataDisksRequest parameters) {
@@ -2058,17 +1527,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies the storage settings for the virtual machine disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisksAsync(
         String resourceGroupName, String vmName, AttachDetachDataDisksRequest parameters) {
@@ -2100,52 +1559,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             StorageProfile.class, StorageProfile.class, context);
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
         String vmName, AttachDetachDataDisksRequest parameters) {
         return this.beginAttachDetachDataDisksAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
         String vmName, AttachDetachDataDisksRequest parameters, Context context) {
         return this.beginAttachDetachDataDisksAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmName,
         AttachDetachDataDisksRequest parameters) {
@@ -2172,54 +1600,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageProfile attachDetachDataDisks(String resourceGroupName, String vmName,
         AttachDetachDataDisksRequest parameters) {
         return attachDetachDataDisksAsync(resourceGroupName, vmName, parameters).block();
     }
 
-    /**
-     * Attach and detach data disks to/from the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageProfile attachDetachDataDisks(String resourceGroupName, String vmName,
         AttachDetachDataDisksRequest parameters, Context context) {
         return attachDetachDataDisksAsync(resourceGroupName, vmName, parameters, context).block();
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> captureWithResponseAsync(String resourceGroupName, String vmName,
         VirtualMachineCaptureParameters parameters) {
@@ -2297,18 +1692,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of output of virtual machine capture operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>
         beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters) {
@@ -2343,55 +1727,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             VirtualMachineCaptureResultInner.class, context);
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of output of virtual machine capture operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>
         beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters) {
         return this.beginCaptureAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of output of virtual machine capture operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(
         String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters, Context context) {
         return this.beginCaptureAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName,
         VirtualMachineCaptureParameters parameters) {
@@ -2419,54 +1769,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName,
         VirtualMachineCaptureParameters parameters) {
         return captureAsync(resourceGroupName, vmName, parameters).block();
     }
 
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
-     * VMs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName,
         VirtualMachineCaptureParameters parameters, Context context) {
         return captureAsync(resourceGroupName, vmName, parameters, context).block();
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> convertToManagedDisksWithResponseAsync(String resourceGroupName,
         String vmName) {
@@ -2528,17 +1845,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName) {
         Mono<Response<Flux<ByteBuffer>>> mono = convertToManagedDisksWithResponseAsync(resourceGroupName, vmName);
@@ -2568,51 +1875,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(String resourceGroupName, String vmName) {
         return this.beginConvertToManagedDisksAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(String resourceGroupName, String vmName,
         Context context) {
         return this.beginConvertToManagedDisksAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> convertToManagedDisksAsync(String resourceGroupName, String vmName) {
         return beginConvertToManagedDisksAsync(resourceGroupName, vmName).last()
@@ -2637,50 +1913,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void convertToManagedDisks(String resourceGroupName, String vmName) {
         convertToManagedDisksAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
-     * invoking this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void convertToManagedDisks(String resourceGroupName, String vmName, Context context) {
         convertToManagedDisksAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName,
         Boolean hibernate, Boolean forceDeallocate) {
@@ -2782,18 +2027,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, hibernate, forceDeallocate, context);
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName,
         Boolean hibernate) {
@@ -2820,19 +2054,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName,
         Boolean hibernate, Boolean forceDeallocate) {
@@ -2842,17 +2064,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getContext());
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName) {
         final Boolean hibernate = null;
@@ -2910,18 +2122,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName,
         Boolean hibernate) {
@@ -2930,17 +2131,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getContext());
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName) {
         final Boolean hibernate = null;
@@ -2948,20 +2139,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return this.beginDeallocateAsync(resourceGroupName, vmName, hibernate, forceDeallocate).getSyncPoller();
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName,
         Boolean hibernate, Boolean forceDeallocate, Context context) {
@@ -2969,38 +2147,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .getSyncPoller();
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName,
         Boolean hibernate, Context context) {
         return this.beginDeallocateAsync(resourceGroupName, vmName, hibernate, context).getSyncPoller();
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate,
         Boolean forceDeallocate) {
@@ -3008,17 +2162,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String vmName) {
         final Boolean hibernate = null;
@@ -3067,34 +2211,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate) {
         return beginDeallocateAsync(resourceGroupName, vmName, hibernate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String vmName) {
         final Boolean hibernate = null;
@@ -3102,56 +2226,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         deallocateAsync(resourceGroupName, vmName, hibernate, forceDeallocate).block();
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Boolean forceDeallocate,
         Context context) {
         deallocateAsync(resourceGroupName, vmName, hibernate, forceDeallocate, context).block();
     }
 
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
         deallocateAsync(resourceGroupName, vmName, hibernate, context).block();
     }
 
-    /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
-     * performing this operation. For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
-     * to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> generalizeWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -3214,75 +2302,25 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
-     * performing this operation. For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
-     * to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> generalizeAsync(String resourceGroupName, String vmName) {
         return generalizeWithResponseAsync(resourceGroupName, vmName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
-     * performing this operation. For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
-     * to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> generalizeWithResponse(String resourceGroupName, String vmName, Context context) {
         return generalizeWithResponseAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
-     * performing this operation. For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
-     * to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void generalize(String resourceGroupName, String vmName) {
         generalizeWithResponse(resourceGroupName, vmName, Context.NONE);
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result summary of an installation operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> installPatchesWithResponseAsync(String resourceGroupName, String vmName,
         VirtualMachineInstallPatchesParameters installPatchesInput) {
@@ -3362,17 +2400,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, contentType, accept, installPatchesInput, context);
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
         beginInstallPatchesAsync(String resourceGroupName, String vmName,
@@ -3410,17 +2438,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
                 VirtualMachineInstallPatchesResultInner.class, context);
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
         beginInstallPatches(String resourceGroupName, String vmName,
@@ -3428,18 +2446,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return this.beginInstallPatchesAsync(resourceGroupName, vmName, installPatchesInput).getSyncPoller();
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
         beginInstallPatches(String resourceGroupName, String vmName,
@@ -3447,17 +2454,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         return this.beginInstallPatchesAsync(resourceGroupName, vmName, installPatchesInput, context).getSyncPoller();
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result summary of an installation operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInstallPatchesResultInner> installPatchesAsync(String resourceGroupName, String vmName,
         VirtualMachineInstallPatchesParameters installPatchesInput) {
@@ -3484,52 +2481,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstallPatchesResultInner installPatches(String resourceGroupName, String vmName,
         VirtualMachineInstallPatchesParameters installPatchesInput) {
         return installPatchesAsync(resourceGroupName, vmName, installPatchesInput).block();
     }
 
-    /**
-     * Installs patches on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstallPatchesResultInner installPatches(String resourceGroupName, String vmName,
         VirtualMachineInstallPatchesParameters installPatchesInput, Context context) {
         return installPatchesAsync(resourceGroupName, vmName, installPatchesInput, context).block();
     }
 
-    /**
-     * Retrieves information about the run-time state of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a virtual machine along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineInstanceViewInner>> instanceViewWithResponseAsync(String resourceGroupName,
         String vmName) {
@@ -3593,64 +2559,27 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, accept, context);
     }
 
-    /**
-     * Retrieves information about the run-time state of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a virtual machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInstanceViewInner> instanceViewAsync(String resourceGroupName, String vmName) {
         return instanceViewWithResponseAsync(resourceGroupName, vmName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the run-time state of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a virtual machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineInstanceViewInner> instanceViewWithResponse(String resourceGroupName, String vmName,
         Context context) {
         return instanceViewWithResponseAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * Retrieves information about the run-time state of a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstanceViewInner instanceView(String resourceGroupName, String vmName) {
         return instanceViewWithResponse(resourceGroupName, vmName, Context.NONE).getValue();
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> performMaintenanceWithResponseAsync(String resourceGroupName,
         String vmName) {
@@ -3711,16 +2640,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(String resourceGroupName, String vmName) {
         Mono<Response<Flux<ByteBuffer>>> mono = performMaintenanceWithResponseAsync(resourceGroupName, vmName);
@@ -3748,48 +2668,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmName) {
         return this.beginPerformMaintenanceAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmName,
         Context context) {
         return this.beginPerformMaintenanceAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> performMaintenanceAsync(String resourceGroupName, String vmName) {
         return beginPerformMaintenanceAsync(resourceGroupName, vmName).last()
@@ -3813,48 +2705,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void performMaintenance(String resourceGroupName, String vmName) {
         performMaintenanceAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * The operation to perform maintenance on a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void performMaintenance(String resourceGroupName, String vmName, Context context) {
         performMaintenanceAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     * non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceGroupName, String vmName,
         Boolean skipShutdown) {
@@ -3918,19 +2781,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, skipShutdown, context);
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     * non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String vmName,
         Boolean skipShutdown) {
@@ -3939,17 +2790,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getContext());
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String vmName) {
         final Boolean skipShutdown = null;
@@ -3982,73 +2823,28 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName) {
         final Boolean skipShutdown = null;
         return this.beginPowerOffAsync(resourceGroupName, vmName, skipShutdown).getSyncPoller();
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     * non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName,
         Boolean skipShutdown, Context context) {
         return this.beginPowerOffAsync(resourceGroupName, vmName, skipShutdown, context).getSyncPoller();
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     * non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> powerOffAsync(String resourceGroupName, String vmName, Boolean skipShutdown) {
         return beginPowerOffAsync(resourceGroupName, vmName, skipShutdown).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> powerOffAsync(String resourceGroupName, String vmName) {
         final Boolean skipShutdown = null;
@@ -4076,50 +2872,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void powerOff(String resourceGroupName, String vmName) {
         final Boolean skipShutdown = null;
         powerOffAsync(resourceGroupName, vmName, skipShutdown).block();
     }
 
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     * non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void powerOff(String resourceGroupName, String vmName, Boolean skipShutdown, Context context) {
         powerOffAsync(resourceGroupName, vmName, skipShutdown, context).block();
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reapplyWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -4179,16 +2945,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReapplyAsync(String resourceGroupName, String vmName) {
         Mono<Response<Flux<ByteBuffer>>> mono = reapplyWithResponseAsync(resourceGroupName, vmName);
@@ -4216,47 +2973,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReapply(String resourceGroupName, String vmName) {
         return this.beginReapplyAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReapply(String resourceGroupName, String vmName, Context context) {
         return this.beginReapplyAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reapplyAsync(String resourceGroupName, String vmName) {
         return beginReapplyAsync(resourceGroupName, vmName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -4279,45 +3008,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reapply(String resourceGroupName, String vmName) {
         reapplyAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * The operation to reapply a virtual machine's state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reapply(String resourceGroupName, String vmName, Context context) {
         reapplyAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -4377,16 +3080,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRedeployAsync(String resourceGroupName, String vmName) {
         Mono<Response<Flux<ByteBuffer>>> mono = redeployWithResponseAsync(resourceGroupName, vmName);
@@ -4414,47 +3108,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String vmName) {
         return this.beginRedeployAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String vmName, Context context) {
         return this.beginRedeployAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redeployAsync(String resourceGroupName, String vmName) {
         return beginRedeployAsync(resourceGroupName, vmName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -4477,50 +3143,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String vmName) {
         redeployAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String vmName, Context context) {
         redeployAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName, String vmName,
         VirtualMachineReimageParameters parameters) {
@@ -4592,21 +3227,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, parameters, context);
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmName,
         VirtualMachineReimageParameters parameters) {
@@ -4615,20 +3236,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getContext());
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmName) {
         final VirtualMachineReimageParameters parameters = null;
@@ -4663,63 +3271,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName) {
         final VirtualMachineReimageParameters parameters = null;
         return this.beginReimageAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName,
         VirtualMachineReimageParameters parameters, Context context) {
         return this.beginReimageAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String resourceGroupName, String vmName,
         VirtualMachineReimageParameters parameters) {
@@ -4727,20 +3293,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String resourceGroupName, String vmName) {
         final VirtualMachineReimageParameters parameters = null;
@@ -4771,56 +3324,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String vmName) {
         final VirtualMachineReimageParameters parameters = null;
         reimageAsync(resourceGroupName, vmName, parameters).block();
     }
 
-    /**
-     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
-     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
-     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
-     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
-     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters,
         Context context) {
         reimageAsync(resourceGroupName, vmName, parameters, context).block();
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -4880,16 +3398,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String vmName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, vmName);
@@ -4917,47 +3426,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmName) {
         return this.beginRestartAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmName, Context context) {
         return this.beginRestartAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(String resourceGroupName, String vmName) {
         return beginRestartAsync(resourceGroupName, vmName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -4980,49 +3461,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String vmName) {
         restartAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * The operation to restart a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String vmName, Context context) {
         restartAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
-     * 1440 minutes. **Note:** If not specified, SAS URIs will be generated with a default expiration duration of 120
-     * minutes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RetrieveBootDiagnosticsDataResultInner>> retrieveBootDiagnosticsDataWithResponseAsync(
         String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes) {
@@ -5090,16 +3541,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getSubscriptionId(), resourceGroupName, vmName, sasUriExpirationTimeInMinutes, accept, context);
     }
 
-    /**
-     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(String resourceGroupName,
         String vmName) {
@@ -5108,20 +3550,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
-     * 1440 minutes. **Note:** If not specified, SAS URIs will be generated with a default expiration duration of 120
-     * minutes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataWithResponse(
         String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes, Context context) {
@@ -5129,16 +3558,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context).block();
     }
 
-    /**
-     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RetrieveBootDiagnosticsDataResultInner retrieveBootDiagnosticsData(String resourceGroupName, String vmName) {
         final Integer sasUriExpirationTimeInMinutes = null;
@@ -5146,16 +3566,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             Context.NONE).getValue();
     }
 
-    /**
-     * The operation to simulate the eviction of spot virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> simulateEvictionWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -5215,61 +3626,25 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, context);
     }
 
-    /**
-     * The operation to simulate the eviction of spot virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> simulateEvictionAsync(String resourceGroupName, String vmName) {
         return simulateEvictionWithResponseAsync(resourceGroupName, vmName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * The operation to simulate the eviction of spot virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> simulateEvictionWithResponse(String resourceGroupName, String vmName, Context context) {
         return simulateEvictionWithResponseAsync(resourceGroupName, vmName, context).block();
     }
 
-    /**
-     * The operation to simulate the eviction of spot virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void simulateEviction(String resourceGroupName, String vmName) {
         simulateEvictionWithResponse(resourceGroupName, vmName, Context.NONE);
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String vmName) {
         if (this.client.getEndpoint() == null) {
@@ -5329,16 +3704,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             vmName, context);
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String vmName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, vmName);
@@ -5366,47 +3732,19 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmName) {
         return this.beginStartAsync(resourceGroupName, vmName).getSyncPoller();
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmName, Context context) {
         return this.beginStartAsync(resourceGroupName, vmName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String vmName) {
         return beginStartAsync(resourceGroupName, vmName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -5429,30 +3767,13 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String vmName) {
         startAsync(resourceGroupName, vmName).block();
     }
 
-    /**
-     * The operation to start a virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String vmName, Context context) {
         startAsync(resourceGroupName, vmName, context).block();
@@ -5537,16 +3858,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineSizeInner> listAvailableSizesAsync(String resourceGroupName, String vmName) {
         return new PagedFlux<>(() -> listAvailableSizesSinglePageAsync(resourceGroupName, vmName),
@@ -5571,49 +3883,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listAvailableSizesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName) {
         return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, vmName));
     }
 
-    /**
-     * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName,
         Context context) {
         return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, vmName, context));
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String vmName,
         RunCommandInput parameters) {
@@ -5689,17 +3972,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner>
         beginRunCommandAsync(String resourceGroupName, String vmName, RunCommandInput parameters) {
@@ -5731,52 +4004,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getHttpPipeline(), RunCommandResultInner.class, RunCommandResultInner.class, context);
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner>
         beginRunCommand(String resourceGroupName, String vmName, RunCommandInput parameters) {
         return this.beginRunCommandAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner>
         beginRunCommand(String resourceGroupName, String vmName, RunCommandInput parameters, Context context) {
         return this.beginRunCommandAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunCommandResultInner> runCommandAsync(String resourceGroupName, String vmName,
         RunCommandInput parameters) {
@@ -5803,51 +4045,20 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunCommandResultInner runCommand(String resourceGroupName, String vmName, RunCommandInput parameters) {
         return runCommandAsync(resourceGroupName, vmName, parameters).block();
     }
 
-    /**
-     * Run command on the VM.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunCommandResultInner runCommand(String resourceGroupName, String vmName, RunCommandInput parameters,
         Context context) {
         return runCommandAsync(resourceGroupName, vmName, parameters, context).block();
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateToVMScaleSetWithResponseAsync(String resourceGroupName,
         String vmName, MigrateVMToVirtualMachineScaleSetInput parameters) {
@@ -5915,17 +4126,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, vmName, parameters, context);
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginMigrateToVMScaleSetAsync(String resourceGroupName, String vmName,
         MigrateVMToVirtualMachineScaleSetInput parameters) {
@@ -5935,16 +4136,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             this.client.getContext());
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginMigrateToVMScaleSetAsync(String resourceGroupName, String vmName) {
         final MigrateVMToVirtualMachineScaleSetInput parameters = null;
@@ -5976,51 +4168,21 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateToVMScaleSet(String resourceGroupName, String vmName) {
         final MigrateVMToVirtualMachineScaleSetInput parameters = null;
         return this.beginMigrateToVMScaleSetAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateToVMScaleSet(String resourceGroupName, String vmName,
         MigrateVMToVirtualMachineScaleSetInput parameters, Context context) {
         return this.beginMigrateToVMScaleSetAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> migrateToVMScaleSetAsync(String resourceGroupName, String vmName,
         MigrateVMToVirtualMachineScaleSetInput parameters) {
@@ -6028,16 +4190,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> migrateToVMScaleSetAsync(String resourceGroupName, String vmName) {
         final MigrateVMToVirtualMachineScaleSetInput parameters = null;
@@ -6064,32 +4217,14 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrateToVMScaleSet(String resourceGroupName, String vmName) {
         final MigrateVMToVirtualMachineScaleSetInput parameters = null;
         migrateToVMScaleSetAsync(resourceGroupName, vmName, parameters).block();
     }
 
-    /**
-     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrateToVMScaleSet(String resourceGroupName, String vmName,
         MigrateVMToVirtualMachineScaleSetInput parameters, Context context) {
@@ -6163,16 +4298,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the virtual machines under the specified subscription for the specified location as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineInner> listByLocationAsync(String location) {
         return new PagedFlux<>(() -> listByLocationSinglePageAsync(location),
@@ -6196,32 +4322,13 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the virtual machines under the specified subscription for the specified location as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listByLocation(String location) {
         return new PagedIterable<>(listByLocationAsync(location));
     }
 
-    /**
-     * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the virtual machines under the specified subscription for the specified location as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(listByLocationAsync(location, context));

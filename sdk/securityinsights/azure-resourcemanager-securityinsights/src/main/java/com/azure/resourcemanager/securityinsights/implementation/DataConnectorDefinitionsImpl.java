@@ -73,12 +73,11 @@ public final class DataConnectorDefinitionsImpl implements DataConnectorDefiniti
     }
 
     public void delete(String resourceGroupName, String workspaceName, String dataConnectorDefinitionName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, dataConnectorDefinitionName);
+        this.deleteWithResponse(resourceGroupName, workspaceName, dataConnectorDefinitionName, Context.NONE);
     }
 
     public PagedIterable<DataConnectorDefinition> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<DataConnectorDefinitionInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectorDefinitionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<DataConnectorDefinition> list(String resourceGroupName, String workspaceName,

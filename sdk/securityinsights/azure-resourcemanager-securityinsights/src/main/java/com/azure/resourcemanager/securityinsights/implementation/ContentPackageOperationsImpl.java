@@ -29,7 +29,7 @@ public final class ContentPackageOperationsImpl implements ContentPackageOperati
     }
 
     public void uninstall(String resourceGroupName, String workspaceName, String packageId) {
-        this.serviceClient().uninstall(resourceGroupName, workspaceName, packageId);
+        this.uninstallWithResponse(resourceGroupName, workspaceName, packageId, Context.NONE);
     }
 
     private ContentPackageOperationsClient serviceClient() {

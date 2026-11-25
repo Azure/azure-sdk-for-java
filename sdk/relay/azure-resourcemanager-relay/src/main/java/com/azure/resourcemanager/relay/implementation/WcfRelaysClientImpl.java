@@ -338,19 +338,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get authorizationRule for a WCF relay by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorizationRule for a WCF relay by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String relayName, String authorizationRuleName, Context context) {
@@ -360,18 +348,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             context);
     }
 
-    /**
-     * Get authorizationRule for a WCF relay by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorizationRule for a WCF relay by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName, String relayName,
         String authorizationRuleName) {
@@ -426,20 +403,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             authorizationRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an authorization rule for a WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The authorization rule parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String relayName, String authorizationRuleName, AuthorizationRuleInner parameters,
@@ -451,19 +415,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an authorization rule for a WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The authorization rule parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName,
         String relayName, String authorizationRuleName, AuthorizationRuleInner parameters) {
@@ -512,19 +464,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             authorizationRuleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a WCF relay authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
         String relayName, String authorizationRuleName, Context context) {
@@ -533,17 +473,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             context);
     }
 
-    /**
-     * Deletes a WCF relay authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String relayName,
         String authorizationRuleName) {
@@ -608,12 +538,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizationRuleInner> listAuthorizationRulesSinglePage(String resourceGroupName,
         String namespaceName, String relayName) {
-        final String accept = "application/json";
-        Response<AuthorizationRuleListResult> res
-            = service.listAuthorizationRulesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, relayName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAuthorizationRulesSinglePage(resourceGroupName, namespaceName, relayName, Context.NONE);
     }
 
     /**
@@ -639,36 +564,14 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Authorization rules for a WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthorizationRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName,
         String relayName) {
-        return new PagedIterable<>(() -> listAuthorizationRulesSinglePage(resourceGroupName, namespaceName, relayName),
-            nextLink -> listAuthorizationRulesNextSinglePage(nextLink));
+        return listAuthorizationRules(resourceGroupName, namespaceName, relayName, Context.NONE);
     }
 
-    /**
-     * Authorization rules for a WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthorizationRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName,
         String relayName, Context context) {
@@ -719,19 +622,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Primary and secondary connection strings to the WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName,
         String relayName, String authorizationRuleName, Context context) {
@@ -741,18 +632,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             context);
     }
 
-    /**
-     * Primary and secondary connection strings to the WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String relayName,
         String authorizationRuleName) {
@@ -806,20 +686,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings to the WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
         String relayName, String authorizationRuleName, RegenerateAccessKeyParameters parameters, Context context) {
@@ -830,19 +697,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings to the WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String relayName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
@@ -889,18 +744,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the description for the specified WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the WCF relay resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WcfRelayInner> getWithResponse(String resourceGroupName, String namespaceName, String relayName,
         Context context) {
@@ -909,17 +753,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             resourceGroupName, namespaceName, relayName, accept, context);
     }
 
-    /**
-     * Returns the description for the specified WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the WCF relay resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WcfRelayInner get(String resourceGroupName, String namespaceName, String relayName) {
         return getWithResponse(resourceGroupName, namespaceName, relayName, Context.NONE).getValue();
@@ -969,19 +803,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a WCF relay. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param parameters Parameters supplied to create a WCF relay.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the WCF relay resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WcfRelayInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String relayName, WcfRelayInner parameters, Context context) {
@@ -992,18 +814,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             parameters, context);
     }
 
-    /**
-     * Creates or updates a WCF relay. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param parameters Parameters supplied to create a WCF relay.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the WCF relay resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WcfRelayInner createOrUpdate(String resourceGroupName, String namespaceName, String relayName,
         WcfRelayInner parameters) {
@@ -1047,18 +858,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, relayName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String relayName,
         Context context) {
@@ -1066,16 +866,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, relayName, context);
     }
 
-    /**
-     * Deletes a WCF relay.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param relayName The relay name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String relayName) {
         deleteWithResponse(resourceGroupName, namespaceName, relayName, Context.NONE);
@@ -1132,12 +923,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WcfRelayInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName) {
-        final String accept = "application/json";
-        Response<WcfRelaysListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -1162,33 +948,13 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the WCF relays within the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list WCF relay operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WcfRelayInner> listByNamespace(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Lists the WCF relays within the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list WCF relay operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WcfRelayInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
@@ -1228,11 +994,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizationRuleInner> listAuthorizationRulesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AuthorizationRuleListResult> res
-            = service.listAuthorizationRulesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAuthorizationRulesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1286,11 +1048,7 @@ public final class WcfRelaysClientImpl implements WcfRelaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WcfRelayInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WcfRelaysListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

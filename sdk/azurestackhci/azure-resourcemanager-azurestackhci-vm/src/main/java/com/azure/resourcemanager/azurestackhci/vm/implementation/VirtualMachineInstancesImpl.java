@@ -47,12 +47,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public VirtualMachineInstance createOrUpdate(String resourceUri, VirtualMachineInstanceInner resource) {
-        VirtualMachineInstanceInner inner = this.serviceClient().createOrUpdate(resourceUri, resource);
-        if (inner != null) {
-            return new VirtualMachineInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceUri, resource, Context.NONE);
     }
 
     public VirtualMachineInstance createOrUpdate(String resourceUri, VirtualMachineInstanceInner resource,
@@ -66,12 +61,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public VirtualMachineInstance update(String resourceUri, VirtualMachineInstanceUpdateRequest properties) {
-        VirtualMachineInstanceInner inner = this.serviceClient().update(resourceUri, properties);
-        if (inner != null) {
-            return new VirtualMachineInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceUri, properties, Context.NONE);
     }
 
     public VirtualMachineInstance update(String resourceUri, VirtualMachineInstanceUpdateRequest properties,
@@ -85,7 +75,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public void delete(String resourceUri) {
-        this.serviceClient().delete(resourceUri);
+        this.delete(resourceUri, Context.NONE);
     }
 
     public void delete(String resourceUri, Context context) {
@@ -93,8 +83,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public PagedIterable<VirtualMachineInstance> list(String resourceUri) {
-        PagedIterable<VirtualMachineInstanceInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineInstanceImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<VirtualMachineInstance> list(String resourceUri, Context context) {
@@ -103,7 +92,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public void start(String resourceUri) {
-        this.serviceClient().start(resourceUri);
+        this.start(resourceUri, Context.NONE);
     }
 
     public void start(String resourceUri, Context context) {
@@ -111,7 +100,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public void stop(String resourceUri) {
-        this.serviceClient().stop(resourceUri);
+        this.stop(resourceUri, Context.NONE);
     }
 
     public void stop(String resourceUri, Context context) {
@@ -119,7 +108,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public void restart(String resourceUri) {
-        this.serviceClient().restart(resourceUri);
+        this.restart(resourceUri, Context.NONE);
     }
 
     public void restart(String resourceUri, Context context) {
@@ -127,7 +116,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public void pause(String resourceUri) {
-        this.serviceClient().pause(resourceUri);
+        this.pause(resourceUri, Context.NONE);
     }
 
     public void pause(String resourceUri, Context context) {
@@ -135,7 +124,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public void save(String resourceUri) {
-        this.serviceClient().save(resourceUri);
+        this.save(resourceUri, Context.NONE);
     }
 
     public void save(String resourceUri, Context context) {

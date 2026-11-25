@@ -104,10 +104,7 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Account create(Context context) {
@@ -128,10 +125,7 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .update(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Account apply(Context context) {
@@ -154,11 +148,7 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Account refresh(Context context) {

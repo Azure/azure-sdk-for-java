@@ -254,17 +254,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SchemaRegistry along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistryInner> getByResourceGroupWithResponse(String resourceGroupName,
         String schemaRegistryName, Context context) {
@@ -273,16 +263,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, accept, context);
     }
 
-    /**
-     * Get a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SchemaRegistry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistryInner getByResourceGroup(String resourceGroupName, String schemaRegistryName) {
         return getByResourceGroupWithResponse(resourceGroupName, schemaRegistryName, Context.NONE).getValue();
@@ -325,11 +306,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String schemaRegistryName,
         SchemaRegistryInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, schemaRegistryName, resource, Context.NONE);
     }
 
     /**
@@ -374,37 +351,14 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             SchemaRegistryInner.class, SchemaRegistryInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaRegistryInner>, SchemaRegistryInner>
         beginCreateOrReplace(String resourceGroupName, String schemaRegistryName, SchemaRegistryInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, schemaRegistryName, resource);
-        return this.client.<SchemaRegistryInner, SchemaRegistryInner>getLroResult(response, SchemaRegistryInner.class,
-            SchemaRegistryInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, schemaRegistryName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaRegistryInner>, SchemaRegistryInner> beginCreateOrReplace(
         String resourceGroupName, String schemaRegistryName, SchemaRegistryInner resource, Context context) {
@@ -432,39 +386,19 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistryInner createOrReplace(String resourceGroupName, String schemaRegistryName,
         SchemaRegistryInner resource) {
-        return beginCreateOrReplace(resourceGroupName, schemaRegistryName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, schemaRegistryName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistryInner createOrReplace(String resourceGroupName, String schemaRegistryName,
         SchemaRegistryInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, schemaRegistryName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, schemaRegistryName, resource, context));
     }
 
     /**
@@ -504,11 +438,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String schemaRegistryName,
         SchemaRegistryUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, schemaRegistryName, properties, Context.NONE);
     }
 
     /**
@@ -553,37 +483,14 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             SchemaRegistryInner.class, SchemaRegistryInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaRegistryInner>, SchemaRegistryInner> beginUpdate(String resourceGroupName,
         String schemaRegistryName, SchemaRegistryUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, schemaRegistryName, properties);
-        return this.client.<SchemaRegistryInner, SchemaRegistryInner>getLroResult(response, SchemaRegistryInner.class,
-            SchemaRegistryInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, schemaRegistryName, properties, Context.NONE);
     }
 
-    /**
-     * Update a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaRegistryInner>, SchemaRegistryInner> beginUpdate(String resourceGroupName,
         String schemaRegistryName, SchemaRegistryUpdate properties, Context context) {
@@ -610,39 +517,19 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistryInner update(String resourceGroupName, String schemaRegistryName,
         SchemaRegistryUpdate properties) {
-        return beginUpdate(resourceGroupName, schemaRegistryName, properties).getFinalResult();
+        return update(resourceGroupName, schemaRegistryName, properties, Context.NONE);
     }
 
-    /**
-     * Update a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistryInner update(String resourceGroupName, String schemaRegistryName,
         SchemaRegistryUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, schemaRegistryName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, schemaRegistryName, properties, context));
     }
 
     /**
@@ -676,8 +563,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaRegistryName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schemaRegistryName, Context.NONE);
     }
 
     /**
@@ -715,33 +601,13 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaRegistryName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schemaRegistryName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schemaRegistryName, Context.NONE);
     }
 
-    /**
-     * Delete a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaRegistryName,
         Context context) {
@@ -765,33 +631,16 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaRegistryName) {
-        beginDelete(resourceGroupName, schemaRegistryName).getFinalResult();
+        delete(resourceGroupName, schemaRegistryName, Context.NONE);
     }
 
-    /**
-     * Delete a SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaRegistryName, Context context) {
-        beginDelete(resourceGroupName, schemaRegistryName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schemaRegistryName, context));
     }
 
     /**
@@ -841,11 +690,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaRegistryInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SchemaRegistryListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -868,31 +713,13 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SchemaRegistry resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaRegistry list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaRegistryInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List SchemaRegistry resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaRegistry list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaRegistryInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -940,11 +767,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaRegistryInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SchemaRegistryListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -965,27 +788,13 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SchemaRegistry resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaRegistry list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaRegistryInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List SchemaRegistry resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaRegistry list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaRegistryInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1024,11 +833,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaRegistryInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchemaRegistryListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1082,11 +887,7 @@ public final class SchemaRegistriesClientImpl implements SchemaRegistriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaRegistryInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchemaRegistryListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

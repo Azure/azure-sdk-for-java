@@ -96,22 +96,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RequestHistoryInner>> getWithResponseAsync(String resourceGroupName, String name,
         String workflowName, String runName, String actionName, String repetitionName, String requestHistoryName) {
@@ -213,21 +198,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             context);
     }
 
-    /**
-     * Gets a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RequestHistoryInner> getAsync(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName, String requestHistoryName) {
@@ -235,22 +206,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             requestHistoryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The workflow repetition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RequestHistoryInner> getWithResponse(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName, String requestHistoryName, Context context) {
@@ -258,21 +214,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             requestHistoryName, context).block();
     }
 
-    /**
-     * Gets a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RequestHistoryInner get(String resourceGroupName, String name, String workflowName, String runName,
         String actionName, String repetitionName, String requestHistoryName) {
@@ -390,20 +332,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RequestHistory list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RequestHistoryInner> listAsync(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName) {
@@ -434,20 +363,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             repetitionName, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RequestHistory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RequestHistoryInner> list(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName) {
@@ -455,21 +371,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             listAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName));
     }
 
-    /**
-     * List a workflow run repetition request history.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RequestHistory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RequestHistoryInner> list(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName, Context context) {

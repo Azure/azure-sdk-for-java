@@ -311,31 +311,14 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineInstanceInner> getWithResponse(String resourceUri, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
 
-    /**
-     * Gets a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstanceInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
@@ -377,10 +360,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, VirtualMachineInstanceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, resource, Context.NONE);
     }
 
     /**
@@ -424,37 +404,14 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
-     * virtual machine instance creation.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner>
         beginCreateOrUpdate(String resourceUri, VirtualMachineInstanceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, resource);
-        return this.client.<VirtualMachineInstanceInner, VirtualMachineInstanceInner>getLroResult(response,
-            VirtualMachineInstanceInner.class, VirtualMachineInstanceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
-     * virtual machine instance creation.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner>
         beginCreateOrUpdate(String resourceUri, VirtualMachineInstanceInner resource, Context context) {
@@ -480,38 +437,17 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginCreateOrUpdateAsync(resourceUri, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
-     * virtual machine instance creation.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstanceInner createOrUpdate(String resourceUri, VirtualMachineInstanceInner resource) {
-        return beginCreateOrUpdate(resourceUri, resource).getFinalResult();
+        return createOrUpdate(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
-     * virtual machine instance creation.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstanceInner createOrUpdate(String resourceUri, VirtualMachineInstanceInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceUri, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, resource, context));
     }
 
     /**
@@ -549,10 +485,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceUri,
         VirtualMachineInstanceUpdateRequest properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceUri, properties, Context.NONE);
     }
 
     /**
@@ -594,35 +527,14 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to update a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner>
         beginUpdate(String resourceUri, VirtualMachineInstanceUpdateRequest properties) {
-        Response<BinaryData> response = updateWithResponse(resourceUri, properties);
-        return this.client.<VirtualMachineInstanceInner, VirtualMachineInstanceInner>getLroResult(response,
-            VirtualMachineInstanceInner.class, VirtualMachineInstanceInner.class, Context.NONE);
+        return beginUpdate(resourceUri, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner>
         beginUpdate(String resourceUri, VirtualMachineInstanceUpdateRequest properties, Context context) {
@@ -647,36 +559,17 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginUpdateAsync(resourceUri, properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstanceInner update(String resourceUri, VirtualMachineInstanceUpdateRequest properties) {
-        return beginUpdate(resourceUri, properties).getFinalResult();
+        return update(resourceUri, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine instance resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstanceInner update(String resourceUri, VirtualMachineInstanceUpdateRequest properties,
         Context context) {
-        return beginUpdate(resourceUri, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceUri, properties, context));
     }
 
     /**
@@ -707,7 +600,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return deleteWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -741,31 +634,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to delete a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceUri, context);
@@ -786,31 +661,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginDeleteAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri) {
-        beginDelete(resourceUri).getFinalResult();
+        delete(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to delete a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, Context context) {
-        beginDelete(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, context));
     }
 
     /**
@@ -859,11 +719,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInstanceInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<VirtualMachineInstanceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -885,30 +741,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the virtual machine instances within the specified parent resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachineInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInstanceInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * Lists all of the virtual machine instances within the specified parent resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachineInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInstanceInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -943,7 +782,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceUri) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return startWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -977,31 +816,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to start a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceUri) {
-        Response<BinaryData> response = startWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to start a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceUri, Context context) {
         Response<BinaryData> response = startWithResponse(resourceUri, context);
@@ -1022,31 +843,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginStartAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to start a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceUri) {
-        beginStart(resourceUri).getFinalResult();
+        start(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to start a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceUri, Context context) {
-        beginStart(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceUri, context));
     }
 
     /**
@@ -1077,7 +883,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceUri) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return stopWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -1111,31 +917,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to stop a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceUri) {
-        Response<BinaryData> response = stopWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to stop a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceUri, Context context) {
         Response<BinaryData> response = stopWithResponse(resourceUri, context);
@@ -1156,31 +944,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginStopAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to stop a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceUri) {
-        beginStop(resourceUri).getFinalResult();
+        stop(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to stop a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceUri, Context context) {
-        beginStop(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceUri, context));
     }
 
     /**
@@ -1210,7 +983,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceUri) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return restartWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -1244,31 +1017,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to restart a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceUri) {
-        Response<BinaryData> response = restartWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to restart a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceUri, Context context) {
         Response<BinaryData> response = restartWithResponse(resourceUri, context);
@@ -1289,31 +1044,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginRestartAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to restart a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceUri) {
-        beginRestart(resourceUri).getFinalResult();
+        restart(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to restart a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceUri, Context context) {
-        beginRestart(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestart(resourceUri, context));
     }
 
     /**
@@ -1344,7 +1084,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> pauseWithResponse(String resourceUri) {
-        return service.pauseSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return pauseWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -1378,31 +1118,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to pause a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPause(String resourceUri) {
-        Response<BinaryData> response = pauseWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPause(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to pause a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPause(String resourceUri, Context context) {
         Response<BinaryData> response = pauseWithResponse(resourceUri, context);
@@ -1423,31 +1145,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginPauseAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to pause a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void pause(String resourceUri) {
-        beginPause(resourceUri).getFinalResult();
+        pause(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to pause a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void pause(String resourceUri, Context context) {
-        beginPause(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPause(resourceUri, context));
     }
 
     /**
@@ -1478,7 +1185,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> saveWithResponse(String resourceUri) {
-        return service.saveSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return saveWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -1512,31 +1219,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to save a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSave(String resourceUri) {
-        Response<BinaryData> response = saveWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSave(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to save a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSave(String resourceUri, Context context) {
         Response<BinaryData> response = saveWithResponse(resourceUri, context);
@@ -1557,31 +1246,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginSaveAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to save a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void save(String resourceUri) {
-        beginSave(resourceUri).getFinalResult();
+        save(resourceUri, Context.NONE);
     }
 
-    /**
-     * The operation to save a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void save(String resourceUri, Context context) {
-        beginSave(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginSave(resourceUri, context));
     }
 
     /**
@@ -1777,11 +1451,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInstanceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualMachineInstanceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

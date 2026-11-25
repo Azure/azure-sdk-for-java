@@ -18,6 +18,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigur
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * Component responsible for checking Azure App Configuration for updates and triggering refresh events.
@@ -102,13 +103,14 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     /**
      * Checks configurations to see if they should be reloaded. If the refresh interval has passed and a trigger has
      * been updated, configurations are reloaded.
+     * The check starts on subscription and runs on a bounded elastic worker rather than the calling thread.
      * 
      * @return a Mono containing a boolean indicating if a RefreshEvent was published. Returns {@code false} if
      * refreshConfigurations is currently being executed elsewhere.
      */
     @Override
     public Mono<Boolean> refreshConfigurations() {
-        return Mono.just(refreshStores());
+        return Mono.fromCallable(this::refreshStores).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**

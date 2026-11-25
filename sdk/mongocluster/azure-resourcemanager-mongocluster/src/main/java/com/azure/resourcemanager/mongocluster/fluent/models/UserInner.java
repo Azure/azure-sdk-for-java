@@ -14,7 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.UserProperties;
 import java.io.IOException;
 
 /**
- * Represents a Mongo cluster user.
+ * Represents a DocumentDB cluster user.
  */
 @Fluent
 public final class UserInner extends ProxyResource {

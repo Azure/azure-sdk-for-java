@@ -210,18 +210,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SourceControl of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SourceControl of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SourceControlInner> getWithResponse(String resourceGroupName, String containerAppName,
         String sourceControlName, Context context) {
@@ -230,17 +219,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             resourceGroupName, containerAppName, sourceControlName, accept, context);
     }
 
-    /**
-     * Get a SourceControl of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SourceControl of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner get(String resourceGroupName, String containerAppName, String sourceControlName) {
         return getWithResponse(resourceGroupName, containerAppName, sourceControlName, Context.NONE).getValue();
@@ -285,11 +264,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, sourceControlName, contentType,
-            accept, sourceControlEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
+            Context.NONE);
     }
 
     /**
@@ -337,40 +313,15 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             SourceControlInner.class, SourceControlInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App SourceControl.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope);
-        return this.client.<SourceControlInner, SourceControlInner>getLroResult(response, SourceControlInner.class,
-            SourceControlInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App SourceControl.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
@@ -400,43 +351,20 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App SourceControl.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App SourceControl.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, containerAppName,
+            sourceControlName, sourceControlEnvelope, context));
     }
 
     /**
@@ -473,8 +401,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName,
         String sourceControlName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, containerAppName, sourceControlName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
     }
 
     /**
@@ -516,36 +443,14 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             this.client.getContext());
     }
 
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String sourceControlName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, containerAppName, sourceControlName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
     }
 
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String sourceControlName, Context context) {
@@ -571,35 +476,17 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName) {
-        beginDelete(resourceGroupName, containerAppName, sourceControlName).getFinalResult();
+        delete(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
     }
 
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
-        beginDelete(resourceGroupName, containerAppName, sourceControlName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, containerAppName, sourceControlName, context));
     }
 
     /**
@@ -654,12 +541,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SourceControlInner> listByContainerAppSinglePage(String resourceGroupName,
         String containerAppName) {
-        final String accept = "application/json";
-        Response<SourceControlCollection> res
-            = service.listByContainerAppSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContainerAppSinglePage(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -684,35 +566,13 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Container App SourceControls in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container App SourceControls in a given resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> listByContainerApp(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(() -> listByContainerAppSinglePage(resourceGroupName, containerAppName),
-            nextLink -> listByContainerAppNextSinglePage(nextLink));
+        return listByContainerApp(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Get the Container App SourceControls in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container App SourceControls in a given resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> listByContainerApp(String resourceGroupName, String containerAppName,
         Context context) {
@@ -756,11 +616,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SourceControlInner> listByContainerAppNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SourceControlCollection> res
-            = service.listByContainerAppNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContainerAppNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

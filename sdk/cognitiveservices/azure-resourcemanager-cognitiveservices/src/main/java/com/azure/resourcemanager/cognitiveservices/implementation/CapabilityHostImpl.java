@@ -60,10 +60,7 @@ public final class CapabilityHostImpl implements CapabilityHost, CapabilityHost.
     }
 
     public CapabilityHost create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountCapabilityHosts()
-            .createOrUpdate(resourceGroupName, accountName, capabilityHostName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CapabilityHost create(Context context) {
@@ -85,10 +82,7 @@ public final class CapabilityHostImpl implements CapabilityHost, CapabilityHost.
     }
 
     public CapabilityHost apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountCapabilityHosts()
-            .createOrUpdate(resourceGroupName, accountName, capabilityHostName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CapabilityHost apply(Context context) {
@@ -114,11 +108,7 @@ public final class CapabilityHostImpl implements CapabilityHost, CapabilityHost.
     }
 
     public CapabilityHost refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountCapabilityHosts()
-            .getWithResponse(resourceGroupName, accountName, capabilityHostName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CapabilityHost refresh(Context context) {

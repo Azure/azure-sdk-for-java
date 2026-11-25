@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.AgentFabricMembershipInner;
-import com.azure.resourcemanager.containerservice.models.AgentFabricMembershipProperties;
+import com.azure.resourcemanager.containerservice.models.AgentFabricMembershipSku;
 import com.azure.resourcemanager.containerservice.models.AgentFabricMembershipSkuName;
 
 /**
@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerservice.models.AgentFabricMembershipSk
  */
 public final class AgentFabricMembershipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/AgentFabricMemberships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-02-preview/AgentFabricMemberships_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update AgentFabric Membership.
@@ -25,7 +25,7 @@ public final class AgentFabricMembershipsCreateOrUpdateSamples {
         manager.serviceClient()
             .getAgentFabricMemberships()
             .createOrUpdate("rg1", "clustername1", "default", new AgentFabricMembershipInner()
-                .withProperties(new AgentFabricMembershipProperties().withSku(AgentFabricMembershipSkuName.STANDARD))
+                .withSku(new AgentFabricMembershipSku().withName(AgentFabricMembershipSkuName.STANDARD))
                 .withManagedBy(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.NetworkSecurity/agentFabrics/fabric1"),
                 com.azure.core.util.Context.NONE);

@@ -48,9 +48,7 @@ public final class PrivateLinkResourcesInterfacesImpl implements PrivateLinkReso
 
     public PagedIterable<PrivateLinkResource> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByTrafficController(String resourceGroupName,

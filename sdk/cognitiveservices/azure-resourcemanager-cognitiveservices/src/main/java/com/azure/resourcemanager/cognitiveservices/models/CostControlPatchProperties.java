@@ -11,21 +11,71 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
- * The properties that can be changed on a cost control.
+ * Edits applied when properties is a non-empty object. Omitted fields retain their existing values; no defaults are
+ * applied.
+ * The complete merged result may contain at most one notification, including disabled notifications, and one Block
+ * action.
+ * Exceeding either limit returns HTTP 400 without changing the stored definition.
+ * Missing registration returns 403 FeatureNotRegistered before merging or no-op detection.
+ * Omitting or removing identity selections does not require this registration; omitted stored selections are preserved,
+ * subject to existing validation rules.
  */
 @Fluent
 public final class CostControlPatchProperties implements JsonSerializable<CostControlPatchProperties> {
     /*
-     * An optional human-readable name for the cost control. Set this property to null to clear it.
+     * The resource provider. If supplied, it must be Microsoft.CognitiveServices and cannot be null.
      */
-    private String displayName;
+    private ListParameterProviderNamespace1 provider;
 
     /*
-     * The complete replacement set of cost control rules.
+     * Replaces additional grouping. Omission preserves grouping; an empty array restores the owner's default counter.
+     * Null is not accepted.
      */
-    private List<CostControlRule> rules;
+    private List<CostControlGrouping> grouping;
+
+    /*
+     * The existing measurement category. Changing it after creation is not supported.
+     */
+    private CostControlCategory category;
+
+    /*
+     * Replaces the positive budget amount, measured in United States dollars for the Cost category or in whole tokens
+     * for the Tokens category.
+     */
+    private Double amount;
+
+    /*
+     * Replaces the calendar-aligned UTC renewal interval.
+     */
+    private CostControlTimeGrain timeGrain;
+
+    /*
+     * Merges supplied dates into the existing validity window; omitted dates remain unchanged.
+     */
+    private CostControlTimePeriodPatch timePeriod;
+
+    /*
+     * Replaces the complete traffic filter. Set to null to select all eligible traffic within the owner's scope.
+     */
+    private CostControlFilter filter;
+
+    /*
+     * Merges notifications by case-insensitive name, preserving existing name casing. Null entries delete
+     * notifications; null clears the collection.
+     * Omission or an empty object preserves existing notifications. New entries must supply all required notification
+     * fields after merging.
+     * The complete merged result may contain at most one notification, including disabled notifications; otherwise the
+     * request returns HTTP 400.
+     */
+    private Map<String, CostControlNotificationPatch> notifications;
+
+    /*
+     * Merges provider-specific settings. Set to null to remove all blocking actions; omission preserves them.
+     */
+    private CostControlProviderPropertiesPatch providerProperties;
 
     /**
      * Creates an instance of CostControlPatchProperties class.
@@ -34,44 +84,204 @@ public final class CostControlPatchProperties implements JsonSerializable<CostCo
     }
 
     /**
-     * Get the displayName property: An optional human-readable name for the cost control. Set this property to null to
-     * clear it.
+     * Get the provider property: The resource provider. If supplied, it must be Microsoft.CognitiveServices and cannot
+     * be null.
      * 
-     * @return the displayName value.
+     * @return the provider value.
      */
-    public String displayName() {
-        return this.displayName;
+    public ListParameterProviderNamespace1 provider() {
+        return this.provider;
     }
 
     /**
-     * Set the displayName property: An optional human-readable name for the cost control. Set this property to null to
-     * clear it.
+     * Set the provider property: The resource provider. If supplied, it must be Microsoft.CognitiveServices and cannot
+     * be null.
      * 
-     * @param displayName the displayName value to set.
+     * @param provider the provider value to set.
      * @return the CostControlPatchProperties object itself.
      */
-    public CostControlPatchProperties withDisplayName(String displayName) {
-        this.displayName = displayName;
+    public CostControlPatchProperties withProvider(ListParameterProviderNamespace1 provider) {
+        this.provider = provider;
         return this;
     }
 
     /**
-     * Get the rules property: The complete replacement set of cost control rules.
+     * Get the grouping property: Replaces additional grouping. Omission preserves grouping; an empty array restores the
+     * owner's default counter. Null is not accepted.
      * 
-     * @return the rules value.
+     * @return the grouping value.
      */
-    public List<CostControlRule> rules() {
-        return this.rules;
+    public List<CostControlGrouping> grouping() {
+        return this.grouping;
     }
 
     /**
-     * Set the rules property: The complete replacement set of cost control rules.
+     * Set the grouping property: Replaces additional grouping. Omission preserves grouping; an empty array restores the
+     * owner's default counter. Null is not accepted.
      * 
-     * @param rules the rules value to set.
+     * @param grouping the grouping value to set.
      * @return the CostControlPatchProperties object itself.
      */
-    public CostControlPatchProperties withRules(List<CostControlRule> rules) {
-        this.rules = rules;
+    public CostControlPatchProperties withGrouping(List<CostControlGrouping> grouping) {
+        this.grouping = grouping;
+        return this;
+    }
+
+    /**
+     * Get the category property: The existing measurement category. Changing it after creation is not supported.
+     * 
+     * @return the category value.
+     */
+    public CostControlCategory category() {
+        return this.category;
+    }
+
+    /**
+     * Set the category property: The existing measurement category. Changing it after creation is not supported.
+     * 
+     * @param category the category value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withCategory(CostControlCategory category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
+     * Get the amount property: Replaces the positive budget amount, measured in United States dollars for the Cost
+     * category or in whole tokens for the Tokens category.
+     * 
+     * @return the amount value.
+     */
+    public Double amount() {
+        return this.amount;
+    }
+
+    /**
+     * Set the amount property: Replaces the positive budget amount, measured in United States dollars for the Cost
+     * category or in whole tokens for the Tokens category.
+     * 
+     * @param amount the amount value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withAmount(Double amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    /**
+     * Get the timeGrain property: Replaces the calendar-aligned UTC renewal interval.
+     * 
+     * @return the timeGrain value.
+     */
+    public CostControlTimeGrain timeGrain() {
+        return this.timeGrain;
+    }
+
+    /**
+     * Set the timeGrain property: Replaces the calendar-aligned UTC renewal interval.
+     * 
+     * @param timeGrain the timeGrain value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withTimeGrain(CostControlTimeGrain timeGrain) {
+        this.timeGrain = timeGrain;
+        return this;
+    }
+
+    /**
+     * Get the timePeriod property: Merges supplied dates into the existing validity window; omitted dates remain
+     * unchanged.
+     * 
+     * @return the timePeriod value.
+     */
+    public CostControlTimePeriodPatch timePeriod() {
+        return this.timePeriod;
+    }
+
+    /**
+     * Set the timePeriod property: Merges supplied dates into the existing validity window; omitted dates remain
+     * unchanged.
+     * 
+     * @param timePeriod the timePeriod value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withTimePeriod(CostControlTimePeriodPatch timePeriod) {
+        this.timePeriod = timePeriod;
+        return this;
+    }
+
+    /**
+     * Get the filter property: Replaces the complete traffic filter. Set to null to select all eligible traffic within
+     * the owner's scope.
+     * 
+     * @return the filter value.
+     */
+    public CostControlFilter filter() {
+        return this.filter;
+    }
+
+    /**
+     * Set the filter property: Replaces the complete traffic filter. Set to null to select all eligible traffic within
+     * the owner's scope.
+     * 
+     * @param filter the filter value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withFilter(CostControlFilter filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    /**
+     * Get the notifications property: Merges notifications by case-insensitive name, preserving existing name casing.
+     * Null entries delete notifications; null clears the collection.
+     * Omission or an empty object preserves existing notifications. New entries must supply all required notification
+     * fields after merging.
+     * The complete merged result may contain at most one notification, including disabled notifications; otherwise the
+     * request returns HTTP 400.
+     * 
+     * @return the notifications value.
+     */
+    public Map<String, CostControlNotificationPatch> notifications() {
+        return this.notifications;
+    }
+
+    /**
+     * Set the notifications property: Merges notifications by case-insensitive name, preserving existing name casing.
+     * Null entries delete notifications; null clears the collection.
+     * Omission or an empty object preserves existing notifications. New entries must supply all required notification
+     * fields after merging.
+     * The complete merged result may contain at most one notification, including disabled notifications; otherwise the
+     * request returns HTTP 400.
+     * 
+     * @param notifications the notifications value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withNotifications(Map<String, CostControlNotificationPatch> notifications) {
+        this.notifications = notifications;
+        return this;
+    }
+
+    /**
+     * Get the providerProperties property: Merges provider-specific settings. Set to null to remove all blocking
+     * actions; omission preserves them.
+     * 
+     * @return the providerProperties value.
+     */
+    public CostControlProviderPropertiesPatch providerProperties() {
+        return this.providerProperties;
+    }
+
+    /**
+     * Set the providerProperties property: Merges provider-specific settings. Set to null to remove all blocking
+     * actions; omission preserves them.
+     * 
+     * @param providerProperties the providerProperties value to set.
+     * @return the CostControlPatchProperties object itself.
+     */
+    public CostControlPatchProperties withProviderProperties(CostControlProviderPropertiesPatch providerProperties) {
+        this.providerProperties = providerProperties;
         return this;
     }
 
@@ -81,8 +291,15 @@ public final class CostControlPatchProperties implements JsonSerializable<CostCo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
+        jsonWriter.writeArrayField("grouping", this.grouping, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeNumberField("amount", this.amount);
+        jsonWriter.writeStringField("timeGrain", this.timeGrain == null ? null : this.timeGrain.toString());
+        jsonWriter.writeJsonField("timePeriod", this.timePeriod);
+        jsonWriter.writeJsonField("filter", this.filter);
+        jsonWriter.writeMapField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("providerProperties", this.providerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,11 +318,32 @@ public final class CostControlPatchProperties implements JsonSerializable<CostCo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("displayName".equals(fieldName)) {
-                    deserializedCostControlPatchProperties.displayName = reader.getString();
-                } else if ("rules".equals(fieldName)) {
-                    List<CostControlRule> rules = reader.readArray(reader1 -> CostControlRule.fromJson(reader1));
-                    deserializedCostControlPatchProperties.rules = rules;
+                if ("provider".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.provider
+                        = ListParameterProviderNamespace1.fromString(reader.getString());
+                } else if ("grouping".equals(fieldName)) {
+                    List<CostControlGrouping> grouping
+                        = reader.readArray(reader1 -> CostControlGrouping.fromJson(reader1));
+                    deserializedCostControlPatchProperties.grouping = grouping;
+                } else if ("category".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.category
+                        = CostControlCategory.fromString(reader.getString());
+                } else if ("amount".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.amount = reader.getNullable(JsonReader::getDouble);
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.timeGrain
+                        = CostControlTimeGrain.fromString(reader.getString());
+                } else if ("timePeriod".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.timePeriod = CostControlTimePeriodPatch.fromJson(reader);
+                } else if ("filter".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.filter = CostControlFilter.fromJson(reader);
+                } else if ("notifications".equals(fieldName)) {
+                    Map<String, CostControlNotificationPatch> notifications
+                        = reader.readMap(reader1 -> CostControlNotificationPatch.fromJson(reader1));
+                    deserializedCostControlPatchProperties.notifications = notifications;
+                } else if ("providerProperties".equals(fieldName)) {
+                    deserializedCostControlPatchProperties.providerProperties
+                        = CostControlProviderPropertiesPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

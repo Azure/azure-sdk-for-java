@@ -31,9 +31,6 @@ public final class TestProxyManager {
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(TestProxyManager::stopProxy));
-        if (runningLocally()) {
-            TestProxyDownloader.installTestProxy(WORKING_DIRECTORY);
-        }
     }
 
     @Deprecated
@@ -42,16 +39,20 @@ public final class TestProxyManager {
 
     /**
      * Start an instance of the test proxy.
-     * @throws UncheckedIOException There was an issue communicating with the proxy.
+     * <p>
+     * When running locally and no test proxy is already running, the test proxy is installed, or the cached
+     * installation is verified, before it's started.
+     *
+     * @throws UncheckedIOException There was an issue communicating with the proxy, or the test proxy couldn't be
+     * installed and verified.
      * @throws RuntimeException There was an issue starting the proxy process.
      */
     public static synchronized void startProxy() {
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
             if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
-                String commandLine = Paths
-                    .get(TestProxyDownloader.getProxyDirectory().toString(), TestProxyUtils.getProxyProcessName())
-                    .toString();
+                TestProxyDownloader.installTestProxy(WORKING_DIRECTORY);
+                String commandLine = TestProxyDownloader.getProxyExecutable().toString();
 
                 Path repoRoot = TestUtils.getRepoRootResolveUntil(WORKING_DIRECTORY, "eng");
 

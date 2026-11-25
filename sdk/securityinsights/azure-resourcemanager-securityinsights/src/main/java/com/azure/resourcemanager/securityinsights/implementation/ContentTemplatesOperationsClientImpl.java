@@ -237,12 +237,8 @@ public final class ContentTemplatesOperationsClientImpl implements ContentTempla
     private PagedResponse<TemplateModelInner> listSinglePage(String resourceGroupName, String workspaceName,
         String filter, String orderby, String expand, String search, Boolean count, Integer top, Integer skip,
         String skipToken) {
-        final String accept = "application/json";
-        Response<TemplateList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, filter, orderby, expand, search, count,
-            top, skip, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, filter, orderby, expand, search, count, top, skip,
+            skipToken, Context.NONE);
     }
 
     /**
@@ -285,22 +281,7 @@ public final class ContentTemplatesOperationsClientImpl implements ContentTempla
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all installed templates.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all installed templates.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TemplateModelInner> list(String resourceGroupName, String workspaceName) {
         final String filter = null;
@@ -311,38 +292,11 @@ public final class ContentTemplatesOperationsClientImpl implements ContentTempla
         final Integer top = null;
         final Integer skip = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, filter, orderby, expand,
-            search, count, top, skip, skipToken), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, filter, orderby, expand, search, count, top, skip, skipToken,
+            Context.NONE);
     }
 
-    /**
-     * Gets all installed templates.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param expand Expands the object with optional fiends that are not included by default. Optional.
-     * @param search Searches for a substring in the response. Optional.
-     * @param count Instructs the server to return only object count without actual body. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     * if there are any left.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all installed templates.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TemplateModelInner> list(String resourceGroupName, String workspaceName, String filter,
         String orderby, String expand, String search, Boolean count, Integer top, Integer skip, String skipToken,
@@ -386,10 +340,7 @@ public final class ContentTemplatesOperationsClientImpl implements ContentTempla
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TemplateModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TemplateList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

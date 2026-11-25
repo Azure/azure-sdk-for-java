@@ -83,10 +83,7 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateObjectLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateObjectLocalRulestackResource create(Context context) {
@@ -108,10 +105,7 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateObjectLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CertificateObjectLocalRulestackResource apply(Context context) {
@@ -137,11 +131,7 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateObjectLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateObjectLocalRulestackResource refresh(Context context) {

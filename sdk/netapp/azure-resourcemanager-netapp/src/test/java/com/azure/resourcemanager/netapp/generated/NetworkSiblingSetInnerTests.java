@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"sknxrwzawnvsbcf\",\"subnetId\":\"agxnvhycvdimw\",\"networkSiblingSetStateId\":\"regzgyufutrwpwer\",\"networkFeatures\":\"Basic_Standard\",\"provisioningState\":\"Updating\",\"nicInfoList\":[{\"ipAddress\":\"eotta\",\"volumeResourceIds\":[\"osxw\"]},{\"ipAddress\":\"nhjtf\",\"volumeResourceIds\":[\"dpmiljpn\"]}]}")
+            "{\"networkSiblingSetId\":\"dhzmmesckdlp\",\"subnetId\":\"zrcxfailcfxwmdbo\",\"networkSiblingSetStateId\":\"fgsftufqob\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Canceled\",\"nicInfoList\":[{\"ipAddress\":\"ckknhxkizvy\",\"volumeResourceIds\":[\"zvulj\",\"aaeranokqgukk\"]},{\"ipAddress\":\"nvbroylaxx\",\"volumeResourceIds\":[\"disdosfjbjsvgj\",\"whryvycytdcl\"]},{\"ipAddress\":\"ccknfnwmbtmvp\",\"volumeResourceIds\":[\"dhttzaefedxihchr\",\"hk\",\"crjdqnsdfzpbgtg\",\"ylkdghrje\"]},{\"ipAddress\":\"tl\",\"volumeResourceIds\":[\"z\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("sknxrwzawnvsbcf", model.networkSiblingSetId());
-        Assertions.assertEquals("agxnvhycvdimw", model.subnetId());
-        Assertions.assertEquals("regzgyufutrwpwer", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.BASIC_STANDARD, model.networkFeatures());
-        Assertions.assertEquals("osxw", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("dhzmmesckdlp", model.networkSiblingSetId());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.subnetId());
+        Assertions.assertEquals("fgsftufqob", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
+        Assertions.assertEquals("zvulj", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

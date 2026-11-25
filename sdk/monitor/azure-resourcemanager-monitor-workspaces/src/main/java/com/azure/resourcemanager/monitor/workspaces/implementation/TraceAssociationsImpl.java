@@ -72,14 +72,12 @@ public final class TraceAssociationsImpl implements TraceAssociations {
     }
 
     public void delete(String resourceGroupName, String providerName, String providerType, String resourceName) {
-        this.serviceClient().delete(resourceGroupName, providerName, providerType, resourceName);
+        this.deleteWithResponse(resourceGroupName, providerName, providerType, resourceName, Context.NONE);
     }
 
     public PagedIterable<TraceAssociationResource> list(String resourceGroupName, String providerName,
         String providerType, String resourceName) {
-        PagedIterable<TraceAssociationResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, providerName, providerType, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TraceAssociationResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, providerName, providerType, resourceName, Context.NONE);
     }
 
     public PagedIterable<TraceAssociationResource> list(String resourceGroupName, String providerName,

@@ -161,16 +161,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual cluster along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualClusterName) {
@@ -233,65 +224,27 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             this.client.getSubscriptionId(), resourceGroupName, virtualClusterName, accept, context);
     }
 
-    /**
-     * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualClusterInner> getByResourceGroupAsync(String resourceGroupName, String virtualClusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualClusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String virtualClusterName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualClusterName, context).block();
     }
 
-    /**
-     * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualClusterInner getByResourceGroup(String resourceGroupName, String virtualClusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, virtualClusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualClusterName, VirtualClusterInner parameters) {
@@ -369,17 +322,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualClusterInner>, VirtualClusterInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String virtualClusterName, VirtualClusterInner parameters) {
@@ -411,35 +354,14 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             VirtualClusterInner.class, VirtualClusterInner.class, context);
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualClusterInner>, VirtualClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualClusterName, VirtualClusterInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualClusterName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualClusterInner>, VirtualClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualClusterName, VirtualClusterInner parameters, Context context) {
@@ -447,17 +369,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             .getSyncPoller();
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualClusterInner> createOrUpdateAsync(String resourceGroupName, String virtualClusterName,
         VirtualClusterInner parameters) {
@@ -484,52 +396,21 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualClusterInner createOrUpdate(String resourceGroupName, String virtualClusterName,
         VirtualClusterInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualClusterName, parameters).block();
     }
 
-    /**
-     * Creates virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualClusterInner createOrUpdate(String resourceGroupName, String virtualClusterName,
         VirtualClusterInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualClusterName, parameters, context).block();
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String virtualClusterName,
         VirtualClusterUpdate parameters) {
@@ -606,17 +487,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, virtualClusterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdateAsync(String resourceGroupName,
         String virtualClusterName, VirtualClusterUpdate parameters) {
@@ -648,52 +519,21 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             VirtualClusterInner.class, VirtualClusterInner.class, context);
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdate(String resourceGroupName,
         String virtualClusterName, VirtualClusterUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, virtualClusterName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdate(String resourceGroupName,
         String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, virtualClusterName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualClusterInner> updateAsync(String resourceGroupName, String virtualClusterName,
         VirtualClusterUpdate parameters) {
@@ -720,51 +560,21 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualClusterInner update(String resourceGroupName, String virtualClusterName,
         VirtualClusterUpdate parameters) {
         return updateAsync(resourceGroupName, virtualClusterName, parameters).block();
     }
 
-    /**
-     * Updates an existing virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested virtual cluster resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualClusterInner update(String resourceGroupName, String virtualClusterName,
         VirtualClusterUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, virtualClusterName, parameters, context).block();
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String virtualClusterName) {
@@ -825,16 +635,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             resourceGroupName, virtualClusterName, context);
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualClusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName);
@@ -862,48 +663,20 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             context);
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualClusterName) {
         return this.beginDeleteAsync(resourceGroupName, virtualClusterName).getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualClusterName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualClusterName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualClusterName) {
         return beginDeleteAsync(resourceGroupName, virtualClusterName).last()
@@ -927,30 +700,13 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualClusterName) {
         deleteAsync(resourceGroupName, virtualClusterName).block();
     }
 
-    /**
-     * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualClusterName, Context context) {
         deleteAsync(resourceGroupName, virtualClusterName, context).block();
@@ -1024,15 +780,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of virtual clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualClusterInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1055,30 +803,13 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of virtual clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualClusterInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets a list of virtual clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1140,13 +871,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all virtualClusters in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtualClusters in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualClusterInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1167,42 +892,19 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all virtualClusters in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtualClusters in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualClusterInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets a list of all virtualClusters in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtualClusters in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualClusterInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a refresh DNS servers operation along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateDnsServersWithResponseAsync(String resourceGroupName,
         String virtualClusterName) {
@@ -1265,16 +967,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             this.client.getSubscriptionId(), resourceGroupName, virtualClusterName, accept, context);
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a refresh DNS servers operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
@@ -1311,16 +1004,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
                 UpdateVirtualClusterDnsServersOperationInner.class, context);
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a refresh DNS servers operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
@@ -1328,17 +1012,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
         return this.beginUpdateDnsServersAsync(resourceGroupName, virtualClusterName).getSyncPoller();
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a refresh DNS servers operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
@@ -1346,16 +1020,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
         return this.beginUpdateDnsServersAsync(resourceGroupName, virtualClusterName, context).getSyncPoller();
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a refresh DNS servers operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpdateVirtualClusterDnsServersOperationInner> updateDnsServersAsync(String resourceGroupName,
         String virtualClusterName) {
@@ -1381,33 +1046,14 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a refresh DNS servers operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateVirtualClusterDnsServersOperationInner updateDnsServers(String resourceGroupName,
         String virtualClusterName) {
         return updateDnsServersAsync(resourceGroupName, virtualClusterName).block();
     }
 
-    /**
-     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a refresh DNS servers operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateVirtualClusterDnsServersOperationInner updateDnsServers(String resourceGroupName,
         String virtualClusterName, Context context) {

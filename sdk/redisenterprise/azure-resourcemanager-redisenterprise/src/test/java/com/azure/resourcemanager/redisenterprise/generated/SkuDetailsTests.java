@@ -11,6 +11,6 @@ public final class SkuDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuDetails model
-            = BinaryData.fromString("{\"name\":\"jbavorxzdm\",\"sizeInGB\":55.28241}").toObject(SkuDetails.class);
+            = BinaryData.fromString("{\"name\":\"keyyi\",\"sizeInGB\":88.78966}").toObject(SkuDetails.class);
     }
 }

@@ -68,12 +68,7 @@ public final class WorkspaceManagerMemberImpl
     }
 
     public WorkspaceManagerMember create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerMembers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerMemberName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceManagerMember create(Context context) {
@@ -97,12 +92,7 @@ public final class WorkspaceManagerMemberImpl
     }
 
     public WorkspaceManagerMember apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerMembers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerMemberName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceManagerMember apply(Context context) {
@@ -130,11 +120,7 @@ public final class WorkspaceManagerMemberImpl
     }
 
     public WorkspaceManagerMember refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerMembers()
-            .getWithResponse(resourceGroupName, workspaceName, workspaceManagerMemberName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceManagerMember refresh(Context context) {

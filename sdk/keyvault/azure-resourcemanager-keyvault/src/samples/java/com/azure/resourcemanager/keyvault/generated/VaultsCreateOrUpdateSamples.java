@@ -8,6 +8,8 @@ import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.IpRule;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleAction;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
@@ -16,10 +18,16 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Sku;
 import com.azure.resourcemanager.keyvault.models.SkuFamily;
 import com.azure.resourcemanager.keyvault.models.SkuName;
+import com.azure.resourcemanager.keyvault.models.UserAssignedIdentity;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
+import com.azure.resourcemanager.keyvault.models.WrappingKeyAuthenticationData;
+import com.azure.resourcemanager.keyvault.models.WrappingKeyConfiguration;
+import com.azure.resourcemanager.keyvault.models.WrappingKeyValue;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -27,7 +35,29 @@ import java.util.UUID;
  */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15/createVaultWithNetworkAcls.json
+     * x-ms-original-file: 2026-10-01-preview/createVaultWithCrossTenantAccessProtection.json
+     */
+    /**
+     * Sample code: Create a vault with cross-tenant access protection enabled.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void
+        createAVaultWithCrossTenantAccessProtectionEnabled(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .createOrUpdate("sample-resource-group", "sample-vault",
+                new VaultCreateOrUpdateParameters().withLocation("westus")
+                    .withProperties(
+                        new VaultProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                            .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
+                            .withEnableRbacAuthorization(true)
+                            .withEnableCrossTenantAccessProtection(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/createVaultWithNetworkAcls.json
      */
     /**
      * Sample code: Create or update a vault with network acls.
@@ -55,7 +85,82 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15/createVault.json
+     * x-ms-original-file: 2026-10-01-preview/createVaultWithoutIdentity.json
+     */
+    /**
+     * Sample code: Remove all user-assigned identities and their certificates from a vault using PUT.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void removeAllUserAssignedIdentitiesAndTheirCertificatesFromAVaultUsingPUT(
+        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .createOrUpdate("sample-resource-group", "sample-vault",
+                new VaultCreateOrUpdateParameters()
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+                    .withLocation("westus")
+                    .withProperties(
+                        new VaultProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                            .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
+                            .withAccessPolicies(Arrays.asList())
+                            .withEnableRbacAuthorization(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/createVaultWithIdentity.json
+     */
+    /**
+     * Sample code: Create or update a vault by fully replacing the user-assigned identity set.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void createOrUpdateAVaultByFullyReplacingTheUserAssignedIdentitySet(
+        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .createOrUpdate("sample-resource-group", "sample-vault", new VaultCreateOrUpdateParameters()
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity",
+                        new UserAssignedIdentity())))
+                .withLocation("westus")
+                .withProperties(
+                    new VaultProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                        .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
+                        .withAccessPolicies(Arrays.asList())
+                        .withEnableRbacAuthorization(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/createVaultWithProtectionKeyWrapping.json
+     */
+    /**
+     * Sample code: Create or update a vault with protection key wrapping.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void
+        createOrUpdateAVaultWithProtectionKeyWrapping(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .createOrUpdate("sample-resource-group", "sample-vault", new VaultCreateOrUpdateParameters()
+                .withLocation("westus")
+                .withProperties(new VaultProperties()
+                    .withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                    .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
+                    .withAccessPolicies(Arrays.asList())
+                    .withProtectionKeysWrappingKey(new WrappingKeyConfiguration()
+                        .withKeyValue(
+                            new WrappingKeyValue().withUrl("https://sample-hsm.managedhsm.azure.net/keys/wrapping-key"))
+                        .withKeyAuthenticationData(new WrappingKeyAuthenticationData()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/createVault.json
      */
     /**
      * Sample code: Create a new vault or update an existing vault.
@@ -96,5 +201,17 @@ public final class VaultsCreateOrUpdateSamples {
                         .withEnabledForTemplateDeployment(true)
                         .withPublicNetworkAccess("Enabled")),
                 com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

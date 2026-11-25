@@ -22,7 +22,7 @@ public final class AdapterDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sourceModelId\":\"tyl\",\"targetDeploymentName\":\"uudvbgvzlzjsb\",\"activeTargetDeploymentName\":\"cutzaz\",\"provisioningState\":\"Succeeded\",\"lastOperation\":{\"type\":\"Delete\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"seaimbdq\",\"startedAt\":\"2020-12-28T18:21:25Z\",\"completedAt\":\"2021-03-07T03:41:08Z\"}},\"etag\":\"arluobbvalq\",\"id\":\"knyujxysvclfjy\",\"name\":\"lvildlfflleir\",\"type\":\"txfq\"}]}";
+            = "{\"value\":[{\"properties\":{\"sourceModelId\":\"bkaknivwbddnddct\",\"targetDeploymentName\":\"jcqhxdirttqil\",\"activeTargetDeploymentName\":\"abqtjchxsfwe\",\"provisioningState\":\"Succeeded\",\"lastOperation\":{\"type\":\"Create\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"jipszek\",\"startedAt\":\"2021-10-08T16:28:57Z\",\"completedAt\":\"2021-07-12T20:13:48Z\"}},\"etag\":\"s\",\"id\":\"hrndqymloslqgs\",\"name\":\"qnqqzqdvg\",\"type\":\"omtkgoynya\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class AdapterDeploymentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AdapterDeployment> response
-            = manager.adapterDeployments().list("ejobjzrlwtidcnz", "lgmpupj", com.azure.core.util.Context.NONE);
+            = manager.adapterDeployments().list("wsfllzykzp", "jdslpbyejsgbpjjn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tyl", response.iterator().next().properties().sourceModelId());
-        Assertions.assertEquals("uudvbgvzlzjsb", response.iterator().next().properties().targetDeploymentName());
+        Assertions.assertEquals("bkaknivwbddnddct", response.iterator().next().properties().sourceModelId());
+        Assertions.assertEquals("jcqhxdirttqil", response.iterator().next().properties().targetDeploymentName());
     }
 }

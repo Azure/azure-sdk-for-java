@@ -114,19 +114,7 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
         return updateWithResponseAsync(resourceGroupName, monitorName, body).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Update the VM details that will be monitored by the Elastic monitor resource, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body VM resource Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String resourceGroupName, String monitorName, VMCollectionUpdate body,
         Context context) {
@@ -134,16 +122,7 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, body, context);
     }
 
-    /**
-     * Update the VM details that will be monitored by the Elastic monitor resource, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String monitorName) {
         final VMCollectionUpdate body = null;

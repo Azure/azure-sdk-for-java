@@ -244,18 +244,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a logic app extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logic app extension resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogicAppInner> getWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, Context context) {
@@ -264,17 +253,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             resourceGroupName, containerAppName, logicAppName, accept, context);
     }
 
-    /**
-     * Gets a logic app extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logic app extension resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicAppInner get(String resourceGroupName, String containerAppName, String logicAppName) {
         return getWithResponse(resourceGroupName, containerAppName, logicAppName, Context.NONE).getValue();
@@ -322,19 +301,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a Logic App extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logic app extension resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogicAppInner> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, LogicAppInner resource, Context context) {
@@ -344,17 +311,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             context);
     }
 
-    /**
-     * Create or update a Logic App extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logic app extension resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicAppInner createOrUpdate(String resourceGroupName, String containerAppName, String logicAppName) {
         final LogicAppInner resource = null;
@@ -399,18 +356,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a Logic App extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String containerAppName, String logicAppName,
         Context context) {
@@ -418,16 +364,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, logicAppName, context);
     }
 
-    /**
-     * Deletes a Logic App extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String logicAppName) {
         deleteWithResponse(resourceGroupName, containerAppName, logicAppName, Context.NONE);
@@ -473,18 +410,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets logic app's connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logic app's connections along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowEnvelopeInner> listWorkflowsConnectionsWithResponse(String resourceGroupName,
         String containerAppName, String logicAppName, Context context) {
@@ -493,17 +419,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, logicAppName, accept, context);
     }
 
-    /**
-     * Gets logic app's connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logic app's connections.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowEnvelopeInner listWorkflowsConnections(String resourceGroupName, String containerAppName,
         String logicAppName) {
@@ -553,19 +469,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get workflow information by its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowName Workflow name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow information by its name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowEnvelopeInner> getWorkflowWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, String workflowName, Context context) {
@@ -575,18 +479,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             context);
     }
 
-    /**
-     * Get workflow information by its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowName Workflow name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow information by its name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowEnvelopeInner getWorkflow(String resourceGroupName, String containerAppName, String logicAppName,
         String workflowName) {
@@ -650,12 +543,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowEnvelopeInner> listWorkflowsSinglePage(String resourceGroupName,
         String containerAppName, String logicAppName) {
-        final String accept = "application/json";
-        Response<WorkflowEnvelopeCollection> res = service.listWorkflowsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, containerAppName,
-            logicAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listWorkflowsSinglePage(resourceGroupName, containerAppName, logicAppName, Context.NONE);
     }
 
     /**
@@ -681,36 +569,14 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the workflows for a logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of workflow information elements as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowEnvelopeInner> listWorkflows(String resourceGroupName, String containerAppName,
         String logicAppName) {
-        return new PagedIterable<>(() -> listWorkflowsSinglePage(resourceGroupName, containerAppName, logicAppName),
-            nextLink -> listWorkflowsNextSinglePage(nextLink));
+        return listWorkflows(resourceGroupName, containerAppName, logicAppName, Context.NONE);
     }
 
-    /**
-     * List the workflows for a logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of workflow information elements as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowEnvelopeInner> listWorkflows(String resourceGroupName, String containerAppName,
         String logicAppName, Context context) {
@@ -754,11 +620,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowEnvelopeInner> listWorkflowsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkflowEnvelopeCollection> res
-            = service.listWorkflowsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listWorkflowsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

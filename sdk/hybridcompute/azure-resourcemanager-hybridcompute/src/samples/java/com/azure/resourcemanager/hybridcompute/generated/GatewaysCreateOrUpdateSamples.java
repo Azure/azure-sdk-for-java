@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class GatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15/gateway/Gateway_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/gateway/Gateway_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Gateway.

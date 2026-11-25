@@ -114,39 +114,14 @@ public final class SolutionSelfHelpsClientImpl implements SolutionSelfHelpsClien
         return getWithResponseAsync(solutionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Self Help Solutions for a given solutionId. Self Help Solutions consist of rich instructional video
-     * tutorials, links and guides to public documentation related to a specific problem that enables users to
-     * troubleshoot Azure issues.
-     * 
-     * @param solutionId SolutionId is a unique id to identify a solution. You can retrieve the solution id using the
-     * Discovery api -
-     * https://learn.microsoft.com/en-us/rest/api/help/discovery-solution/list?view=rest-help-2023-09-01-preview&amp;tabs=HTTP.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return self Help Solutions for a given solutionId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionResourceSelfHelpInner> getWithResponse(String solutionId, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), solutionId, accept, context);
     }
 
-    /**
-     * Gets Self Help Solutions for a given solutionId. Self Help Solutions consist of rich instructional video
-     * tutorials, links and guides to public documentation related to a specific problem that enables users to
-     * troubleshoot Azure issues.
-     * 
-     * @param solutionId SolutionId is a unique id to identify a solution. You can retrieve the solution id using the
-     * Discovery api -
-     * https://learn.microsoft.com/en-us/rest/api/help/discovery-solution/list?view=rest-help-2023-09-01-preview&amp;tabs=HTTP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return self Help Solutions for a given solutionId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionResourceSelfHelpInner get(String solutionId) {
         return getWithResponse(solutionId, Context.NONE).getValue();

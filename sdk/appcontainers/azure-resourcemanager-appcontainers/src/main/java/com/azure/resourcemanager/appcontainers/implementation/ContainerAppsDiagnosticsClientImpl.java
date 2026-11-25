@@ -240,18 +240,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a revision of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the detector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RevisionInner> getRevisionWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
@@ -260,17 +249,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, revisionName, accept, context);
     }
 
-    /**
-     * Get a revision of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the detector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RevisionInner getRevision(String resourceGroupName, String containerAppName, String revisionName) {
         return getRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE).getValue();
@@ -364,12 +343,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RevisionInner> listRevisionsSinglePage(String resourceGroupName, String containerAppName,
         String filter) {
-        final String accept = "application/json";
-        Response<RevisionCollection> res
-            = service.listRevisionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRevisionsSinglePage(resourceGroupName, containerAppName, filter, Context.NONE);
     }
 
     /**
@@ -399,43 +373,14 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Revisions for a given Container App.
-     * 
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
-     * 
-     * A synchronous resource action as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listRevisionsSinglePage(resourceGroupName, containerAppName, filter),
-            nextLink -> listRevisionsNextSinglePage(nextLink));
+        return listRevisions(resourceGroupName, containerAppName, filter, Context.NONE);
     }
 
-    /**
-     * Get the Revisions for a given Container App.
-     * 
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param filter The filter to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
-     * 
-     * A synchronous resource action as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName, String filter,
         Context context) {
@@ -481,18 +426,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppInner> getRootWithResponse(String resourceGroupName, String containerAppName,
         Context context) {
@@ -501,17 +435,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, context);
     }
 
-    /**
-     * Get the properties of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppInner getRoot(String resourceGroupName, String containerAppName) {
         return getRootWithResponse(resourceGroupName, containerAppName, Context.NONE).getValue();
@@ -568,12 +492,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticsInner> listDetectorsSinglePage(String resourceGroupName, String containerAppName) {
-        final String accept = "application/json";
-        Response<DiagnosticsCollectionInner> res
-            = service.listDetectorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDetectorsSinglePage(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -598,33 +517,13 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the list of diagnostics for a given Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a given Container App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticsInner> listDetectors(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(() -> listDetectorsSinglePage(resourceGroupName, containerAppName),
-            nextLink -> listDetectorsNextSinglePage(nextLink));
+        return listDetectors(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Get the list of diagnostics for a given Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a given Container App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticsInner> listDetectors(String resourceGroupName, String containerAppName,
         Context context) {
@@ -672,18 +571,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a diagnostics result of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param detectorName Name of the detector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a diagnostics result of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticsInner> getDetectorWithResponse(String resourceGroupName, String containerAppName,
         String detectorName, Context context) {
@@ -692,17 +580,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, detectorName, accept, context);
     }
 
-    /**
-     * Get a diagnostics result of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param detectorName Name of the detector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a diagnostics result of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticsInner getDetector(String resourceGroupName, String containerAppName, String detectorName) {
         return getDetectorWithResponse(resourceGroupName, containerAppName, detectorName, Context.NONE).getValue();
@@ -746,11 +624,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RevisionInner> listRevisionsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RevisionCollection> res
-            = service.listRevisionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRevisionsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -811,11 +685,7 @@ public final class ContainerAppsDiagnosticsClientImpl implements ContainerAppsDi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticsInner> listDetectorsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiagnosticsCollectionInner> res
-            = service.listDetectorsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDetectorsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

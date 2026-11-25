@@ -234,22 +234,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a .NET Component.
-     * 
-     * Gets the details of a .NET component in a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a .NET Component.
-     * 
-     * Gets the details of a .NET component in a managed environment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DotNetComponentInner> getWithResponse(String resourceGroupName, String environmentName, String name,
         Context context) {
@@ -258,21 +243,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             resourceGroupName, environmentName, name, accept, context);
     }
 
-    /**
-     * Get a .NET Component.
-     * 
-     * Gets the details of a .NET component in a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a .NET Component.
-     * 
-     * Gets the details of a .NET component in a managed environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner get(String resourceGroupName, String environmentName, String name) {
         return getWithResponse(resourceGroupName, environmentName, name, Context.NONE).getValue();
@@ -321,11 +292,8 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String name, DotNetComponentInner dotNetComponentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, name, contentType, accept,
-            dotNetComponentEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope,
+            Context.NONE);
     }
 
     /**
@@ -376,44 +344,14 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             DotNetComponentInner.class, DotNetComponentInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a .NET Component.
-     * 
-     * Creates or updates a .NET Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope);
-        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(response,
-            DotNetComponentInner.class, DotNetComponentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates a .NET Component.
-     * 
-     * Creates or updates a .NET Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope,
@@ -445,46 +383,19 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a .NET Component.
-     * 
-     * Creates or updates a .NET Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner createOrUpdate(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates a .NET Component.
-     * 
-     * Creates or updates a .NET Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner createOrUpdate(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context));
     }
 
     /**
@@ -530,11 +441,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, name, contentType, accept,
-            dotNetComponentEnvelope, Context.NONE);
+        return updateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope, Context.NONE);
     }
 
     /**
@@ -585,44 +492,14 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             DotNetComponentInner.class, DotNetComponentInner.class, this.client.getContext());
     }
 
-    /**
-     * Update properties of a .NET Component
-     * 
-     * Patches a .NET Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginUpdate(String resourceGroupName,
         String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope);
-        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(response,
-            DotNetComponentInner.class, DotNetComponentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a .NET Component
-     * 
-     * Patches a .NET Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginUpdate(String resourceGroupName,
         String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope, Context context) {
@@ -653,45 +530,19 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of a .NET Component
-     * 
-     * Patches a .NET Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner update(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope) {
-        return beginUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope).getFinalResult();
+        return update(resourceGroupName, environmentName, name, dotNetComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a .NET Component
-     * 
-     * Patches a .NET Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner update(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context));
     }
 
     /**
@@ -731,8 +582,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, environmentName, name, Context.NONE);
     }
 
     /**
@@ -777,40 +627,14 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a .NET Component.
-     * 
-     * Deletes a .NET component from a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, environmentName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, environmentName, name, Context.NONE);
     }
 
-    /**
-     * Delete a .NET Component.
-     * 
-     * Deletes a .NET component from a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName, String name,
         Context context) {
@@ -837,39 +661,16 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a .NET Component.
-     * 
-     * Deletes a .NET component from a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String name) {
-        beginDelete(resourceGroupName, environmentName, name).getFinalResult();
+        delete(resourceGroupName, environmentName, name, Context.NONE);
     }
 
-    /**
-     * Delete a .NET Component.
-     * 
-     * Deletes a .NET component from a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String name, Context context) {
-        beginDelete(resourceGroupName, environmentName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, environmentName, name, context));
     }
 
     /**
@@ -935,12 +736,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DotNetComponentInner> listSinglePage(String resourceGroupName, String environmentName) {
-        final String accept = "application/json";
-        Response<DotNetComponentsCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -969,41 +765,13 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the .NET Components for a managed environment.
-     * 
-     * Lists the .NET components in a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the .NET Components for a managed environment.
-     * 
-     * Lists the .NET components in a managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DotNetComponentInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Get the .NET Components for a managed environment.
-     * 
-     * Lists the .NET components in a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the .NET Components for a managed environment.
-     * 
-     * Lists the .NET components in a managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DotNetComponentInner> list(String resourceGroupName, String environmentName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, context),
@@ -1048,11 +816,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DotNetComponentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DotNetComponentsCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

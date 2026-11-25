@@ -128,11 +128,7 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public Automation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutomations()
-            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Automation create(Context context) {
@@ -155,11 +151,7 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public Automation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutomations()
-            .updateWithResponse(resourceGroupName, automationName, updateAutomation, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Automation apply(Context context) {
@@ -182,11 +174,7 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public Automation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutomations()
-            .getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Automation refresh(Context context) {

@@ -127,18 +127,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the properties of the specified scope map.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified scope map along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScopeMapInner>> getWithResponseAsync(String resourceGroupName, String registryName,
         String scopeMapName) {
@@ -207,70 +196,27 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             resourceGroupName, registryName, scopeMapName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified scope map.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified scope map on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopeMapInner> getAsync(String resourceGroupName, String registryName, String scopeMapName) {
         return getWithResponseAsync(resourceGroupName, registryName, scopeMapName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified scope map.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified scope map along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopeMapInner> getWithResponse(String resourceGroupName, String registryName, String scopeMapName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, registryName, scopeMapName, context).block();
     }
 
-    /**
-     * Gets the properties of the specified scope map.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified scope map.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeMapInner get(String resourceGroupName, String registryName, String scopeMapName) {
         return getWithResponse(resourceGroupName, registryName, scopeMapName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
         String scopeMapName, ScopeMapInner scopeMapCreateParameters) {
@@ -355,18 +301,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             resourceGroupName, registryName, scopeMapName, contentType, accept, scopeMapCreateParameters, context);
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ScopeMapInner>, ScopeMapInner> beginCreateAsync(String resourceGroupName,
         String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters) {
@@ -399,18 +334,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             ScopeMapInner.class, ScopeMapInner.class, context);
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginCreate(String resourceGroupName,
         String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters) {
@@ -418,19 +342,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginCreate(String resourceGroupName,
         String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters, Context context) {
@@ -438,18 +350,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopeMapInner> createAsync(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapInner scopeMapCreateParameters) {
@@ -477,56 +378,21 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeMapInner create(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapInner scopeMapCreateParameters) {
         return createAsync(resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters).block();
     }
 
-    /**
-     * Creates a scope map for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapCreateParameters The parameters for creating a scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeMapInner create(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapInner scopeMapCreateParameters, Context context) {
         return createAsync(resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, context).block();
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
         String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters) {
@@ -611,18 +477,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             resourceGroupName, registryName, scopeMapName, contentType, accept, scopeMapUpdateParameters, context);
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdateAsync(String resourceGroupName,
         String registryName, String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters) {
@@ -655,18 +510,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             ScopeMapInner.class, ScopeMapInner.class, context);
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdate(String resourceGroupName,
         String registryName, String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters) {
@@ -674,19 +518,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdate(String resourceGroupName,
         String registryName, String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters, Context context) {
@@ -694,18 +526,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopeMapInner> updateAsync(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapUpdateParameters scopeMapUpdateParameters) {
@@ -733,54 +554,21 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeMapInner update(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapUpdateParameters scopeMapUpdateParameters) {
         return updateAsync(resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters).block();
     }
 
-    /**
-     * Updates a scope map with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param scopeMapUpdateParameters The parameters for updating a scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a scope map for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeMapInner update(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapUpdateParameters scopeMapUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, context).block();
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String scopeMapName) {
@@ -846,17 +634,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             resourceGroupName, registryName, scopeMapName, context);
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
         String scopeMapName) {
@@ -887,52 +665,21 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             context);
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String scopeMapName) {
         return this.beginDeleteAsync(resourceGroupName, registryName, scopeMapName).getSyncPoller();
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String scopeMapName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, registryName, scopeMapName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String scopeMapName) {
         return beginDeleteAsync(resourceGroupName, registryName, scopeMapName).last()
@@ -958,32 +705,13 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String scopeMapName) {
         deleteAsync(resourceGroupName, registryName, scopeMapName).block();
     }
 
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String scopeMapName, Context context) {
         deleteAsync(resourceGroupName, registryName, scopeMapName, context).block();
@@ -1065,17 +793,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the scope maps for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list scope maps for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScopeMapInner> listAsync(String resourceGroupName, String registryName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName),
@@ -1100,34 +818,13 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the scope maps for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list scope maps for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopeMapInner> list(String resourceGroupName, String registryName) {
         return new PagedIterable<>(listAsync(resourceGroupName, registryName));
     }
 
-    /**
-     * Lists all the scope maps for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list scope maps for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopeMapInner> list(String resourceGroupName, String registryName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, registryName, context));

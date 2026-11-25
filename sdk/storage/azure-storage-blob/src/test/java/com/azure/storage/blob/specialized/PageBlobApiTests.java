@@ -262,6 +262,17 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnABlobOfAnotherType() {
+        String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        bc = cc.getBlobClient(blobName).getPageBlobClient();
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> bc.createIfNotExists(PageBlobClient.PAGE_BYTES));
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.INVALID_BLOB_TYPE);
+    }
+
+    @Test
     public void createIfNotExistsMin() {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getPageBlobClient();

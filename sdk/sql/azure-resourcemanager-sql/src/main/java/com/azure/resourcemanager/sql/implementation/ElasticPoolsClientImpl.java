@@ -139,17 +139,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ElasticPoolInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String elasticPoolName) {
@@ -219,69 +209,27 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             resourceGroupName, serverName, elasticPoolName, accept, context);
     }
 
-    /**
-     * Gets an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElasticPoolInner> getAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         return getWithResponseAsync(resourceGroupName, serverName, elasticPoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ElasticPoolInner> getWithResponse(String resourceGroupName, String serverName,
         String elasticPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, elasticPoolName, context).block();
     }
 
-    /**
-     * Gets an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticPoolInner get(String resourceGroupName, String serverName, String elasticPoolName) {
         return getWithResponse(resourceGroupName, serverName, elasticPoolName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String elasticPoolName, ElasticPoolInner parameters) {
@@ -366,18 +314,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             parameters, context);
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -411,18 +348,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             ElasticPoolInner.class, ElasticPoolInner.class, context);
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -430,19 +356,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String elasticPoolName, ElasticPoolInner parameters, Context context) {
@@ -450,18 +364,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElasticPoolInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String elasticPoolName, ElasticPoolInner parameters) {
@@ -489,55 +392,21 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName,
         ElasticPoolInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).block();
     }
 
-    /**
-     * Creates or updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName,
         ElasticPoolInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters, context).block();
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String elasticPoolName, ElasticPoolUpdate parameters) {
@@ -621,18 +490,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             resourceGroupName, serverName, elasticPoolName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdateAsync(String resourceGroupName,
         String serverName, String elasticPoolName, ElasticPoolUpdate parameters) {
@@ -665,37 +523,14 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             ElasticPoolInner.class, ElasticPoolInner.class, context);
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(String resourceGroupName,
         String serverName, String elasticPoolName, ElasticPoolUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(String resourceGroupName,
         String serverName, String elasticPoolName, ElasticPoolUpdate parameters, Context context) {
@@ -703,18 +538,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElasticPoolInner> updateAsync(String resourceGroupName, String serverName, String elasticPoolName,
         ElasticPoolUpdate parameters) {
@@ -742,54 +566,21 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticPoolInner update(String resourceGroupName, String serverName, String elasticPoolName,
         ElasticPoolUpdate parameters) {
         return updateAsync(resourceGroupName, serverName, elasticPoolName, parameters).block();
     }
 
-    /**
-     * Updates an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param parameters The elastic pool update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticPoolInner update(String resourceGroupName, String serverName, String elasticPoolName,
         ElasticPoolUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, serverName, elasticPoolName, parameters, context).block();
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String elasticPoolName) {
@@ -857,17 +648,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             resourceGroupName, serverName, elasticPoolName, context);
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String elasticPoolName) {
@@ -898,52 +679,21 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             context);
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String elasticPoolName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String elasticPoolName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         return beginDeleteAsync(resourceGroupName, serverName, elasticPoolName).last()
@@ -969,32 +719,13 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String elasticPoolName) {
         deleteAsync(resourceGroupName, serverName, elasticPoolName).block();
     }
 
-    /**
-     * Deletes an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String elasticPoolName, Context context) {
         deleteAsync(resourceGroupName, serverName, elasticPoolName, context).block();
@@ -1077,33 +808,14 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all elastic pools in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param skip The number of elements in the collection to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all elastic pools in a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ElasticPoolInner> listByServerAsync(String resourceGroupName, String serverName, Long skip) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, skip),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets all elastic pools in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all elastic pools in a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ElasticPoolInner> listByServerAsync(String resourceGroupName, String serverName) {
         final Long skip = null;
@@ -1130,51 +842,21 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all elastic pools in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all elastic pools in a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticPoolInner> listByServer(String resourceGroupName, String serverName) {
         final Long skip = null;
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skip));
     }
 
-    /**
-     * Gets all elastic pools in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param skip The number of elements in the collection to skip.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all elastic pools in a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticPoolInner> listByServer(String resourceGroupName, String serverName, Long skip,
         Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skip, context));
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
         String elasticPoolName) {
@@ -1242,17 +924,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             resourceGroupName, serverName, elasticPoolName, context);
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
         String elasticPoolName) {
@@ -1284,52 +956,21 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             context);
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
         String elasticPoolName) {
         return this.beginFailoverAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
         String elasticPoolName, Context context) {
         return this.beginFailoverAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         return beginFailoverAsync(resourceGroupName, serverName, elasticPoolName).last()
@@ -1355,32 +996,13 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failover(String resourceGroupName, String serverName, String elasticPoolName) {
         failoverAsync(resourceGroupName, serverName, elasticPoolName).block();
     }
 
-    /**
-     * Failovers an elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failover(String resourceGroupName, String serverName, String elasticPoolName, Context context) {
         failoverAsync(resourceGroupName, serverName, elasticPoolName, context).block();

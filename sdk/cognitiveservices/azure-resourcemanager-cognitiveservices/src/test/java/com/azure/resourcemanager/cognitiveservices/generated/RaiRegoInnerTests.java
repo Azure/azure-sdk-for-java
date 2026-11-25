@@ -16,23 +16,22 @@ public final class RaiRegoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiRegoInner model = BinaryData.fromString(
-            "{\"properties\":{\"encoding\":\"None\",\"rego\":\"kwv\"},\"etag\":\"nzvdfbzdixzmq\",\"tags\":{\"wopqhewjptmcgs\":\"d\",\"mzlbiojlvfhrb\":\"ostzelndlatu\",\"qvcww\":\"pn\",\"mo\":\"yurmochpprprs\"},\"id\":\"yzejnhlbk\",\"name\":\"bzpcpiljhahzvec\",\"type\":\"ndbnwieh\"}")
+            "{\"properties\":{\"encoding\":\"Base64\",\"rego\":\"ngqladywrx\"},\"etag\":\"yd\",\"tags\":{\"uyem\":\"vvadswzs\",\"xlnwyrmouvblgmo\":\"owuowh\",\"ih\":\"zkltrfowtdvrfmv\"},\"id\":\"jdrqcrjidhftu\",\"name\":\"vhdxlwyo\",\"type\":\"bfqz\"}")
             .toObject(RaiRegoInner.class);
-        Assertions.assertEquals(RaiRegoEncoding.NONE, model.properties().encoding());
-        Assertions.assertEquals("kwv", model.properties().rego());
-        Assertions.assertEquals("d", model.tags().get("wopqhewjptmcgs"));
+        Assertions.assertEquals(RaiRegoEncoding.BASE64, model.properties().encoding());
+        Assertions.assertEquals("ngqladywrx", model.properties().rego());
+        Assertions.assertEquals("vvadswzs", model.tags().get("uyem"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiRegoInner model = new RaiRegoInner()
-            .withProperties(new RaiRegoProperties().withEncoding(RaiRegoEncoding.NONE).withRego("kwv"))
-            .withTags(
-                mapOf("wopqhewjptmcgs", "d", "mzlbiojlvfhrb", "ostzelndlatu", "qvcww", "pn", "mo", "yurmochpprprs"));
+            .withProperties(new RaiRegoProperties().withEncoding(RaiRegoEncoding.BASE64).withRego("ngqladywrx"))
+            .withTags(mapOf("uyem", "vvadswzs", "xlnwyrmouvblgmo", "owuowh", "ih", "zkltrfowtdvrfmv"));
         model = BinaryData.fromObject(model).toObject(RaiRegoInner.class);
-        Assertions.assertEquals(RaiRegoEncoding.NONE, model.properties().encoding());
-        Assertions.assertEquals("kwv", model.properties().rego());
-        Assertions.assertEquals("d", model.tags().get("wopqhewjptmcgs"));
+        Assertions.assertEquals(RaiRegoEncoding.BASE64, model.properties().encoding());
+        Assertions.assertEquals("ngqladywrx", model.properties().rego());
+        Assertions.assertEquals("vvadswzs", model.tags().get("uyem"));
     }
 
     // Use "Map.of" if available

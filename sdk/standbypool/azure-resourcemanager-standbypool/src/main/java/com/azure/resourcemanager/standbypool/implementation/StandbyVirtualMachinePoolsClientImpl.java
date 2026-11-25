@@ -258,17 +258,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachinePoolResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyVirtualMachinePoolResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String standbyVirtualMachinePoolName, Context context) {
@@ -277,16 +267,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, context);
     }
 
-    /**
-     * Get a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachinePoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyVirtualMachinePoolResourceInner getByResourceGroup(String resourceGroupName,
         String standbyVirtualMachinePoolName) {
@@ -331,11 +312,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, resource, Context.NONE);
     }
 
     /**
@@ -382,40 +359,15 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             StandbyVirtualMachinePoolResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StandbyVirtualMachinePoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StandbyVirtualMachinePoolResourceInner>, StandbyVirtualMachinePoolResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String standbyVirtualMachinePoolName,
             StandbyVirtualMachinePoolResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, resource);
-        return this.client.<StandbyVirtualMachinePoolResourceInner, StandbyVirtualMachinePoolResourceInner>getLroResult(
-            response, StandbyVirtualMachinePoolResourceInner.class, StandbyVirtualMachinePoolResourceInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, standbyVirtualMachinePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StandbyVirtualMachinePoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StandbyVirtualMachinePoolResourceInner>, StandbyVirtualMachinePoolResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String standbyVirtualMachinePoolName,
@@ -445,40 +397,19 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachinePoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyVirtualMachinePoolResourceInner createOrUpdate(String resourceGroupName,
         String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, standbyVirtualMachinePoolName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, standbyVirtualMachinePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachinePoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyVirtualMachinePoolResourceInner createOrUpdate(String resourceGroupName,
         String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, standbyVirtualMachinePoolName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, standbyVirtualMachinePoolName, resource, context));
     }
 
     /**
@@ -512,8 +443,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
     /**
@@ -553,34 +483,14 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             this.client.getContext());
     }
 
-    /**
-     * Delete a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String standbyVirtualMachinePoolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, standbyVirtualMachinePoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String standbyVirtualMachinePoolName, Context context) {
@@ -604,33 +514,16 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        beginDelete(resourceGroupName, standbyVirtualMachinePoolName).getFinalResult();
+        delete(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
-        beginDelete(resourceGroupName, standbyVirtualMachinePoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, standbyVirtualMachinePoolName, context));
     }
 
     /**
@@ -674,18 +567,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachinePoolResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyVirtualMachinePoolResourceInner> updateWithResponse(String resourceGroupName,
         String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceUpdate properties, Context context) {
@@ -696,17 +578,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             properties, context);
     }
 
-    /**
-     * Update a StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachinePoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyVirtualMachinePoolResourceInner update(String resourceGroupName, String standbyVirtualMachinePoolName,
         StandbyVirtualMachinePoolResourceUpdate properties) {
@@ -764,12 +636,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyVirtualMachinePoolResourceInner>
         listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StandbyVirtualMachinePoolResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -793,33 +660,13 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StandbyVirtualMachinePoolResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachinePoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachinePoolResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List StandbyVirtualMachinePoolResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachinePoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachinePoolResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -869,11 +716,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyVirtualMachinePoolResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StandbyVirtualMachinePoolResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -894,29 +737,13 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StandbyVirtualMachinePoolResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachinePoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachinePoolResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List StandbyVirtualMachinePoolResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachinePoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachinePoolResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -956,11 +783,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyVirtualMachinePoolResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StandbyVirtualMachinePoolResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1016,11 +839,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyVirtualMachinePoolResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StandbyVirtualMachinePoolResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

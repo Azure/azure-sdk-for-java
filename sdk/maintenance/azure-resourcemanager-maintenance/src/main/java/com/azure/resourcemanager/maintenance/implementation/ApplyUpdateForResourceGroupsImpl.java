@@ -26,8 +26,7 @@ public final class ApplyUpdateForResourceGroupsImpl implements ApplyUpdateForRes
     }
 
     public PagedIterable<ApplyUpdate> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ApplyUpdateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ApplyUpdate> listByResourceGroup(String resourceGroupName, Context context) {

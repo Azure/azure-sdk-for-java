@@ -52,6 +52,16 @@ public interface ScenariosClient {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,7 +70,7 @@ public interface ScenariosClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScenarioInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, ScenarioInner resource, Context context);
+        String scenarioName, ScenarioInner resource, String ifNoneMatch, String ifMatch, Context context);
 
     /**
      * Create or update a scenario.

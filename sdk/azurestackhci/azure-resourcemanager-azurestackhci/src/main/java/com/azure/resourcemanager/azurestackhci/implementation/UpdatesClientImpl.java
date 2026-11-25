@@ -234,18 +234,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified Update along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HciUpdateInner> getWithResponse(String resourceGroupName, String clusterName, String updateName,
         Context context) {
@@ -254,17 +243,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
             resourceGroupName, clusterName, updateName, accept, context);
     }
 
-    /**
-     * Get specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified Update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HciUpdateInner get(String resourceGroupName, String clusterName, String updateName) {
         return getWithResponse(resourceGroupName, clusterName, updateName, Context.NONE).getValue();
@@ -313,19 +292,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Put specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param updateProperties Properties of the Updates object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HciUpdateInner> putWithResponse(String resourceGroupName, String clusterName, String updateName,
         HciUpdateInner updateProperties, Context context) {
@@ -335,18 +302,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
             resourceGroupName, clusterName, updateName, contentType, accept, updateProperties, context);
     }
 
-    /**
-     * Put specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param updateProperties Properties of the Updates object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HciUpdateInner put(String resourceGroupName, String clusterName, String updateName,
         HciUpdateInner updateProperties) {
@@ -386,8 +342,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String updateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, updateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
     /**
@@ -428,36 +383,14 @@ public final class UpdatesClientImpl implements UpdatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String updateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, updateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
-    /**
-     * Delete specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String updateName, Context context) {
@@ -482,35 +415,16 @@ public final class UpdatesClientImpl implements UpdatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String updateName) {
-        beginDelete(resourceGroupName, clusterName, updateName).getFinalResult();
+        delete(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
-    /**
-     * Delete specified Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String updateName, Context context) {
-        beginDelete(resourceGroupName, clusterName, updateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, updateName, context));
     }
 
     /**
@@ -562,11 +476,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HciUpdateInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<UpdateList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -590,33 +500,13 @@ public final class UpdatesClientImpl implements UpdatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Updates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HciUpdateInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List all Updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Updates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HciUpdateInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
@@ -656,8 +546,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> postWithResponse(String resourceGroupName, String clusterName, String updateName) {
-        return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, updateName, Context.NONE);
+        return postWithResponse(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
     /**
@@ -698,36 +587,14 @@ public final class UpdatesClientImpl implements UpdatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Apply Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPost(String resourceGroupName, String clusterName,
         String updateName) {
-        Response<BinaryData> response = postWithResponse(resourceGroupName, clusterName, updateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPost(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
-    /**
-     * Apply Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPost(String resourceGroupName, String clusterName, String updateName,
         Context context) {
@@ -752,35 +619,16 @@ public final class UpdatesClientImpl implements UpdatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Apply Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String clusterName, String updateName) {
-        beginPost(resourceGroupName, clusterName, updateName).getFinalResult();
+        post(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
-    /**
-     * Apply Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String clusterName, String updateName, Context context) {
-        beginPost(resourceGroupName, clusterName, updateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPost(resourceGroupName, clusterName, updateName, context));
     }
 
     /**
@@ -816,8 +664,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> prepareWithResponse(String resourceGroupName, String clusterName, String updateName) {
-        return service.prepareSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, updateName, Context.NONE);
+        return prepareWithResponse(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
     /**
@@ -858,36 +705,14 @@ public final class UpdatesClientImpl implements UpdatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Prepare Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPrepare(String resourceGroupName, String clusterName,
         String updateName) {
-        Response<BinaryData> response = prepareWithResponse(resourceGroupName, clusterName, updateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPrepare(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
-    /**
-     * Prepare Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPrepare(String resourceGroupName, String clusterName,
         String updateName, Context context) {
@@ -912,35 +737,16 @@ public final class UpdatesClientImpl implements UpdatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Prepare Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void prepare(String resourceGroupName, String clusterName, String updateName) {
-        beginPrepare(resourceGroupName, clusterName, updateName).getFinalResult();
+        prepare(resourceGroupName, clusterName, updateName, Context.NONE);
     }
 
-    /**
-     * Prepare Update.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param updateName The name of the Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void prepare(String resourceGroupName, String clusterName, String updateName, Context context) {
-        beginPrepare(resourceGroupName, clusterName, updateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPrepare(resourceGroupName, clusterName, updateName, context));
     }
 
     /**
@@ -972,10 +778,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HciUpdateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UpdateList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

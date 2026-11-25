@@ -13,10 +13,10 @@ public final class LogCaptureConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCaptureConfigurationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"retentionDays\":749799353,\"provisioningState\":\"Failed\"},\"id\":\"frl\",\"name\":\"zszrnwoiindfpw\",\"type\":\"jylwbtlhflsj\"}],\"nextLink\":\"hszfjvfb\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"retentionDays\":998563626,\"provisioningState\":\"Failed\"},\"id\":\"fbshrnsvbuswd\",\"name\":\"z\",\"type\":\"ybycnunvj\"}],\"nextLink\":\"tkfa\"}")
             .toObject(LogCaptureConfigurationListResult.class);
         Assertions.assertEquals(LogCaptureState.ENABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals(749799353, model.value().get(0).properties().retentionDays());
-        Assertions.assertEquals("hszfjvfb", model.nextLink());
+        Assertions.assertEquals(998563626, model.value().get(0).properties().retentionDays());
+        Assertions.assertEquals("tkfa", model.nextLink());
     }
 }

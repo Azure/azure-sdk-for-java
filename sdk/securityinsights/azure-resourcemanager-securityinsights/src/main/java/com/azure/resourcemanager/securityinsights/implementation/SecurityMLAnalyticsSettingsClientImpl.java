@@ -196,18 +196,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Security ML Analytics Settings along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityMLAnalyticsSettingInner> getWithResponse(String resourceGroupName, String workspaceName,
         String settingsResourceName, Context context) {
@@ -216,17 +205,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             resourceGroupName, workspaceName, settingsResourceName, accept, context);
     }
 
-    /**
-     * Gets the Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Security ML Analytics Settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityMLAnalyticsSettingInner get(String resourceGroupName, String workspaceName,
         String settingsResourceName) {
@@ -276,19 +255,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             securityMLAnalyticsSetting).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @param securityMLAnalyticsSetting The security ML Analytics setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security ML Analytics Setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityMLAnalyticsSettingInner> createOrUpdateWithResponse(String resourceGroupName,
         String workspaceName, String settingsResourceName, SecurityMLAnalyticsSettingInner securityMLAnalyticsSetting,
@@ -300,18 +267,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             accept, securityMLAnalyticsSetting, context);
     }
 
-    /**
-     * Creates or updates the Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @param securityMLAnalyticsSetting The security ML Analytics setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security ML Analytics Setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityMLAnalyticsSettingInner createOrUpdate(String resourceGroupName, String workspaceName,
         String settingsResourceName, SecurityMLAnalyticsSettingInner securityMLAnalyticsSetting) {
@@ -356,18 +312,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
         String settingsResourceName, Context context) {
@@ -375,16 +320,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, settingsResourceName, context);
     }
 
-    /**
-     * Delete the Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String settingsResourceName) {
         deleteWithResponse(resourceGroupName, workspaceName, settingsResourceName, Context.NONE);
@@ -442,12 +378,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityMLAnalyticsSettingInner> listSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<SecurityMLAnalyticsSettingsList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -472,33 +403,13 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Security ML Analytics Settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityMLAnalyticsSettingInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all Security ML Analytics Settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Security ML Analytics Settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityMLAnalyticsSettingInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -536,11 +447,7 @@ public final class SecurityMLAnalyticsSettingsClientImpl implements SecurityMLAn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityMLAnalyticsSettingInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecurityMLAnalyticsSettingsList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

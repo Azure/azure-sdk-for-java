@@ -65,11 +65,7 @@ public final class OutboundRuleBasicResourceImpl
     }
 
     public OutboundRuleBasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundRules()
-            .createOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OutboundRuleBasicResource create(Context context) {
@@ -91,11 +87,7 @@ public final class OutboundRuleBasicResourceImpl
     }
 
     public OutboundRuleBasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundRules()
-            .createOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OutboundRuleBasicResource apply(Context context) {
@@ -124,11 +116,7 @@ public final class OutboundRuleBasicResourceImpl
     }
 
     public OutboundRuleBasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundRules()
-            .getWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OutboundRuleBasicResource refresh(Context context) {

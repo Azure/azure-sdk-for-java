@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AgentsServicePollUtilsTest {
     @Test
@@ -43,7 +44,10 @@ class AgentsServicePollUtilsTest {
             Arguments.of("superseded", LongRunningOperationStatus.USER_CANCELLED),
             Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED),
             Arguments.of("cancelled", LongRunningOperationStatus.USER_CANCELLED),
-            Arguments.of("CANCELLED", LongRunningOperationStatus.USER_CANCELLED));
+            Arguments.of("CANCELLED", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("skipped", LongRunningOperationStatus.FAILED),
+            Arguments.of("Skipped", LongRunningOperationStatus.FAILED),
+            Arguments.of("SKIPPED", LongRunningOperationStatus.FAILED));
     }
 
     @ParameterizedTest
@@ -56,6 +60,7 @@ class AgentsServicePollUtilsTest {
         PollResponse<String> remapped = AgentsServicePollUtils.remapStatus(original);
 
         assertEquals(expected, remapped.getStatus());
+        assertTrue(remapped.getStatus().isComplete());
         assertEquals("value", remapped.getValue());
     }
 
@@ -75,15 +80,16 @@ class AgentsServicePollUtilsTest {
         assertSame(original, result, "Standard status should return the same PollResponse instance");
     }
 
-    @Test
-    void remapStatusPreservesRetryAfter() {
-        LongRunningOperationStatus completed = LongRunningOperationStatus.fromString("completed", false);
+    @ParameterizedTest
+    @MethodSource("remapStatusCases")
+    void remapStatusPreservesRetryAfter(String statusName, LongRunningOperationStatus expected) {
+        LongRunningOperationStatus status = LongRunningOperationStatus.fromString(statusName, false);
         java.time.Duration retryAfter = java.time.Duration.ofSeconds(5);
-        PollResponse<String> original = new PollResponse<>(completed, "value", retryAfter);
+        PollResponse<String> original = new PollResponse<>(status, "value", retryAfter);
 
         PollResponse<String> remapped = AgentsServicePollUtils.remapStatus(original);
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, remapped.getStatus());
+        assertEquals(expected, remapped.getStatus());
         assertEquals(retryAfter, remapped.getRetryAfter());
     }
 }

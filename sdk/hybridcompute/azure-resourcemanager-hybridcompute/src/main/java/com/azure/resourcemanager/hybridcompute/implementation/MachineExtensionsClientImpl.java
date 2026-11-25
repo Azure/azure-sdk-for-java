@@ -222,18 +222,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineExtensionInner> getWithResponse(String resourceGroupName, String machineName,
         String extensionName, Context context) {
@@ -242,17 +231,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             resourceGroupName, machineName, extensionName, accept, context);
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineExtensionInner get(String resourceGroupName, String machineName, String extensionName) {
         return getWithResponse(resourceGroupName, machineName, extensionName, Context.NONE).getValue();
@@ -297,11 +276,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String machineName,
         String extensionName, MachineExtensionInner extensionParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, extensionName, contentType, accept,
-            extensionParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, machineName, extensionName, extensionParameters,
+            Context.NONE);
     }
 
     /**
@@ -349,40 +325,14 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginCreateOrUpdate(
         String resourceGroupName, String machineName, String extensionName, MachineExtensionInner extensionParameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, machineName, extensionName, extensionParameters);
-        return this.client.<MachineExtensionInner, MachineExtensionInner>getLroResult(response,
-            MachineExtensionInner.class, MachineExtensionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, machineName, extensionName, extensionParameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginCreateOrUpdate(
         String resourceGroupName, String machineName, String extensionName, MachineExtensionInner extensionParameters,
@@ -412,42 +362,19 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineExtensionInner createOrUpdate(String resourceGroupName, String machineName, String extensionName,
         MachineExtensionInner extensionParameters) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, extensionName, extensionParameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, machineName, extensionName, extensionParameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineExtensionInner createOrUpdate(String resourceGroupName, String machineName, String extensionName,
         MachineExtensionInner extensionParameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, extensionName, extensionParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, machineName, extensionName, extensionParameters, context));
     }
 
     /**
@@ -489,11 +416,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String machineName, String extensionName,
         MachineExtensionUpdate extensionParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, extensionName, contentType, accept,
-            extensionParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, machineName, extensionName, extensionParameters, Context.NONE);
     }
 
     /**
@@ -542,40 +465,14 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginUpdate(String resourceGroupName,
         String machineName, String extensionName, MachineExtensionUpdate extensionParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, machineName, extensionName, extensionParameters);
-        return this.client.<MachineExtensionInner, MachineExtensionInner>getLroResult(response,
-            MachineExtensionInner.class, MachineExtensionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, machineName, extensionName, extensionParameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginUpdate(String resourceGroupName,
         String machineName, String extensionName, MachineExtensionUpdate extensionParameters, Context context) {
@@ -604,42 +501,19 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineExtensionInner update(String resourceGroupName, String machineName, String extensionName,
         MachineExtensionUpdate extensionParameters) {
-        return beginUpdate(resourceGroupName, machineName, extensionName, extensionParameters).getFinalResult();
+        return update(resourceGroupName, machineName, extensionName, extensionParameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param extensionParameters Parameters supplied to the Create Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineExtensionInner update(String resourceGroupName, String machineName, String extensionName,
         MachineExtensionUpdate extensionParameters, Context context) {
-        return beginUpdate(resourceGroupName, machineName, extensionName, extensionParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, machineName, extensionName, extensionParameters, context));
     }
 
     /**
@@ -676,8 +550,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String machineName,
         String extensionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, extensionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, machineName, extensionName, Context.NONE);
     }
 
     /**
@@ -718,36 +591,14 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         String extensionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, machineName, extensionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, machineName, extensionName, Context.NONE);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         String extensionName, Context context) {
@@ -772,35 +623,16 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, String extensionName) {
-        beginDelete(resourceGroupName, machineName, extensionName).getFinalResult();
+        delete(resourceGroupName, machineName, extensionName, Context.NONE);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, String extensionName, Context context) {
-        beginDelete(resourceGroupName, machineName, extensionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, machineName, extensionName, context));
     }
 
     /**
@@ -875,12 +707,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineExtensionInner> listSinglePage(String resourceGroupName, String machineName,
         String expand) {
-        final String accept = "application/json";
-        Response<MachineExtensionsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, machineName, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, machineName, expand, Context.NONE);
     }
 
     /**
@@ -906,35 +733,14 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all extensions of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MachineExtension items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineExtensionInner> list(String resourceGroupName, String machineName) {
         final String expand = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, machineName, expand),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, machineName, expand, Context.NONE);
     }
 
-    /**
-     * The operation to get all extensions of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MachineExtension items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineExtensionInner> list(String resourceGroupName, String machineName, String expand,
         Context context) {
@@ -972,11 +778,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineExtensionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MachineExtensionsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

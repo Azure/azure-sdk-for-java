@@ -106,6 +106,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName,
             @PathParam("scenarioConfigurationName") String scenarioConfigurationName,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScenarioConfigurationInner resource, Context context);
 
@@ -117,6 +118,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName,
             @PathParam("scenarioConfigurationName") String scenarioConfigurationName,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScenarioConfigurationInner resource, Context context);
 
@@ -279,19 +281,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScenarioConfigurationInner> getWithResponse(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, Context context) {
@@ -300,18 +290,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, accept, context);
     }
 
-    /**
-     * Get a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioConfigurationInner get(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
@@ -327,6 +306,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -335,13 +324,13 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName,
-        ScenarioConfigurationInner resource) {
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName,
-                scenarioConfigurationName, contentType, accept, resource, context))
+                scenarioConfigurationName, ifNoneMatch, ifMatch, contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -353,6 +342,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -360,12 +359,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            contentType, accept, resource, Context.NONE);
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+            resource, ifNoneMatch, ifMatch, Context.NONE);
     }
 
     /**
@@ -376,6 +373,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,12 +391,47 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, Context context) {
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            contentType, accept, resource, context);
+            ifNoneMatch, ifMatch, contentType, accept, resource, context);
+    }
+
+    /**
+     * Create or update a scenario definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of model that represents the scenario.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            scenarioName, scenarioConfigurationName, resource, ifNoneMatch, ifMatch);
+        return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ScenarioConfigurationInner.class, ScenarioConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -409,8 +451,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     private PollerFlux<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
         ScenarioConfigurationInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
-            scenarioName, scenarioConfigurationName, resource);
+            scenarioName, scenarioConfigurationName, resource, ifNoneMatch, ifMatch);
         return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(mono,
             this.client.getHttpPipeline(), ScenarioConfigurationInner.class, ScenarioConfigurationInner.class,
             this.client.getContext());
@@ -424,19 +468,49 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of model that represents the scenario.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource,
+            ifNoneMatch, ifMatch, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
         ScenarioConfigurationInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource,
+            ifNoneMatch, ifMatch, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch, Context context) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName,
-            scenarioConfigurationName, resource);
+            scenarioConfigurationName, resource, ifNoneMatch, ifMatch, context);
         return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(response,
-            ScenarioConfigurationInner.class, ScenarioConfigurationInner.class, Context.NONE);
+            ScenarioConfigurationInner.class, ScenarioConfigurationInner.class, context);
     }
 
     /**
@@ -447,20 +521,27 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of model that represents the scenario.
+     * @return model that represents the scenario on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
-        ScenarioConfigurationInner resource, Context context) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName,
-            scenarioConfigurationName, resource, context);
-        return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(response,
-            ScenarioConfigurationInner.class, ScenarioConfigurationInner.class, context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ScenarioConfigurationInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+            resource, ifNoneMatch, ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -479,49 +560,29 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScenarioConfigurationInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            resource).last().flatMap(this.client::getLroFinalResultOrError);
+            resource, ifNoneMatch, ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents the scenario.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioConfigurationInner createOrUpdate(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource)
-            .getFinalResult();
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource,
+            ifNoneMatch, ifMatch, Context.NONE);
     }
 
-    /**
-     * Create or update a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents the scenario.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioConfigurationInner createOrUpdate(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource,
-            context).getFinalResult();
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch, Context context) {
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName,
+            scenarioConfigurationName, resource, ifNoneMatch, ifMatch, context));
     }
 
     /**
@@ -561,8 +622,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+        return deleteWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
             Context.NONE);
     }
 
@@ -608,39 +668,14 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             this.client.getContext());
     }
 
-    /**
-     * Delete a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
-    /**
-     * Delete a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, Context context) {
@@ -668,40 +703,19 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        beginDelete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName).getFinalResult();
+        delete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
-    /**
-     * Delete a scenario definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context));
     }
 
     /**
@@ -759,12 +773,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioConfigurationInner> listAllSinglePage(String resourceGroupName, String workspaceName,
         String scenarioName) {
-        final String accept = "application/json";
-        Response<ScenarioConfigurationListResult> res
-            = service.listAllSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllSinglePage(resourceGroupName, workspaceName, scenarioName, Context.NONE);
     }
 
     /**
@@ -790,36 +799,14 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of scenario definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scenario definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioConfigurationInner> listAll(String resourceGroupName, String workspaceName,
         String scenarioName) {
-        return new PagedIterable<>(() -> listAllSinglePage(resourceGroupName, workspaceName, scenarioName),
-            nextLink -> listAllNextSinglePage(nextLink));
+        return listAll(resourceGroupName, workspaceName, scenarioName, Context.NONE);
     }
 
-    /**
-     * Get a list of scenario definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scenario definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioConfigurationInner> listAll(String resourceGroupName, String workspaceName,
         String scenarioName, Context context) {
@@ -864,8 +851,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> executeWithResponse(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName) {
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+        return executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
             Context.NONE);
     }
 
@@ -911,40 +897,14 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             ScenarioRunInner.class, ScenarioRunInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute the scenario execution with the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecute(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName) {
-        Response<BinaryData> response
-            = executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
-        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(response, ScenarioRunInner.class,
-            ScenarioRunInner.class, Context.NONE);
+        return beginExecute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
-    /**
-     * Execute the scenario execution with the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecute(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName, Context context) {
@@ -973,42 +933,19 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute the scenario execution with the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunInner execute(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        return beginExecute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName).getFinalResult();
+        return execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
-    /**
-     * Execute the scenario execution with the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunInner execute(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName, Context context) {
-        return beginExecute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginExecute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context));
     }
 
     /**
@@ -1048,8 +985,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateWithResponse(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName) {
-        return service.validateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+        return validateWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
             Context.NONE);
     }
 
@@ -1095,40 +1031,14 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             Validation.class, this.client.getContext());
     }
 
-    /**
-     * Validate the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Validation>, Validation> beginValidate(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName) {
-        Response<BinaryData> response
-            = validateWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
-        return this.client.<Validation, Validation>getLroResult(response, Validation.class, Validation.class,
-            Context.NONE);
+        return beginValidate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
-    /**
-     * Validate the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Validation>, Validation> beginValidate(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, Context context) {
@@ -1156,43 +1066,19 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validate the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Validation validate(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        return beginValidate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName)
-            .getFinalResult();
+        return validate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
-    /**
-     * Validate the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Validation validate(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName, Context context) {
-        return beginValidate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context));
     }
 
     /**
@@ -1235,9 +1121,8 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> fixResourcePermissionsWithResponse(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, FixResourcePermissionsRequest body) {
-        return service.fixResourcePermissionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            body, Context.NONE);
+        return fixResourcePermissionsWithResponse(resourceGroupName, workspaceName, scenarioName,
+            scenarioConfigurationName, body, Context.NONE);
     }
 
     /**
@@ -1321,51 +1206,23 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PermissionsFix>, PermissionsFix> beginFixResourcePermissions(String resourceGroupName,
+    private SyncPoller<PollResult<PermissionsFix>, PermissionsFix> beginFixResourcePermissions(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName,
         FixResourcePermissionsRequest body) {
-        Response<BinaryData> response = fixResourcePermissionsWithResponse(resourceGroupName, workspaceName,
-            scenarioName, scenarioConfigurationName, body);
-        return this.client.<PermissionsFix, PermissionsFix>getLroResult(response, PermissionsFix.class,
-            PermissionsFix.class, Context.NONE);
+        return beginFixResourcePermissions(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+            body, Context.NONE);
     }
 
-    /**
-     * Fixes resource permissions for the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PermissionsFix>, PermissionsFix> beginFixResourcePermissions(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName) {
         final FixResourcePermissionsRequest body = null;
-        Response<BinaryData> response = fixResourcePermissionsWithResponse(resourceGroupName, workspaceName,
-            scenarioName, scenarioConfigurationName, body);
-        return this.client.<PermissionsFix, PermissionsFix>getLroResult(response, PermissionsFix.class,
-            PermissionsFix.class, Context.NONE);
+        return beginFixResourcePermissions(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+            body, Context.NONE);
     }
 
-    /**
-     * Fixes resource permissions for the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PermissionsFix>, PermissionsFix> beginFixResourcePermissions(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName, FixResourcePermissionsRequest body,
@@ -1416,45 +1273,21 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             scenarioConfigurationName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fixes resource permissions for the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionsFix fixResourcePermissions(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
         final FixResourcePermissionsRequest body = null;
-        return beginFixResourcePermissions(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            body).getFinalResult();
+        return fixResourcePermissions(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, body,
+            Context.NONE);
     }
 
-    /**
-     * Fixes resource permissions for the given scenario configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param scenarioConfigurationName Name of the scenario definition.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionsFix fixResourcePermissions(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName, FixResourcePermissionsRequest body, Context context) {
-        return beginFixResourcePermissions(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFixResourcePermissions(resourceGroupName, workspaceName,
+            scenarioName, scenarioConfigurationName, body, context));
     }
 
     /**
@@ -1487,11 +1320,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioConfigurationInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScenarioConfigurationListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

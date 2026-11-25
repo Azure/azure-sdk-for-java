@@ -295,18 +295,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deployments associated with the Cognitive Services account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentInner> getWithResponse(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -315,17 +304,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             resourceGroupName, accountName, deploymentName, accept, context);
     }
 
-    /**
-     * Gets the specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deployments associated with the Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner get(String resourceGroupName, String accountName, String deploymentName) {
         return getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE).getValue();
@@ -371,11 +350,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String deploymentName, DeploymentInner deployment) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, contentType, accept,
-            deployment, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, deploymentName, deployment, Context.NONE);
     }
 
     /**
@@ -422,40 +397,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             DeploymentInner.class, DeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Update the state of specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String deploymentName, DeploymentInner deployment) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, deploymentName, deployment);
-        return this.client.<DeploymentInner, DeploymentInner>getLroResult(response, DeploymentInner.class,
-            DeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, deployment, Context.NONE);
     }
 
-    /**
-     * Update the state of specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String deploymentName, DeploymentInner deployment, Context context) {
@@ -484,42 +433,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the state of specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner createOrUpdate(String resourceGroupName, String accountName, String deploymentName,
         DeploymentInner deployment) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, deployment).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, deploymentName, deployment, Context.NONE);
     }
 
-    /**
-     * Update the state of specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner createOrUpdate(String resourceGroupName, String accountName, String deploymentName,
         DeploymentInner deployment, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, deployment, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, deployment, context));
     }
 
     /**
@@ -562,11 +488,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String deploymentName,
         PatchResourceTagsAndSku deployment) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, contentType, accept,
-            deployment, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, deploymentName, deployment, Context.NONE);
     }
 
     /**
@@ -613,39 +535,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             DeploymentInner.class, DeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Update specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginUpdate(String resourceGroupName,
         String accountName, String deploymentName, PatchResourceTagsAndSku deployment) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, deploymentName, deployment);
-        return this.client.<DeploymentInner, DeploymentInner>getLroResult(response, DeploymentInner.class,
-            DeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, deploymentName, deployment, Context.NONE);
     }
 
-    /**
-     * Update specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginUpdate(String resourceGroupName,
         String accountName, String deploymentName, PatchResourceTagsAndSku deployment, Context context) {
@@ -674,41 +571,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
         PatchResourceTagsAndSku deployment) {
-        return beginUpdate(resourceGroupName, accountName, deploymentName, deployment).getFinalResult();
+        return update(resourceGroupName, accountName, deploymentName, deployment, Context.NONE);
     }
 
-    /**
-     * Update specified deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param deployment The deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
         PatchResourceTagsAndSku deployment, Context context) {
-        return beginUpdate(resourceGroupName, accountName, deploymentName, deployment, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, deploymentName, deployment, context));
     }
 
     /**
@@ -745,8 +620,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
     /**
@@ -787,36 +661,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -841,35 +693,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String deploymentName) {
-        beginDelete(resourceGroupName, accountName, deploymentName).getFinalResult();
+        delete(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String deploymentName, Context context) {
-        beginDelete(resourceGroupName, accountName, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, deploymentName, context));
     }
 
     /**
@@ -923,11 +756,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -951,35 +780,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -1042,12 +849,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listSkusSinglePage(String resourceGroupName, String accountName,
         String deploymentName) {
-        final String accept = "application/json";
-        Response<DeploymentSkuListResult> res
-            = service.listSkusSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusSinglePage(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
     /**
@@ -1073,38 +875,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the specified deployments skus associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String accountName,
         String deploymentName) {
-        return new PagedIterable<>(() -> listSkusSinglePage(resourceGroupName, accountName, deploymentName),
-            nextLink -> listSkusNextSinglePage(nextLink));
+        return listSkus(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Lists the specified deployments skus associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String accountName, String deploymentName,
         Context context) {
@@ -1161,23 +939,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Pause a deployment
-     * 
-     * Pauses inferencing on a deployment by setting the deploymentState to 'Paused' (see
-     * #/definitions/DeploymentProperties/properties/deploymentState). Only Standard, DataZoneStandard, and
-     * GlobalStandard SKUs support this operation. Inference requests to the paused deployment endpoint will receive
-     * HTTP 423 (Locked). This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentInner> pauseWithResponse(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -1186,22 +948,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, accept, context);
     }
 
-    /**
-     * Pause a deployment
-     * 
-     * Pauses inferencing on a deployment by setting the deploymentState to 'Paused' (see
-     * #/definitions/DeploymentProperties/properties/deploymentState). Only Standard, DataZoneStandard, and
-     * GlobalStandard SKUs support this operation. Inference requests to the paused deployment endpoint will receive
-     * HTTP 423 (Locked). This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner pause(String resourceGroupName, String accountName, String deploymentName) {
         return pauseWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE).getValue();
@@ -1254,22 +1001,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Resume a deployment
-     * 
-     * Resumes inferencing on a previously paused deployment by setting the deploymentState to 'Running' (see
-     * #/definitions/DeploymentProperties/properties/deploymentState). This operation is idempotent and can be safely
-     * called on already running deployments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentInner> resumeWithResponse(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -1278,21 +1010,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, accept, context);
     }
 
-    /**
-     * Resume a deployment
-     * 
-     * Resumes inferencing on a previously paused deployment by setting the deploymentState to 'Running' (see
-     * #/definitions/DeploymentProperties/properties/deploymentState). This operation is idempotent and can be safely
-     * called on already running deployments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInner resume(String resourceGroupName, String accountName, String deploymentName) {
         return resumeWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE).getValue();
@@ -1328,11 +1046,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1384,11 +1098,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listSkusNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentSkuListResult> res
-            = service.listSkusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

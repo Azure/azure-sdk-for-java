@@ -19,6 +19,18 @@ public final class SchemaVersionImpl implements SchemaVersion, SchemaVersion.Def
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}/schemaVersions/{schemaVersionName}",
+            "resourceGroupName");
+        this.schemaRegistryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}/schemaVersions/{schemaVersionName}",
+            "schemaRegistryName");
+        this.schemaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}/schemaVersions/{schemaVersionName}",
+            "schemaName");
+        this.schemaVersionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}/schemaVersions/{schemaVersionName}",
+            "schemaVersionName");
     }
 
     public String id() {
@@ -66,12 +78,7 @@ public final class SchemaVersionImpl implements SchemaVersion, SchemaVersion.Def
     }
 
     public SchemaVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaVersions()
-            .createOrReplaceWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SchemaVersion create(Context context) {
@@ -90,11 +97,7 @@ public final class SchemaVersionImpl implements SchemaVersion, SchemaVersion.Def
     }
 
     public SchemaVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaVersions()
-            .getWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SchemaVersion refresh(Context context) {

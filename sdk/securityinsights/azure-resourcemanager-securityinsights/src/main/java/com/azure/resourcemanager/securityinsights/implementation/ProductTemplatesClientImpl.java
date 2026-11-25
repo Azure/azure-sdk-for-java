@@ -115,18 +115,7 @@ public final class ProductTemplatesClientImpl implements ProductTemplatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a template by its identifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param templateId template Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a template by its identifier along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductTemplateModelInner> getWithResponse(String resourceGroupName, String workspaceName,
         String templateId, Context context) {
@@ -135,17 +124,7 @@ public final class ProductTemplatesClientImpl implements ProductTemplatesClient 
             resourceGroupName, workspaceName, templateId, accept, context);
     }
 
-    /**
-     * Gets a template by its identifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param templateId template Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a template by its identifier.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductTemplateModelInner get(String resourceGroupName, String workspaceName, String templateId) {
         return getWithResponse(resourceGroupName, workspaceName, templateId, Context.NONE).getValue();

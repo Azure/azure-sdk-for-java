@@ -49,7 +49,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsImpl
     }
 
     public void delete(String resourceGroupName, String paymentHsmClusterName, String peConnectionName) {
-        this.serviceClient().delete(resourceGroupName, paymentHsmClusterName, peConnectionName);
+        this.delete(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String paymentHsmClusterName, String peConnectionName,
@@ -59,10 +59,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsImpl
 
     public PagedIterable<PaymentHsmClusterPrivateEndpointConnection> listByPaymentHsmCluster(String resourceGroupName,
         String paymentHsmClusterName) {
-        PagedIterable<PaymentHsmClusterPrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByPaymentHsmCluster(resourceGroupName, paymentHsmClusterName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PaymentHsmClusterPrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByPaymentHsmCluster(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
     public PagedIterable<PaymentHsmClusterPrivateEndpointConnection> listByPaymentHsmCluster(String resourceGroupName,
@@ -74,103 +71,36 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsImpl
     }
 
     public PaymentHsmClusterPrivateEndpointConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "paymentHsmClusterName");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
-        String peConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "peConnectionName");
-        if (peConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PaymentHsmClusterPrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String paymentHsmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "paymentHsmClusterName");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
-        String peConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "paymentHsmClusterName", "paymentHsmClusters", LOGGER);
+        String peConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "peConnectionName");
-        if (peConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+            "peConnectionName", "privateEndpointConnections", LOGGER);
         return this.getWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "paymentHsmClusterName");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
-        String peConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "peConnectionName");
-        if (peConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        this.delete(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String paymentHsmClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String paymentHsmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "paymentHsmClusterName");
-        if (paymentHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'paymentHsmClusters'.", id)));
-        }
-        String peConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "paymentHsmClusterName", "paymentHsmClusters", LOGGER);
+        String peConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}",
-            "peConnectionName");
-        if (peConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+            "peConnectionName", "privateEndpointConnections", LOGGER);
         this.delete(resourceGroupName, paymentHsmClusterName, peConnectionName, context);
     }
 

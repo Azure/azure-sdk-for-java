@@ -524,17 +524,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStackInner> getByResourceGroupWithResponse(String resourceGroupName,
         String deploymentStackName, Context context) {
@@ -543,16 +533,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, accept, context);
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner getByResourceGroup(String resourceGroupName, String deploymentStackName) {
         return getByResourceGroupWithResponse(resourceGroupName, deploymentStackName, Context.NONE).getValue();
@@ -605,11 +586,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStackInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DeploymentStackListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -632,31 +609,13 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStack list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStackInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listAtResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStack list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStackInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -703,11 +662,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtResourceGroupWithResponse(String resourceGroupName,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateStackAtResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, contentType, accept,
-            deploymentStack, Context.NONE);
+        return validateStackAtResourceGroupWithResponse(resourceGroupName, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
     /**
@@ -756,41 +712,15 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             DeploymentStackValidateResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
         beginValidateStackAtResourceGroup(String resourceGroupName, String deploymentStackName,
             DeploymentStackInner deploymentStack) {
-        Response<BinaryData> response
-            = validateStackAtResourceGroupWithResponse(resourceGroupName, deploymentStackName, deploymentStack);
-        return this.client.<DeploymentStackValidateResultInner, DeploymentStackValidateResultInner>getLroResult(
-            response, DeploymentStackValidateResultInner.class, DeploymentStackValidateResultInner.class, Context.NONE);
+        return beginValidateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
         beginValidateStackAtResourceGroup(String resourceGroupName, String deploymentStackName,
@@ -820,43 +750,19 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtResourceGroup(String resourceGroupName,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        return beginValidateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack)
-            .getFinalResult();
+        return validateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtResourceGroup(String resourceGroupName,
         String deploymentStackName, DeploymentStackInner deploymentStack, Context context) {
-        return beginValidateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, context));
     }
 
     /**
@@ -896,11 +802,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtResourceGroupWithResponse(String resourceGroupName,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, contentType, accept,
-            deploymentStack, Context.NONE);
+        return createOrUpdateAtResourceGroupWithResponse(resourceGroupName, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
     /**
@@ -945,38 +848,15 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             DeploymentStackInner.class, DeploymentStackInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackInner>, DeploymentStackInner> beginCreateOrUpdateAtResourceGroup(
         String resourceGroupName, String deploymentStackName, DeploymentStackInner deploymentStack) {
-        Response<BinaryData> response
-            = createOrUpdateAtResourceGroupWithResponse(resourceGroupName, deploymentStackName, deploymentStack);
-        return this.client.<DeploymentStackInner, DeploymentStackInner>getLroResult(response,
-            DeploymentStackInner.class, DeploymentStackInner.class, Context.NONE);
+        return beginCreateOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackInner>, DeploymentStackInner> beginCreateOrUpdateAtResourceGroup(
         String resourceGroupName, String deploymentStackName, DeploymentStackInner deploymentStack, Context context) {
@@ -1004,41 +884,19 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner createOrUpdateAtResourceGroup(String resourceGroupName, String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        return beginCreateOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack)
-            .getFinalResult();
+        return createOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner createOrUpdateAtResourceGroup(String resourceGroupName, String deploymentStackName,
         DeploymentStackInner deploymentStack, Context context) {
-        return beginCreateOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, context));
     }
 
     /**
@@ -1099,8 +957,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, unmanageActionResources,
+        return deleteWithResponse(resourceGroupName, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
             bypassStackOutOfSyncError, Context.NONE);
     }
@@ -1213,29 +1070,18 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentStackName,
-            unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
-            unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName) {
         final UnmanageActionResourceMode unmanageActionResources = null;
@@ -1243,31 +1089,12 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentStackName,
-            unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
-            unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
@@ -1334,16 +1161,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             bypassStackOutOfSyncError).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStackName) {
         final UnmanageActionResourceMode unmanageActionResources = null;
@@ -1351,29 +1169,12 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
-        beginDelete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
-            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError)
-                .getFinalResult();
+        delete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
+            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
@@ -1381,9 +1182,9 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
-        beginDelete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
-            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
-            context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, deploymentStackName,
+            unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
+            unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError, context));
     }
 
     /**
@@ -1425,17 +1226,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used to create the Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return export Template specific properties of the Deployment stack along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStackTemplateDefinitionInner> exportTemplateAtResourceGroupWithResponse(
         String resourceGroupName, String deploymentStackName, Context context) {
@@ -1444,16 +1235,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, accept, context);
     }
 
-    /**
-     * Exports the template used to create the Deployment stack at the specified scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return export Template specific properties of the Deployment stack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackTemplateDefinitionInner exportTemplateAtResourceGroup(String resourceGroupName,
         String deploymentStackName) {
@@ -1494,16 +1276,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         return getAtSubscriptionWithResponseAsync(deploymentStackName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStackInner> getAtSubscriptionWithResponse(String deploymentStackName, Context context) {
         final String accept = "application/json";
@@ -1511,15 +1284,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             this.client.getSubscriptionId(), deploymentStackName, accept, context);
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner getAtSubscription(String deploymentStackName) {
         return getAtSubscriptionWithResponse(deploymentStackName, Context.NONE).getValue();
@@ -1566,11 +1331,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStackInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DeploymentStackListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1591,27 +1352,13 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStack list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStackInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAtSubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStack list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStackInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1656,10 +1403,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtSubscriptionWithResponse(String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateStackAtSubscriptionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentStackName, contentType, accept, deploymentStack, Context.NONE);
+        return validateStackAtSubscriptionWithResponse(deploymentStackName, deploymentStack, Context.NONE);
     }
 
     /**
@@ -1704,37 +1448,14 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             DeploymentStackValidateResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
         beginValidateStackAtSubscription(String deploymentStackName, DeploymentStackInner deploymentStack) {
-        Response<BinaryData> response = validateStackAtSubscriptionWithResponse(deploymentStackName, deploymentStack);
-        return this.client.<DeploymentStackValidateResultInner, DeploymentStackValidateResultInner>getLroResult(
-            response, DeploymentStackValidateResultInner.class, DeploymentStackValidateResultInner.class, Context.NONE);
+        return beginValidateStackAtSubscription(deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
         beginValidateStackAtSubscription(String deploymentStackName, DeploymentStackInner deploymentStack,
@@ -1763,39 +1484,19 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtSubscription(String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        return beginValidateStackAtSubscription(deploymentStackName, deploymentStack).getFinalResult();
+        return validateStackAtSubscription(deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtSubscription(String deploymentStackName,
         DeploymentStackInner deploymentStack, Context context) {
-        return beginValidateStackAtSubscription(deploymentStackName, deploymentStack, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginValidateStackAtSubscription(deploymentStackName, deploymentStack, context));
     }
 
     /**
@@ -1833,10 +1534,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtSubscriptionWithResponse(String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtSubscriptionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentStackName, contentType, accept, deploymentStack, Context.NONE);
+        return createOrUpdateAtSubscriptionWithResponse(deploymentStackName, deploymentStack, Context.NONE);
     }
 
     /**
@@ -1878,35 +1576,14 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             DeploymentStackInner.class, DeploymentStackInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackInner>, DeploymentStackInner>
         beginCreateOrUpdateAtSubscription(String deploymentStackName, DeploymentStackInner deploymentStack) {
-        Response<BinaryData> response = createOrUpdateAtSubscriptionWithResponse(deploymentStackName, deploymentStack);
-        return this.client.<DeploymentStackInner, DeploymentStackInner>getLroResult(response,
-            DeploymentStackInner.class, DeploymentStackInner.class, Context.NONE);
+        return beginCreateOrUpdateAtSubscription(deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackInner>, DeploymentStackInner> beginCreateOrUpdateAtSubscription(
         String deploymentStackName, DeploymentStackInner deploymentStack, Context context) {
@@ -1933,37 +1610,19 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner createOrUpdateAtSubscription(String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        return beginCreateOrUpdateAtSubscription(deploymentStackName, deploymentStack).getFinalResult();
+        return createOrUpdateAtSubscription(deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner createOrUpdateAtSubscription(String deploymentStackName,
         DeploymentStackInner deploymentStack, Context context) {
-        return beginCreateOrUpdateAtSubscription(deploymentStackName, deploymentStack, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdateAtSubscription(deploymentStackName, deploymentStack, context));
     }
 
     /**
@@ -2022,10 +1681,9 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
-        return service.deleteAtSubscriptionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
-            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
-            Context.NONE);
+        return deleteAtSubscriptionWithResponse(deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
     /**
@@ -2132,28 +1790,18 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
+    private SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
-        Response<BinaryData> response = deleteAtSubscriptionWithResponse(deploymentStackName, unmanageActionResources,
-            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
-            bypassStackOutOfSyncError);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
+            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName) {
         final UnmanageActionResourceMode unmanageActionResources = null;
@@ -2161,30 +1809,12 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
-        Response<BinaryData> response = deleteAtSubscriptionWithResponse(deploymentStackName, unmanageActionResources,
-            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
-            bypassStackOutOfSyncError);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
+            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
@@ -2249,15 +1879,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             bypassStackOutOfSyncError).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscription(String deploymentStackName) {
         final UnmanageActionResourceMode unmanageActionResources = null;
@@ -2265,37 +1887,21 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
-        beginDeleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
-            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError)
-                .getFinalResult();
+        deleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
+            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscription(String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
-        beginDeleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
-            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
-            context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteAtSubscription(deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, context));
     }
 
     /**
@@ -2333,16 +1939,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used to create the Deployment stack at the specified scope.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return export Template specific properties of the Deployment stack along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStackTemplateDefinitionInner>
         exportTemplateAtSubscriptionWithResponse(String deploymentStackName, Context context) {
@@ -2351,15 +1948,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             this.client.getSubscriptionId(), deploymentStackName, accept, context);
     }
 
-    /**
-     * Exports the template used to create the Deployment stack at the specified scope.
-     * 
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return export Template specific properties of the Deployment stack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackTemplateDefinitionInner exportTemplateAtSubscription(String deploymentStackName) {
         return exportTemplateAtSubscriptionWithResponse(deploymentStackName, Context.NONE).getValue();
@@ -2402,17 +1991,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStackInner> getAtManagementGroupWithResponse(String managementGroupId,
         String deploymentStackName, Context context) {
@@ -2421,16 +2000,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             managementGroupId, deploymentStackName, accept, context);
     }
 
-    /**
-     * Gets the Deployment stack with the given name.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack with the given name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner getAtManagementGroup(String managementGroupId, String deploymentStackName) {
         return getAtManagementGroupWithResponse(managementGroupId, deploymentStackName, Context.NONE).getValue();
@@ -2483,11 +2053,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStackInner> listAtManagementGroupSinglePage(String managementGroupId) {
-        final String accept = "application/json";
-        Response<DeploymentStackListResult> res = service.listAtManagementGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), managementGroupId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtManagementGroupSinglePage(managementGroupId, Context.NONE);
     }
 
     /**
@@ -2510,31 +2076,13 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStack list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStackInner> listAtManagementGroup(String managementGroupId) {
-        return new PagedIterable<>(() -> listAtManagementGroupSinglePage(managementGroupId),
-            nextLink -> listAtManagementGroupNextSinglePage(nextLink));
+        return listAtManagementGroup(managementGroupId, Context.NONE);
     }
 
-    /**
-     * Lists Deployment stacks at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentStack list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentStackInner> listAtManagementGroup(String managementGroupId, Context context) {
         return new PagedIterable<>(() -> listAtManagementGroupSinglePage(managementGroupId, context),
@@ -2581,10 +2129,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtManagementGroupWithResponse(String managementGroupId,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateStackAtManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            managementGroupId, deploymentStackName, contentType, accept, deploymentStack, Context.NONE);
+        return validateStackAtManagementGroupWithResponse(managementGroupId, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
     /**
@@ -2632,41 +2178,16 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             DeploymentStackValidateResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
         beginValidateStackAtManagementGroup(String managementGroupId, String deploymentStackName,
             DeploymentStackInner deploymentStack) {
-        Response<BinaryData> response
-            = validateStackAtManagementGroupWithResponse(managementGroupId, deploymentStackName, deploymentStack);
-        return this.client.<DeploymentStackValidateResultInner, DeploymentStackValidateResultInner>getLroResult(
-            response, DeploymentStackValidateResultInner.class, DeploymentStackValidateResultInner.class, Context.NONE);
+        return beginValidateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
         beginValidateStackAtManagementGroup(String managementGroupId, String deploymentStackName,
@@ -2696,43 +2217,19 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtManagementGroup(String managementGroupId,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        return beginValidateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack)
-            .getFinalResult();
+        return validateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
-     * Azure Resource Manager.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Deployment stack validation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtManagementGroup(String managementGroupId,
         String deploymentStackName, DeploymentStackInner deploymentStack, Context context) {
-        return beginValidateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack, context));
     }
 
     /**
@@ -2772,10 +2269,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtManagementGroupWithResponse(String managementGroupId,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            managementGroupId, deploymentStackName, contentType, accept, deploymentStack, Context.NONE);
+        return createOrUpdateAtManagementGroupWithResponse(managementGroupId, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
     /**
@@ -2820,38 +2315,15 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             DeploymentStackInner.class, DeploymentStackInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackInner>, DeploymentStackInner> beginCreateOrUpdateAtManagementGroup(
         String managementGroupId, String deploymentStackName, DeploymentStackInner deploymentStack) {
-        Response<BinaryData> response
-            = createOrUpdateAtManagementGroupWithResponse(managementGroupId, deploymentStackName, deploymentStack);
-        return this.client.<DeploymentStackInner, DeploymentStackInner>getLroResult(response,
-            DeploymentStackInner.class, DeploymentStackInner.class, Context.NONE);
+        return beginCreateOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackInner>, DeploymentStackInner> beginCreateOrUpdateAtManagementGroup(
         String managementGroupId, String deploymentStackName, DeploymentStackInner deploymentStack, Context context) {
@@ -2879,41 +2351,19 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner createOrUpdateAtManagementGroup(String managementGroupId, String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        return beginCreateOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack)
-            .getFinalResult();
+        return createOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Deployment stack at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param deploymentStack Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment stack object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackInner createOrUpdateAtManagementGroup(String managementGroupId, String deploymentStackName,
         DeploymentStackInner deploymentStack, Context context) {
-        return beginCreateOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack, context));
     }
 
     /**
@@ -2974,10 +2424,9 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
-        return service.deleteAtManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            managementGroupId, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
-            unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
-            Context.NONE);
+        return deleteAtManagementGroupWithResponse(managementGroupId, deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
     /**
@@ -3089,29 +2538,18 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
+    private SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
         String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
-        Response<BinaryData> response = deleteAtManagementGroupWithResponse(managementGroupId, deploymentStackName,
-            unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
-            unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
         String deploymentStackName) {
@@ -3120,31 +2558,12 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
-        Response<BinaryData> response = deleteAtManagementGroupWithResponse(managementGroupId, deploymentStackName,
-            unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
-            unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
+            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
         String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
@@ -3211,16 +2630,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             bypassStackOutOfSyncError).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName) {
         final UnmanageActionResourceMode unmanageActionResources = null;
@@ -3228,29 +2638,12 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
-        beginDeleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
+        deleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
-            bypassStackOutOfSyncError).getFinalResult();
+            bypassStackOutOfSyncError, Context.NONE);
     }
 
-    /**
-     * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
-     * without content.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
-     * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
-     * @param unmanageActionManagementGroups Flag to indicate delete rather than detach for unmanaged management groups.
-     * @param unmanageActionResourcesWithoutDeleteSupport Some resources do not support deletion. This flag will denote
-     * how the stack should handle those resources.
-     * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is not
-     * correctly synchronized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
@@ -3258,9 +2651,9 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
-        beginDeleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
-            unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
-            bypassStackOutOfSyncError, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteAtManagementGroup(managementGroupId, deploymentStackName,
+            unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
+            unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError, context));
     }
 
     /**
@@ -3301,17 +2694,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used to create the Deployment stack at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return export Template specific properties of the Deployment stack along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentStackTemplateDefinitionInner> exportTemplateAtManagementGroupWithResponse(
         String managementGroupId, String deploymentStackName, Context context) {
@@ -3320,16 +2703,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             managementGroupId, deploymentStackName, accept, context);
     }
 
-    /**
-     * Exports the template used to create the Deployment stack at the specified scope.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param deploymentStackName Name of the deployment stack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return export Template specific properties of the Deployment stack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackTemplateDefinitionInner exportTemplateAtManagementGroup(String managementGroupId,
         String deploymentStackName) {
@@ -3369,11 +2743,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStackInner> listAtResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentStackListResult> res
-            = service.listAtResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3427,11 +2797,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStackInner> listAtSubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentStackListResult> res
-            = service.listAtSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtSubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3485,11 +2851,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentStackInner> listAtManagementGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentStackListResult> res
-            = service.listAtManagementGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtManagementGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

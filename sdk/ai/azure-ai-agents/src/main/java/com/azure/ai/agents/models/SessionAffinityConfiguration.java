@@ -20,10 +20,10 @@ import java.io.IOException;
 public final class SessionAffinityConfiguration implements JsonSerializable<SessionAffinityConfiguration> {
 
     /*
-     * Controls whether Model Router applies session affinity to this request.
+     * Deprecated request alias for `strategy`. Ignored when `strategy` is also supplied.
      */
     @Generated
-    private SessionAffinityRequestMode mode;
+    private SessionAffinityRequestStrategy mode;
 
     /*
      * An opaque, application-owned conversation identifier. Use the same value for related requests.
@@ -40,25 +40,13 @@ public final class SessionAffinityConfiguration implements JsonSerializable<Sess
     }
 
     /**
-     * Get the mode property: Controls whether Model Router applies session affinity to this request.
+     * Get the mode property: Deprecated request alias for `strategy`. Ignored when `strategy` is also supplied.
      *
      * @return the mode value.
      */
     @Generated
-    public SessionAffinityRequestMode getMode() {
+    public SessionAffinityRequestStrategy getMode() {
         return this.mode;
-    }
-
-    /**
-     * Set the mode property: Controls whether Model Router applies session affinity to this request.
-     *
-     * @param mode the mode value to set.
-     * @return the SessionAffinityConfiguration object itself.
-     */
-    @Generated
-    public SessionAffinityConfiguration setMode(SessionAffinityRequestMode mode) {
-        this.mode = mode;
-        return this;
     }
 
     /**
@@ -94,6 +82,7 @@ public final class SessionAffinityConfiguration implements JsonSerializable<Sess
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("strategy", this.strategy == null ? null : this.strategy.toString());
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("session_id", this.sessionId);
         return jsonWriter.writeEndObject();
@@ -114,9 +103,12 @@ public final class SessionAffinityConfiguration implements JsonSerializable<Sess
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("mode".equals(fieldName)) {
+                if ("strategy".equals(fieldName)) {
+                    deserializedSessionAffinityConfiguration.strategy
+                        = SessionAffinityRequestStrategy.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
                     deserializedSessionAffinityConfiguration.mode
-                        = SessionAffinityRequestMode.fromString(reader.getString());
+                        = SessionAffinityRequestStrategy.fromString(reader.getString());
                 } else if ("session_id".equals(fieldName)) {
                     deserializedSessionAffinityConfiguration.sessionId = reader.getString();
                 } else {
@@ -125,5 +117,48 @@ public final class SessionAffinityConfiguration implements JsonSerializable<Sess
             }
             return deserializedSessionAffinityConfiguration;
         });
+    }
+
+    /*
+     * Controls how session affinity influences model selection for this request. When omitted, adaptive affinity is
+     * used.
+     */
+    @Generated
+    private SessionAffinityRequestStrategy strategy;
+
+    /**
+     * Get the strategy property: Controls how session affinity influences model selection for this request. When
+     * omitted, adaptive affinity is used.
+     *
+     * @return the strategy value.
+     */
+    @Generated
+    public SessionAffinityRequestStrategy getStrategy() {
+        return this.strategy;
+    }
+
+    /**
+     * Set the strategy property: Controls how session affinity influences model selection for this request. When
+     * omitted, adaptive affinity is used.
+     *
+     * @param strategy the strategy value to set.
+     * @return the SessionAffinityConfiguration object itself.
+     */
+    @Generated
+    public SessionAffinityConfiguration setStrategy(SessionAffinityRequestStrategy strategy) {
+        this.strategy = strategy;
+        return this;
+    }
+
+    /**
+     * Set the mode property: Deprecated request alias for `strategy`. Ignored when `strategy` is also supplied.
+     *
+     * @param mode the mode value to set.
+     * @return the SessionAffinityConfiguration object itself.
+     */
+    @Generated
+    public SessionAffinityConfiguration setMode(SessionAffinityRequestStrategy mode) {
+        this.mode = mode;
+        return this;
     }
 }

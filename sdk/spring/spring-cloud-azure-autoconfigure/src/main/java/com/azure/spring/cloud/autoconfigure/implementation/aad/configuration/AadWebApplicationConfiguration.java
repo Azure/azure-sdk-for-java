@@ -8,7 +8,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadOAuth2UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.security.autoconfigure.web.servlet.ConditionalOnDefaultWebSecurity;
 import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -42,7 +41,7 @@ class AadWebApplicationConfiguration {
 
     @EnableWebSecurity
     @EnableMethodSecurity
-    @ConditionalOnDefaultWebSecurity
+    @Conditional(AadDefaultWebSecurityCondition.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadWebSecurityConfiguration {
 

@@ -22,8 +22,9 @@ public final class PasswordAuthenticationProperties implements JsonSerializable<
     private AuthenticationState state;
 
     /*
-     * The PostgreSQL administrator login name. This value is not returned in responses. After it is set, renaming is
-     * not supported. Setting the login requires password authentication state to be Enabled in the same request.
+     * The PostgreSQL administrator login name. This value is returned in responses after it is set. After it is set,
+     * renaming is not supported. Setting the login requires password authentication state to be Enabled in the same
+     * request.
      */
     private String administratorLogin;
 
@@ -65,9 +66,9 @@ public final class PasswordAuthenticationProperties implements JsonSerializable<
     }
 
     /**
-     * Get the administratorLogin property: The PostgreSQL administrator login name. This value is not returned in
-     * responses. After it is set, renaming is not supported. Setting the login requires password authentication state
-     * to be Enabled in the same request.
+     * Get the administratorLogin property: The PostgreSQL administrator login name. This value is returned in responses
+     * after it is set. After it is set, renaming is not supported. Setting the login requires password authentication
+     * state to be Enabled in the same request.
      * 
      * @return the administratorLogin value.
      */
@@ -76,9 +77,9 @@ public final class PasswordAuthenticationProperties implements JsonSerializable<
     }
 
     /**
-     * Set the administratorLogin property: The PostgreSQL administrator login name. This value is not returned in
-     * responses. After it is set, renaming is not supported. Setting the login requires password authentication state
-     * to be Enabled in the same request.
+     * Set the administratorLogin property: The PostgreSQL administrator login name. This value is returned in responses
+     * after it is set. After it is set, renaming is not supported. Setting the login requires password authentication
+     * state to be Enabled in the same request.
      * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the PasswordAuthenticationProperties object itself.

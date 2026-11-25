@@ -107,11 +107,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeQuotaRules()
-            .create(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeQuotaRule create(Context context) {
@@ -134,11 +130,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeQuotaRules()
-            .update(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, updateBody,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VolumeQuotaRule apply(Context context) {
@@ -170,11 +162,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeQuotaRules()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeQuotaRule refresh(Context context) {

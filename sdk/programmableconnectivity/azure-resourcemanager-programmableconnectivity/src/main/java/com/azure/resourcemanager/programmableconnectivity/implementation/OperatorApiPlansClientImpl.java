@@ -147,16 +147,7 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
         return getWithResponseAsync(operatorApiPlanName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an OperatorApiPlan resource by name.
-     * 
-     * @param operatorApiPlanName APC Gateway Plan Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OperatorApiPlan resource by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperatorApiPlanInner> getWithResponse(String operatorApiPlanName, Context context) {
         final String accept = "application/json";
@@ -164,15 +155,7 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
             operatorApiPlanName, accept, context);
     }
 
-    /**
-     * Get an OperatorApiPlan resource by name.
-     * 
-     * @param operatorApiPlanName APC Gateway Plan Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OperatorApiPlan resource by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorApiPlanInner get(String operatorApiPlanName) {
         return getWithResponse(operatorApiPlanName, Context.NONE).getValue();
@@ -247,11 +230,7 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiPlanInner> listSinglePage(String filter, Integer top, Integer skip) {
-        final String accept = "application/json";
-        Response<OperatorApiPlanListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, skip, Context.NONE);
     }
 
     /**
@@ -276,34 +255,16 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List OperatorApiPlan resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OperatorApiPlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperatorApiPlanInner> list() {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top, skip),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, top, skip, Context.NONE);
     }
 
-    /**
-     * List OperatorApiPlan resources by subscription ID.
-     * 
-     * @param filter An optional OData based filter expression to apply on the operation.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned.
-     * @param skip An optional query parameter which specifies the number of records to be skipped.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OperatorApiPlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperatorApiPlanInner> list(String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, skip, context),
@@ -342,11 +303,7 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiPlanInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OperatorApiPlanListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

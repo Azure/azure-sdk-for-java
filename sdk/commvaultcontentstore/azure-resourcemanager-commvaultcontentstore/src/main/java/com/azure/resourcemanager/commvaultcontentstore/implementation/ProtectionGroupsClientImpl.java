@@ -304,18 +304,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ProtectionGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionGroupInner> getWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, Context context) {
@@ -324,17 +313,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             resourceGroupName, cloudAccountName, protectionGroupName, accept, context);
     }
 
-    /**
-     * Get a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ProtectionGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionGroupInner get(String resourceGroupName, String cloudAccountName, String protectionGroupName) {
         return getWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE).getValue();
@@ -379,11 +358,8 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrupdateWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, ProtectionGroupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrupdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, protectionGroupName, contentType,
-            accept, resource, Context.NONE);
+        return createOrupdateWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, resource,
+            Context.NONE);
     }
 
     /**
@@ -430,40 +406,14 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             ProtectionGroupInner.class, ProtectionGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionGroupInner>, ProtectionGroupInner> beginCreateOrupdate(
         String resourceGroupName, String cloudAccountName, String protectionGroupName, ProtectionGroupInner resource) {
-        Response<BinaryData> response
-            = createOrupdateWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, resource);
-        return this.client.<ProtectionGroupInner, ProtectionGroupInner>getLroResult(response,
-            ProtectionGroupInner.class, ProtectionGroupInner.class, Context.NONE);
+        return beginCreateOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionGroupInner>, ProtectionGroupInner> beginCreateOrupdate(
         String resourceGroupName, String cloudAccountName, String protectionGroupName, ProtectionGroupInner resource,
@@ -493,42 +443,19 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionGroupInner createOrupdate(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, ProtectionGroupInner resource) {
-        return beginCreateOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, resource).getFinalResult();
+        return createOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionGroupInner createOrupdate(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, ProtectionGroupInner resource, Context context) {
-        return beginCreateOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, resource, context));
     }
 
     /**
@@ -565,8 +492,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
     }
 
     /**
@@ -608,36 +534,14 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         String protectionGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudAccountName, protectionGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, Context context) {
@@ -663,35 +567,17 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, String protectionGroupName) {
-        beginDelete(resourceGroupName, cloudAccountName, protectionGroupName).getFinalResult();
+        delete(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a ProtectionGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, String protectionGroupName, Context context) {
-        beginDelete(resourceGroupName, cloudAccountName, protectionGroupName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, cloudAccountName, protectionGroupName, context));
     }
 
     /**
@@ -746,12 +632,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionGroupInner> listByCloudAccountSinglePage(String resourceGroupName,
         String cloudAccountName) {
-        final String accept = "application/json";
-        Response<ProtectionGroupListResult> res
-            = service.listByCloudAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudAccountSinglePage(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     /**
@@ -776,33 +657,13 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ProtectionGroup resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectionGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionGroupInner> listByCloudAccount(String resourceGroupName, String cloudAccountName) {
-        return new PagedIterable<>(() -> listByCloudAccountSinglePage(resourceGroupName, cloudAccountName),
-            nextLink -> listByCloudAccountNextSinglePage(nextLink));
+        return listByCloudAccount(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
-    /**
-     * List ProtectionGroup resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectionGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionGroupInner> listByCloudAccount(String resourceGroupName, String cloudAccountName,
         Context context) {
@@ -848,10 +709,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopBackupWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, StopBackupProtectionGroupRequest request) {
-        final String contentType = "application/json";
-        return service.stopBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, protectionGroupName, contentType,
-            request, Context.NONE);
+        return stopBackupWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, request, Context.NONE);
     }
 
     /**
@@ -897,39 +755,14 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             this.client.getContext());
     }
 
-    /**
-     * Stop Backup for a Protection Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopBackup(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, StopBackupProtectionGroupRequest request) {
-        Response<BinaryData> response
-            = stopBackupWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, request);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStopBackup(resourceGroupName, cloudAccountName, protectionGroupName, request, Context.NONE);
     }
 
-    /**
-     * Stop Backup for a Protection Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopBackup(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, StopBackupProtectionGroupRequest request, Context context) {
@@ -957,39 +790,19 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stop Backup for a Protection Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopBackup(String resourceGroupName, String cloudAccountName, String protectionGroupName,
         StopBackupProtectionGroupRequest request) {
-        beginStopBackup(resourceGroupName, cloudAccountName, protectionGroupName, request).getFinalResult();
+        stopBackup(resourceGroupName, cloudAccountName, protectionGroupName, request, Context.NONE);
     }
 
-    /**
-     * Stop Backup for a Protection Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopBackup(String resourceGroupName, String cloudAccountName, String protectionGroupName,
         StopBackupProtectionGroupRequest request, Context context) {
-        beginStopBackup(resourceGroupName, cloudAccountName, protectionGroupName, request, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginStopBackup(resourceGroupName, cloudAccountName, protectionGroupName, request, context));
     }
 
     /**
@@ -1036,19 +849,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Restore resource for a protected items in given protection group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore resource response for a Protected Item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestoreProtectionItemResponseInner> restoreWithResponse(String resourceGroupName,
         String cloudAccountName, String protectionGroupName, RestoreProtectionItemRequest request, Context context) {
@@ -1059,18 +860,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             accept, request, context);
     }
 
-    /**
-     * Restore resource for a protected items in given protection group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore resource response for a Protected Item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreProtectionItemResponseInner restore(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, RestoreProtectionItemRequest request) {
@@ -1116,18 +906,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Resume Backup for a Protection Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resumeBackupWithResponse(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, Context context) {
@@ -1135,16 +914,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, protectionGroupName, context);
     }
 
-    /**
-     * Resume Backup for a Protection Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeBackup(String resourceGroupName, String cloudAccountName, String protectionGroupName) {
         resumeBackupWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE);
@@ -1194,19 +964,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Ad-hoc backup of protected items resource in given protection group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup job response for a Protection Group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupProtectionGroupResponseInner> backupWithResponse(String resourceGroupName,
         String cloudAccountName, String protectionGroupName, BackupProtectionGroupRequest request, Context context) {
@@ -1217,18 +975,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
             accept, request, context);
     }
 
-    /**
-     * Ad-hoc backup of protected items resource in given protection group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param protectionGroupName Name of the ProtectionGroup resource.
-     * @param request The body type of the operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup job response for a Protection Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupProtectionGroupResponseInner backup(String resourceGroupName, String cloudAccountName,
         String protectionGroupName, BackupProtectionGroupRequest request) {
@@ -1268,11 +1015,7 @@ public final class ProtectionGroupsClientImpl implements ProtectionGroupsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionGroupInner> listByCloudAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectionGroupListResult> res
-            = service.listByCloudAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -89,11 +89,7 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionPolicies()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionPolicyResource create(Context context) {
@@ -116,11 +112,7 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionPolicies()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectionPolicyResource apply(Context context) {
@@ -147,11 +139,7 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionPolicies()
-            .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionPolicyResource refresh(Context context) {

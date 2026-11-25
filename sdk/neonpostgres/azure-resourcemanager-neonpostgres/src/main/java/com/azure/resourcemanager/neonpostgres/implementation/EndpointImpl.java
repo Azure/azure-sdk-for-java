@@ -67,11 +67,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Endpoint create(Context context) {
@@ -93,11 +89,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Endpoint apply(Context context) {

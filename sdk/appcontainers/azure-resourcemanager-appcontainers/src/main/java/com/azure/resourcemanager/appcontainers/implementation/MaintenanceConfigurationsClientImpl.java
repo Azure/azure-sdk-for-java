@@ -204,18 +204,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the maintenance configuration of a ManagedEnvironment .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param configName Name of the Maintenance Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the maintenance configuration of a ManagedEnvironment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationResourceInner> getWithResponse(String resourceGroupName,
         String environmentName, String configName, Context context) {
@@ -224,17 +213,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             resourceGroupName, environmentName, configName, accept, context);
     }
 
-    /**
-     * Gets the maintenance configuration of a ManagedEnvironment .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param configName Name of the Maintenance Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the maintenance configuration of a ManagedEnvironment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationResourceInner get(String resourceGroupName, String environmentName,
         String configName) {
@@ -287,19 +266,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             maintenanceConfigurationEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update the maintenance configuration for Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param configName Name of the Maintenance Configuration.
-     * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the Maintenance Configuration resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String environmentName, String configName,
@@ -311,18 +278,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             maintenanceConfigurationEnvelope, context);
     }
 
-    /**
-     * Create or update the maintenance configuration for Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param configName Name of the Maintenance Configuration.
-     * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the Maintenance Configuration resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationResourceInner createOrUpdate(String resourceGroupName, String environmentName,
         String configName, MaintenanceConfigurationResourceInner maintenanceConfigurationEnvelope) {
@@ -366,18 +322,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         return deleteWithResponseAsync(resourceGroupName, environmentName, configName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the maintenance configuration of a ManagedEnvironment .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param configName Name of the Maintenance Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String configName,
         Context context) {
@@ -385,16 +330,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             this.client.getSubscriptionId(), resourceGroupName, environmentName, configName, context);
     }
 
-    /**
-     * Deletes the maintenance configuration of a ManagedEnvironment .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param configName Name of the Maintenance Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String configName) {
         deleteWithResponse(resourceGroupName, environmentName, configName, Context.NONE);
@@ -454,12 +390,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceConfigurationResourceInner> listSinglePage(String resourceGroupName,
         String environmentName) {
-        final String accept = "application/json";
-        Response<MaintenanceConfigurationCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -484,35 +415,13 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all maintenance configurations in the specified Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all maintenance configurations in the specified Managed Environment as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationResourceInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Gets all maintenance configurations in the specified Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all maintenance configurations in the specified Managed Environment as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationResourceInner> list(String resourceGroupName, String environmentName,
         Context context) {
@@ -550,11 +459,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceConfigurationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MaintenanceConfigurationCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

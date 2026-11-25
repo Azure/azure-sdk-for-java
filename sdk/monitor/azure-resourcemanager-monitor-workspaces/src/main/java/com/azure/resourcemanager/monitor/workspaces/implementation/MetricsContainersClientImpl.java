@@ -188,18 +188,7 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets metrics container settings for a monitoring account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics container settings for a monitoring account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsContainerResourceInner> getWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, Context context) {
@@ -208,17 +197,7 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
             resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, accept, context);
     }
 
-    /**
-     * Gets metrics container settings for a monitoring account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics container settings for a monitoring account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsContainerResourceInner get(String resourceGroupName, String azureMonitorWorkspaceName,
         String metricsContainerName) {
@@ -270,19 +249,7 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
             resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates metrics container settings for a monitoring account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics container resource for an Azure Monitor Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsContainerResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, MetricsContainerResourceInner resource,
@@ -294,18 +261,7 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
             contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates metrics container settings for a monitoring account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics container resource for an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsContainerResourceInner createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
         String metricsContainerName, MetricsContainerResourceInner resource) {
@@ -368,12 +324,7 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricsContainerResourceInner> listByAzureMonitorWorkspaceSinglePage(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        final String accept = "application/json";
-        Response<MetricsContainerResourceListResult> res
-            = service.listByAzureMonitorWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAzureMonitorWorkspaceSinglePage(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     /**
@@ -398,37 +349,14 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists metrics containers for a monitoring account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricsContainerResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricsContainerResourceInner> listByAzureMonitorWorkspace(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        return new PagedIterable<>(
-            () -> listByAzureMonitorWorkspaceSinglePage(resourceGroupName, azureMonitorWorkspaceName),
-            nextLink -> listByAzureMonitorWorkspaceNextSinglePage(nextLink));
+        return listByAzureMonitorWorkspace(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Lists metrics containers for a monitoring account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricsContainerResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricsContainerResourceInner> listByAzureMonitorWorkspace(String resourceGroupName,
         String azureMonitorWorkspaceName, Context context) {
@@ -469,11 +397,7 @@ public final class MetricsContainersClientImpl implements MetricsContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricsContainerResourceInner> listByAzureMonitorWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetricsContainerResourceListResult> res
-            = service.listByAzureMonitorWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAzureMonitorWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

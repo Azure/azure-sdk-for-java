@@ -22,7 +22,7 @@ public final class RaiBindingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"boundResourceId\":\"whrmvlaknujmw\",\"targetPolicyName\":\"nrzblxna\"},\"etag\":\"smfndcbsyhludzjk\",\"tags\":{\"rj\":\"ohwv\",\"urmd\":\"dvt\",\"ntjna\":\"a\"},\"id\":\"hvqiiasbtwskkf\",\"name\":\"uyi\",\"type\":\"mxhh\"}]}";
+            = "{\"value\":[{\"properties\":{\"boundResourceId\":\"weogavfyih\",\"targetPolicyName\":\"zsbpwnyfjcyp\"},\"etag\":\"wiimdlzgkooag\",\"tags\":{\"wqadewhuwxkyx\":\"pamesi\",\"fllxc\":\"atfamrna\"},\"id\":\"rk\",\"name\":\"yfozwhomydxg\",\"type\":\"uqbvfq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class RaiBindingsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiBinding> response
-            = manager.raiBindings().list("aybf", "l", 2066718058, com.azure.core.util.Context.NONE);
+            = manager.raiBindings().list("kedaxkuyorfj", "dq", 1015608440, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("whrmvlaknujmw", response.iterator().next().properties().boundResourceId());
-        Assertions.assertEquals("nrzblxna", response.iterator().next().properties().targetPolicyName());
-        Assertions.assertEquals("ohwv", response.iterator().next().tags().get("rj"));
+        Assertions.assertEquals("weogavfyih", response.iterator().next().properties().boundResourceId());
+        Assertions.assertEquals("zsbpwnyfjcyp", response.iterator().next().properties().targetPolicyName());
+        Assertions.assertEquals("pamesi", response.iterator().next().tags().get("wqadewhuwxkyx"));
     }
 }
