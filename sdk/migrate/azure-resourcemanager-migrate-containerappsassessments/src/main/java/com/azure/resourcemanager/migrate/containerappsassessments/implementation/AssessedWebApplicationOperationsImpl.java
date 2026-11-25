@@ -48,9 +48,7 @@ public final class AssessedWebApplicationOperationsImpl implements AssessedWebAp
 
     public PagedIterable<AssessedWebApplication> listByParent(String resourceGroupName, String projectName,
         String assessmentName) {
-        PagedIterable<AssessedWebApplicationInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, projectName, assessmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssessedWebApplicationImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     public PagedIterable<AssessedWebApplication> listByParent(String resourceGroupName, String projectName,

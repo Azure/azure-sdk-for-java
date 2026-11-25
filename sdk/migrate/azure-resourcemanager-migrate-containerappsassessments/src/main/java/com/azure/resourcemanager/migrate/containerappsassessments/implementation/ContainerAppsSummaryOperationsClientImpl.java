@@ -159,19 +159,7 @@ public final class ContainerAppsSummaryOperationsClientImpl implements Container
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ContainerAppsSummary.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param summaryName Azure Container Apps Assessment Summary Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsSummary along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppsSummaryInner> getWithResponse(String resourceGroupName, String projectName,
         String assessmentName, String summaryName, Context context) {
@@ -180,18 +168,7 @@ public final class ContainerAppsSummaryOperationsClientImpl implements Container
             resourceGroupName, projectName, assessmentName, summaryName, accept, context);
     }
 
-    /**
-     * Get a ContainerAppsSummary.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param summaryName Azure Container Apps Assessment Summary Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsSummary.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsSummaryInner get(String resourceGroupName, String projectName, String assessmentName,
         String summaryName) {
@@ -254,12 +231,7 @@ public final class ContainerAppsSummaryOperationsClientImpl implements Container
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsSummaryInner> listByParentSinglePage(String resourceGroupName,
         String projectName, String assessmentName) {
-        final String accept = "application/json";
-        Response<ContainerAppsSummaryListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, projectName, assessmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     /**
@@ -285,36 +257,14 @@ public final class ContainerAppsSummaryOperationsClientImpl implements Container
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainerAppsSummary resources by ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsSummary list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsSummaryInner> listByParent(String resourceGroupName, String projectName,
         String assessmentName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, projectName, assessmentName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
-    /**
-     * List ContainerAppsSummary resources by ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsSummary list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsSummaryInner> listByParent(String resourceGroupName, String projectName,
         String assessmentName, Context context) {
@@ -354,11 +304,7 @@ public final class ContainerAppsSummaryOperationsClientImpl implements Container
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsSummaryInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppsSummaryListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

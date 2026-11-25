@@ -153,12 +153,7 @@ public final class ContainerAppsCostDetailOperationsClientImpl implements Contai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsCostDetailInner> listByParentSinglePage(String resourceGroupName,
         String projectName, String assessmentName) {
-        final String accept = "application/json";
-        Response<ContainerAppsCostDetailListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, projectName, assessmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     /**
@@ -184,38 +179,14 @@ public final class ContainerAppsCostDetailOperationsClientImpl implements Contai
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainerAppsCostDetail resources by ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsCostDetail list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsCostDetailInner> listByParent(String resourceGroupName, String projectName,
         String assessmentName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, projectName, assessmentName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
-    /**
-     * List ContainerAppsCostDetail resources by ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsCostDetail list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsCostDetailInner> listByParent(String resourceGroupName, String projectName,
         String assessmentName, Context context) {
@@ -255,11 +226,7 @@ public final class ContainerAppsCostDetailOperationsClientImpl implements Contai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsCostDetailInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppsCostDetailListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

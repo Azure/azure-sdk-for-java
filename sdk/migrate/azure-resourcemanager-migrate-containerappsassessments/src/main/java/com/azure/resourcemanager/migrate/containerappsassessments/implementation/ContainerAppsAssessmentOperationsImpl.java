@@ -47,9 +47,7 @@ public final class ContainerAppsAssessmentOperationsImpl implements ContainerApp
     }
 
     public PagedIterable<ContainerAppsAssessment> listByParent(String resourceGroupName, String projectName) {
-        PagedIterable<ContainerAppsAssessmentInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, projectName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerAppsAssessmentImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, projectName, Context.NONE);
     }
 
     public PagedIterable<ContainerAppsAssessment> listByParent(String resourceGroupName, String projectName,
@@ -65,16 +63,11 @@ public final class ContainerAppsAssessmentOperationsImpl implements ContainerApp
     }
 
     public void delete(String resourceGroupName, String projectName, String assessmentName) {
-        this.serviceClient().delete(resourceGroupName, projectName, assessmentName);
+        this.deleteWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     public DownloadUrl downloadUrl(String resourceGroupName, String projectName, String assessmentName) {
-        DownloadUrlInner inner = this.serviceClient().downloadUrl(resourceGroupName, projectName, assessmentName);
-        if (inner != null) {
-            return new DownloadUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.downloadUrl(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     public DownloadUrl downloadUrl(String resourceGroupName, String projectName, String assessmentName,
@@ -89,102 +82,36 @@ public final class ContainerAppsAssessmentOperationsImpl implements ContainerApp
     }
 
     public ContainerAppsAssessment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "projectName");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentProjects'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'containerAppsAssessments'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ContainerAppsAssessment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "projectName");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentProjects'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "projectName", "assessmentProjects", LOGGER);
+        String assessmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'containerAppsAssessments'.", id)));
-        }
+            "assessmentName", "containerAppsAssessments", LOGGER);
         return this.getWithResponse(resourceGroupName, projectName, assessmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "projectName");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentProjects'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'containerAppsAssessments'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "projectName");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentProjects'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "projectName", "assessmentProjects", LOGGER);
+        String assessmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'containerAppsAssessments'.", id)));
-        }
+            "assessmentName", "containerAppsAssessments", LOGGER);
         return this.deleteWithResponse(resourceGroupName, projectName, assessmentName, context);
     }
 

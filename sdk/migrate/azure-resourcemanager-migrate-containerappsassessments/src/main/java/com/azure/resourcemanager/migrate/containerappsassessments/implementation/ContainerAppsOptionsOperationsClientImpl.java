@@ -155,18 +155,7 @@ public final class ContainerAppsOptionsOperationsClientImpl implements Container
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ContainerAppsAssessmentOptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentOptionsName Azure Container Apps Assessment Options Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsAssessmentOptions along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppsAssessmentOptionsInner> getWithResponse(String resourceGroupName, String projectName,
         String assessmentOptionsName, Context context) {
@@ -175,17 +164,7 @@ public final class ContainerAppsOptionsOperationsClientImpl implements Container
             resourceGroupName, projectName, assessmentOptionsName, accept, context);
     }
 
-    /**
-     * Get a ContainerAppsAssessmentOptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentOptionsName Azure Container Apps Assessment Options Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsAssessmentOptions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsAssessmentOptionsInner get(String resourceGroupName, String projectName,
         String assessmentOptionsName) {
@@ -246,12 +225,7 @@ public final class ContainerAppsOptionsOperationsClientImpl implements Container
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsAssessmentOptionsInner> listByParentSinglePage(String resourceGroupName,
         String projectName) {
-        final String accept = "application/json";
-        Response<ContainerAppsAssessmentOptionsListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, projectName, Context.NONE);
     }
 
     /**
@@ -276,36 +250,14 @@ public final class ContainerAppsOptionsOperationsClientImpl implements Container
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainerAppsAssessmentOptions resources by AssessmentProject.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsAssessmentOptions list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsAssessmentOptionsInner> listByParent(String resourceGroupName,
         String projectName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, projectName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, projectName, Context.NONE);
     }
 
-    /**
-     * List ContainerAppsAssessmentOptions resources by AssessmentProject.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsAssessmentOptions list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsAssessmentOptionsInner> listByParent(String resourceGroupName, String projectName,
         Context context) {
@@ -344,11 +296,7 @@ public final class ContainerAppsOptionsOperationsClientImpl implements Container
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsAssessmentOptionsInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppsAssessmentOptionsListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

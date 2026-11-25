@@ -48,10 +48,7 @@ public final class ContainerAppsManagedEnvironmentOperationsImpl implements Cont
 
     public PagedIterable<ContainerAppsManagedEnvironment> listByParent(String resourceGroupName, String projectName,
         String assessmentName) {
-        PagedIterable<ContainerAppsManagedEnvironmentInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, projectName, assessmentName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ContainerAppsManagedEnvironmentImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     public PagedIterable<ContainerAppsManagedEnvironment> listByParent(String resourceGroupName, String projectName,

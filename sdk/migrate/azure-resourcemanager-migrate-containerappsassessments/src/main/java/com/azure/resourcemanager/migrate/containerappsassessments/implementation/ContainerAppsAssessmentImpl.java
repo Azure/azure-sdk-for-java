@@ -20,6 +20,15 @@ public final class ContainerAppsAssessmentImpl implements ContainerAppsAssessmen
         com.azure.resourcemanager.migrate.containerappsassessments.MigrateManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
+            "resourceGroupName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
+            "projectName");
+        this.assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/containerAppsAssessments/{assessmentName}",
+            "assessmentName");
     }
 
     public String id() {
@@ -63,10 +72,7 @@ public final class ContainerAppsAssessmentImpl implements ContainerAppsAssessmen
     }
 
     public ContainerAppsAssessment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsAssessmentOperations()
-            .create(resourceGroupName, projectName, assessmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ContainerAppsAssessment create(Context context) {
@@ -84,11 +90,7 @@ public final class ContainerAppsAssessmentImpl implements ContainerAppsAssessmen
     }
 
     public ContainerAppsAssessment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsAssessmentOperations()
-            .getWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ContainerAppsAssessment refresh(Context context) {

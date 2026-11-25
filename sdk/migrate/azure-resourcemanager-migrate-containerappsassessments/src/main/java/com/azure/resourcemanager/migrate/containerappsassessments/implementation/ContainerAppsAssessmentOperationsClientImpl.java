@@ -222,11 +222,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String projectName, String assessmentName,
         ContainerAppsAssessmentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, projectName, assessmentName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, projectName, assessmentName, resource, Context.NONE);
     }
 
     /**
@@ -274,39 +270,14 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             this.client.getContext());
     }
 
-    /**
-     * Create a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of aRM model of Azure Container Apps Assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppsAssessmentInner>, ContainerAppsAssessmentInner> beginCreate(
         String resourceGroupName, String projectName, String assessmentName, ContainerAppsAssessmentInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, projectName, assessmentName, resource);
-        return this.client.<ContainerAppsAssessmentInner, ContainerAppsAssessmentInner>getLroResult(response,
-            ContainerAppsAssessmentInner.class, ContainerAppsAssessmentInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, projectName, assessmentName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of aRM model of Azure Container Apps Assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppsAssessmentInner>, ContainerAppsAssessmentInner> beginCreate(
         String resourceGroupName, String projectName, String assessmentName, ContainerAppsAssessmentInner resource,
@@ -336,41 +307,19 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aRM model of Azure Container Apps Assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsAssessmentInner create(String resourceGroupName, String projectName, String assessmentName,
         ContainerAppsAssessmentInner resource) {
-        return beginCreate(resourceGroupName, projectName, assessmentName, resource).getFinalResult();
+        return create(resourceGroupName, projectName, assessmentName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aRM model of Azure Container Apps Assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsAssessmentInner create(String resourceGroupName, String projectName, String assessmentName,
         ContainerAppsAssessmentInner resource, Context context) {
-        return beginCreate(resourceGroupName, projectName, assessmentName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, projectName, assessmentName, resource, context));
     }
 
     /**
@@ -412,18 +361,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsAssessment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppsAssessmentInner> getWithResponse(String resourceGroupName, String projectName,
         String assessmentName, Context context) {
@@ -432,17 +370,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             resourceGroupName, projectName, assessmentName, accept, context);
     }
 
-    /**
-     * Get a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsAssessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsAssessmentInner get(String resourceGroupName, String projectName, String assessmentName) {
         return getWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE).getValue();
@@ -500,12 +428,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsAssessmentInner> listByParentSinglePage(String resourceGroupName,
         String projectName) {
-        final String accept = "application/json";
-        Response<ContainerAppsAssessmentListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, projectName, Context.NONE);
     }
 
     /**
@@ -530,35 +453,13 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainerAppsAssessment resources by AssessmentProject.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsAssessment list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsAssessmentInner> listByParent(String resourceGroupName, String projectName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, projectName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, projectName, Context.NONE);
     }
 
-    /**
-     * List ContainerAppsAssessment resources by AssessmentProject.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsAssessment list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsAssessmentInner> listByParent(String resourceGroupName, String projectName,
         Context context) {
@@ -602,18 +503,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
         return deleteWithResponseAsync(resourceGroupName, projectName, assessmentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String projectName, String assessmentName,
         Context context) {
@@ -621,16 +511,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             this.client.getSubscriptionId(), resourceGroupName, projectName, assessmentName, context);
     }
 
-    /**
-     * Delete a ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String projectName, String assessmentName) {
         deleteWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE);
@@ -672,9 +553,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> downloadUrlWithResponse(String resourceGroupName, String projectName,
         String assessmentName) {
-        final String accept = "application/json";
-        return service.downloadUrlSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, projectName, assessmentName, accept, Context.NONE);
+        return downloadUrlWithResponse(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     /**
@@ -717,37 +596,14 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             DownloadUrlInner.class, DownloadUrlInner.class, this.client.getContext());
     }
 
-    /**
-     * Get URL for downloading Azure Container Apps Assessment Report.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of uRL for downloading Azure Container Apps Assessment Report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadUrl(String resourceGroupName,
         String projectName, String assessmentName) {
-        Response<BinaryData> response = downloadUrlWithResponse(resourceGroupName, projectName, assessmentName);
-        return this.client.<DownloadUrlInner, DownloadUrlInner>getLroResult(response, DownloadUrlInner.class,
-            DownloadUrlInner.class, Context.NONE);
+        return beginDownloadUrl(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
-    /**
-     * Get URL for downloading Azure Container Apps Assessment Report.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of uRL for downloading Azure Container Apps Assessment Report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadUrl(String resourceGroupName,
         String projectName, String assessmentName, Context context) {
@@ -775,38 +631,18 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get URL for downloading Azure Container Apps Assessment Report.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return uRL for downloading Azure Container Apps Assessment Report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadUrlInner downloadUrl(String resourceGroupName, String projectName, String assessmentName) {
-        return beginDownloadUrl(resourceGroupName, projectName, assessmentName).getFinalResult();
+        return downloadUrl(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
-    /**
-     * Get URL for downloading Azure Container Apps Assessment Report.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return uRL for downloading Azure Container Apps Assessment Report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadUrlInner downloadUrl(String resourceGroupName, String projectName, String assessmentName,
         Context context) {
-        return beginDownloadUrl(resourceGroupName, projectName, assessmentName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDownloadUrl(resourceGroupName, projectName, assessmentName, context));
     }
 
     /**
@@ -840,11 +676,7 @@ public final class ContainerAppsAssessmentOperationsClientImpl implements Contai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsAssessmentInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppsAssessmentListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

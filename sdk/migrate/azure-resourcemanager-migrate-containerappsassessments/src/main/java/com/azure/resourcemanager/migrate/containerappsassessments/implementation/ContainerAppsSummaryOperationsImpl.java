@@ -48,9 +48,7 @@ public final class ContainerAppsSummaryOperationsImpl implements ContainerAppsSu
 
     public PagedIterable<ContainerAppsSummary> listByParent(String resourceGroupName, String projectName,
         String assessmentName) {
-        PagedIterable<ContainerAppsSummaryInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, projectName, assessmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerAppsSummaryImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     public PagedIterable<ContainerAppsSummary> listByParent(String resourceGroupName, String projectName,

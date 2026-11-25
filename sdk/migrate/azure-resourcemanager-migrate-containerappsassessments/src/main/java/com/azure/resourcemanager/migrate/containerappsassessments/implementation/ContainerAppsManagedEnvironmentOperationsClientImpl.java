@@ -163,19 +163,7 @@ public final class ContainerAppsManagedEnvironmentOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ContainerAppsManagedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param managedEnvironmentName Azure Container Apps Managed Environment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsManagedEnvironment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppsManagedEnvironmentInner> getWithResponse(String resourceGroupName, String projectName,
         String assessmentName, String managedEnvironmentName, Context context) {
@@ -184,18 +172,7 @@ public final class ContainerAppsManagedEnvironmentOperationsClientImpl
             resourceGroupName, projectName, assessmentName, managedEnvironmentName, accept, context);
     }
 
-    /**
-     * Get a ContainerAppsManagedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param managedEnvironmentName Azure Container Apps Managed Environment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ContainerAppsManagedEnvironment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsManagedEnvironmentInner get(String resourceGroupName, String projectName, String assessmentName,
         String managedEnvironmentName) {
@@ -260,12 +237,7 @@ public final class ContainerAppsManagedEnvironmentOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsManagedEnvironmentInner> listByParentSinglePage(String resourceGroupName,
         String projectName, String assessmentName) {
-        final String accept = "application/json";
-        Response<ContainerAppsManagedEnvironmentListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, projectName, assessmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
     /**
@@ -291,38 +263,14 @@ public final class ContainerAppsManagedEnvironmentOperationsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainerAppsManagedEnvironment resources by ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsManagedEnvironment list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsManagedEnvironmentInner> listByParent(String resourceGroupName,
         String projectName, String assessmentName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, projectName, assessmentName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, projectName, assessmentName, Context.NONE);
     }
 
-    /**
-     * List ContainerAppsManagedEnvironment resources by ContainerAppsAssessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param projectName Assessment Project Name.
-     * @param assessmentName Azure Container Apps Assessment Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainerAppsManagedEnvironment list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsManagedEnvironmentInner> listByParent(String resourceGroupName,
         String projectName, String assessmentName, Context context) {
@@ -362,11 +310,7 @@ public final class ContainerAppsManagedEnvironmentOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsManagedEnvironmentInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppsManagedEnvironmentListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
