@@ -118,11 +118,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DaprComponent create(Context context) {
@@ -143,11 +139,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DaprComponent apply(Context context) {
@@ -183,11 +175,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsDaprComponents()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DaprComponent refresh(Context context) {

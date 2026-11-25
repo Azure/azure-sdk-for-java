@@ -302,17 +302,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a DNS forwarding ruleset properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS forwarding ruleset properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsForwardingRulesetInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dnsForwardingRulesetName, Context context) {
@@ -321,16 +311,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, accept, context);
     }
 
-    /**
-     * Gets a DNS forwarding ruleset properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS forwarding ruleset properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsForwardingRulesetInner getByResourceGroup(String resourceGroupName, String dnsForwardingRulesetName) {
         return getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, Context.NONE).getValue();
@@ -381,11 +362,8 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         DnsForwardingRulesetInner parameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, ifMatch, ifNoneMatch,
-            contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -482,50 +460,21 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     private SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetInner parameters, String ifMatch,
         String ifNoneMatch) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsForwardingRulesetInner, DnsForwardingRulesetInner>getLroResult(response,
-            DnsForwardingRulesetInner.class, DnsForwardingRulesetInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsForwardingRulesetInner, DnsForwardingRulesetInner>getLroResult(response,
-            DnsForwardingRulesetInner.class, DnsForwardingRulesetInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetInner parameters, String ifMatch,
@@ -580,47 +529,22 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsForwardingRulesetInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
         DnsForwardingRulesetInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsForwardingRulesetInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
         DnsForwardingRulesetInner parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dnsForwardingRulesetName,
+            parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -664,11 +588,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         DnsForwardingRulesetPatch parameters, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, ifMatch, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, Context.NONE);
     }
 
     /**
@@ -758,47 +678,18 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     private SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters,
         String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch);
-        return this.client.<DnsForwardingRulesetInner, DnsForwardingRulesetInner>getLroResult(response,
-            DnsForwardingRulesetInner.class, DnsForwardingRulesetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner>
         beginUpdate(String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch);
-        return this.client.<DnsForwardingRulesetInner, DnsForwardingRulesetInner>getLroResult(response,
-            DnsForwardingRulesetInner.class, DnsForwardingRulesetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters, String ifMatch,
@@ -848,42 +739,20 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsForwardingRulesetInner update(String resourceGroupName, String dnsForwardingRulesetName,
         DnsForwardingRulesetPatch parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch).getFinalResult();
+        return update(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsForwardingRulesetInner update(String resourceGroupName, String dnsForwardingRulesetName,
         DnsForwardingRulesetPatch parameters, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, dnsForwardingRulesetName, parameters, ifMatch, context));
     }
 
     /**
@@ -924,8 +793,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsForwardingRulesetName, ifMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, ifMatch, Context.NONE);
     }
 
     /**
@@ -1008,42 +876,17 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsForwardingRulesetName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
-     * ruleset will be deleted.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsForwardingRulesetName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
-     * ruleset will be deleted.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String ifMatch, Context context) {
@@ -1089,38 +932,18 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
-     * ruleset will be deleted.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsForwardingRulesetName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, dnsForwardingRulesetName, ifMatch).getFinalResult();
+        delete(resourceGroupName, dnsForwardingRulesetName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
-     * ruleset will be deleted.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsForwardingRulesetName, String ifMatch, Context context) {
-        beginDelete(resourceGroupName, dnsForwardingRulesetName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, dnsForwardingRulesetName, ifMatch, context));
     }
 
     /**
@@ -1191,11 +1014,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsForwardingRulesetInner> listByResourceGroupSinglePage(String resourceGroupName,
         Integer top) {
-        final String accept = "application/json";
-        Response<DnsForwardingRulesetListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, Context.NONE);
     }
 
     /**
@@ -1219,33 +1038,14 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS forwarding rulesets within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsForwardingRuleset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsForwardingRulesetInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, Context.NONE);
     }
 
-    /**
-     * Lists DNS forwarding rulesets within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsForwardingRuleset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsForwardingRulesetInner> listByResourceGroup(String resourceGroupName, Integer top,
         Context context) {
@@ -1312,11 +1112,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsForwardingRulesetInner> listSinglePage(Integer top) {
-        final String accept = "application/json";
-        Response<DnsForwardingRulesetListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, Context.NONE);
     }
 
     /**
@@ -1338,29 +1134,14 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS forwarding rulesets in all resource groups of a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsForwardingRuleset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsForwardingRulesetInner> list() {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(top), nextLink -> listNextSinglePage(nextLink));
+        return list(top, Context.NONE);
     }
 
-    /**
-     * Lists DNS forwarding rulesets in all resource groups of a subscription.
-     * 
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsForwardingRuleset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsForwardingRulesetInner> list(Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, context),
@@ -1445,12 +1226,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkDnsForwardingRulesetInner>
         listByVirtualNetworkSinglePage(String resourceGroupName, String virtualNetworkName, Integer top) {
-        final String accept = "application/json";
-        Response<VirtualNetworkDnsForwardingRulesetListResult> res
-            = service.listByVirtualNetworkSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, virtualNetworkName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualNetworkSinglePage(resourceGroupName, virtualNetworkName, top, Context.NONE);
     }
 
     /**
@@ -1477,38 +1253,15 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS forwarding ruleset resource IDs attached to a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the VirtualNetwork.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on Virtual Network DNS Forwarding Ruleset as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetwork(String resourceGroupName,
         String virtualNetworkName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listByVirtualNetworkSinglePage(resourceGroupName, virtualNetworkName, top),
-            nextLink -> listByVirtualNetworkNextSinglePage(nextLink));
+        return listByVirtualNetwork(resourceGroupName, virtualNetworkName, top, Context.NONE);
     }
 
-    /**
-     * Lists DNS forwarding ruleset resource IDs attached to a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the VirtualNetwork.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on Virtual Network DNS Forwarding Ruleset as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetwork(String resourceGroupName,
         String virtualNetworkName, Integer top, Context context) {
@@ -1549,11 +1302,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsForwardingRulesetInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsForwardingRulesetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1606,11 +1355,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsForwardingRulesetInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsForwardingRulesetListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1667,11 +1412,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetworkNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualNetworkDnsForwardingRulesetListResult> res
-            = service.listByVirtualNetworkNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVirtualNetworkNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

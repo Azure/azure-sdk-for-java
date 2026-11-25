@@ -12,23 +12,23 @@ public final class AccessListRoleBindingsSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessListRoleBindingsSuccessResponseInner model = BinaryData.fromString(
-            "{\"kind\":\"hxjbdhqxvc\",\"metadata\":{\"first\":\"rpdsof\",\"last\":\"hrnsvbu\",\"prev\":\"dvzyybycnun\",\"next\":\"srtkfa\",\"total_size\":1955812770},\"data\":[{\"kind\":\"ikyzirtxdy\",\"id\":\"zejntps\",\"metadata\":{\"self\":\"ioilqukrydxtq\",\"resource_name\":\"eoxorggufhyao\",\"created_at\":\"bghhavgrvkf\",\"updated_at\":\"vjzhpjbib\",\"deleted_at\":\"mfxumvfcluyovw\"},\"principal\":\"bkfezzxscyhwzdgi\",\"role_name\":\"jbzbomvzzbtdcq\",\"crn_pattern\":\"niyujv\"}]}")
+            "{\"kind\":\"tpipiwyczuhx\",\"metadata\":{\"first\":\"qjlihhyuspska\",\"last\":\"vlmfwdgzxulucv\",\"prev\":\"mrsreuzvxurisjnh\",\"next\":\"txifqj\",\"total_size\":1170712777},\"data\":[{\"kind\":\"ublwpcesutrg\",\"id\":\"pauutpw\",\"metadata\":{\"self\":\"ih\",\"resource_name\":\"qg\",\"created_at\":\"pnfqntcyp\",\"updated_at\":\"jv\",\"deleted_at\":\"imwkslircizj\"},\"principal\":\"ydfce\",\"role_name\":\"vlhv\",\"crn_pattern\":\"dyftumrtwna\"},{\"kind\":\"slbi\",\"id\":\"ojgcyzt\",\"metadata\":{\"self\":\"z\",\"resource_name\":\"aeqphchqnr\",\"created_at\":\"pxehuwrykqga\",\"updated_at\":\"mvikl\",\"deleted_at\":\"dvk\"},\"principal\":\"ejd\",\"role_name\":\"xcv\",\"crn_pattern\":\"rhnj\"},{\"kind\":\"olvtnovqfzge\",\"id\":\"dftuljltduce\",\"metadata\":{\"self\":\"mczuo\",\"resource_name\":\"jw\",\"created_at\":\"wqiok\",\"updated_at\":\"sx\",\"deleted_at\":\"jmsvpkjp\"},\"principal\":\"kwcf\",\"role_name\":\"ljyxgtczhe\",\"crn_pattern\":\"bsdshmkxmaehvbbx\"},{\"kind\":\"iplt\",\"id\":\"htba\",\"metadata\":{\"self\":\"xywr\",\"resource_name\":\"pyklyhpluodpvru\",\"created_at\":\"lgzi\",\"updated_at\":\"hostgktstvdxecl\",\"deleted_at\":\"dqbcvhzlhplod\"},\"principal\":\"dlwwqfbumlkxt\",\"role_name\":\"jfsmlmbtxhwgfwsr\",\"crn_pattern\":\"wcoezbrhub\"}]}")
             .toObject(AccessListRoleBindingsSuccessResponseInner.class);
-        Assertions.assertEquals("hxjbdhqxvc", model.kind());
-        Assertions.assertEquals("rpdsof", model.metadata().first());
-        Assertions.assertEquals("hrnsvbu", model.metadata().last());
-        Assertions.assertEquals("dvzyybycnun", model.metadata().prev());
-        Assertions.assertEquals("srtkfa", model.metadata().next());
-        Assertions.assertEquals(1955812770, model.metadata().totalSize());
-        Assertions.assertEquals("ikyzirtxdy", model.data().get(0).kind());
-        Assertions.assertEquals("zejntps", model.data().get(0).id());
-        Assertions.assertEquals("ioilqukrydxtq", model.data().get(0).metadata().self());
-        Assertions.assertEquals("eoxorggufhyao", model.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("bghhavgrvkf", model.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("vjzhpjbib", model.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("mfxumvfcluyovw", model.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("bkfezzxscyhwzdgi", model.data().get(0).principal());
-        Assertions.assertEquals("jbzbomvzzbtdcq", model.data().get(0).roleName());
-        Assertions.assertEquals("niyujv", model.data().get(0).crnPattern());
+        Assertions.assertEquals("tpipiwyczuhx", model.kind());
+        Assertions.assertEquals("qjlihhyuspska", model.metadata().first());
+        Assertions.assertEquals("vlmfwdgzxulucv", model.metadata().last());
+        Assertions.assertEquals("mrsreuzvxurisjnh", model.metadata().prev());
+        Assertions.assertEquals("txifqj", model.metadata().next());
+        Assertions.assertEquals(1170712777, model.metadata().totalSize());
+        Assertions.assertEquals("ublwpcesutrg", model.data().get(0).kind());
+        Assertions.assertEquals("pauutpw", model.data().get(0).id());
+        Assertions.assertEquals("ih", model.data().get(0).metadata().self());
+        Assertions.assertEquals("qg", model.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("pnfqntcyp", model.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("jv", model.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("imwkslircizj", model.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("ydfce", model.data().get(0).principal());
+        Assertions.assertEquals("vlhv", model.data().get(0).roleName());
+        Assertions.assertEquals("dyftumrtwna", model.data().get(0).crnPattern());
     }
 }

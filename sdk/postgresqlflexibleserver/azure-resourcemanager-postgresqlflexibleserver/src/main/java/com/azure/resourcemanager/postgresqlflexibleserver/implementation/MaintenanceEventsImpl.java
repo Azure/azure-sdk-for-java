@@ -63,13 +63,7 @@ public final class MaintenanceEventsImpl implements MaintenanceEvents {
 
     public MaintenanceEventActionResponse reschedule(String resourceGroupName, String serverName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
-        MaintenanceEventActionResponseInner inner
-            = this.serviceClient().reschedule(resourceGroupName, serverName, maintenanceEventId, body);
-        if (inner != null) {
-            return new MaintenanceEventActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reschedule(resourceGroupName, serverName, maintenanceEventId, body, Context.NONE);
     }
 
     public MaintenanceEventActionResponse reschedule(String resourceGroupName, String serverName,
@@ -85,13 +79,7 @@ public final class MaintenanceEventsImpl implements MaintenanceEvents {
 
     public MaintenanceEventActionResponse applyNow(String resourceGroupName, String serverName,
         String maintenanceEventId) {
-        MaintenanceEventActionResponseInner inner
-            = this.serviceClient().applyNow(resourceGroupName, serverName, maintenanceEventId);
-        if (inner != null) {
-            return new MaintenanceEventActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.applyNow(resourceGroupName, serverName, maintenanceEventId, Context.NONE);
     }
 
     public MaintenanceEventActionResponse applyNow(String resourceGroupName, String serverName,

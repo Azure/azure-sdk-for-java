@@ -163,19 +163,7 @@ public final class RecoveryJobResourcesClientImpl implements RecoveryJobResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a RecoveryJobResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param recoveryJobResourceName The unique name (GUID) of the recovery job resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryJobResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryJobResourceInner> getWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryJobName, String recoveryJobResourceName, Context context) {
@@ -184,18 +172,7 @@ public final class RecoveryJobResourcesClientImpl implements RecoveryJobResource
             recoveryPlanName, recoveryJobName, recoveryJobResourceName, accept, context);
     }
 
-    /**
-     * Get a RecoveryJobResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param recoveryJobResourceName The unique name (GUID) of the recovery job resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryJobResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryJobResourceInner get(String serviceGroupName, String recoveryPlanName, String recoveryJobName,
         String recoveryJobResourceName) {
@@ -259,11 +236,7 @@ public final class RecoveryJobResourcesClientImpl implements RecoveryJobResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryJobResourceInner> listSinglePage(String serviceGroupName, String recoveryPlanName,
         String recoveryJobName) {
-        final String accept = "application/json";
-        Response<RecoveryJobResourceListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), recoveryPlanName, recoveryJobName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
     /**
@@ -288,36 +261,14 @@ public final class RecoveryJobResourcesClientImpl implements RecoveryJobResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List RecoveryJobResource resources by RecoveryJob.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryJobResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryJobResourceInner> list(String serviceGroupName, String recoveryPlanName,
         String recoveryJobName) {
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, recoveryPlanName, recoveryJobName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
-    /**
-     * List RecoveryJobResource resources by RecoveryJob.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryJobResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryJobResourceInner> list(String serviceGroupName, String recoveryPlanName,
         String recoveryJobName, Context context) {
@@ -355,11 +306,7 @@ public final class RecoveryJobResourcesClientImpl implements RecoveryJobResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryJobResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryJobResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

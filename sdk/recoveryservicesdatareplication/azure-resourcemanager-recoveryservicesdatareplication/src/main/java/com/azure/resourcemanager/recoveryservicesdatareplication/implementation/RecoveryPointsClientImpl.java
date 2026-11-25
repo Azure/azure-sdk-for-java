@@ -164,19 +164,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the recovery point of a protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param recoveryPointName The recovery point name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the recovery point of a protected item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryPointModelInner> getWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, String recoveryPointName, Context context) {
@@ -185,18 +173,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             resourceGroupName, vaultName, protectedItemName, recoveryPointName, accept, context);
     }
 
-    /**
-     * Gets the details of the recovery point of a protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param recoveryPointName The recovery point name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the recovery point of a protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPointModelInner get(String resourceGroupName, String vaultName, String protectedItemName,
         String recoveryPointName) {
@@ -260,12 +237,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointModelInner> listSinglePage(String resourceGroupName, String vaultName,
         String protectedItemName) {
-        final String accept = "application/json";
-        Response<RecoveryPointModelListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, protectedItemName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, protectedItemName, Context.NONE);
     }
 
     /**
@@ -291,36 +263,14 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of recovery points of the given protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointModelInner> list(String resourceGroupName, String vaultName,
         String protectedItemName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, protectedItemName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, protectedItemName, Context.NONE);
     }
 
-    /**
-     * Gets the list of recovery points of the given protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointModelInner> list(String resourceGroupName, String vaultName,
         String protectedItemName, Context context) {
@@ -358,11 +308,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryPointModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

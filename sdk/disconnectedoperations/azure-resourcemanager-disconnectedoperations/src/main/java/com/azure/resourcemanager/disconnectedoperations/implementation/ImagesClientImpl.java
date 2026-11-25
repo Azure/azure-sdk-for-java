@@ -220,12 +220,7 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByDisconnectedOperationSinglePage(String resourceGroupName, String name,
         String filter, Integer top, Integer skip) {
-        final String accept = "application/json";
-        Response<ImageListResult> res
-            = service.listByDisconnectedOperationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, skip, name, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDisconnectedOperationSinglePage(resourceGroupName, name, filter, top, skip, Context.NONE);
     }
 
     /**
@@ -253,40 +248,16 @@ public final class ImagesClientImpl implements ImagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by disconnected operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Image list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByDisconnectedOperation(String resourceGroupName, String name) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedIterable<>(
-            () -> listByDisconnectedOperationSinglePage(resourceGroupName, name, filter, top, skip),
-            nextLink -> listByDisconnectedOperationNextSinglePage(nextLink));
+        return listByDisconnectedOperation(resourceGroupName, name, filter, top, skip, Context.NONE);
     }
 
-    /**
-     * List by disconnected operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Image list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByDisconnectedOperation(String resourceGroupName, String name, String filter,
         Integer top, Integer skip, Context context) {
@@ -332,18 +303,7 @@ public final class ImagesClientImpl implements ImagesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageInner> getWithResponse(String resourceGroupName, String name, String imageName,
         Context context) {
@@ -352,17 +312,7 @@ public final class ImagesClientImpl implements ImagesClient {
             resourceGroupName, name, imageName, accept, context);
     }
 
-    /**
-     * Get the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageInner get(String resourceGroupName, String name, String imageName) {
         return getWithResponse(resourceGroupName, name, imageName, Context.NONE).getValue();
@@ -407,18 +357,7 @@ public final class ImagesClientImpl implements ImagesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the URI to download the image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI to download the image along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageDownloadResultInner> listDownloadUriWithResponse(String resourceGroupName, String name,
         String imageName, Context context) {
@@ -427,17 +366,7 @@ public final class ImagesClientImpl implements ImagesClient {
             this.client.getSubscriptionId(), resourceGroupName, name, imageName, accept, context);
     }
 
-    /**
-     * Get the URI to download the image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param imageName The name of the Image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI to download the image.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageDownloadResultInner listDownloadUri(String resourceGroupName, String name, String imageName) {
         return listDownloadUriWithResponse(resourceGroupName, name, imageName, Context.NONE).getValue();
@@ -474,11 +403,7 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByDisconnectedOperationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ImageListResult> res
-            = service.listByDisconnectedOperationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDisconnectedOperationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

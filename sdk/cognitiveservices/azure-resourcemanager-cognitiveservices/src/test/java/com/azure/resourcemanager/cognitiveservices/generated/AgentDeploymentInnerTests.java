@@ -20,46 +20,47 @@ public final class AgentDeploymentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentDeploymentInner model = BinaryData.fromString(
-            "{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"wi\",\"deploymentId\":\"towlhlsycoyb\",\"state\":\"Starting\",\"protocols\":[{\"protocol\":\"Responses\",\"version\":\"ajcywhjqw\"},{\"protocol\":\"A2A\",\"version\":\"oh\"},{\"protocol\":\"Agent\",\"version\":\"pupukiymjzp\"}],\"agents\":[{\"agentVersion\":\"wtiw\",\"agentId\":\"osaonhqnamppu\",\"agentName\":\"assae\"}],\"provisioningState\":\"Canceled\",\"description\":\"a\",\"tags\":{\"aj\":\"jb\"}},\"id\":\"yizyddcvxodk\",\"name\":\"vfsxx\",\"type\":\"ydesqlvgec\"}")
+            "{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"mzlpcx\",\"deploymentId\":\"mhxxrqicfzfvwjd\",\"state\":\"Stopped\",\"protocols\":[{\"protocol\":\"Responses\",\"version\":\"oafi\"},{\"protocol\":\"Responses\",\"version\":\"qup\"},{\"protocol\":\"A2A\",\"version\":\"z\"}],\"agents\":[{\"agentVersion\":\"luobdxwhqdcclc\",\"agentId\":\"srupayl\",\"agentName\":\"w\"}],\"provisioningState\":\"Failed\",\"description\":\"xlrymfj\",\"tags\":{\"byxmkhmqyncgaull\":\"iywqnpfydrfbgcny\",\"ulmwqgmhmqmiwx\":\"styygjq\"}},\"id\":\"v\",\"name\":\"zu\",\"type\":\"qfgufjnbxw\"}")
             .toObject(AgentDeploymentInner.class);
-        Assertions.assertEquals("a", model.properties().description());
-        Assertions.assertEquals("jb", model.properties().tags().get("aj"));
-        Assertions.assertEquals("wi", model.properties().displayName());
-        Assertions.assertEquals("towlhlsycoyb", model.properties().deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.STARTING, model.properties().state());
+        Assertions.assertEquals("xlrymfj", model.properties().description());
+        Assertions.assertEquals("iywqnpfydrfbgcny", model.properties().tags().get("byxmkhmqyncgaull"));
+        Assertions.assertEquals("mzlpcx", model.properties().displayName());
+        Assertions.assertEquals("mhxxrqicfzfvwjd", model.properties().deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.STOPPED, model.properties().state());
         Assertions.assertEquals(AgentProtocol.RESPONSES, model.properties().protocols().get(0).protocol());
-        Assertions.assertEquals("ajcywhjqw", model.properties().protocols().get(0).version());
-        Assertions.assertEquals("osaonhqnamppu", model.properties().agents().get(0).agentId());
-        Assertions.assertEquals("assae", model.properties().agents().get(0).agentName());
-        Assertions.assertEquals("wtiw", model.properties().agents().get(0).agentVersion());
+        Assertions.assertEquals("oafi", model.properties().protocols().get(0).version());
+        Assertions.assertEquals("srupayl", model.properties().agents().get(0).agentId());
+        Assertions.assertEquals("w", model.properties().agents().get(0).agentName());
+        Assertions.assertEquals("luobdxwhqdcclc", model.properties().agents().get(0).agentVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentDeploymentInner model
-            = new AgentDeploymentInner().withProperties(new AgentDeploymentProperties().withDescription("a")
-                .withTags(mapOf("aj", "jb"))
-                .withDisplayName("wi")
-                .withDeploymentId("towlhlsycoyb")
-                .withState(AgentDeploymentState.STARTING)
-                .withProtocols(Arrays.asList(
-                    new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("ajcywhjqw"),
-                    new AgentProtocolVersion().withProtocol(AgentProtocol.A2A).withVersion("oh"),
-                    new AgentProtocolVersion().withProtocol(AgentProtocol.AGENT).withVersion("pupukiymjzp")))
-                .withAgents(Arrays.asList(new VersionedAgentReference().withAgentId("osaonhqnamppu")
-                    .withAgentName("assae")
-                    .withAgentVersion("wtiw"))));
+            = new AgentDeploymentInner()
+                .withProperties(new AgentDeploymentProperties().withDescription("xlrymfj")
+                    .withTags(mapOf("byxmkhmqyncgaull", "iywqnpfydrfbgcny", "ulmwqgmhmqmiwx", "styygjq"))
+                    .withDisplayName("mzlpcx")
+                    .withDeploymentId("mhxxrqicfzfvwjd")
+                    .withState(AgentDeploymentState.STOPPED)
+                    .withProtocols(Arrays.asList(
+                        new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("oafi"),
+                        new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("qup"),
+                        new AgentProtocolVersion().withProtocol(AgentProtocol.A2A).withVersion("z")))
+                    .withAgents(Arrays.asList(new VersionedAgentReference().withAgentId("srupayl")
+                        .withAgentName("w")
+                        .withAgentVersion("luobdxwhqdcclc"))));
         model = BinaryData.fromObject(model).toObject(AgentDeploymentInner.class);
-        Assertions.assertEquals("a", model.properties().description());
-        Assertions.assertEquals("jb", model.properties().tags().get("aj"));
-        Assertions.assertEquals("wi", model.properties().displayName());
-        Assertions.assertEquals("towlhlsycoyb", model.properties().deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.STARTING, model.properties().state());
+        Assertions.assertEquals("xlrymfj", model.properties().description());
+        Assertions.assertEquals("iywqnpfydrfbgcny", model.properties().tags().get("byxmkhmqyncgaull"));
+        Assertions.assertEquals("mzlpcx", model.properties().displayName());
+        Assertions.assertEquals("mhxxrqicfzfvwjd", model.properties().deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.STOPPED, model.properties().state());
         Assertions.assertEquals(AgentProtocol.RESPONSES, model.properties().protocols().get(0).protocol());
-        Assertions.assertEquals("ajcywhjqw", model.properties().protocols().get(0).version());
-        Assertions.assertEquals("osaonhqnamppu", model.properties().agents().get(0).agentId());
-        Assertions.assertEquals("assae", model.properties().agents().get(0).agentName());
-        Assertions.assertEquals("wtiw", model.properties().agents().get(0).agentVersion());
+        Assertions.assertEquals("oafi", model.properties().protocols().get(0).version());
+        Assertions.assertEquals("srupayl", model.properties().agents().get(0).agentId());
+        Assertions.assertEquals("w", model.properties().agents().get(0).agentName());
+        Assertions.assertEquals("luobdxwhqdcclc", model.properties().agents().get(0).agentVersion());
     }
 
     // Use "Map.of" if available

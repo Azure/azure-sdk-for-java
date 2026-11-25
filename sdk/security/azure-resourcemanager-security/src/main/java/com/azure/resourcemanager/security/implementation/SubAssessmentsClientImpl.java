@@ -196,35 +196,14 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a security sub-assessment on your scanned resource.
-     * 
-     * @param scope The scope of the sub-assessment.
-     * @param assessmentName The security assessment key - unique key for the assessment type.
-     * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySubAssessmentInner> getWithResponse(String scope, String assessmentName,
         String subAssessmentName, Context context) {
         return getWithResponseAsync(scope, assessmentName, subAssessmentName, context).block();
     }
 
-    /**
-     * Get a security sub-assessment on your scanned resource.
-     * 
-     * @param scope The scope of the sub-assessment.
-     * @param assessmentName The security assessment key - unique key for the assessment type.
-     * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySubAssessmentInner get(String scope, String assessmentName, String subAssessmentName) {
         return getWithResponse(scope, assessmentName, subAssessmentName, Context.NONE).getValue();
@@ -331,34 +310,13 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get security sub-assessments on all your scanned resources inside a scope.
-     * 
-     * @param scope The scope of the sub-assessment.
-     * @param assessmentName The security assessment key - unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> list(String scope, String assessmentName) {
         return new PagedIterable<>(listAsync(scope, assessmentName));
     }
 
-    /**
-     * Get security sub-assessments on all your scanned resources inside a scope.
-     * 
-     * @param scope The scope of the sub-assessment.
-     * @param assessmentName The security assessment key - unique key for the assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> list(String scope, String assessmentName, Context context) {
         return new PagedIterable<>(listAsync(scope, assessmentName, context));
@@ -452,32 +410,13 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get security sub-assessments on all your scanned resources inside a subscription scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> listAll(String scope) {
         return new PagedIterable<>(listAllAsync(scope));
     }
 
-    /**
-     * Get security sub-assessments on all your scanned resources inside a subscription scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> listAll(String scope, Context context) {
         return new PagedIterable<>(listAllAsync(scope, context));

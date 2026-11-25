@@ -64,10 +64,7 @@ public final class EdgeMachineDiskJobImpl
     }
 
     public EdgeMachineDiskJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDiskJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineDiskJob create(Context context) {
@@ -88,10 +85,7 @@ public final class EdgeMachineDiskJobImpl
     }
 
     public EdgeMachineDiskJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDiskJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineDiskJob apply(Context context) {
@@ -120,11 +114,7 @@ public final class EdgeMachineDiskJobImpl
     }
 
     public EdgeMachineDiskJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDiskJobs()
-            .getWithResponse(resourceGroupName, edgeMachineName, diskName, jobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineDiskJob refresh(Context context) {

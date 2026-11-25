@@ -142,16 +142,7 @@ public final class RackSkusClientImpl implements RackSkusClient {
         return getWithResponseAsync(rackSkuName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of the provided rack SKU.
-     * 
-     * @param rackSkuName The name of the rack SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided rack SKU along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RackSkuInner> getWithResponse(String rackSkuName, Context context) {
         final String accept = "application/json";
@@ -159,15 +150,7 @@ public final class RackSkusClientImpl implements RackSkusClient {
             rackSkuName, accept, context);
     }
 
-    /**
-     * Get the properties of the provided rack SKU.
-     * 
-     * @param rackSkuName The name of the rack SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided rack SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RackSkuInner get(String rackSkuName) {
         return getWithResponse(rackSkuName, Context.NONE).getValue();
@@ -214,11 +197,7 @@ public final class RackSkusClientImpl implements RackSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RackSkuInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<RackSkuList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -239,27 +218,13 @@ public final class RackSkusClientImpl implements RackSkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of rack SKUs in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of rack SKUs in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RackSkuInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get a list of rack SKUs in the provided subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of rack SKUs in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RackSkuInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -298,11 +263,7 @@ public final class RackSkusClientImpl implements RackSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RackSkuInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RackSkuList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

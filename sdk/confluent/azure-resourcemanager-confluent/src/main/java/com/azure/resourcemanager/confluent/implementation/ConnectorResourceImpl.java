@@ -78,12 +78,7 @@ public final class ConnectorResourceImpl
     }
 
     public ConnectorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConnectorResource create(Context context) {
@@ -106,12 +101,7 @@ public final class ConnectorResourceImpl
     }
 
     public ConnectorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConnectorResource apply(Context context) {
@@ -145,11 +135,7 @@ public final class ConnectorResourceImpl
     }
 
     public ConnectorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .getWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConnectorResource refresh(Context context) {

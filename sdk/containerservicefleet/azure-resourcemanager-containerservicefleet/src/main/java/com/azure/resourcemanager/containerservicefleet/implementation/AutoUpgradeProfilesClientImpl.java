@@ -209,18 +209,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutoUpgradeProfile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutoUpgradeProfileInner> getWithResponse(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, Context context) {
@@ -229,17 +218,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             resourceGroupName, fleetName, autoUpgradeProfileName, accept, context);
     }
 
-    /**
-     * Get a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutoUpgradeProfile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoUpgradeProfileInner get(String resourceGroupName, String fleetName, String autoUpgradeProfileName) {
         return getWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, Context.NONE).getValue();
@@ -288,11 +267,8 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, AutoUpgradeProfileInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, autoUpgradeProfileName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -388,50 +364,21 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
     private SyncPoller<PollResult<AutoUpgradeProfileInner>, AutoUpgradeProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String autoUpgradeProfileName, AutoUpgradeProfileInner resource,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<AutoUpgradeProfileInner, AutoUpgradeProfileInner>getLroResult(response,
-            AutoUpgradeProfileInner.class, AutoUpgradeProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the AutoUpgradeProfile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutoUpgradeProfileInner>, AutoUpgradeProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String autoUpgradeProfileName, AutoUpgradeProfileInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<AutoUpgradeProfileInner, AutoUpgradeProfileInner>getLroResult(response,
-            AutoUpgradeProfileInner.class, AutoUpgradeProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the AutoUpgradeProfile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutoUpgradeProfileInner>, AutoUpgradeProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String autoUpgradeProfileName, AutoUpgradeProfileInner resource,
@@ -484,48 +431,23 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AutoUpgradeProfile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoUpgradeProfileInner createOrUpdate(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, AutoUpgradeProfileInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AutoUpgradeProfile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoUpgradeProfileInner createOrUpdate(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, AutoUpgradeProfileInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, fleetName,
+            autoUpgradeProfileName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -563,9 +485,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch, Context.NONE);
     }
 
     /**
@@ -645,44 +565,18 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, String ifMatch, Context context) {
@@ -728,38 +622,19 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String autoUpgradeProfileName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch).getFinalResult();
+        delete(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AutoUpgradeProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String autoUpgradeProfileName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch, context));
     }
 
     /**
@@ -839,12 +714,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutoUpgradeProfileInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<AutoUpgradeProfileListResult> res
-            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -871,37 +741,15 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AutoUpgradeProfile resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutoUpgradeProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoUpgradeProfileInner> listByFleet(String resourceGroupName, String fleetName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken),
-            nextLink -> listByFleetNextSinglePage(nextLink));
+        return listByFleet(resourceGroupName, fleetName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List AutoUpgradeProfile resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param top The number of result items to return.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutoUpgradeProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoUpgradeProfileInner> listByFleet(String resourceGroupName, String fleetName, Integer top,
         String skipToken, Context context) {
@@ -940,11 +788,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutoUpgradeProfileInner> listByFleetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AutoUpgradeProfileListResult> res
-            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.containerservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -18,7 +18,7 @@ import java.util.List;
  * A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl
  * get nodes; if so it may be because the machine has not been registered with the Kubernetes API Server yet.
  */
-@Immutable
+@Fluent
 public final class MachineInner extends ProxyResource {
     /*
      * The properties of the machine
@@ -53,7 +53,7 @@ public final class MachineInner extends ProxyResource {
     /**
      * Creates an instance of MachineInner class.
      */
-    private MachineInner() {
+    public MachineInner() {
     }
 
     /**
@@ -66,12 +66,34 @@ public final class MachineInner extends ProxyResource {
     }
 
     /**
+     * Set the properties property: The properties of the machine.
+     * 
+     * @param properties the properties value to set.
+     * @return the MachineInner object itself.
+     */
+    public MachineInner withProperties(MachineProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Get the zones property: The Availability zone in which machine is located.
      * 
      * @return the zones value.
      */
     public List<String> zones() {
         return this.zones;
+    }
+
+    /**
+     * Set the zones property: The Availability zone in which machine is located.
+     * 
+     * @param zones the zones value to set.
+     * @return the MachineInner object itself.
+     */
+    public MachineInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /**
@@ -131,6 +153,7 @@ public final class MachineInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

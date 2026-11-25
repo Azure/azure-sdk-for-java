@@ -123,10 +123,7 @@ public final class FetchTieringCostsClientImpl implements FetchTieringCostsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> postWithResponse(String resourceGroupName, String vaultName,
         FetchTieringCostInfoRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, vaultName, contentType, accept, parameters, Context.NONE);
+        return postWithResponse(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
     /**
@@ -173,41 +170,14 @@ public final class FetchTieringCostsClientImpl implements FetchTieringCostsClien
             TieringCostInfoInner.class, TieringCostInfoInner.class, this.client.getContext());
     }
 
-    /**
-     * Provides the details of the tiering related sizes and cost.
-     * Status of the operation can be fetched using GetTieringCostOperationStatus API and result using
-     * GetTieringCostOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param parameters Fetch Tiering Cost Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of base class for tiering cost response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TieringCostInfoInner>, TieringCostInfoInner> beginPost(String resourceGroupName,
         String vaultName, FetchTieringCostInfoRequest parameters) {
-        Response<BinaryData> response = postWithResponse(resourceGroupName, vaultName, parameters);
-        return this.client.<TieringCostInfoInner, TieringCostInfoInner>getLroResult(response,
-            TieringCostInfoInner.class, TieringCostInfoInner.class, Context.NONE);
+        return beginPost(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
-    /**
-     * Provides the details of the tiering related sizes and cost.
-     * Status of the operation can be fetched using GetTieringCostOperationStatus API and result using
-     * GetTieringCostOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param parameters Fetch Tiering Cost Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of base class for tiering cost response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TieringCostInfoInner>, TieringCostInfoInner> beginPost(String resourceGroupName,
         String vaultName, FetchTieringCostInfoRequest parameters, Context context) {
@@ -236,42 +206,17 @@ public final class FetchTieringCostsClientImpl implements FetchTieringCostsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Provides the details of the tiering related sizes and cost.
-     * Status of the operation can be fetched using GetTieringCostOperationStatus API and result using
-     * GetTieringCostOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param parameters Fetch Tiering Cost Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for tiering cost response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TieringCostInfoInner post(String resourceGroupName, String vaultName,
         FetchTieringCostInfoRequest parameters) {
-        return beginPost(resourceGroupName, vaultName, parameters).getFinalResult();
+        return post(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
-    /**
-     * Provides the details of the tiering related sizes and cost.
-     * Status of the operation can be fetched using GetTieringCostOperationStatus API and result using
-     * GetTieringCostOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param parameters Fetch Tiering Cost Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for tiering cost response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TieringCostInfoInner post(String resourceGroupName, String vaultName, FetchTieringCostInfoRequest parameters,
         Context context) {
-        return beginPost(resourceGroupName, vaultName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginPost(resourceGroupName, vaultName, parameters, context));
     }
 }

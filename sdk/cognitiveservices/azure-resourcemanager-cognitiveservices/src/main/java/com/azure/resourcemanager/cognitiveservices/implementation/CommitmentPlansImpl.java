@@ -66,7 +66,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public void delete(String resourceGroupName, String accountName, String commitmentPlanName) {
-        this.serviceClient().delete(resourceGroupName, accountName, commitmentPlanName);
+        this.delete(resourceGroupName, accountName, commitmentPlanName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String commitmentPlanName, Context context) {
@@ -74,8 +74,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public PagedIterable<CommitmentPlan> list(String resourceGroupName, String accountName) {
-        PagedIterable<CommitmentPlanInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<CommitmentPlan> list(String resourceGroupName, String accountName, Context context) {
@@ -101,7 +100,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public void deletePlan(String resourceGroupName, String commitmentPlanName) {
-        this.serviceClient().deletePlan(resourceGroupName, commitmentPlanName);
+        this.deletePlan(resourceGroupName, commitmentPlanName, Context.NONE);
     }
 
     public void deletePlan(String resourceGroupName, String commitmentPlanName, Context context) {
@@ -109,8 +108,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public PagedIterable<CommitmentPlan> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CommitmentPlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<CommitmentPlan> listByResourceGroup(String resourceGroupName, Context context) {
@@ -119,8 +117,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public PagedIterable<CommitmentPlan> listPlansBySubscription() {
-        PagedIterable<CommitmentPlanInner> inner = this.serviceClient().listPlansBySubscription();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return this.listPlansBySubscription(Context.NONE);
     }
 
     public PagedIterable<CommitmentPlan> listPlansBySubscription(Context context) {
@@ -149,7 +146,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
 
     public void deleteAssociation(String resourceGroupName, String commitmentPlanName,
         String commitmentPlanAssociationName) {
-        this.serviceClient().deleteAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName);
+        this.deleteAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, Context.NONE);
     }
 
     public void deleteAssociation(String resourceGroupName, String commitmentPlanName,
@@ -160,10 +157,7 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
 
     public PagedIterable<CommitmentPlanAccountAssociation> listAssociations(String resourceGroupName,
         String commitmentPlanName) {
-        PagedIterable<CommitmentPlanAccountAssociationInner> inner
-            = this.serviceClient().listAssociations(resourceGroupName, commitmentPlanName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new CommitmentPlanAccountAssociationImpl(inner1, this.manager()));
+        return this.listAssociations(resourceGroupName, commitmentPlanName, Context.NONE);
     }
 
     public PagedIterable<CommitmentPlanAccountAssociation> listAssociations(String resourceGroupName,
@@ -175,178 +169,65 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public CommitmentPlan getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CommitmentPlan> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String commitmentPlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
+            "commitmentPlanName", "commitmentPlans", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, context);
     }
 
     public CommitmentPlanAccountAssociation getAssociationById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
-        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanAssociationName");
-        if (commitmentPlanAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
-        }
-        return this
-            .getAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-                Context.NONE)
-            .getValue();
+        return this.getAssociationByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CommitmentPlanAccountAssociation> getAssociationByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String commitmentPlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
-        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "commitmentPlanName", "commitmentPlans", LOGGER);
+        String commitmentPlanAssociationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanAssociationName");
-        if (commitmentPlanAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
-        }
+            "commitmentPlanAssociationName", "accountAssociations", LOGGER);
         return this.getAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
             context);
     }
 
     public void deletePlanById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
-        this.deletePlan(resourceGroupName, commitmentPlanName, Context.NONE);
+        this.deletePlanByIdWithResponse(id, Context.NONE);
     }
 
     public void deletePlanByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String commitmentPlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
+            "commitmentPlanName", "commitmentPlans", LOGGER);
         this.deletePlan(resourceGroupName, commitmentPlanName, context);
     }
 
     public void deleteAssociationById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
-        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanAssociationName");
-        if (commitmentPlanAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
-        }
-        this.deleteAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, Context.NONE);
+        this.deleteAssociationByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteAssociationByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String commitmentPlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanName");
-        if (commitmentPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
-        }
-        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "commitmentPlanName", "commitmentPlans", LOGGER);
+        String commitmentPlanAssociationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}",
-            "commitmentPlanAssociationName");
-        if (commitmentPlanAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
-        }
+            "commitmentPlanAssociationName", "accountAssociations", LOGGER);
         this.deleteAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context);
     }
 

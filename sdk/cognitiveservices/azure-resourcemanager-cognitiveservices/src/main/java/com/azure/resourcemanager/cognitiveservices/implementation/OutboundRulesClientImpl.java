@@ -214,22 +214,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The GET API for retrieving a single outbound rule of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OutboundRuleBasicResourceInner> getWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName, Context context) {
@@ -238,20 +223,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             resourceGroupName, accountName, managedNetworkName, ruleName, accept, context);
     }
 
-    /**
-     * The GET API for retrieving a single outbound rule of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundRuleBasicResourceInner get(String resourceGroupName, String accountName, String managedNetworkName,
         String ruleName) {
@@ -305,11 +277,8 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName, OutboundRuleBasicResourceInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, ruleName, contentType,
-            accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, body,
+            Context.NONE);
     }
 
     /**
@@ -366,49 +335,15 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive
-     * services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundRuleBasicResourceInner>, OutboundRuleBasicResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String managedNetworkName, String ruleName,
         OutboundRuleBasicResourceInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, body);
-        return this.client.<OutboundRuleBasicResourceInner, OutboundRuleBasicResourceInner>getLroResult(response,
-            OutboundRuleBasicResourceInner.class, OutboundRuleBasicResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, body, Context.NONE);
     }
 
-    /**
-     * The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive
-     * services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundRuleBasicResourceInner>, OutboundRuleBasicResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String managedNetworkName, String ruleName,
@@ -442,48 +377,19 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive
-     * services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundRuleBasicResourceInner createOrUpdate(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName, OutboundRuleBasicResourceInner body) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, body, Context.NONE);
     }
 
-    /**
-     * The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive
-     * services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundRuleBasicResourceInner createOrUpdate(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName, OutboundRuleBasicResourceInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, body, context));
     }
 
     /**
@@ -526,9 +432,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, ruleName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE);
     }
 
     /**
@@ -576,43 +480,14 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE);
     }
 
-    /**
-     * The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String managedNetworkName, String ruleName, Context context) {
@@ -642,42 +517,18 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String managedNetworkName, String ruleName) {
-        beginDelete(resourceGroupName, accountName, managedNetworkName, ruleName).getFinalResult();
+        delete(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE);
     }
 
-    /**
-     * The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param ruleName Name of the cognitive services account managed network outbound rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String managedNetworkName, String ruleName,
         Context context) {
-        beginDelete(resourceGroupName, accountName, managedNetworkName, ruleName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, managedNetworkName, ruleName, context));
     }
 
     /**
@@ -744,11 +595,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> listSinglePage(String resourceGroupName, String accountName,
         String managedNetworkName) {
-        final String accept = "application/json";
-        Response<OutboundRuleListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, managedNetworkName, Context.NONE);
     }
 
     /**
@@ -776,42 +623,14 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The GET API for retrieving the list of outbound rules of the managed network associated with the cognitive
-     * services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleBasicResourceInner> list(String resourceGroupName, String accountName,
         String managedNetworkName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, managedNetworkName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, managedNetworkName, Context.NONE);
     }
 
-    /**
-     * The GET API for retrieving the list of outbound rules of the managed network associated with the cognitive
-     * services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleBasicResourceInner> list(String resourceGroupName, String accountName,
         String managedNetworkName, Context context) {
@@ -856,11 +675,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OutboundRuleListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

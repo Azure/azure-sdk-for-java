@@ -258,17 +258,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the specified Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Monitor Workspace definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureMonitorWorkspaceResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, Context context) {
@@ -277,16 +267,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, accept, context);
     }
 
-    /**
-     * Returns the specified Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Monitor Workspace definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureMonitorWorkspaceResourceInner getByResourceGroup(String resourceGroupName,
         String azureMonitorWorkspaceName) {
@@ -335,18 +316,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param resource Properties that need to be specified to create a new Azure Monitor Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Monitor Workspace definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureMonitorWorkspaceResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceInner resource, Context context) {
@@ -357,17 +327,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             resource, context);
     }
 
-    /**
-     * Creates or updates an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param resource Properties that need to be specified to create a new Azure Monitor Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Monitor Workspace definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureMonitorWorkspaceResourceInner createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
         AzureMonitorWorkspaceResourceInner resource) {
@@ -417,18 +377,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates part of an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Monitor Workspace definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureMonitorWorkspaceResourceInner> updateWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceUpdate properties, Context context) {
@@ -439,17 +388,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             properties, context);
     }
 
-    /**
-     * Updates part of an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Monitor Workspace definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureMonitorWorkspaceResourceInner update(String resourceGroupName, String azureMonitorWorkspaceName,
         AzureMonitorWorkspaceResourceUpdate properties) {
@@ -487,8 +426,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String azureMonitorWorkspaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     /**
@@ -527,33 +465,13 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             this.client.getContext());
     }
 
-    /**
-     * Deletes an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureMonitorWorkspaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Deletes an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureMonitorWorkspaceName,
         Context context) {
@@ -577,33 +495,16 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureMonitorWorkspaceName) {
-        beginDelete(resourceGroupName, azureMonitorWorkspaceName).getFinalResult();
+        delete(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Deletes an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureMonitorWorkspaceName, Context context) {
-        beginDelete(resourceGroupName, azureMonitorWorkspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, azureMonitorWorkspaceName, context));
     }
 
     /**
@@ -655,12 +556,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureMonitorWorkspaceResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AzureMonitorWorkspaceResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -684,33 +580,13 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Azure Monitor Workspaces in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureMonitorWorkspaceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureMonitorWorkspaceResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all Azure Monitor Workspaces in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureMonitorWorkspaceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureMonitorWorkspaceResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -760,11 +636,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureMonitorWorkspaceResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AzureMonitorWorkspaceResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -785,29 +657,13 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Azure Monitor Workspaces in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureMonitorWorkspaceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureMonitorWorkspaceResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all Azure Monitor Workspaces in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AzureMonitorWorkspaceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureMonitorWorkspaceResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -847,11 +703,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureMonitorWorkspaceResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureMonitorWorkspaceResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -907,11 +759,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureMonitorWorkspaceResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureMonitorWorkspaceResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

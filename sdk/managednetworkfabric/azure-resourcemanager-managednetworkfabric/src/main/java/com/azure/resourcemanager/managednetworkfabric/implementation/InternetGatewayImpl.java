@@ -118,10 +118,7 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
     }
 
     public InternetGateway create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGateways()
-            .create(resourceGroupName, internetGatewayName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InternetGateway create(Context context) {
@@ -144,10 +141,7 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
     }
 
     public InternetGateway apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGateways()
-            .update(resourceGroupName, internetGatewayName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InternetGateway apply(Context context) {
@@ -170,11 +164,7 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
     }
 
     public InternetGateway refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGateways()
-            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InternetGateway refresh(Context context) {

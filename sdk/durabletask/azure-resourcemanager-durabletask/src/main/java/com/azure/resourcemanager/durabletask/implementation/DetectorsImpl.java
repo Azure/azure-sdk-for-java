@@ -45,8 +45,7 @@ public final class DetectorsImpl implements Detectors {
     }
 
     public PagedIterable<Detector> listByScheduler(String resourceGroupName, String schedulerName) {
-        PagedIterable<DetectorInner> inner = this.serviceClient().listByScheduler(resourceGroupName, schedulerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DetectorImpl(inner1, this.manager()));
+        return this.listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public PagedIterable<Detector> listByScheduler(String resourceGroupName, String schedulerName, Context context) {

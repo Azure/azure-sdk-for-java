@@ -12,23 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class PoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Pool model = BinaryData
-            .fromString("{\"name\":\"n\",\"vmPriority\":\"Spot\",\"instanceType\":\"ff\",\"nodeCount\":39369666}")
+        Pool model = BinaryData.fromString(
+            "{\"name\":\"nvovbooqbmdqrxy\",\"vmPriority\":\"Regular\",\"instanceType\":\"et\",\"nodeCount\":474730373}")
             .toObject(Pool.class);
-        Assertions.assertEquals("n", model.name());
-        Assertions.assertEquals(VmPriority.SPOT, model.vmPriority());
-        Assertions.assertEquals("ff", model.instanceType());
-        Assertions.assertEquals(39369666, model.nodeCount());
+        Assertions.assertEquals("nvovbooqbmdqrxy", model.name());
+        Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
+        Assertions.assertEquals("et", model.instanceType());
+        Assertions.assertEquals(474730373, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Pool model
-            = new Pool().withName("n").withVmPriority(VmPriority.SPOT).withInstanceType("ff").withNodeCount(39369666);
+        Pool model = new Pool().withName("nvovbooqbmdqrxy")
+            .withVmPriority(VmPriority.REGULAR)
+            .withInstanceType("et")
+            .withNodeCount(474730373);
         model = BinaryData.fromObject(model).toObject(Pool.class);
-        Assertions.assertEquals("n", model.name());
-        Assertions.assertEquals(VmPriority.SPOT, model.vmPriority());
-        Assertions.assertEquals("ff", model.instanceType());
-        Assertions.assertEquals(39369666, model.nodeCount());
+        Assertions.assertEquals("nvovbooqbmdqrxy", model.name());
+        Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
+        Assertions.assertEquals("et", model.instanceType());
+        Assertions.assertEquals(474730373, model.nodeCount());
     }
 }

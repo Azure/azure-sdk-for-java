@@ -206,22 +206,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an email notification(alert) configuration.
-     * 
-     * Gets the details of the specified email notification(alert) configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param alertSettingName The name of the email notification configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an email notification(alert) configuration.
-     * 
-     * Gets the details of the specified email notification(alert) configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertInner> getWithResponse(String resourceGroupName, String resourceName, String alertSettingName,
         Context context) {
@@ -252,21 +237,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
             resourceGroupName, resourceName, alertSettingName, accept, context);
     }
 
-    /**
-     * Gets an email notification(alert) configuration.
-     * 
-     * Gets the details of the specified email notification(alert) configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param alertSettingName The name of the email notification configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an email notification(alert) configuration.
-     * 
-     * Gets the details of the specified email notification(alert) configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertInner get(String resourceGroupName, String resourceName, String alertSettingName) {
         return getWithResponse(resourceGroupName, resourceName, alertSettingName, Context.NONE).getValue();
@@ -343,21 +314,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Configures email notifications for this vault.
-     * 
-     * Create or update an email notification(alert) configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param alertSettingName The name of the email notification configuration.
-     * @param request The input to configure the email notification(alert).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return implements the Alert class along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertInner> createWithResponse(String resourceGroupName, String resourceName,
         String alertSettingName, ConfigureAlertRequest request, Context context) {
@@ -396,20 +353,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
             request, context);
     }
 
-    /**
-     * Configures email notifications for this vault.
-     * 
-     * Create or update an email notification(alert) configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param alertSettingName The name of the email notification configuration.
-     * @param request The input to configure the email notification(alert).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return implements the Alert class.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertInner create(String resourceGroupName, String resourceName, String alertSettingName,
         ConfigureAlertRequest request) {
@@ -494,29 +438,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<AlertCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -561,43 +483,13 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of configured email notification(alert) configurations.
-     * 
-     * Gets the list of email notification(alert) configurations for the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configured email notification(alert) configurations.
-     * 
-     * Gets the list of email notification(alert) configurations for the vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of configured email notification(alert) configurations.
-     * 
-     * Gets the list of email notification(alert) configurations for the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configured email notification(alert) configurations.
-     * 
-     * Gets the list of email notification(alert) configurations for the vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -649,19 +541,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<AlertCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -139,10 +139,7 @@ public final class LocalRulestackResourceImpl
     }
 
     public LocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocalRulestackResource create(Context context) {
@@ -165,11 +162,7 @@ public final class LocalRulestackResourceImpl
     }
 
     public LocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRulestacks()
-            .updateWithResponse(resourceGroupName, localRulestackName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocalRulestackResource apply(Context context) {
@@ -193,11 +186,7 @@ public final class LocalRulestackResourceImpl
     }
 
     public LocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLocalRulestacks()
-            .getByResourceGroupWithResponse(resourceGroupName, localRulestackName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocalRulestackResource refresh(Context context) {

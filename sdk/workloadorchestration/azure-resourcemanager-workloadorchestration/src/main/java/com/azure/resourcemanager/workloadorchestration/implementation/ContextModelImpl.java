@@ -85,10 +85,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContexts()
-            .createOrUpdate(resourceGroupName, contextName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ContextModel create(Context context) {
@@ -111,10 +108,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContexts()
-            .update(resourceGroupName, contextName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ContextModel apply(Context context) {
@@ -137,11 +131,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContexts()
-            .getByResourceGroupWithResponse(resourceGroupName, contextName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ContextModel refresh(Context context) {

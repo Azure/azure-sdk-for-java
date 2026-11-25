@@ -197,18 +197,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the cap override configured for a single member subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param memberSubscriptionId The name of the MemberCapOverride.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cap override configured for a single member subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MemberCapOverrideInner> getWithResponse(String location, String vmFamilyName,
         String memberSubscriptionId, Context context) {
@@ -217,17 +206,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
             location, vmFamilyName, memberSubscriptionId, accept, context);
     }
 
-    /**
-     * Gets the cap override configured for a single member subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param memberSubscriptionId The name of the MemberCapOverride.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cap override configured for a single member subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberCapOverrideInner get(String location, String vmFamilyName, String memberSubscriptionId) {
         return getWithResponse(location, vmFamilyName, memberSubscriptionId, Context.NONE).getValue();
@@ -281,21 +260,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces the cap override for a single member subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param memberSubscriptionId The name of the MemberCapOverride.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return member cap override as a standalone child resource of `SharedLimitCap`.
-     * Use this resource to read or modify a single member's cap without
-     * resending the entire `memberCapOverrides` array on the parent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MemberCapOverrideInner> createOrUpdateWithResponse(String location, String vmFamilyName,
         String memberSubscriptionId, MemberCapOverrideInner resource, Context context) {
@@ -306,20 +271,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
             resource, context);
     }
 
-    /**
-     * Creates or replaces the cap override for a single member subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param memberSubscriptionId The name of the MemberCapOverride.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return member cap override as a standalone child resource of `SharedLimitCap`.
-     * Use this resource to read or modify a single member's cap without
-     * resending the entire `memberCapOverrides` array on the parent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberCapOverrideInner createOrUpdate(String location, String vmFamilyName, String memberSubscriptionId,
         MemberCapOverrideInner resource) {
@@ -363,18 +315,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
         return deleteWithResponseAsync(location, vmFamilyName, memberSubscriptionId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Removes the per-member cap override for a member subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param memberSubscriptionId The name of the MemberCapOverride.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String location, String vmFamilyName, String memberSubscriptionId,
         Context context) {
@@ -382,16 +323,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
             this.client.getSubscriptionId(), location, vmFamilyName, memberSubscriptionId, context);
     }
 
-    /**
-     * Removes the per-member cap override for a member subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param memberSubscriptionId The name of the MemberCapOverride.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String location, String vmFamilyName, String memberSubscriptionId) {
         deleteWithResponse(location, vmFamilyName, memberSubscriptionId, Context.NONE);
@@ -448,11 +380,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MemberCapOverrideInner> listByParentSinglePage(String location, String vmFamilyName) {
-        final String accept = "application/json";
-        Response<MemberCapOverrideListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, vmFamilyName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(location, vmFamilyName, Context.NONE);
     }
 
     /**
@@ -476,33 +404,13 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all per-member cap overrides configured under a SharedLimitCap.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MemberCapOverride list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MemberCapOverrideInner> listByParent(String location, String vmFamilyName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(location, vmFamilyName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(location, vmFamilyName, Context.NONE);
     }
 
-    /**
-     * Lists all per-member cap overrides configured under a SharedLimitCap.
-     * 
-     * @param location The name of the Azure region.
-     * @param vmFamilyName The name of the SharedLimitCap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MemberCapOverride list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MemberCapOverrideInner> listByParent(String location, String vmFamilyName, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(location, vmFamilyName, context),
@@ -540,11 +448,7 @@ public final class MemberCapOverridesClientImpl implements MemberCapOverridesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MemberCapOverrideInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MemberCapOverrideListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

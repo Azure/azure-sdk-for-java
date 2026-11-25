@@ -136,10 +136,11 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldSummaryInner>> listSinglePageAsync(String resourceGroupName,
         String neuroShieldName, Integer top) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, accept, context))
             .<PagedResponse<NeuroShieldSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -200,12 +201,7 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldSummaryInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         Integer top) {
-        final String accept = "application/json";
-        Response<NeuroShieldSummaryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, neuroShieldName, top, Context.NONE);
     }
 
     /**
@@ -225,47 +221,22 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldSummaryInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         Integer top, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldSummaryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, accept, context);
+        Response<NeuroShieldSummaryListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NeuroShield fleet summaries
-     * 
-     * Lists the aggregate fleet overview singleton for a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldSummary list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldSummaryInner> list(String resourceGroupName, String neuroShieldName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, neuroShieldName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, neuroShieldName, top, Context.NONE);
     }
 
-    /**
-     * List NeuroShield fleet summaries
-     * 
-     * Lists the aggregate fleet overview singleton for a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param top The maximum number of items to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldSummary list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldSummaryInner> list(String resourceGroupName, String neuroShieldName, Integer top,
         Context context) {
@@ -291,10 +262,11 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldSummaryInner>> getWithResponseAsync(String resourceGroupName,
         String neuroShieldName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -318,43 +290,17 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NeuroShield fleet summary
-     * 
-     * Gets the aggregate fleet overview singleton for a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeuroShield fleet summary
-     * 
-     * Gets the aggregate fleet overview singleton for a NeuroShield resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldSummaryInner> getWithResponse(String resourceGroupName, String neuroShieldName,
         Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, neuroShieldName, accept, context);
     }
 
-    /**
-     * Get a NeuroShield fleet summary
-     * 
-     * Gets the aggregate fleet overview singleton for a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NeuroShield fleet summary
-     * 
-     * Gets the aggregate fleet overview singleton for a NeuroShield resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldSummaryInner get(String resourceGroupName, String neuroShieldName) {
         return getWithResponse(resourceGroupName, neuroShieldName, Context.NONE).getValue();
@@ -394,11 +340,7 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldSummaryInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldSummaryListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

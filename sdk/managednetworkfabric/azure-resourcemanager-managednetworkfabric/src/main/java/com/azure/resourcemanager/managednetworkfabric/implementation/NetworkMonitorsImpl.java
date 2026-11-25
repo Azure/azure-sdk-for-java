@@ -48,7 +48,7 @@ public final class NetworkMonitorsImpl implements NetworkMonitors {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String networkMonitorName) {
-        this.serviceClient().delete(resourceGroupName, networkMonitorName);
+        this.delete(resourceGroupName, networkMonitorName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkMonitorName, Context context) {
@@ -56,8 +56,7 @@ public final class NetworkMonitorsImpl implements NetworkMonitors {
     }
 
     public PagedIterable<NetworkMonitor> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NetworkMonitorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMonitorImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NetworkMonitor> listByResourceGroup(String resourceGroupName, Context context) {
@@ -66,8 +65,7 @@ public final class NetworkMonitorsImpl implements NetworkMonitors {
     }
 
     public PagedIterable<NetworkMonitor> list() {
-        PagedIterable<NetworkMonitorInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMonitorImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetworkMonitor> list(Context context) {
@@ -77,13 +75,7 @@ public final class NetworkMonitorsImpl implements NetworkMonitors {
 
     public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
         String networkMonitorName, UpdateAdministrativeState body) {
-        CommonPostActionResponseForDeviceUpdateInner inner
-            = this.serviceClient().updateAdministrativeState(resourceGroupName, networkMonitorName, body);
-        if (inner != null) {
-            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
     public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
@@ -98,74 +90,30 @@ public final class NetworkMonitorsImpl implements NetworkMonitors {
     }
 
     public NetworkMonitor getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkMonitorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "networkMonitorName");
-        if (networkMonitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkMonitors'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, networkMonitorName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkMonitor> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkMonitorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkMonitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "networkMonitorName");
-        if (networkMonitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkMonitors'.", id)));
-        }
+            "networkMonitorName", "networkMonitors", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, networkMonitorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkMonitorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "networkMonitorName");
-        if (networkMonitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkMonitors'.", id)));
-        }
-        this.delete(resourceGroupName, networkMonitorName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkMonitorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkMonitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}",
-            "networkMonitorName");
-        if (networkMonitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkMonitors'.", id)));
-        }
+            "networkMonitorName", "networkMonitors", LOGGER);
         this.delete(resourceGroupName, networkMonitorName, context);
     }
 

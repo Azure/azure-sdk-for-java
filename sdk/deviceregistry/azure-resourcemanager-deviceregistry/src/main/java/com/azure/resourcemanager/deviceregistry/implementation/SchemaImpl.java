@@ -18,6 +18,15 @@ public final class SchemaImpl implements Schema, Schema.Definition {
     SchemaImpl(SchemaInner innerObject, com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "resourceGroupName");
+        this.schemaRegistryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "schemaRegistryName");
+        this.schemaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "schemaName");
     }
 
     public String id() {
@@ -61,12 +70,7 @@ public final class SchemaImpl implements Schema, Schema.Definition {
     }
 
     public Schema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .createOrReplaceWithResponse(resourceGroupName, schemaRegistryName, schemaName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Schema create(Context context) {
@@ -84,11 +88,7 @@ public final class SchemaImpl implements Schema, Schema.Definition {
     }
 
     public Schema refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .getWithResponse(resourceGroupName, schemaRegistryName, schemaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Schema refresh(Context context) {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+  <!-- Maven injects the fields annotated with @Parameter. -->
+  <suppress
+      checks="io\.clientcore\.linting\.extensions\.checkstyle\.checks\.EnforceFinalFieldsCheck"
+      files="[/\\]apireviewplugin[/\\]GenerateMojo\.java"/>
+  <!-- Tool failures use Maven exceptions or propagate to the CLI's error handler. -->
+  <suppress
+      checks="io\.clientcore\.linting\.extensions\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+      files="[/\\]apireviewplugin[/\\](GenerateMojo|ReviewBundleWriter)\.java"/>
+</suppressions>

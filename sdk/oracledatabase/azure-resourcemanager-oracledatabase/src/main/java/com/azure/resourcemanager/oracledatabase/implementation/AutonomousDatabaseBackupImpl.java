@@ -66,10 +66,7 @@ public final class AutonomousDatabaseBackupImpl
     }
 
     public AutonomousDatabaseBackup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabaseBackups()
-            .createOrUpdate(resourceGroupName, autonomousdatabasename, adbbackupid, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutonomousDatabaseBackup create(Context context) {
@@ -92,10 +89,7 @@ public final class AutonomousDatabaseBackupImpl
     }
 
     public AutonomousDatabaseBackup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabaseBackups()
-            .update(resourceGroupName, autonomousdatabasename, adbbackupid, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutonomousDatabaseBackup apply(Context context) {
@@ -121,11 +115,7 @@ public final class AutonomousDatabaseBackupImpl
     }
 
     public AutonomousDatabaseBackup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabaseBackups()
-            .getWithResponse(resourceGroupName, autonomousdatabasename, adbbackupid, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutonomousDatabaseBackup refresh(Context context) {

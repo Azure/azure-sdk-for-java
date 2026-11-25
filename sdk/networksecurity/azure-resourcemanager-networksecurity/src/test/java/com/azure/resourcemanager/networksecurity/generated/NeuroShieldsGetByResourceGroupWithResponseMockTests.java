@@ -23,7 +23,7 @@ public final class NeuroShieldsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"resourceGuid\":\"qpv\",\"responseMode\":\"Auto\",\"severityThreshold\":\"Low\",\"description\":\"sr\"},\"etag\":\"gvxp\",\"location\":\"omzlfmi\",\"tags\":{\"ali\":\"bnbbeldawkz\"},\"id\":\"urqhaka\",\"name\":\"hashsfwxosow\",\"type\":\"xcug\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"ujbazpjuohminyfl\",\"responseMode\":\"Manual\",\"severityThreshold\":\"Critical\",\"description\":\"duvwpklvxwmygd\"},\"etag\":\"gpqch\",\"location\":\"zepn\",\"tags\":{\"axconfozauo\":\"crxgibb\",\"nuuepzlrp\":\"sukokwbqplhl\",\"nnrwrbiork\":\"wzsoldweyuqdunv\",\"xmsivfomiloxggdu\":\"alywjhhgdn\"},\"id\":\"iqndieuzaofj\",\"name\":\"hvcyyysfg\",\"type\":\"otcubi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class NeuroShieldsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldResource response = manager.neuroShields()
-            .getByResourceGroupWithResponse("c", "hmdua", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("eekulfgslqubkwd", "enr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("omzlfmi", response.location());
-        Assertions.assertEquals("bnbbeldawkz", response.tags().get("ali"));
-        Assertions.assertEquals(NeuroShieldResponseMode.AUTO, response.properties().responseMode());
-        Assertions.assertEquals(NeuroShieldSeverityThreshold.LOW, response.properties().severityThreshold());
-        Assertions.assertEquals("sr", response.properties().description());
+        Assertions.assertEquals("zepn", response.location());
+        Assertions.assertEquals("crxgibb", response.tags().get("axconfozauo"));
+        Assertions.assertEquals(NeuroShieldResponseMode.MANUAL, response.properties().responseMode());
+        Assertions.assertEquals(NeuroShieldSeverityThreshold.CRITICAL, response.properties().severityThreshold());
+        Assertions.assertEquals("duvwpklvxwmygd", response.properties().description());
     }
 }

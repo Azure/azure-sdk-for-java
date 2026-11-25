@@ -59,7 +59,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public void update(String resourceGroupName, String connectionName, String flowName, FlowsPatch flow) {
-        this.serviceClient().update(resourceGroupName, connectionName, flowName, flow);
+        this.update(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
     public void update(String resourceGroupName, String connectionName, String flowName, FlowsPatch flow,
@@ -68,7 +68,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public void delete(String resourceGroupName, String connectionName, String flowName) {
-        this.serviceClient().delete(resourceGroupName, connectionName, flowName);
+        this.delete(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String connectionName, String flowName, Context context) {
@@ -76,8 +76,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public PagedIterable<Flow> listByConnection(String resourceGroupName, String connectionName) {
-        PagedIterable<FlowInner> inner = this.serviceClient().listByConnection(resourceGroupName, connectionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FlowImpl(inner1, this.manager()));
+        return this.listByConnection(resourceGroupName, connectionName, Context.NONE);
     }
 
     public PagedIterable<Flow> listByConnection(String resourceGroupName, String connectionName, Context context) {
@@ -87,12 +86,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public Flow disable(String resourceGroupName, String connectionName, String flowName) {
-        FlowInner inner = this.serviceClient().disable(resourceGroupName, connectionName, flowName);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.disable(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     public Flow disable(String resourceGroupName, String connectionName, String flowName, Context context) {
@@ -105,12 +99,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public Flow enable(String resourceGroupName, String connectionName, String flowName) {
-        FlowInner inner = this.serviceClient().enable(resourceGroupName, connectionName, flowName);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.enable(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     public Flow enable(String resourceGroupName, String connectionName, String flowName, Context context) {
@@ -123,12 +112,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public Flow generatePassphrase(String resourceGroupName, String connectionName, String flowName) {
-        FlowInner inner = this.serviceClient().generatePassphrase(resourceGroupName, connectionName, flowName);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generatePassphrase(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     public Flow generatePassphrase(String resourceGroupName, String connectionName, String flowName, Context context) {
@@ -216,12 +200,7 @@ public final class FlowsImpl implements Flows {
     }
 
     public Flow link(String resourceGroupName, String connectionName, String flowName, ResourceBody flow) {
-        FlowInner inner = this.serviceClient().link(resourceGroupName, connectionName, flowName, flow);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.link(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
     public Flow link(String resourceGroupName, String connectionName, String flowName, ResourceBody flow,
@@ -236,13 +215,8 @@ public final class FlowsImpl implements Flows {
 
     public Flow setDestinationEndpointPorts(String resourceGroupName, String connectionName, String flowName,
         SetDestinationEndpointPorts streamDestinationEndpointPorts) {
-        FlowInner inner = this.serviceClient()
-            .setDestinationEndpointPorts(resourceGroupName, connectionName, flowName, streamDestinationEndpointPorts);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.setDestinationEndpointPorts(resourceGroupName, connectionName, flowName,
+            streamDestinationEndpointPorts, Context.NONE);
     }
 
     public Flow setDestinationEndpointPorts(String resourceGroupName, String connectionName, String flowName,
@@ -259,13 +233,8 @@ public final class FlowsImpl implements Flows {
 
     public Flow setDestinationEndpoints(String resourceGroupName, String connectionName, String flowName,
         SetDestinationEndpoints streamDestinationEndpoints) {
-        FlowInner inner = this.serviceClient()
-            .setDestinationEndpoints(resourceGroupName, connectionName, flowName, streamDestinationEndpoints);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.setDestinationEndpoints(resourceGroupName, connectionName, flowName, streamDestinationEndpoints,
+            Context.NONE);
     }
 
     public Flow setDestinationEndpoints(String resourceGroupName, String connectionName, String flowName,
@@ -281,12 +250,7 @@ public final class FlowsImpl implements Flows {
 
     public Flow setPassphrase(String resourceGroupName, String connectionName, String flowName,
         SetStreamPassphrase passphrase) {
-        FlowInner inner = this.serviceClient().setPassphrase(resourceGroupName, connectionName, flowName, passphrase);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.setPassphrase(resourceGroupName, connectionName, flowName, passphrase, Context.NONE);
     }
 
     public Flow setPassphrase(String resourceGroupName, String connectionName, String flowName,
@@ -302,13 +266,7 @@ public final class FlowsImpl implements Flows {
 
     public Flow setSourceAddresses(String resourceGroupName, String connectionName, String flowName,
         SetSourceAddresses sourceAddresses) {
-        FlowInner inner
-            = this.serviceClient().setSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses);
-        if (inner != null) {
-            return new FlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.setSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses, Context.NONE);
     }
 
     public Flow setSourceAddresses(String resourceGroupName, String connectionName, String flowName,
@@ -323,102 +281,36 @@ public final class FlowsImpl implements Flows {
     }
 
     public Flow getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
-        String flowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "flowName");
-        if (flowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flows'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, connectionName, flowName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Flow> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
-        String flowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "connectionName", "connections", LOGGER);
+        String flowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "flowName");
-        if (flowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flows'.", id)));
-        }
+            "flowName", "flows", LOGGER);
         return this.getWithResponse(resourceGroupName, connectionName, flowName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
-        String flowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "flowName");
-        if (flowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flows'.", id)));
-        }
-        this.delete(resourceGroupName, connectionName, flowName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
-        String flowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "connectionName", "connections", LOGGER);
+        String flowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}/flows/{flowName}",
-            "flowName");
-        if (flowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flows'.", id)));
-        }
+            "flowName", "flows", LOGGER);
         this.delete(resourceGroupName, connectionName, flowName, context);
     }
 

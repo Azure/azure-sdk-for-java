@@ -47,12 +47,7 @@ public final class MigrationsImpl implements Migrations {
     }
 
     public Migration start(String resourceGroupName, String clusterName, MigrationInner parameters) {
-        MigrationInner inner = this.serviceClient().start(resourceGroupName, clusterName, parameters);
-        if (inner != null) {
-            return new MigrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.start(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     public Migration start(String resourceGroupName, String clusterName, MigrationInner parameters, Context context) {
@@ -65,8 +60,7 @@ public final class MigrationsImpl implements Migrations {
     }
 
     public PagedIterable<Migration> list(String resourceGroupName, String clusterName) {
-        PagedIterable<MigrationInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Migration> list(String resourceGroupName, String clusterName, Context context) {
@@ -83,7 +77,7 @@ public final class MigrationsImpl implements Migrations {
     }
 
     public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName) {
-        this.serviceClient().unlinkMigratedEndpoint(resourceGroupName, clusterName);
+        this.unlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context) {

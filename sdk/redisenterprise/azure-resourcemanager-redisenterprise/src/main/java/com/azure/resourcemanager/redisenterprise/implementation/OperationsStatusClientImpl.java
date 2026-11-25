@@ -110,17 +110,7 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context) {
         final String accept = "application/json";
@@ -128,16 +118,7 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
             this.client.getSubscriptionId(), operationId, accept, context);
     }
 
-    /**
-     * Gets the status of operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

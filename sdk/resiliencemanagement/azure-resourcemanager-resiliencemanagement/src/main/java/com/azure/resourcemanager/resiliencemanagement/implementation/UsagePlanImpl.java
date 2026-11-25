@@ -84,10 +84,7 @@ public final class UsagePlanImpl implements UsagePlan, UsagePlan.Definition, Usa
     }
 
     public UsagePlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsagePlans()
-            .createOrUpdate(resourceGroupName, usagePlanName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public UsagePlan create(Context context) {
@@ -110,10 +107,7 @@ public final class UsagePlanImpl implements UsagePlan, UsagePlan.Definition, Usa
     }
 
     public UsagePlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsagePlans()
-            .update(resourceGroupName, usagePlanName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public UsagePlan apply(Context context) {
@@ -136,11 +130,7 @@ public final class UsagePlanImpl implements UsagePlan, UsagePlan.Definition, Usa
     }
 
     public UsagePlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsagePlans()
-            .getByResourceGroupWithResponse(resourceGroupName, usagePlanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public UsagePlan refresh(Context context) {

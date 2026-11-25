@@ -107,11 +107,7 @@ public final class OutboundEndpointImpl
     }
 
     public OutboundEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundEndpoints()
-            .createOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OutboundEndpoint create(Context context) {
@@ -137,11 +133,7 @@ public final class OutboundEndpointImpl
     }
 
     public OutboundEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundEndpoints()
-            .update(resourceGroupName, dnsResolverName, outboundEndpointName, updateParameters, updateIfMatch,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OutboundEndpoint apply(Context context) {
@@ -167,11 +159,7 @@ public final class OutboundEndpointImpl
     }
 
     public OutboundEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundEndpoints()
-            .getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OutboundEndpoint refresh(Context context) {

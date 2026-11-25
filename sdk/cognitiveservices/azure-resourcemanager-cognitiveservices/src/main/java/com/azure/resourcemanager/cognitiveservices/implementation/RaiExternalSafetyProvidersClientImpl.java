@@ -155,17 +155,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
         return getWithResponseAsync(safetyProviderName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified external safety provider associated with the Subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified external safety provider associated with the Subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiExternalSafetyProviderSchemaInner> getWithResponse(String safetyProviderName, Context context) {
         final String accept = "application/json";
@@ -173,16 +163,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
             safetyProviderName, accept, context);
     }
 
-    /**
-     * Gets the specified external safety provider associated with the Subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified external safety provider associated with the Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiExternalSafetyProviderSchemaInner get(String safetyProviderName) {
         return getWithResponse(safetyProviderName, Context.NONE).getValue();
@@ -229,18 +210,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create the rai safety provider associated with the subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param safetyProvider Properties describing the rai external safety provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Rai External Safety provider Schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiExternalSafetyProviderSchemaInner> createOrUpdateWithResponse(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider, Context context) {
@@ -250,17 +220,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
             this.client.getSubscriptionId(), safetyProviderName, contentType, accept, safetyProvider, context);
     }
 
-    /**
-     * Create the rai safety provider associated with the subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param safetyProvider Properties describing the rai external safety provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Rai External Safety provider Schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiExternalSafetyProviderSchemaInner createOrUpdate(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider) {
@@ -297,8 +257,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String safetyProviderName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), safetyProviderName, Context.NONE);
+        return deleteWithResponse(safetyProviderName, Context.NONE);
     }
 
     /**
@@ -335,33 +294,13 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified custom topic associated with the subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String safetyProviderName) {
-        Response<BinaryData> response = deleteWithResponse(safetyProviderName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(safetyProviderName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified custom topic associated with the subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String safetyProviderName, Context context) {
         Response<BinaryData> response = deleteWithResponse(safetyProviderName, context);
@@ -383,32 +322,15 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
         return beginDeleteAsync(safetyProviderName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified custom topic associated with the subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String safetyProviderName) {
-        beginDelete(safetyProviderName).getFinalResult();
+        delete(safetyProviderName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified custom topic associated with the subscription.
-     * 
-     * @param safetyProviderName The name of the Rai External Safety Provider associated with the Cognitive Services
-     * Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String safetyProviderName, Context context) {
-        beginDelete(safetyProviderName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(safetyProviderName, context));
     }
 }

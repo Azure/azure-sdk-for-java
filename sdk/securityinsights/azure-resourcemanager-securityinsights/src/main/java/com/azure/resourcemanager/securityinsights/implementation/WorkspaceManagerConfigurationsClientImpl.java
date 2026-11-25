@@ -202,18 +202,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workspace manager configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerConfigurationName The name of the workspace manager configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace manager configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceManagerConfigurationInner> getWithResponse(String resourceGroupName, String workspaceName,
         String workspaceManagerConfigurationName, Context context) {
@@ -222,17 +211,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             resourceGroupName, workspaceName, workspaceManagerConfigurationName, accept, context);
     }
 
-    /**
-     * Gets a workspace manager configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerConfigurationName The name of the workspace manager configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace manager configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceManagerConfigurationInner get(String resourceGroupName, String workspaceName,
         String workspaceManagerConfigurationName) {
@@ -284,19 +263,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             workspaceManagerConfiguration).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a workspace manager configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerConfigurationName The name of the workspace manager configuration.
-     * @param workspaceManagerConfiguration The workspace manager configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace manager configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceManagerConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
         String workspaceName, String workspaceManagerConfigurationName,
@@ -308,18 +275,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             contentType, accept, workspaceManagerConfiguration, context);
     }
 
-    /**
-     * Creates or updates a workspace manager configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerConfigurationName The name of the workspace manager configuration.
-     * @param workspaceManagerConfiguration The workspace manager configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace manager configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceManagerConfigurationInner createOrUpdate(String resourceGroupName, String workspaceName,
         String workspaceManagerConfigurationName, WorkspaceManagerConfigurationInner workspaceManagerConfiguration) {
@@ -366,18 +322,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a workspace manager configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerConfigurationName The name of the workspace manager configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
         String workspaceManagerConfigurationName, Context context) {
@@ -386,16 +331,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             context);
     }
 
-    /**
-     * Deletes a workspace manager configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspaceManagerConfigurationName The name of the workspace manager configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String workspaceManagerConfigurationName) {
         deleteWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName, Context.NONE);
@@ -491,12 +427,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceManagerConfigurationInner> listSinglePage(String resourceGroupName,
         String workspaceName, String orderby, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<WorkspaceManagerConfigurationList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, orderby, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, orderby, top, skipToken, Context.NONE);
     }
 
     /**
@@ -526,43 +457,16 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all workspace manager configurations for a Sentinel workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workspace manager configurations for a Sentinel workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceManagerConfigurationInner> list(String resourceGroupName, String workspaceName) {
         final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, orderby, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, orderby, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets all workspace manager configurations for a Sentinel workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workspace manager configurations for a Sentinel workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceManagerConfigurationInner> list(String resourceGroupName, String workspaceName,
         String orderby, Integer top, String skipToken, Context context) {
@@ -601,11 +505,7 @@ public final class WorkspaceManagerConfigurationsClientImpl implements Workspace
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceManagerConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceManagerConfigurationList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

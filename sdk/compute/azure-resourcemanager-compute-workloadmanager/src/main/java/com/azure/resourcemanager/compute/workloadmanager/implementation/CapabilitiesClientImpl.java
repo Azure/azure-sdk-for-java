@@ -222,18 +222,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a capability along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilityInner> getWithResponse(String resourceGroupName, String spaceName, String capabilityName,
         Context context) {
@@ -242,17 +231,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             resourceGroupName, spaceName, capabilityName, accept, context);
     }
 
-    /**
-     * Gets a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a capability.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner get(String resourceGroupName, String spaceName, String capabilityName) {
         return getWithResponse(resourceGroupName, spaceName, capabilityName, Context.NONE).getValue();
@@ -298,11 +277,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String spaceName,
         String capabilityName, CapabilityInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, capabilityName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, spaceName, capabilityName, resource, Context.NONE);
     }
 
     /**
@@ -349,40 +324,14 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             CapabilityInner.class, CapabilityInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityInner>, CapabilityInner> beginCreateOrUpdate(String resourceGroupName,
         String spaceName, String capabilityName, CapabilityInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, spaceName, capabilityName, resource);
-        return this.client.<CapabilityInner, CapabilityInner>getLroResult(response, CapabilityInner.class,
-            CapabilityInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, spaceName, capabilityName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityInner>, CapabilityInner> beginCreateOrUpdate(String resourceGroupName,
         String spaceName, String capabilityName, CapabilityInner resource, Context context) {
@@ -411,41 +360,19 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner createOrUpdate(String resourceGroupName, String spaceName, String capabilityName,
         CapabilityInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, capabilityName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, spaceName, capabilityName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner createOrUpdate(String resourceGroupName, String spaceName, String capabilityName,
         CapabilityInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, capabilityName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, spaceName, capabilityName, resource, context));
     }
 
     /**
@@ -488,11 +415,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String spaceName, String capabilityName,
         CapabilityUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, capabilityName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, spaceName, capabilityName, properties, Context.NONE);
     }
 
     /**
@@ -539,39 +462,14 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             CapabilityInner.class, CapabilityInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable capability properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityInner>, CapabilityInner> beginUpdate(String resourceGroupName,
         String spaceName, String capabilityName, CapabilityUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, spaceName, capabilityName, properties);
-        return this.client.<CapabilityInner, CapabilityInner>getLroResult(response, CapabilityInner.class,
-            CapabilityInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, spaceName, capabilityName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable capability properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityInner>, CapabilityInner> beginUpdate(String resourceGroupName,
         String spaceName, String capabilityName, CapabilityUpdate properties, Context context) {
@@ -600,41 +498,19 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable capability properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner update(String resourceGroupName, String spaceName, String capabilityName,
         CapabilityUpdate properties) {
-        return beginUpdate(resourceGroupName, spaceName, capabilityName, properties).getFinalResult();
+        return update(resourceGroupName, spaceName, capabilityName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable capability properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a capability enabled for a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner update(String resourceGroupName, String spaceName, String capabilityName,
         CapabilityUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, spaceName, capabilityName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, spaceName, capabilityName, properties, context));
     }
 
     /**
@@ -670,8 +546,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String spaceName, String capabilityName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, capabilityName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, spaceName, capabilityName, Context.NONE);
     }
 
     /**
@@ -712,36 +587,14 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Disables and deletes a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName,
         String capabilityName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, spaceName, capabilityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, spaceName, capabilityName, Context.NONE);
     }
 
-    /**
-     * Disables and deletes a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName,
         String capabilityName, Context context) {
@@ -766,35 +619,16 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables and deletes a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, String capabilityName) {
-        beginDelete(resourceGroupName, spaceName, capabilityName).getFinalResult();
+        delete(resourceGroupName, spaceName, capabilityName, Context.NONE);
     }
 
-    /**
-     * Disables and deletes a capability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param capabilityName The name of the Capability.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, String capabilityName, Context context) {
-        beginDelete(resourceGroupName, spaceName, capabilityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, spaceName, capabilityName, context));
     }
 
     /**
@@ -848,12 +682,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listByWorkloadSpaceSinglePage(String resourceGroupName, String spaceName) {
-        final String accept = "application/json";
-        Response<CapabilityListResult> res
-            = service.listByWorkloadSpaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, spaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkloadSpaceSinglePage(resourceGroupName, spaceName, Context.NONE);
     }
 
     /**
@@ -878,33 +707,13 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists capabilities in a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Capability list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> listByWorkloadSpace(String resourceGroupName, String spaceName) {
-        return new PagedIterable<>(() -> listByWorkloadSpaceSinglePage(resourceGroupName, spaceName),
-            nextLink -> listByWorkloadSpaceNextSinglePage(nextLink));
+        return listByWorkloadSpace(resourceGroupName, spaceName, Context.NONE);
     }
 
-    /**
-     * Lists capabilities in a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Capability list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> listByWorkloadSpace(String resourceGroupName, String spaceName,
         Context context) {
@@ -944,11 +753,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listByWorkloadSpaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CapabilityListResult> res
-            = service.listByWorkloadSpaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkloadSpaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

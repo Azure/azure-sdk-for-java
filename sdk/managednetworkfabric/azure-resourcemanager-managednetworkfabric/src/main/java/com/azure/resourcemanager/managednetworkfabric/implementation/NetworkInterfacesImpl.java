@@ -49,7 +49,7 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public void delete(String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        this.serviceClient().delete(resourceGroupName, networkDeviceName, networkInterfaceName);
+        this.delete(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
@@ -58,9 +58,7 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName) {
-        PagedIterable<NetworkInterfaceInner> inner
-            = this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
+        return this.listByNetworkDevice(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
     public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName,
@@ -72,13 +70,8 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkDeviceName, String networkInterfaceName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body,
+            Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
@@ -93,103 +86,36 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public NetworkInterface getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkDeviceName");
-        if (networkDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
-        }
-        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkInterfaceName");
-        if (networkInterfaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkInterface> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkDeviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkDeviceName");
-        if (networkDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
-        }
-        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "networkDeviceName", "networkDevices", LOGGER);
+        String networkInterfaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkInterfaceName");
-        if (networkInterfaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
-        }
+            "networkInterfaceName", "networkInterfaces", LOGGER);
         return this.getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkDeviceName");
-        if (networkDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
-        }
-        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkInterfaceName");
-        if (networkInterfaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
-        }
-        this.delete(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkDeviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkDeviceName");
-        if (networkDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
-        }
-        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "networkDeviceName", "networkDevices", LOGGER);
+        String networkInterfaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
-            "networkInterfaceName");
-        if (networkInterfaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
-        }
+            "networkInterfaceName", "networkInterfaces", LOGGER);
         this.delete(resourceGroupName, networkDeviceName, networkInterfaceName, context);
     }
 

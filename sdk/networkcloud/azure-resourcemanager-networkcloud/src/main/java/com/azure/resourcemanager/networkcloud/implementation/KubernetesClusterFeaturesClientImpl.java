@@ -243,18 +243,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided the Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided the Kubernetes cluster feature along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KubernetesClusterFeatureInner> getWithResponse(String resourceGroupName,
         String kubernetesClusterName, String featureName, Context context) {
@@ -263,17 +252,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
             resourceGroupName, kubernetesClusterName, featureName, accept, context);
     }
 
-    /**
-     * Get properties of the provided the Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided the Kubernetes cluster feature.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesClusterFeatureInner get(String resourceGroupName, String kubernetesClusterName,
         String featureName) {
@@ -330,11 +309,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String kubernetesClusterName,
         String featureName, KubernetesClusterFeatureInner kubernetesClusterFeatureParameters, String ifMatch,
         String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, featureName, ifMatch,
-            ifNoneMatch, contentType, accept, kubernetesClusterFeatureParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, kubernetesClusterName, featureName,
+            kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -440,55 +416,22 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     private SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName,
         KubernetesClusterFeatureInner kubernetesClusterFeatureParameters, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesClusterName,
-            featureName, kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch);
-        return this.client.<KubernetesClusterFeatureInner, KubernetesClusterFeatureInner>getLroResult(response,
-            KubernetesClusterFeatureInner.class, KubernetesClusterFeatureInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, kubernetesClusterName, featureName,
+            kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new Kubernetes cluster feature or update properties of the Kubernetes cluster feature if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param kubernetesClusterFeatureParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesClusterFeature represents the feature of a Kubernetes
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName,
         KubernetesClusterFeatureInner kubernetesClusterFeatureParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesClusterName,
-            featureName, kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch);
-        return this.client.<KubernetesClusterFeatureInner, KubernetesClusterFeatureInner>getLroResult(response,
-            KubernetesClusterFeatureInner.class, KubernetesClusterFeatureInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, kubernetesClusterName, featureName,
+            kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new Kubernetes cluster feature or update properties of the Kubernetes cluster feature if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param kubernetesClusterFeatureParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesClusterFeature represents the feature of a Kubernetes
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName,
@@ -550,50 +493,23 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new Kubernetes cluster feature or update properties of the Kubernetes cluster feature if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param kubernetesClusterFeatureParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeature represents the feature of a Kubernetes cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesClusterFeatureInner createOrUpdate(String resourceGroupName, String kubernetesClusterName,
         String featureName, KubernetesClusterFeatureInner kubernetesClusterFeatureParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, kubernetesClusterName, featureName,
-            kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, kubernetesClusterName, featureName, kubernetesClusterFeatureParameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new Kubernetes cluster feature or update properties of the Kubernetes cluster feature if it exists.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param kubernetesClusterFeatureParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeature represents the feature of a Kubernetes cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesClusterFeatureInner createOrUpdate(String resourceGroupName, String kubernetesClusterName,
         String featureName, KubernetesClusterFeatureInner kubernetesClusterFeatureParameters, String ifMatch,
         String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, kubernetesClusterName, featureName,
-            kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, kubernetesClusterName,
+            featureName, kubernetesClusterFeatureParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -645,10 +561,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String kubernetesClusterName,
         String featureName, String ifMatch, String ifNoneMatch,
         KubernetesClusterFeaturePatchParameters kubernetesClusterFeatureUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, featureName, ifMatch,
-            ifNoneMatch, accept, kubernetesClusterFeatureUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
+            kubernetesClusterFeatureUpdateParameters, Context.NONE);
     }
 
     /**
@@ -752,54 +666,22 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     private SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName, String ifMatch, String ifNoneMatch,
         KubernetesClusterFeaturePatchParameters kubernetesClusterFeatureUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesClusterName, featureName,
-            ifMatch, ifNoneMatch, kubernetesClusterFeatureUpdateParameters);
-        return this.client.<KubernetesClusterFeatureInner, KubernetesClusterFeatureInner>getLroResult(response,
-            KubernetesClusterFeatureInner.class, KubernetesClusterFeatureInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
+            kubernetesClusterFeatureUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesClusterFeature represents the feature of a Kubernetes
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner>
         beginUpdate(String resourceGroupName, String kubernetesClusterName, String featureName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final KubernetesClusterFeaturePatchParameters kubernetesClusterFeatureUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesClusterName, featureName,
-            ifMatch, ifNoneMatch, kubernetesClusterFeatureUpdateParameters);
-        return this.client.<KubernetesClusterFeatureInner, KubernetesClusterFeatureInner>getLroResult(response,
-            KubernetesClusterFeatureInner.class, KubernetesClusterFeatureInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
+            kubernetesClusterFeatureUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param kubernetesClusterFeatureUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of kubernetesClusterFeature represents the feature of a Kubernetes
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName, String ifMatch, String ifNoneMatch,
@@ -857,50 +739,24 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
             kubernetesClusterFeatureUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch properties of the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeature represents the feature of a Kubernetes cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesClusterFeatureInner update(String resourceGroupName, String kubernetesClusterName,
         String featureName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final KubernetesClusterFeaturePatchParameters kubernetesClusterFeatureUpdateParameters = null;
-        return beginUpdate(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
-            kubernetesClusterFeatureUpdateParameters).getFinalResult();
+        return update(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
+            kubernetesClusterFeatureUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param kubernetesClusterFeatureUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeature represents the feature of a Kubernetes cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesClusterFeatureInner update(String resourceGroupName, String kubernetesClusterName,
         String featureName, String ifMatch, String ifNoneMatch,
         KubernetesClusterFeaturePatchParameters kubernetesClusterFeatureUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
-            kubernetesClusterFeatureUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, kubernetesClusterName, featureName,
+            ifMatch, ifNoneMatch, kubernetesClusterFeatureUpdateParameters, context));
     }
 
     /**
@@ -946,9 +802,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String kubernetesClusterName,
         String featureName, String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, featureName, ifMatch,
-            ifNoneMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -1039,48 +894,19 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
         String featureName, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
         String featureName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
         String featureName, String ifMatch, String ifNoneMatch, Context context) {
@@ -1130,43 +956,20 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String kubernetesClusterName, String featureName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided Kubernetes cluster feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param featureName The name of the feature.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String kubernetesClusterName, String featureName, String ifMatch,
         String ifNoneMatch, Context context) {
-        beginDelete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1253,12 +1056,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterFeatureInner> listByKubernetesClusterSinglePage(String resourceGroupName,
         String kubernetesClusterName, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<KubernetesClusterFeatureList> res = service.listByKubernetesClusterSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, top,
-            skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, top, skipToken,
+            Context.NONE);
     }
 
     /**
@@ -1286,40 +1085,16 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of features for the provided Kubernetes cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of features for the provided Kubernetes cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterFeatureInner> listByKubernetesCluster(String resourceGroupName,
         String kubernetesClusterName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, top, skipToken),
-            nextLink -> listByKubernetesClusterNextSinglePage(nextLink));
+        return listByKubernetesCluster(resourceGroupName, kubernetesClusterName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of features for the provided Kubernetes cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kubernetesClusterName The name of the Kubernetes cluster.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of features for the provided Kubernetes cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterFeatureInner> listByKubernetesCluster(String resourceGroupName,
         String kubernetesClusterName, Integer top, String skipToken, Context context) {
@@ -1361,11 +1136,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterFeatureInner> listByKubernetesClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<KubernetesClusterFeatureList> res
-            = service.listByKubernetesClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByKubernetesClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

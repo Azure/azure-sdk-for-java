@@ -254,18 +254,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Entity> getWithResponse(String resourceGroupName, String workspaceName, String entityId,
         Context context) {
@@ -274,17 +263,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             resourceGroupName, workspaceName, entityId, accept, context);
     }
 
-    /**
-     * Gets an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Entity get(String resourceGroupName, String workspaceName, String entityId) {
         return getWithResponse(resourceGroupName, workspaceName, entityId, Context.NONE).getValue();
@@ -339,11 +318,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<Entity> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<EntityList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -366,33 +341,13 @@ public final class EntitiesClientImpl implements EntitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all entities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Entity> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all entities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Entity> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -439,19 +394,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Triggers playbook on a specific entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityIdentifier entity ID.
-     * @param requestBody Describes the request body for triggering a playbook on an entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runPlaybookWithResponse(String resourceGroupName, String workspaceName,
         String entityIdentifier, EntityManualTriggerRequestBody requestBody, Context context) {
@@ -459,16 +402,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, entityIdentifier, requestBody, context);
     }
 
-    /**
-     * Triggers playbook on a specific entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityIdentifier entity ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void runPlaybook(String resourceGroupName, String workspaceName, String entityIdentifier) {
         final EntityManualTriggerRequestBody requestBody = null;
@@ -519,19 +453,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Expands an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param parameters The parameters required to execute an expand operation on the given entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity expansion result operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntityExpandResponseInner> expandWithResponse(String resourceGroupName, String workspaceName,
         String entityId, EntityExpandParameters parameters, Context context) {
@@ -542,18 +464,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             parameters, context);
     }
 
-    /**
-     * Expands an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param parameters The parameters required to execute an expand operation on the given entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity expansion result operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntityExpandResponseInner expand(String resourceGroupName, String workspaceName, String entityId,
         EntityExpandParameters parameters) {
@@ -619,11 +530,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityQueryItemInner> queriesSinglePage(String resourceGroupName, String workspaceName,
         String entityId, EntityItemQueryKind kind) {
-        final String accept = "application/json";
-        Response<GetQueriesResponse> res = service.queriesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, entityId, kind, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return queriesSinglePage(resourceGroupName, workspaceName, entityId, kind, Context.NONE);
     }
 
     /**
@@ -649,38 +556,14 @@ public final class EntitiesClientImpl implements EntitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Insights and Activities for an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param kind The Kind parameter for queries.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insights and Activities for an entity as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryItemInner> queries(String resourceGroupName, String workspaceName, String entityId,
         EntityItemQueryKind kind) {
-        return new PagedIterable<>(() -> queriesSinglePage(resourceGroupName, workspaceName, entityId, kind),
-            nextLink -> queriesNextSinglePage(nextLink));
+        return queries(resourceGroupName, workspaceName, entityId, kind, Context.NONE);
     }
 
-    /**
-     * Get Insights and Activities for an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param kind The Kind parameter for queries.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insights and Activities for an entity as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryItemInner> queries(String resourceGroupName, String workspaceName, String entityId,
         EntityItemQueryKind kind, Context context) {
@@ -732,19 +615,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Execute Insights for an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param parameters The parameters required to execute insights on the given entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Insights result operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntityGetInsightsResponseInner> getInsightsWithResponse(String resourceGroupName,
         String workspaceName, String entityId, EntityGetInsightsParameters parameters, Context context) {
@@ -755,18 +626,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
             parameters, context);
     }
 
-    /**
-     * Execute Insights for an entity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param parameters The parameters required to execute insights on the given entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Insights result operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntityGetInsightsResponseInner getInsights(String resourceGroupName, String workspaceName, String entityId,
         EntityGetInsightsParameters parameters) {
@@ -802,10 +662,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<Entity> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EntityList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -857,11 +714,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityQueryItemInner> queriesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GetQueriesResponse> res
-            = service.queriesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return queriesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

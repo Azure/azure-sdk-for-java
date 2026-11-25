@@ -158,18 +158,7 @@ public final class InventoriesClientImpl implements InventoriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a InventoryResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param inventoryId Inventory resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a InventoryResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InventoryResourceInner> getWithResponse(String resourceUri, String solutionConfiguration,
         String inventoryId, Context context) {
@@ -178,17 +167,7 @@ public final class InventoriesClientImpl implements InventoriesClient {
             solutionConfiguration, inventoryId, accept, context);
     }
 
-    /**
-     * Get a InventoryResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param inventoryId Inventory resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a InventoryResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InventoryResourceInner get(String resourceUri, String solutionConfiguration, String inventoryId) {
         return getWithResponse(resourceUri, solutionConfiguration, inventoryId, Context.NONE).getValue();
@@ -247,11 +226,7 @@ public final class InventoriesClientImpl implements InventoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InventoryResourceInner> listBySolutionConfigurationSinglePage(String resourceUri,
         String solutionConfiguration) {
-        final String accept = "application/json";
-        Response<InventoryResourceListResult> res = service.listBySolutionConfigurationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, solutionConfiguration, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionConfigurationSinglePage(resourceUri, solutionConfiguration, Context.NONE);
     }
 
     /**
@@ -275,34 +250,14 @@ public final class InventoriesClientImpl implements InventoriesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List InventoryResource resources by SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InventoryResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InventoryResourceInner> listBySolutionConfiguration(String resourceUri,
         String solutionConfiguration) {
-        return new PagedIterable<>(() -> listBySolutionConfigurationSinglePage(resourceUri, solutionConfiguration),
-            nextLink -> listBySolutionConfigurationNextSinglePage(nextLink));
+        return listBySolutionConfiguration(resourceUri, solutionConfiguration, Context.NONE);
     }
 
-    /**
-     * List InventoryResource resources by SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InventoryResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InventoryResourceInner> listBySolutionConfiguration(String resourceUri,
         String solutionConfiguration, Context context) {
@@ -343,11 +298,7 @@ public final class InventoriesClientImpl implements InventoriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InventoryResourceInner> listBySolutionConfigurationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InventoryResourceListResult> res
-            = service.listBySolutionConfigurationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionConfigurationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -15,43 +15,43 @@ public final class ModelListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModelListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ibniynts\",\"value\":[{\"model\":{\"baseModel\":{\"publisher\":\"ftvhkmoogj\",\"format\":\"skbwgm\",\"name\":\"rulcfogx\",\"version\":\"xnwjtpfdzxcouz\",\"source\":\"ofwakukzk\",\"sourceAccount\":\"zxsoednl\",\"callRateLimit\":{\"count\":60.60254,\"renewalPeriod\":26.263512,\"rules\":[{}]}},\"isDefaultVersion\":true,\"skus\":[{\"name\":\"g\",\"usageName\":\"nione\",\"deprecationDate\":\"2021-06-04T18:47:13Z\",\"capacity\":{},\"rateLimits\":[{},{},{},{}],\"cost\":[{},{},{}]},{\"name\":\"nxkgt\",\"usageName\":\"lmtrlxcznnhz\",\"deprecationDate\":\"2021-01-19T08:56:15Z\",\"capacity\":{},\"rateLimits\":[{},{},{},{}],\"cost\":[{},{},{}]},{\"name\":\"wtyg\",\"usageName\":\"zusitoqcahfs\",\"deprecationDate\":\"2021-05-06T03:06:39Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{},{},{}]}],\"maxCapacity\":1249189328,\"capabilities\":{\"isolntfxxcrqmip\":\"sszvlcw\",\"xxbaizabuln\":\"jwfoygizms\"},\"finetuneCapabilities\":{\"toxjdzj\":\"k\",\"paydhfn\":\"jznvhxqqmq\"},\"deprecation\":{\"fineTune\":\"xmtf\",\"inference\":\"k\",\"deprecationStatus\":\"Tentative\"},\"replacementConfig\":{\"targetModelName\":\"spamwbwmbnls\",\"targetModelVersion\":\"efiqdktwtkv\",\"autoUpgradeStartDate\":\"2021-10-30T00:19:27Z\",\"upgradeOnExpiryLeadTimeDays\":1629072439},\"modelCatalogAssetId\":\"iwoynguu\",\"lifecycleStatus\":\"Legacy\",\"publisher\":\"adpcmhjhausy\",\"format\":\"ekymffztsilscvqs\",\"name\":\"iihfymkoui\",\"version\":\"eseuugci\",\"source\":\"hogsmgbvmtd\",\"sourceAccount\":\"qbe\",\"callRateLimit\":{\"count\":64.9586,\"renewalPeriod\":97.1226,\"rules\":[{}]}},\"kind\":\"btvkbi\",\"skuName\":\"nhtfgfi\",\"description\":\"dyhi\"},{\"model\":{\"baseModel\":{\"publisher\":\"zmuhbcak\",\"format\":\"hokhoitwhrjsdmm\",\"name\":\"dnckidbjpglhz\",\"version\":\"xzbawkikc\",\"source\":\"fhbssdpjeyoqxded\",\"sourceAccount\":\"f\",\"callRateLimit\":{\"count\":49.15312,\"renewalPeriod\":25.653631,\"rules\":[{},{},{}]}},\"isDefaultVersion\":true,\"skus\":[{\"name\":\"shzz\",\"usageName\":\"ullc\",\"deprecationDate\":\"2021-01-09T15:56:52Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{}]},{\"name\":\"dupnamglr\",\"usageName\":\"i\",\"deprecationDate\":\"2021-01-25T13:28:57Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{}]},{\"name\":\"erdqqigd\",\"usageName\":\"kghpcv\",\"deprecationDate\":\"2021-11-04T00:49:10Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{},{}]},{\"name\":\"yhhmvfxl\",\"usageName\":\"jajodmkrr\",\"deprecationDate\":\"2021-09-24T11:45:58Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{},{}]}],\"maxCapacity\":1774178765,\"capabilities\":{\"bwlyvxc\":\"jqgir\",\"stvzuzhasupml\":\"pqvctsfaeuhwwsk\"},\"finetuneCapabilities\":{\"kptgongruat\":\"pgzvzqazvbka\",\"beqngubabyjde\":\"yiysjqheni\",\"ey\":\"ysc\"},\"deprecation\":{\"fineTune\":\"emexmnvkvmuwr\",\"inference\":\"n\",\"deprecationStatus\":\"Planned\"},\"replacementConfig\":{\"targetModelName\":\"m\",\"targetModelVersion\":\"dlhvdv\",\"autoUpgradeStartDate\":\"2021-12-05T01:23:16Z\",\"upgradeOnExpiryLeadTimeDays\":1254419987},\"modelCatalogAssetId\":\"aeqjzmhkd\",\"lifecycleStatus\":\"Preview\",\"publisher\":\"o\",\"format\":\"fmunerkelu\",\"name\":\"shxzezb\",\"version\":\"zudl\",\"source\":\"zskejcgwfsgqksty\",\"sourceAccount\":\"upyuijp\",\"callRateLimit\":{\"count\":76.91486,\"renewalPeriod\":35.432613,\"rules\":[{}]}},\"kind\":\"mazpzdqwuzvcmc\",\"skuName\":\"xizekuvfrjwucao\",\"description\":\"vajbvbnkrdemdid\"},{\"model\":{\"baseModel\":{\"publisher\":\"idgzwdydamis\",\"format\":\"ztdivykpxkq\",\"name\":\"tpjfojiunrlshxuk\",\"version\":\"ykd\",\"source\":\"iboancdrcoanvx\",\"sourceAccount\":\"dxonckbn\",\"callRateLimit\":{\"count\":54.44108,\"renewalPeriod\":83.8753,\"rules\":[{},{}]}},\"isDefaultVersion\":true,\"skus\":[{\"name\":\"izxzpzweghl\",\"usageName\":\"bogvgfklqiy\",\"deprecationDate\":\"2021-12-06T12:49:11Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{},{},{}]}],\"maxCapacity\":1011382871,\"capabilities\":{\"dsmovpimy\":\"strkzxsgtznsvl\",\"xn\":\"dnox\",\"xolousdv\":\"qaqotnn\"},\"finetuneCapabilities\":{\"wz\":\"tqm\",\"qgkujds\":\"drpizfulgyctsdb\",\"eurbtigapdyarik\":\"oxrqw\",\"kfqbriqulwwt\":\"ejdpdfhtwm\"},\"deprecation\":{\"fineTune\":\"eqkvyhzokpoyu\",\"inference\":\"uensn\",\"deprecationStatus\":\"Tentative\"},\"replacementConfig\":{\"targetModelName\":\"mpoejnglpwsada\",\"targetModelVersion\":\"sumxpezcoioyj\",\"autoUpgradeStartDate\":\"2021-04-29T14:56:08Z\",\"upgradeOnExpiryLeadTimeDays\":292448552},\"modelCatalogAssetId\":\"qdnxkeedcnw\",\"lifecycleStatus\":\"Stable\",\"publisher\":\"qzkvemyzdpczaq\",\"format\":\"ifdbmptrwt\",\"name\":\"uisamona\",\"version\":\"izexroqsqj\",\"source\":\"rmthsplwst\",\"sourceAccount\":\"srgxfq\",\"callRateLimit\":{\"count\":56.152622,\"renewalPeriod\":79.716934,\"rules\":[{},{},{},{}]}},\"kind\":\"gzwhsxyrujmtik\",\"skuName\":\"likyohz\",\"description\":\"yqhfnkv\"}]}")
+            "{\"nextLink\":\"wpntumotah\",\"value\":[{\"model\":{\"baseModel\":{\"publisher\":\"xmytzua\",\"format\":\"rlhxgcqmyrhkv\",\"name\":\"zmiemqyftgp\",\"version\":\"sw\",\"source\":\"qv\",\"sourceAccount\":\"ghpakbqyhlsorn\",\"callRateLimit\":{\"count\":9.233838,\"renewalPeriod\":85.87935,\"rules\":[{},{}]}},\"isDefaultVersion\":false,\"skus\":[{\"name\":\"bnyevztnjawrhule\",\"usageName\":\"qmbwppxi\",\"deprecationDate\":\"2021-11-09T23:11:25Z\",\"capacity\":{},\"rateLimits\":[{}],\"cost\":[{}]},{\"name\":\"hitaxj\",\"usageName\":\"l\",\"deprecationDate\":\"2020-12-26T07:11:09Z\",\"capacity\":{},\"rateLimits\":[{}],\"cost\":[{},{},{}]},{\"name\":\"egdzdvylju\",\"usageName\":\"f\",\"deprecationDate\":\"2021-01-27T00:15:54Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{}]}],\"maxCapacity\":1147521166,\"capabilities\":{\"zxhkl\":\"lutggmaacxauhvc\",\"xwfzbkvecnxfxph\":\"qxtoiyygktsrjyxx\",\"vuwmsumustihtgr\":\"owbebsnbwut\",\"czvogtd\":\"fjajvkyxmm\"},\"finetuneCapabilities\":{\"xhhlbmyphf\":\"ennmkvaeuwqd\"},\"deprecation\":{\"fineTune\":\"pdhewokyqs\",\"inference\":\"xfsyw\",\"deprecationStatus\":\"Tentative\"},\"replacementConfig\":{\"targetModelName\":\"todjf\",\"targetModelVersion\":\"bvkvwzdmvdd\",\"autoUpgradeStartDate\":\"2021-09-20T15:26:34Z\",\"upgradeOnExpiryLeadTimeDays\":155787926},\"modelCatalogAssetId\":\"yoz\",\"lifecycleStatus\":\"Deprecating\",\"publisher\":\"jdvvlrhocr\",\"format\":\"vxundqzbvbps\",\"name\":\"qhxtozfgdkwbkur\",\"version\":\"piigf\",\"source\":\"keutuipjclzjwaq\",\"sourceAccount\":\"qydewuwxyllz\",\"callRateLimit\":{\"count\":25.512308,\"renewalPeriod\":7.460153,\"rules\":[{},{}]}},\"kind\":\"zochwbekmuyn\",\"skuName\":\"kyvnhiysdhork\",\"description\":\"hr\"},{\"model\":{\"baseModel\":{\"publisher\":\"wlwkfflaqwmwqog\",\"format\":\"lteatn\",\"name\":\"ef\",\"version\":\"xnjtqbgysib\",\"source\":\"nvxwtdqtcbjdbtqy\",\"sourceAccount\":\"xu\",\"callRateLimit\":{\"count\":52.34316,\"renewalPeriod\":64.1348,\"rules\":[{},{},{}]}},\"isDefaultVersion\":true,\"skus\":[{\"name\":\"oawh\",\"usageName\":\"smbcsloygsab\",\"deprecationDate\":\"2021-11-17T12:02:40Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{},{}]},{\"name\":\"dun\",\"usageName\":\"zvzuat\",\"deprecationDate\":\"2021-07-13T15:05:25Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{}]},{\"name\":\"vfdbqskgqjbvitpt\",\"usageName\":\"sffavdhpiwrmuwk\",\"deprecationDate\":\"2021-02-02T07:05:31Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{}]}],\"maxCapacity\":1365188694,\"capabilities\":{\"megaj\":\"yldqtmggcpd\",\"qkkge\":\"zctwymzsk\"},\"finetuneCapabilities\":{\"lcaxsqcomjiqi\":\"phgliupqscoobk\",\"ziizmeqmdu\":\"ncevxxkdevpxi\"},\"deprecation\":{\"fineTune\":\"odqxxpqhm\",\"inference\":\"ibtblmcvrjazno\",\"deprecationStatus\":\"Tentative\"},\"replacementConfig\":{\"targetModelName\":\"vpbqsdqkpsbqs\",\"targetModelVersion\":\"m\",\"autoUpgradeStartDate\":\"2021-05-07T02:06:11Z\",\"upgradeOnExpiryLeadTimeDays\":1985481067},\"modelCatalogAssetId\":\"zgcxsvqlcquf\",\"lifecycleStatus\":\"Legacy\",\"publisher\":\"ow\",\"format\":\"cjoyutehlkarvt\",\"name\":\"quksx\",\"version\":\"nsgofunsw\",\"source\":\"cekggvmfnnb\",\"sourceAccount\":\"ng\",\"callRateLimit\":{\"count\":64.301834,\"renewalPeriod\":87.631,\"rules\":[{},{}]}},\"kind\":\"xtpwcvgi\",\"skuName\":\"sunjzijaciwmm\",\"description\":\"tqdonbzzs\"}]}")
             .toObject(ModelListResult.class);
-        Assertions.assertEquals("ibniynts", model.nextLink());
-        Assertions.assertEquals("adpcmhjhausy", model.value().get(0).model().publisher());
-        Assertions.assertEquals("ekymffztsilscvqs", model.value().get(0).model().format());
-        Assertions.assertEquals("iihfymkoui", model.value().get(0).model().name());
-        Assertions.assertEquals("eseuugci", model.value().get(0).model().version());
-        Assertions.assertEquals("hogsmgbvmtd", model.value().get(0).model().source());
-        Assertions.assertEquals("qbe", model.value().get(0).model().sourceAccount());
-        Assertions.assertEquals("ftvhkmoogj", model.value().get(0).model().baseModel().publisher());
-        Assertions.assertEquals("skbwgm", model.value().get(0).model().baseModel().format());
-        Assertions.assertEquals("rulcfogx", model.value().get(0).model().baseModel().name());
-        Assertions.assertEquals("xnwjtpfdzxcouz", model.value().get(0).model().baseModel().version());
-        Assertions.assertEquals("ofwakukzk", model.value().get(0).model().baseModel().source());
-        Assertions.assertEquals("zxsoednl", model.value().get(0).model().baseModel().sourceAccount());
-        Assertions.assertTrue(model.value().get(0).model().isDefaultVersion());
-        Assertions.assertEquals("g", model.value().get(0).model().skus().get(0).name());
-        Assertions.assertEquals("nione", model.value().get(0).model().skus().get(0).usageName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T18:47:13Z"),
+        Assertions.assertEquals("wpntumotah", model.nextLink());
+        Assertions.assertEquals("jdvvlrhocr", model.value().get(0).model().publisher());
+        Assertions.assertEquals("vxundqzbvbps", model.value().get(0).model().format());
+        Assertions.assertEquals("qhxtozfgdkwbkur", model.value().get(0).model().name());
+        Assertions.assertEquals("piigf", model.value().get(0).model().version());
+        Assertions.assertEquals("keutuipjclzjwaq", model.value().get(0).model().source());
+        Assertions.assertEquals("qydewuwxyllz", model.value().get(0).model().sourceAccount());
+        Assertions.assertEquals("xmytzua", model.value().get(0).model().baseModel().publisher());
+        Assertions.assertEquals("rlhxgcqmyrhkv", model.value().get(0).model().baseModel().format());
+        Assertions.assertEquals("zmiemqyftgp", model.value().get(0).model().baseModel().name());
+        Assertions.assertEquals("sw", model.value().get(0).model().baseModel().version());
+        Assertions.assertEquals("qv", model.value().get(0).model().baseModel().source());
+        Assertions.assertEquals("ghpakbqyhlsorn", model.value().get(0).model().baseModel().sourceAccount());
+        Assertions.assertFalse(model.value().get(0).model().isDefaultVersion());
+        Assertions.assertEquals("bnyevztnjawrhule", model.value().get(0).model().skus().get(0).name());
+        Assertions.assertEquals("qmbwppxi", model.value().get(0).model().skus().get(0).usageName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T23:11:25Z"),
             model.value().get(0).model().skus().get(0).deprecationDate());
-        Assertions.assertEquals(1249189328, model.value().get(0).model().maxCapacity());
-        Assertions.assertEquals("sszvlcw", model.value().get(0).model().capabilities().get("isolntfxxcrqmip"));
-        Assertions.assertEquals("k", model.value().get(0).model().finetuneCapabilities().get("toxjdzj"));
-        Assertions.assertEquals("xmtf", model.value().get(0).model().deprecation().fineTune());
-        Assertions.assertEquals("k", model.value().get(0).model().deprecation().inference());
+        Assertions.assertEquals(1147521166, model.value().get(0).model().maxCapacity());
+        Assertions.assertEquals("lutggmaacxauhvc", model.value().get(0).model().capabilities().get("zxhkl"));
+        Assertions.assertEquals("ennmkvaeuwqd", model.value().get(0).model().finetuneCapabilities().get("xhhlbmyphf"));
+        Assertions.assertEquals("pdhewokyqs", model.value().get(0).model().deprecation().fineTune());
+        Assertions.assertEquals("xfsyw", model.value().get(0).model().deprecation().inference());
         Assertions.assertEquals(DeprecationStatus.TENTATIVE,
             model.value().get(0).model().deprecation().deprecationStatus());
-        Assertions.assertEquals("spamwbwmbnls", model.value().get(0).model().replacementConfig().targetModelName());
-        Assertions.assertEquals("efiqdktwtkv", model.value().get(0).model().replacementConfig().targetModelVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T00:19:27Z"),
+        Assertions.assertEquals("todjf", model.value().get(0).model().replacementConfig().targetModelName());
+        Assertions.assertEquals("bvkvwzdmvdd", model.value().get(0).model().replacementConfig().targetModelVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T15:26:34Z"),
             model.value().get(0).model().replacementConfig().autoUpgradeStartDate());
-        Assertions.assertEquals(1629072439,
+        Assertions.assertEquals(155787926,
             model.value().get(0).model().replacementConfig().upgradeOnExpiryLeadTimeDays());
-        Assertions.assertEquals("iwoynguu", model.value().get(0).model().modelCatalogAssetId());
-        Assertions.assertEquals(ModelLifecycleStatus.LEGACY, model.value().get(0).model().lifecycleStatus());
-        Assertions.assertEquals("btvkbi", model.value().get(0).kind());
-        Assertions.assertEquals("nhtfgfi", model.value().get(0).skuName());
-        Assertions.assertEquals("dyhi", model.value().get(0).description());
+        Assertions.assertEquals("yoz", model.value().get(0).model().modelCatalogAssetId());
+        Assertions.assertEquals(ModelLifecycleStatus.DEPRECATING, model.value().get(0).model().lifecycleStatus());
+        Assertions.assertEquals("zochwbekmuyn", model.value().get(0).kind());
+        Assertions.assertEquals("kyvnhiysdhork", model.value().get(0).skuName());
+        Assertions.assertEquals("hr", model.value().get(0).description());
     }
 }

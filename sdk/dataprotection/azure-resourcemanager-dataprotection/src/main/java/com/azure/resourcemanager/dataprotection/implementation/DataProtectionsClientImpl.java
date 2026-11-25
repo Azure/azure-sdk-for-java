@@ -116,17 +116,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates if a feature is supported.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(String location,
         FeatureValidationRequestBase parameters, Context context) {
@@ -136,16 +126,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
             this.client.getSubscriptionId(), location, contentType, accept, parameters, context);
     }
 
-    /**
-     * Validates if a feature is supported.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeatureValidationResponseBaseInner checkFeatureSupport(String location,
         FeatureValidationRequestBase parameters) {

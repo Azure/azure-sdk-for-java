@@ -361,11 +361,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GoldenGateDeploymentInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<GoldenGateDeploymentListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -386,27 +382,13 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GoldenGateDeployment resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GoldenGateDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GoldenGateDeploymentInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List GoldenGateDeployment resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GoldenGateDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GoldenGateDeploymentInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -451,11 +433,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String goldenGateDeploymentName,
         GoldenGateDeploymentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, goldenGateDeploymentName, resource, Context.NONE);
     }
 
     /**
@@ -501,38 +479,14 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             this.client.getContext());
     }
 
-    /**
-     * Create a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GoldenGateDeploymentInner>, GoldenGateDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String goldenGateDeploymentName, GoldenGateDeploymentInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, goldenGateDeploymentName, resource);
-        return this.client.<GoldenGateDeploymentInner, GoldenGateDeploymentInner>getLroResult(response,
-            GoldenGateDeploymentInner.class, GoldenGateDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, goldenGateDeploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Create a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GoldenGateDeploymentInner>, GoldenGateDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String goldenGateDeploymentName, GoldenGateDeploymentInner resource,
@@ -561,39 +515,19 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoldenGateDeploymentInner createOrUpdate(String resourceGroupName, String goldenGateDeploymentName,
         GoldenGateDeploymentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, goldenGateDeploymentName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, goldenGateDeploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Create a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoldenGateDeploymentInner createOrUpdate(String resourceGroupName, String goldenGateDeploymentName,
         GoldenGateDeploymentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, goldenGateDeploymentName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, goldenGateDeploymentName, resource, context));
     }
 
     /**
@@ -633,17 +567,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoldenGateDeployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GoldenGateDeploymentInner> getByResourceGroupWithResponse(String resourceGroupName,
         String goldenGateDeploymentName, Context context) {
@@ -652,16 +576,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, accept, context);
     }
 
-    /**
-     * Get a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoldenGateDeployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoldenGateDeploymentInner getByResourceGroup(String resourceGroupName, String goldenGateDeploymentName) {
         return getByResourceGroupWithResponse(resourceGroupName, goldenGateDeploymentName, Context.NONE).getValue();
@@ -705,11 +620,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String goldenGateDeploymentName,
         GoldenGateDeploymentUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, goldenGateDeploymentName, properties, Context.NONE);
     }
 
     /**
@@ -755,37 +666,14 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             this.client.getContext());
     }
 
-    /**
-     * Update a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GoldenGateDeploymentInner>, GoldenGateDeploymentInner>
         beginUpdate(String resourceGroupName, String goldenGateDeploymentName, GoldenGateDeploymentUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, goldenGateDeploymentName, properties);
-        return this.client.<GoldenGateDeploymentInner, GoldenGateDeploymentInner>getLroResult(response,
-            GoldenGateDeploymentInner.class, GoldenGateDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, goldenGateDeploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Update a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GoldenGateDeploymentInner>, GoldenGateDeploymentInner> beginUpdate(
         String resourceGroupName, String goldenGateDeploymentName, GoldenGateDeploymentUpdate properties,
@@ -814,39 +702,19 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoldenGateDeploymentInner update(String resourceGroupName, String goldenGateDeploymentName,
         GoldenGateDeploymentUpdate properties) {
-        return beginUpdate(resourceGroupName, goldenGateDeploymentName, properties).getFinalResult();
+        return update(resourceGroupName, goldenGateDeploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Update a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goldenGate Deployment resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoldenGateDeploymentInner update(String resourceGroupName, String goldenGateDeploymentName,
         GoldenGateDeploymentUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, goldenGateDeploymentName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, goldenGateDeploymentName, properties, context));
     }
 
     /**
@@ -880,8 +748,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String goldenGateDeploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, goldenGateDeploymentName, Context.NONE);
     }
 
     /**
@@ -920,33 +787,13 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             this.client.getContext());
     }
 
-    /**
-     * Delete a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String goldenGateDeploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, goldenGateDeploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, goldenGateDeploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String goldenGateDeploymentName,
         Context context) {
@@ -970,33 +817,16 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String goldenGateDeploymentName) {
-        beginDelete(resourceGroupName, goldenGateDeploymentName).getFinalResult();
+        delete(resourceGroupName, goldenGateDeploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a GoldenGateDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String goldenGateDeploymentName, Context context) {
-        beginDelete(resourceGroupName, goldenGateDeploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, goldenGateDeploymentName, context));
     }
 
     /**
@@ -1047,11 +877,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GoldenGateDeploymentInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<GoldenGateDeploymentListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1074,31 +900,13 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GoldenGateDeployment resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GoldenGateDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GoldenGateDeploymentInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List GoldenGateDeployment resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GoldenGateDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GoldenGateDeploymentInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1143,11 +951,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> assignConnectionWithResponse(String resourceGroupName, String goldenGateDeploymentName,
         AssignUnassignConnection body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.assignConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, contentType, accept, body,
-            Context.NONE);
+        return assignConnectionWithResponse(resourceGroupName, goldenGateDeploymentName, body, Context.NONE);
     }
 
     /**
@@ -1193,37 +997,14 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             this.client.getContext());
     }
 
-    /**
-     * Assign a GoldenGate connection to a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssignedConnectionInner>, AssignedConnectionInner> beginAssignConnection(
         String resourceGroupName, String goldenGateDeploymentName, AssignUnassignConnection body) {
-        Response<BinaryData> response = assignConnectionWithResponse(resourceGroupName, goldenGateDeploymentName, body);
-        return this.client.<AssignedConnectionInner, AssignedConnectionInner>getLroResult(response,
-            AssignedConnectionInner.class, AssignedConnectionInner.class, Context.NONE);
+        return beginAssignConnection(resourceGroupName, goldenGateDeploymentName, body, Context.NONE);
     }
 
-    /**
-     * Assign a GoldenGate connection to a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssignedConnectionInner>, AssignedConnectionInner> beginAssignConnection(
         String resourceGroupName, String goldenGateDeploymentName, AssignUnassignConnection body, Context context) {
@@ -1251,39 +1032,19 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Assign a GoldenGate connection to a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssignedConnectionInner assignConnection(String resourceGroupName, String goldenGateDeploymentName,
         AssignUnassignConnection body) {
-        return beginAssignConnection(resourceGroupName, goldenGateDeploymentName, body).getFinalResult();
+        return assignConnection(resourceGroupName, goldenGateDeploymentName, body, Context.NONE);
     }
 
-    /**
-     * Assign a GoldenGate connection to a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssignedConnectionInner assignConnection(String resourceGroupName, String goldenGateDeploymentName,
         AssignUnassignConnection body, Context context) {
-        return beginAssignConnection(resourceGroupName, goldenGateDeploymentName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginAssignConnection(resourceGroupName, goldenGateDeploymentName, body, context));
     }
 
     /**
@@ -1324,11 +1085,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> unassignConnectionWithResponse(String resourceGroupName,
         String goldenGateDeploymentName, AssignUnassignConnection body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.unassignConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, contentType, accept, body,
-            Context.NONE);
+        return unassignConnectionWithResponse(resourceGroupName, goldenGateDeploymentName, body, Context.NONE);
     }
 
     /**
@@ -1374,38 +1131,14 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             this.client.getContext());
     }
 
-    /**
-     * Unassign a GoldenGate connection from a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssignedConnectionInner>, AssignedConnectionInner> beginUnassignConnection(
         String resourceGroupName, String goldenGateDeploymentName, AssignUnassignConnection body) {
-        Response<BinaryData> response
-            = unassignConnectionWithResponse(resourceGroupName, goldenGateDeploymentName, body);
-        return this.client.<AssignedConnectionInner, AssignedConnectionInner>getLroResult(response,
-            AssignedConnectionInner.class, AssignedConnectionInner.class, Context.NONE);
+        return beginUnassignConnection(resourceGroupName, goldenGateDeploymentName, body, Context.NONE);
     }
 
-    /**
-     * Unassign a GoldenGate connection from a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssignedConnectionInner>, AssignedConnectionInner> beginUnassignConnection(
         String resourceGroupName, String goldenGateDeploymentName, AssignUnassignConnection body, Context context) {
@@ -1433,39 +1166,19 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Unassign a GoldenGate connection from a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssignedConnectionInner unassignConnection(String resourceGroupName, String goldenGateDeploymentName,
         AssignUnassignConnection body) {
-        return beginUnassignConnection(resourceGroupName, goldenGateDeploymentName, body).getFinalResult();
+        return unassignConnection(resourceGroupName, goldenGateDeploymentName, body, Context.NONE);
     }
 
-    /**
-     * Unassign a GoldenGate connection from a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assigned Connection resource belonging to GoldenGate Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssignedConnectionInner unassignConnection(String resourceGroupName, String goldenGateDeploymentName,
         AssignUnassignConnection body, Context context) {
-        return beginUnassignConnection(resourceGroupName, goldenGateDeploymentName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUnassignConnection(resourceGroupName, goldenGateDeploymentName, body, context));
     }
 
     /**
@@ -1523,12 +1236,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssignedConnectionInner> listAssignedConnectionsByParentSinglePage(String resourceGroupName,
         String goldenGateDeploymentName) {
-        final String accept = "application/json";
-        Response<AssignedConnectionListResult> res
-            = service.listAssignedConnectionsByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, goldenGateDeploymentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAssignedConnectionsByParentSinglePage(resourceGroupName, goldenGateDeploymentName, Context.NONE);
     }
 
     /**
@@ -1553,35 +1261,14 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List assigned connections by GoldenGate deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssignedConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssignedConnectionInner> listAssignedConnectionsByParent(String resourceGroupName,
         String goldenGateDeploymentName) {
-        return new PagedIterable<>(
-            () -> listAssignedConnectionsByParentSinglePage(resourceGroupName, goldenGateDeploymentName),
-            nextLink -> listAssignedConnectionsByParentNextSinglePage(nextLink));
+        return listAssignedConnectionsByParent(resourceGroupName, goldenGateDeploymentName, Context.NONE);
     }
 
-    /**
-     * List assigned connections by GoldenGate deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssignedConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssignedConnectionInner> listAssignedConnectionsByParent(String resourceGroupName,
         String goldenGateDeploymentName, Context context) {
@@ -1631,18 +1318,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get assigned connection by GoldenGate deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param assignmentId Assigned Connection assignment OCID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assigned connection by GoldenGate deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssignedConnectionInner> getAssignedConnectionWithResponse(String resourceGroupName,
         String goldenGateDeploymentName, String assignmentId, Context context) {
@@ -1652,17 +1328,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
             context);
     }
 
-    /**
-     * Get assigned connection by GoldenGate deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param goldenGateDeploymentName The name of the GoldenGateDeployment.
-     * @param assignmentId Assigned Connection assignment OCID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assigned connection by GoldenGate deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssignedConnectionInner getAssignedConnection(String resourceGroupName, String goldenGateDeploymentName,
         String assignmentId) {
@@ -1702,11 +1368,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GoldenGateDeploymentInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GoldenGateDeploymentListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1761,11 +1423,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GoldenGateDeploymentInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GoldenGateDeploymentListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1821,11 +1479,7 @@ public final class GoldenGateDeploymentsClientImpl implements GoldenGateDeployme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssignedConnectionInner> listAssignedConnectionsByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssignedConnectionListResult> res = service.listAssignedConnectionsByParentNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAssignedConnectionsByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

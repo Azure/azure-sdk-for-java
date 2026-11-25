@@ -120,20 +120,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
-     * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
-     * format.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId The name of the JobResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResultInfoBaseResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String operationId, Context context) {
@@ -142,19 +129,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
             resourceGroupName, vaultName, operationId, accept, context);
     }
 
-    /**
-     * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
-     * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
-     * format.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId The name of the JobResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResultInfoBaseResourceInner get(String vaultName, String resourceGroupName, String operationId) {
         return getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();

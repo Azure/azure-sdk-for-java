@@ -51,7 +51,7 @@ public final class MongoClustersImpl implements MongoClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String mongoClusterName) {
-        this.serviceClient().delete(resourceGroupName, mongoClusterName);
+        this.delete(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String mongoClusterName, Context context) {
@@ -59,8 +59,7 @@ public final class MongoClustersImpl implements MongoClusters {
     }
 
     public PagedIterable<MongoCluster> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MongoClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MongoClusterImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<MongoCluster> listByResourceGroup(String resourceGroupName, Context context) {
@@ -69,8 +68,7 @@ public final class MongoClustersImpl implements MongoClusters {
     }
 
     public PagedIterable<MongoCluster> list() {
-        PagedIterable<MongoClusterInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MongoClusterImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<MongoCluster> list(Context context) {
@@ -114,7 +112,7 @@ public final class MongoClustersImpl implements MongoClusters {
     }
 
     public void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body) {
-        this.serviceClient().promote(resourceGroupName, mongoClusterName, body);
+        this.promote(resourceGroupName, mongoClusterName, body, Context.NONE);
     }
 
     public void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body,
@@ -123,74 +121,30 @@ public final class MongoClustersImpl implements MongoClusters {
     }
 
     public MongoCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "mongoClusterName");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, mongoClusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MongoCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String mongoClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "mongoClusterName");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
+            "mongoClusterName", "mongoClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, mongoClusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "mongoClusterName");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
-        this.delete(resourceGroupName, mongoClusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mongoClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String mongoClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}",
-            "mongoClusterName");
-        if (mongoClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'mongoClusters'.", id)));
-        }
+            "mongoClusterName", "mongoClusters", LOGGER);
         this.delete(resourceGroupName, mongoClusterName, context);
     }
 

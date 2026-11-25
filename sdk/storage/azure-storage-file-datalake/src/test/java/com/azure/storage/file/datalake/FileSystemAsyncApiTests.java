@@ -309,6 +309,48 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnFileSystemBeingDeleted() {
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.delete().then(dataLakeFileSystemAsyncClient.createIfNotExists()))
+            .verifyErrorSatisfies(
+                e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    @Test
+    public void createIfNotExistsWithResponseOnFileSystemBeingDeleted() {
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.delete()
+                .then(dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null)))
+            .verifyErrorSatisfies(
+                e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    // Live only: it waits for the service to finish deleting the file system, typically 30 to 60 seconds. The recorded
+    // tests above cover the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterFileSystemDeleteCompletes() {
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.delete()
+                .then(runAfterFileSystemDeleteCompletes(dataLakeFileSystemAsyncClient.createIfNotExists())))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @Test
+    public void createIfNotExistsWithResponseAfterFileSystemDeleteCompletes() {
+        StepVerifier.create(dataLakeFileSystemAsyncClient.delete()
+            .then(runAfterFileSystemDeleteCompletes(
+                dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null))))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertTrue(r.getValue());
+            })
+            .verifyComplete();
+    }
+
+    @Test
     public void createIfNotExistsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
@@ -1694,6 +1736,26 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void createIfNotExistsDirMin() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(generatePathName())
             .flatMap(DataLakePathAsyncClient::exists)).expectNext(true).verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsFileOnDir() {
+        String pathName = generatePathName();
+
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.createDirectory(pathName)
+                .then(dataLakeFileSystemAsyncClient.createFileIfNotExists(pathName)))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
+    }
+
+    @Test
+    public void createIfNotExistsDirOnFile() {
+        String pathName = generatePathName();
+
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.createFile(pathName)
+                .then(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(pathName)))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
     }
 
     @Test

@@ -98,10 +98,7 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudHsmClusters()
-            .createOrUpdate(resourceGroupName, cloudHsmClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudHsmCluster create(Context context) {
@@ -124,10 +121,7 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudHsmClusters()
-            .update(resourceGroupName, cloudHsmClusterName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudHsmCluster apply(Context context) {
@@ -150,11 +144,7 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudHsmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudHsmCluster refresh(Context context) {

@@ -52,7 +52,7 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String environmentName) {
-        this.serviceClient().delete(resourceGroupName, environmentName);
+        this.delete(resourceGroupName, environmentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String environmentName, Context context) {
@@ -60,8 +60,7 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
     }
 
     public PagedIterable<ManagedEnvironment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ManagedEnvironmentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedEnvironmentImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ManagedEnvironment> listByResourceGroup(String resourceGroupName, Context context) {
@@ -71,8 +70,7 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
     }
 
     public PagedIterable<ManagedEnvironment> list() {
-        PagedIterable<ManagedEnvironmentInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedEnvironmentImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ManagedEnvironment> list(Context context) {
@@ -99,9 +97,7 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
 
     public PagedIterable<WorkloadProfileStates> listWorkloadProfileStates(String resourceGroupName,
         String environmentName) {
-        PagedIterable<WorkloadProfileStatesInner> inner
-            = this.serviceClient().listWorkloadProfileStates(resourceGroupName, environmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadProfileStatesImpl(inner1, this.manager()));
+        return this.listWorkloadProfileStates(resourceGroupName, environmentName, Context.NONE);
     }
 
     public PagedIterable<WorkloadProfileStates> listWorkloadProfileStates(String resourceGroupName,
@@ -131,74 +127,30 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
     }
 
     public ManagedEnvironment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "environmentName");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManagedEnvironment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "environmentName");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
+            "environmentName", "managedEnvironments", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, environmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "environmentName");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        this.delete(resourceGroupName, environmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}",
-            "environmentName");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
+            "environmentName", "managedEnvironments", LOGGER);
         this.delete(resourceGroupName, environmentName, context);
     }
 

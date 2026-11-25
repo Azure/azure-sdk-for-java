@@ -13,15 +13,15 @@ public final class NetworkSecurityPerimeterAccessRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterAccessRule model = BinaryData.fromString(
-            "{\"name\":\"nabaobnslujd\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"mvguihywart\",\"pphkixkykxds\"],\"subscriptions\":[{\"id\":\"mmuc\"},{\"id\":\"hikkflrmy\"},{\"id\":\"incqlhriswsl\"}],\"networkSecurityPerimeters\":[{\"id\":\"ovgqcgxuugqkctot\",\"perimeterGuid\":\"wlxte\",\"location\":\"ptjgwdt\"},{\"id\":\"kranblwphqlkcc\",\"perimeterGuid\":\"gygqwah\",\"location\":\"ulwgniiprglvawuw\"},{\"id\":\"ufypiv\",\"perimeterGuid\":\"bbjpmcubkmif\",\"location\":\"xkubvphavpmhbrbq\"}],\"fullyQualifiedDomainNames\":[\"ovpbbttefjoknssq\",\"zqedikdfrdbi\",\"mrjgeihfqlggwfi\"]}}")
+            "{\"name\":\"nctagfyvrtpqpem\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"epdqhqyhwq\",\"e\",\"vx\"],\"subscriptions\":[{\"id\":\"km\"},{\"id\":\"oxinh\"},{\"id\":\"eoh\"},{\"id\":\"h\"}],\"networkSecurityPerimeters\":[{\"id\":\"jpceeznzan\",\"perimeterGuid\":\"rbf\",\"location\":\"yxzlbciphmse\"}],\"fullyQualifiedDomainNames\":[\"qrndktxfvon\",\"eeqgpkri\",\"tbgnixxowwzkyfw\",\"wpiwxeiicrmpep\"]}}")
             .toObject(NetworkSecurityPerimeterAccessRule.class);
-        Assertions.assertEquals("nabaobnslujd", model.name());
+        Assertions.assertEquals("nctagfyvrtpqpem", model.name());
         Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND, model.properties().direction());
-        Assertions.assertEquals("mvguihywart", model.properties().addressPrefixes().get(0));
-        Assertions.assertEquals("mmuc", model.properties().subscriptions().get(0).id());
-        Assertions.assertEquals("ovgqcgxuugqkctot", model.properties().networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals("wlxte", model.properties().networkSecurityPerimeters().get(0).perimeterGuid());
-        Assertions.assertEquals("ptjgwdt", model.properties().networkSecurityPerimeters().get(0).location());
-        Assertions.assertEquals("ovpbbttefjoknssq", model.properties().fullyQualifiedDomainNames().get(0));
+        Assertions.assertEquals("epdqhqyhwq", model.properties().addressPrefixes().get(0));
+        Assertions.assertEquals("km", model.properties().subscriptions().get(0).id());
+        Assertions.assertEquals("jpceeznzan", model.properties().networkSecurityPerimeters().get(0).id());
+        Assertions.assertEquals("rbf", model.properties().networkSecurityPerimeters().get(0).perimeterGuid());
+        Assertions.assertEquals("yxzlbciphmse", model.properties().networkSecurityPerimeters().get(0).location());
+        Assertions.assertEquals("qrndktxfvon", model.properties().fullyQualifiedDomainNames().get(0));
     }
 }

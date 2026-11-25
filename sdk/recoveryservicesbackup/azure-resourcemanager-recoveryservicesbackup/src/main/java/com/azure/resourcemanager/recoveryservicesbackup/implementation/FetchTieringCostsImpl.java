@@ -26,12 +26,7 @@ public final class FetchTieringCostsImpl implements FetchTieringCosts {
     }
 
     public TieringCostInfo post(String resourceGroupName, String vaultName, FetchTieringCostInfoRequest parameters) {
-        TieringCostInfoInner inner = this.serviceClient().post(resourceGroupName, vaultName, parameters);
-        if (inner != null) {
-            return new TieringCostInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.post(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
     public TieringCostInfo post(String resourceGroupName, String vaultName, FetchTieringCostInfoRequest parameters,

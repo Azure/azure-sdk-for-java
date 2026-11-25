@@ -46,13 +46,7 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
 
     public PrefixListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
         PrefixListGlobalRulestackResourceInner resource) {
-        PrefixListGlobalRulestackResourceInner inner
-            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
-        if (inner != null) {
-            return new PrefixListGlobalRulestackResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(globalRulestackName, name, resource, Context.NONE);
     }
 
     public PrefixListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
@@ -67,7 +61,7 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
     }
 
     public void deleteByResourceGroup(String globalRulestackName, String name) {
-        this.serviceClient().delete(globalRulestackName, name);
+        this.delete(globalRulestackName, name, Context.NONE);
     }
 
     public void delete(String globalRulestackName, String name, Context context) {
@@ -75,9 +69,7 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
     }
 
     public PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName) {
-        PagedIterable<PrefixListGlobalRulestackResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PrefixListGlobalRulestackResourceImpl(inner1, this.manager()));
+        return this.list(globalRulestackName, Context.NONE);
     }
 
     public PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName, Context context) {

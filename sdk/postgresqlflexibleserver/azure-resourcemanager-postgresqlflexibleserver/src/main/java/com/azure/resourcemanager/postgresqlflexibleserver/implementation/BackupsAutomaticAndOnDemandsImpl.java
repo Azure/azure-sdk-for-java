@@ -45,12 +45,7 @@ public final class BackupsAutomaticAndOnDemandsImpl implements BackupsAutomaticA
     }
 
     public BackupAutomaticAndOnDemand create(String resourceGroupName, String serverName, String backupName) {
-        BackupAutomaticAndOnDemandInner inner = this.serviceClient().create(resourceGroupName, serverName, backupName);
-        if (inner != null) {
-            return new BackupAutomaticAndOnDemandImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.create(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
     public BackupAutomaticAndOnDemand create(String resourceGroupName, String serverName, String backupName,
@@ -65,7 +60,7 @@ public final class BackupsAutomaticAndOnDemandsImpl implements BackupsAutomaticA
     }
 
     public void delete(String resourceGroupName, String serverName, String backupName) {
-        this.serviceClient().delete(resourceGroupName, serverName, backupName);
+        this.delete(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String serverName, String backupName, Context context) {
@@ -73,10 +68,7 @@ public final class BackupsAutomaticAndOnDemandsImpl implements BackupsAutomaticA
     }
 
     public PagedIterable<BackupAutomaticAndOnDemand> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<BackupAutomaticAndOnDemandInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new BackupAutomaticAndOnDemandImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<BackupAutomaticAndOnDemand> listByServer(String resourceGroupName, String serverName,

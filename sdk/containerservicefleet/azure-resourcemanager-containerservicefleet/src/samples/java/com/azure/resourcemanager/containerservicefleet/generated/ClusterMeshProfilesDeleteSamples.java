@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class ClusterMeshProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-11-01/ClusterMeshProfiles_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/ClusterMeshProfiles_Delete.json
      */
     /**
      * Sample code: Delete an ClusterMeshProfile resource.

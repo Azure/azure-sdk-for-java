@@ -93,10 +93,7 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
     }
 
     public Capability create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapabilities()
-            .createOrUpdate(resourceGroupName, spaceName, capabilityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Capability create(Context context) {
@@ -119,10 +116,7 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
     }
 
     public Capability apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapabilities()
-            .update(resourceGroupName, spaceName, capabilityName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Capability apply(Context context) {
@@ -148,11 +142,7 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
     }
 
     public Capability refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapabilities()
-            .getWithResponse(resourceGroupName, spaceName, capabilityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Capability refresh(Context context) {

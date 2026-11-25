@@ -114,11 +114,7 @@ public final class DnsResolverDomainListImpl
     }
 
     public DnsResolverDomainList create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverDomainLists()
-            .createOrUpdate(resourceGroupName, dnsResolverDomainListName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsResolverDomainList create(Context context) {
@@ -144,10 +140,7 @@ public final class DnsResolverDomainListImpl
     }
 
     public DnsResolverDomainList apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverDomainLists()
-            .update(resourceGroupName, dnsResolverDomainListName, updateParameters, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsResolverDomainList apply(Context context) {
@@ -170,11 +163,7 @@ public final class DnsResolverDomainListImpl
     }
 
     public DnsResolverDomainList refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverDomainLists()
-            .getByResourceGroupWithResponse(resourceGroupName, dnsResolverDomainListName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsResolverDomainList refresh(Context context) {

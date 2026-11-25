@@ -200,29 +200,7 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationApplianceInner> listSinglePage(String resourceGroupName, String resourceName,
         String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ApplianceCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, filter, Context.NONE);
     }
 
     /**
@@ -269,43 +247,14 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of appliances.
-     * 
-     * Gets the list of Azure Site Recovery appliances for the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of appliances.
-     * 
-     * Gets the list of Azure Site Recovery appliances for the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationApplianceInner> list(String resourceGroupName, String resourceName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of appliances.
-     * 
-     * Gets the list of Azure Site Recovery appliances for the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of appliances.
-     * 
-     * Gets the list of Azure Site Recovery appliances for the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationApplianceInner> list(String resourceGroupName, String resourceName, String filter,
         Context context) {
@@ -358,20 +307,7 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationApplianceInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ApplianceCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

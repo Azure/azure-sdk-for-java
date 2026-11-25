@@ -5,8 +5,9 @@ package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.implementation.utils.ByteBufferUtils;
 import io.clientcore.core.implementation.utils.ImplUtils;
-import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
+import io.clientcore.core.implementation.utils.InputStreamUtils;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -82,7 +83,7 @@ final class ListByteBufferBinaryData extends BinaryData {
 
     @Override
     public InputStream toStream() {
-        return new IterableOfByteBuffersInputStream(content);
+        return InputStreamUtils.createInputStream(content);
     }
 
     @Override
@@ -146,10 +147,7 @@ final class ListByteBufferBinaryData extends BinaryData {
         int offset = 0;
 
         for (ByteBuffer bb : content) {
-            bb = bb.duplicate();
-            int count = bb.remaining();
-            bb.get(bytes, offset, count);
-            offset += count;
+            offset += ByteBufferUtils.copyToArray(bb, bytes, offset);
         }
 
         return bytes;

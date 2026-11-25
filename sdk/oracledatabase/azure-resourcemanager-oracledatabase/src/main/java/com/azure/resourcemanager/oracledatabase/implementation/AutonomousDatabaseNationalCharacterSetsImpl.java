@@ -45,10 +45,7 @@ public final class AutonomousDatabaseNationalCharacterSetsImpl implements Autono
     }
 
     public PagedIterable<AutonomousDatabaseNationalCharacterSet> listByLocation(String location) {
-        PagedIterable<AutonomousDatabaseNationalCharacterSetInner> inner
-            = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new AutonomousDatabaseNationalCharacterSetImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<AutonomousDatabaseNationalCharacterSet> listByLocation(String location, Context context) {

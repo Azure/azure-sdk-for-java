@@ -43,8 +43,7 @@ public final class RaiContentFiltersImpl implements RaiContentFilters {
     }
 
     public PagedIterable<RaiContentFilter> list(String location) {
-        PagedIterable<RaiContentFilterInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RaiContentFilterImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<RaiContentFilter> list(String location, Context context) {

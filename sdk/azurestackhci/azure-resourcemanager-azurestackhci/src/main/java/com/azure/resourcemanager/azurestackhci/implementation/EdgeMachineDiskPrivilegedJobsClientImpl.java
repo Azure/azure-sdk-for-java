@@ -214,19 +214,7 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific privileged job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineDiskPrivilegedJobInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String diskName, String privilegedJobName, Context context) {
@@ -235,18 +223,7 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             resourceGroupName, edgeMachineName, diskName, privilegedJobName, accept, context);
     }
 
-    /**
-     * Get a specific privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific privileged job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDiskPrivilegedJobInner get(String resourceGroupName, String edgeMachineName, String diskName,
         String privilegedJobName) {
@@ -310,12 +287,7 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineDiskPrivilegedJobInner> listSinglePage(String resourceGroupName,
         String edgeMachineName, String diskName) {
-        final String accept = "application/json";
-        Response<EdgeMachineDiskPrivilegedJobListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, edgeMachineName, diskName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, edgeMachineName, diskName, Context.NONE);
     }
 
     /**
@@ -341,36 +313,14 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all privileged jobs for a disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Disk Privileged Job resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineDiskPrivilegedJobInner> list(String resourceGroupName, String edgeMachineName,
         String diskName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, edgeMachineName, diskName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, edgeMachineName, diskName, Context.NONE);
     }
 
-    /**
-     * List all privileged jobs for a disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Disk Privileged Job resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineDiskPrivilegedJobInner> list(String resourceGroupName, String edgeMachineName,
         String diskName, Context context) {
@@ -421,11 +371,8 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         String diskName, String privilegedJobName, EdgeMachineDiskPrivilegedJobInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, diskName, privilegedJobName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource,
+            Context.NONE);
     }
 
     /**
@@ -478,45 +425,16 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             EdgeMachineDiskPrivilegedJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of disk Privileged Job resource for managing privileged operations on
-     * disk volumes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineDiskPrivilegedJobInner>, EdgeMachineDiskPrivilegedJobInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String diskName, String privilegedJobName,
             EdgeMachineDiskPrivilegedJobInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource);
-        return this.client.<EdgeMachineDiskPrivilegedJobInner, EdgeMachineDiskPrivilegedJobInner>getLroResult(response,
-            EdgeMachineDiskPrivilegedJobInner.class, EdgeMachineDiskPrivilegedJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of disk Privileged Job resource for managing privileged operations on
-     * disk volumes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineDiskPrivilegedJobInner>, EdgeMachineDiskPrivilegedJobInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String diskName, String privilegedJobName,
@@ -549,45 +467,19 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk Privileged Job resource for managing privileged operations on disk volumes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDiskPrivilegedJobInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String diskName, String privilegedJobName, EdgeMachineDiskPrivilegedJobInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk Privileged Job resource for managing privileged operations on disk volumes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDiskPrivilegedJobInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String diskName, String privilegedJobName, EdgeMachineDiskPrivilegedJobInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, resource, context));
     }
 
     /**
@@ -625,9 +517,7 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName, String diskName,
         String privilegedJobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, diskName, privilegedJobName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, diskName, privilegedJobName, Context.NONE);
     }
 
     /**
@@ -671,39 +561,14 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             this.client.getContext());
     }
 
-    /**
-     * Delete a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String diskName, String privilegedJobName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, edgeMachineName, diskName, privilegedJobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, diskName, privilegedJobName, Context.NONE);
     }
 
-    /**
-     * Delete a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String diskName, String privilegedJobName, Context context) {
@@ -731,38 +596,18 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String diskName, String privilegedJobName) {
-        beginDelete(resourceGroupName, edgeMachineName, diskName, privilegedJobName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, diskName, privilegedJobName, Context.NONE);
     }
 
-    /**
-     * Delete a privileged job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param privilegedJobName The name of the EdgeMachineDiskPrivilegedJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String diskName, String privilegedJobName,
         Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, diskName, privilegedJobName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, edgeMachineName, diskName, privilegedJobName, context));
     }
 
     /**
@@ -795,11 +640,7 @@ public final class EdgeMachineDiskPrivilegedJobsClientImpl implements EdgeMachin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineDiskPrivilegedJobInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineDiskPrivilegedJobListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

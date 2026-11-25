@@ -104,6 +104,8 @@ public class EncryptionImplementationBridgeHelpers {
                 boolean shouldForceRefresh);
 
             EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient);
+
+            boolean isMixedArrayEncryptionEnabled(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient);
         }
     }
 

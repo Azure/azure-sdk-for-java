@@ -152,18 +152,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param jobName The job name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobModelInner> getWithResponse(String resourceGroupName, String vaultName, String jobName,
         Context context) {
@@ -172,17 +161,7 @@ public final class JobsClientImpl implements JobsClient {
             resourceGroupName, vaultName, jobName, accept, context);
     }
 
-    /**
-     * Gets the details of the job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobModelInner get(String resourceGroupName, String vaultName, String jobName) {
         return getWithResponse(resourceGroupName, vaultName, jobName, Context.NONE).getValue();
@@ -272,12 +251,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobModelInner> listSinglePage(String resourceGroupName, String vaultName, String odataOptions,
         String continuationToken, Integer pageSize) {
-        final String accept = "application/json";
-        Response<JobModelListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, odataOptions, continuationToken, pageSize, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize, Context.NONE);
     }
 
     /**
@@ -305,40 +279,16 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of jobs in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of jobs in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobModelInner> list(String resourceGroupName, String vaultName) {
         final String odataOptions = null;
         final String continuationToken = null;
         final Integer pageSize = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize, Context.NONE);
     }
 
-    /**
-     * Gets the list of jobs in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param odataOptions OData options.
-     * @param continuationToken Continuation token.
-     * @param pageSize Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of jobs in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobModelInner> list(String resourceGroupName, String vaultName, String odataOptions,
         String continuationToken, Integer pageSize, Context context) {
@@ -377,11 +327,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -300,17 +300,7 @@ public final class DrillsClientImpl implements DrillsClient {
         return getWithResponseAsync(serviceGroupName, drillName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Drill along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DrillInner> getWithResponse(String serviceGroupName, String drillName, Context context) {
         final String accept = "application/json";
@@ -318,16 +308,7 @@ public final class DrillsClientImpl implements DrillsClient {
             accept, context);
     }
 
-    /**
-     * Get a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Drill.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillInner get(String serviceGroupName, String drillName) {
         return getWithResponse(serviceGroupName, drillName, Context.NONE).getValue();
@@ -368,10 +349,7 @@ public final class DrillsClientImpl implements DrillsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String serviceGroupName, String drillName, DrillInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), drillName,
-            contentType, accept, resource, Context.NONE);
+        return createWithResponse(serviceGroupName, drillName, resource, Context.NONE);
     }
 
     /**
@@ -414,37 +392,14 @@ public final class DrillsClientImpl implements DrillsClient {
             DrillInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of drill resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DrillInner>, DrillInner> beginCreate(String serviceGroupName, String drillName,
         DrillInner resource) {
-        Response<BinaryData> response = createWithResponse(serviceGroupName, drillName, resource);
-        return this.client.<DrillInner, DrillInner>getLroResult(response, DrillInner.class, DrillInner.class,
-            Context.NONE);
+        return beginCreate(serviceGroupName, drillName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of drill resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DrillInner>, DrillInner> beginCreate(String serviceGroupName, String drillName,
         DrillInner resource, Context context) {
@@ -469,37 +424,16 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return drill resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillInner create(String serviceGroupName, String drillName, DrillInner resource) {
-        return beginCreate(serviceGroupName, drillName, resource).getFinalResult();
+        return create(serviceGroupName, drillName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return drill resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillInner create(String serviceGroupName, String drillName, DrillInner resource, Context context) {
-        return beginCreate(serviceGroupName, drillName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(serviceGroupName, drillName, resource, context));
     }
 
     /**
@@ -537,10 +471,7 @@ public final class DrillsClientImpl implements DrillsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String serviceGroupName, String drillName, DrillUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), drillName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(serviceGroupName, drillName, properties, Context.NONE);
     }
 
     /**
@@ -583,36 +514,14 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of drill resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String serviceGroupName, String drillName,
         DrillUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(serviceGroupName, drillName, properties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(serviceGroupName, drillName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of drill resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String serviceGroupName, String drillName,
         DrillUpdate properties, Context context) {
@@ -637,35 +546,16 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String serviceGroupName, String drillName, DrillUpdate properties) {
-        beginUpdate(serviceGroupName, drillName, properties).getFinalResult();
+        update(serviceGroupName, drillName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String serviceGroupName, String drillName, DrillUpdate properties, Context context) {
-        beginUpdate(serviceGroupName, drillName, properties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpdate(serviceGroupName, drillName, properties, context));
     }
 
     /**
@@ -698,8 +588,7 @@ public final class DrillsClientImpl implements DrillsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String serviceGroupName, String drillName) {
-        return service.deleteSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), drillName,
-            Context.NONE);
+        return deleteWithResponse(serviceGroupName, drillName, Context.NONE);
     }
 
     /**
@@ -736,33 +625,13 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String drillName) {
-        Response<BinaryData> response = deleteWithResponse(serviceGroupName, drillName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(serviceGroupName, drillName, Context.NONE);
     }
 
-    /**
-     * Delete a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String drillName, Context context) {
         Response<BinaryData> response = deleteWithResponse(serviceGroupName, drillName, context);
@@ -784,33 +653,16 @@ public final class DrillsClientImpl implements DrillsClient {
         return beginDeleteAsync(serviceGroupName, drillName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String drillName) {
-        beginDelete(serviceGroupName, drillName).getFinalResult();
+        delete(serviceGroupName, drillName, Context.NONE);
     }
 
-    /**
-     * Delete a Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String drillName, Context context) {
-        beginDelete(serviceGroupName, drillName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(serviceGroupName, drillName, context));
     }
 
     /**
@@ -884,11 +736,7 @@ public final class DrillsClientImpl implements DrillsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DrillInner> listSinglePage(String serviceGroupName, String skipToken, Integer top) {
-        final String accept = "application/json";
-        Response<DrillListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), skipToken, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, skipToken, top, Context.NONE);
     }
 
     /**
@@ -913,35 +761,15 @@ public final class DrillsClientImpl implements DrillsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Drill resources by tenant.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Drill list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DrillInner> list(String serviceGroupName) {
         final String skipToken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, skipToken, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, skipToken, top, Context.NONE);
     }
 
-    /**
-     * List Drill resources by tenant.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Drill list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DrillInner> list(String serviceGroupName, String skipToken, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(serviceGroupName, skipToken, top, context),
@@ -987,10 +815,7 @@ public final class DrillsClientImpl implements DrillsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForExecutionWithResponse(String serviceGroupName, String operationId,
         String drillName, ValidateForExecutionRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateForExecutionSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, drillName, contentType, accept, body, Context.NONE);
+        return validateForExecutionWithResponse(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     /**
@@ -1036,39 +861,14 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * This returns eligible resource to be faulted or failed over.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForExecution post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateForExecution(String serviceGroupName, String operationId,
         String drillName, ValidateForExecutionRequest body) {
-        Response<BinaryData> response
-            = validateForExecutionWithResponse(serviceGroupName, operationId, drillName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginValidateForExecution(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This returns eligible resource to be faulted or failed over.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForExecution post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateForExecution(String serviceGroupName, String operationId,
         String drillName, ValidateForExecutionRequest body, Context context) {
@@ -1096,39 +896,19 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This returns eligible resource to be faulted or failed over.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateForExecution(String serviceGroupName, String operationId, String drillName,
         ValidateForExecutionRequest body) {
-        beginValidateForExecution(serviceGroupName, operationId, drillName, body).getFinalResult();
+        validateForExecution(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This returns eligible resource to be faulted or failed over.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateForExecution(String serviceGroupName, String operationId, String drillName,
         ValidateForExecutionRequest body, Context context) {
-        beginValidateForExecution(serviceGroupName, operationId, drillName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginValidateForExecution(serviceGroupName, operationId, drillName, body, context));
     }
 
     /**
@@ -1169,10 +949,7 @@ public final class DrillsClientImpl implements DrillsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String serviceGroupName, String operationId, String drillName,
         DrillStartRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), operationId,
-            drillName, contentType, accept, body, Context.NONE);
+        return startWithResponse(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     /**
@@ -1217,38 +994,14 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * This starts a new running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body of Drill actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String serviceGroupName, String operationId, String drillName,
         DrillStartRequest body) {
-        Response<BinaryData> response = startWithResponse(serviceGroupName, operationId, drillName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This starts a new running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body of Drill actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String serviceGroupName, String operationId, String drillName,
         DrillStartRequest body, Context context) {
@@ -1275,38 +1028,17 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This starts a new running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String serviceGroupName, String operationId, String drillName, DrillStartRequest body) {
-        beginStart(serviceGroupName, operationId, drillName, body).getFinalResult();
+        start(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This starts a new running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String serviceGroupName, String operationId, String drillName, DrillStartRequest body,
         Context context) {
-        beginStart(serviceGroupName, operationId, drillName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(serviceGroupName, operationId, drillName, body, context));
     }
 
     /**
@@ -1347,10 +1079,7 @@ public final class DrillsClientImpl implements DrillsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> endWithResponse(String serviceGroupName, String operationId, String drillName,
         DrillEndRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.endSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), operationId,
-            drillName, contentType, accept, body, Context.NONE);
+        return endWithResponse(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     /**
@@ -1395,38 +1124,14 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * This ends the currently running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body of Drill actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnd(String serviceGroupName, String operationId, String drillName,
         DrillEndRequest body) {
-        Response<BinaryData> response = endWithResponse(serviceGroupName, operationId, drillName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginEnd(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This ends the currently running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body of Drill actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnd(String serviceGroupName, String operationId, String drillName,
         DrillEndRequest body, Context context) {
@@ -1452,38 +1157,17 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This ends the currently running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void end(String serviceGroupName, String operationId, String drillName, DrillEndRequest body) {
-        beginEnd(serviceGroupName, operationId, drillName, body).getFinalResult();
+        end(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This ends the currently running instance of the Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void end(String serviceGroupName, String operationId, String drillName, DrillEndRequest body,
         Context context) {
-        beginEnd(serviceGroupName, operationId, drillName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginEnd(serviceGroupName, operationId, drillName, body, context));
     }
 
     /**
@@ -1523,9 +1207,7 @@ public final class DrillsClientImpl implements DrillsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addOrUpdateResourcesWithResponse(String serviceGroupName, String operationId,
         String drillName, AddOrUpdateResourcesRequest body) {
-        final String contentType = "application/json";
-        return service.addOrUpdateResourcesSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, drillName, contentType, body, Context.NONE);
+        return addOrUpdateResourcesWithResponse(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
     /**
@@ -1570,39 +1252,14 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * This enables the user to include, exclude or update resources from their Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddOrUpdateResources(String serviceGroupName, String operationId,
         String drillName, AddOrUpdateResourcesRequest body) {
-        Response<BinaryData> response
-            = addOrUpdateResourcesWithResponse(serviceGroupName, operationId, drillName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAddOrUpdateResources(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This enables the user to include, exclude or update resources from their Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddOrUpdateResources(String serviceGroupName, String operationId,
         String drillName, AddOrUpdateResourcesRequest body, Context context) {
@@ -1630,39 +1287,19 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This enables the user to include, exclude or update resources from their Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addOrUpdateResources(String serviceGroupName, String operationId, String drillName,
         AddOrUpdateResourcesRequest body) {
-        beginAddOrUpdateResources(serviceGroupName, operationId, drillName, body).getFinalResult();
+        addOrUpdateResources(serviceGroupName, operationId, drillName, body, Context.NONE);
     }
 
-    /**
-     * This enables the user to include, exclude or update resources from their Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addOrUpdateResources(String serviceGroupName, String operationId, String drillName,
         AddOrUpdateResourcesRequest body, Context context) {
-        beginAddOrUpdateResources(serviceGroupName, operationId, drillName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginAddOrUpdateResources(serviceGroupName, operationId, drillName, body, context));
     }
 
     /**
@@ -1699,8 +1336,7 @@ public final class DrillsClientImpl implements DrillsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncReadinessCheckWithResponse(String serviceGroupName, String operationId,
         String drillName) {
-        return service.resyncReadinessCheckSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, drillName, Context.NONE);
+        return resyncReadinessCheckWithResponse(serviceGroupName, operationId, drillName, Context.NONE);
     }
 
     /**
@@ -1742,36 +1378,14 @@ public final class DrillsClientImpl implements DrillsClient {
             this.client.getContext());
     }
 
-    /**
-     * This triggers detection of any drifts from the desired state of Resources and RBAC.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncReadinessCheck(String serviceGroupName, String operationId,
         String drillName) {
-        Response<BinaryData> response = resyncReadinessCheckWithResponse(serviceGroupName, operationId, drillName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResyncReadinessCheck(serviceGroupName, operationId, drillName, Context.NONE);
     }
 
-    /**
-     * This triggers detection of any drifts from the desired state of Resources and RBAC.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncReadinessCheck(String serviceGroupName, String operationId,
         String drillName, Context context) {
@@ -1797,35 +1411,17 @@ public final class DrillsClientImpl implements DrillsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This triggers detection of any drifts from the desired state of Resources and RBAC.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resyncReadinessCheck(String serviceGroupName, String operationId, String drillName) {
-        beginResyncReadinessCheck(serviceGroupName, operationId, drillName).getFinalResult();
+        resyncReadinessCheck(serviceGroupName, operationId, drillName, Context.NONE);
     }
 
-    /**
-     * This triggers detection of any drifts from the desired state of Resources and RBAC.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resyncReadinessCheck(String serviceGroupName, String operationId, String drillName, Context context) {
-        beginResyncReadinessCheck(serviceGroupName, operationId, drillName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginResyncReadinessCheck(serviceGroupName, operationId, drillName, context));
     }
 
     /**
@@ -1858,10 +1454,7 @@ public final class DrillsClientImpl implements DrillsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DrillInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DrillListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

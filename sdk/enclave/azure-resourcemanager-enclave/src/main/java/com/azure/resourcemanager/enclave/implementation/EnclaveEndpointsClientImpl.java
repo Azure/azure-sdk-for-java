@@ -318,18 +318,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EnclaveEndpointResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnclaveEndpointResourceInner> getWithResponse(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, Context context) {
@@ -338,17 +327,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             resourceGroupName, virtualEnclaveName, enclaveEndpointName, accept, context);
     }
 
-    /**
-     * Get a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EnclaveEndpointResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveEndpointResourceInner get(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName) {
@@ -394,11 +373,8 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, EnclaveEndpointResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, enclaveEndpointName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource,
+            Context.NONE);
     }
 
     /**
@@ -447,41 +423,15 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveEndpointResourceInner>, EnclaveEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
         EnclaveEndpointResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource);
-        return this.client.<EnclaveEndpointResourceInner, EnclaveEndpointResourceInner>getLroResult(response,
-            EnclaveEndpointResourceInner.class, EnclaveEndpointResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveEndpointResourceInner>, EnclaveEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
@@ -511,43 +461,19 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveEndpointResourceInner createOrUpdate(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, EnclaveEndpointResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveEndpointResourceInner createOrUpdate(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, EnclaveEndpointResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, resource, context));
     }
 
     /**
@@ -589,11 +515,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, EnclaveEndpointPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, enclaveEndpointName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, Context.NONE);
     }
 
     /**
@@ -642,41 +564,15 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveEndpointResourceInner>, EnclaveEndpointResourceInner> beginUpdate(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
         EnclaveEndpointPatchModel properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties);
-        return this.client.<EnclaveEndpointResourceInner, EnclaveEndpointResourceInner>getLroResult(response,
-            EnclaveEndpointResourceInner.class, EnclaveEndpointResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, Context.NONE);
     }
 
-    /**
-     * Update a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveEndpointResourceInner>, EnclaveEndpointResourceInner> beginUpdate(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
@@ -706,42 +602,19 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveEndpointResourceInner update(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, EnclaveEndpointPatchModel properties) {
-        return beginUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties).getFinalResult();
+        return update(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, Context.NONE);
     }
 
-    /**
-     * Update a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveEndpointResourceInner update(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, EnclaveEndpointPatchModel properties, Context context) {
-        return beginUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, virtualEnclaveName, enclaveEndpointName, properties, context));
     }
 
     /**
@@ -778,8 +651,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, enclaveEndpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, Context.NONE);
     }
 
     /**
@@ -821,36 +693,14 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, virtualEnclaveName, enclaveEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, Context context) {
@@ -876,36 +726,18 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName) {
-        beginDelete(resourceGroupName, virtualEnclaveName, enclaveEndpointName).getFinalResult();
+        delete(resourceGroupName, virtualEnclaveName, enclaveEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a EnclaveEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
         Context context) {
-        beginDelete(resourceGroupName, virtualEnclaveName, enclaveEndpointName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, virtualEnclaveName, enclaveEndpointName, context));
     }
 
     /**
@@ -962,12 +794,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveEndpointResourceInner> listByEnclaveResourceSinglePage(String resourceGroupName,
         String virtualEnclaveName) {
-        final String accept = "application/json";
-        Response<EnclaveEndpointResourceListResult> res
-            = service.listByEnclaveResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEnclaveResourceSinglePage(resourceGroupName, virtualEnclaveName, Context.NONE);
     }
 
     /**
@@ -992,36 +819,14 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EnclaveEndpointResource resources by EnclaveResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveEndpointResourceInner> listByEnclaveResource(String resourceGroupName,
         String virtualEnclaveName) {
-        return new PagedIterable<>(() -> listByEnclaveResourceSinglePage(resourceGroupName, virtualEnclaveName),
-            nextLink -> listByEnclaveResourceNextSinglePage(nextLink));
+        return listByEnclaveResource(resourceGroupName, virtualEnclaveName, Context.NONE);
     }
 
-    /**
-     * List EnclaveEndpointResource resources by EnclaveResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveEndpointResourceInner> listByEnclaveResource(String resourceGroupName,
         String virtualEnclaveName, Context context) {
@@ -1078,11 +883,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveEndpointResourceInner> listBySubscriptionSinglePage(String virtualEnclaveName) {
-        final String accept = "application/json";
-        Response<EnclaveEndpointResourceListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), virtualEnclaveName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(virtualEnclaveName, Context.NONE);
     }
 
     /**
@@ -1105,33 +906,13 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EnclaveEndpointResource resources by subscription ID.
-     * 
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveEndpointResourceInner> listBySubscription(String virtualEnclaveName) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(virtualEnclaveName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(virtualEnclaveName, Context.NONE);
     }
 
-    /**
-     * List EnclaveEndpointResource resources by subscription ID.
-     * 
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveEndpointResourceInner> listBySubscription(String virtualEnclaveName, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(virtualEnclaveName, context),
@@ -1178,11 +959,8 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalCreationWithResponse(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalCallbackRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.handleApprovalCreationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, enclaveEndpointName, contentType,
-            accept, body, Context.NONE);
+        return handleApprovalCreationWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body,
+            Context.NONE);
     }
 
     /**
@@ -1231,40 +1009,15 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             this.client.getContext());
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName, ApprovalCallbackRequest body) {
-        Response<BinaryData> response
-            = handleApprovalCreationWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginHandleApprovalCreation(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body,
+            Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName, ApprovalCallbackRequest body,
@@ -1294,43 +1047,19 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalCallbackRequest body) {
-        return beginHandleApprovalCreation(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body)
-            .getFinalResult();
+        return handleApprovalCreation(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalCallbackRequest body, Context context) {
-        return beginHandleApprovalCreation(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginHandleApprovalCreation(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, context));
     }
 
     /**
@@ -1373,11 +1102,8 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalDeletionWithResponse(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalDeletionCallbackRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.handleApprovalDeletionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualEnclaveName, enclaveEndpointName, contentType,
-            accept, body, Context.NONE);
+        return handleApprovalDeletionWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body,
+            Context.NONE);
     }
 
     /**
@@ -1426,41 +1152,16 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             this.client.getContext());
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
         ApprovalDeletionCallbackRequest body) {
-        Response<BinaryData> response
-            = handleApprovalDeletionWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginHandleApprovalDeletion(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body,
+            Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
         String resourceGroupName, String virtualEnclaveName, String enclaveEndpointName,
@@ -1490,43 +1191,19 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalDeletionCallbackRequest body) {
-        return beginHandleApprovalDeletion(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body)
-            .getFinalResult();
+        return handleApprovalDeletion(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualEnclaveName The name of the enclaveResource Resource.
-     * @param enclaveEndpointName The name of the Enclave Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalDeletionCallbackRequest body, Context context) {
-        return beginHandleApprovalDeletion(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginHandleApprovalDeletion(resourceGroupName, virtualEnclaveName, enclaveEndpointName, body, context));
     }
 
     /**
@@ -1562,11 +1239,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveEndpointResourceInner> listByEnclaveResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnclaveEndpointResourceListResult> res
-            = service.listByEnclaveResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEnclaveResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1621,11 +1294,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveEndpointResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnclaveEndpointResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

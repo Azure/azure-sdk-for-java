@@ -230,20 +230,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param expand Specify the $expand query. Example: 'properties($select=deploymentProperties)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DtlEnvironmentInner> getWithResponse(String resourceGroupName, String labName, String userName,
         String name, String expand, Context context) {
@@ -252,18 +239,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             resourceGroupName, labName, userName, name, expand, accept, context);
     }
 
-    /**
-     * Get environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DtlEnvironmentInner get(String resourceGroupName, String labName, String userName, String name) {
         final String expand = null;
@@ -312,11 +288,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String labName, String userName,
         String name, DtlEnvironmentInner dtlEnvironment) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, contentType, accept,
-            dtlEnvironment, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, labName, userName, name, dtlEnvironment, Context.NONE);
     }
 
     /**
@@ -365,42 +337,14 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             DtlEnvironmentInner.class, DtlEnvironmentInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String userName, String name, DtlEnvironmentInner dtlEnvironment) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, labName, userName, name, dtlEnvironment);
-        return this.client.<DtlEnvironmentInner, DtlEnvironmentInner>getLroResult(response, DtlEnvironmentInner.class,
-            DtlEnvironmentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, dtlEnvironment, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String userName, String name, DtlEnvironmentInner dtlEnvironment,
@@ -431,44 +375,19 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DtlEnvironmentInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         DtlEnvironmentInner dtlEnvironment) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, dtlEnvironment).getFinalResult();
+        return createOrUpdate(resourceGroupName, labName, userName, name, dtlEnvironment, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DtlEnvironmentInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         DtlEnvironmentInner dtlEnvironment, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, dtlEnvironment, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, labName, userName, name, dtlEnvironment, context));
     }
 
     /**
@@ -517,20 +436,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of environments. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DtlEnvironmentInner> updateWithResponse(String resourceGroupName, String labName, String userName,
         String name, DtlEnvironmentFragment dtlEnvironment, Context context) {
@@ -541,19 +447,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             dtlEnvironment, context);
     }
 
-    /**
-     * Allows modifying tags of environments. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DtlEnvironmentInner update(String resourceGroupName, String labName, String userName, String name,
         DtlEnvironmentFragment dtlEnvironment) {
@@ -596,8 +490,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String labName, String userName,
         String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
     /**
@@ -640,38 +533,14 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String userName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, labName, userName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Delete environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String userName,
         String name, Context context) {
@@ -697,37 +566,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name) {
-        beginDelete(resourceGroupName, labName, userName, name).getFinalResult();
+        delete(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Delete environment. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name, Context context) {
-        beginDelete(resourceGroupName, labName, userName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, labName, userName, name, context));
     }
 
     /**
@@ -822,12 +670,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DtlEnvironmentInner> listSinglePage(String resourceGroupName, String labName, String userName,
         String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<DtlEnvironmentList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, userName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -857,44 +700,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List environments in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DtlEnvironmentInner> list(String resourceGroupName, String labName, String userName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List environments in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param expand Specify the $expand query. Example: 'properties($select=deploymentProperties)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DtlEnvironmentInner> list(String resourceGroupName, String labName, String userName,
         String expand, String filter, Integer top, String orderby, Context context) {
@@ -933,11 +749,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DtlEnvironmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DtlEnvironmentList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

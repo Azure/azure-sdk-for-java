@@ -44,6 +44,12 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
     private Integer count;
 
     /*
+     * Statistics about image serving for this retrieval activity
+     */
+    @Generated
+    private ImageServingStatistics imageServing;
+
+    /*
      * The File arguments for the retrieval activity.
      */
     @Generated
@@ -102,6 +108,16 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
     }
 
     /**
+     * Get the imageServing property: Statistics about image serving for this retrieval activity.
+     *
+     * @return the imageServing value.
+     */
+    @Generated
+    public ImageServingStatistics getImageServing() {
+        return this.imageServing;
+    }
+
+    /**
      * Get the fileArguments property: The File arguments for the retrieval activity.
      *
      * @return the fileArguments value.
@@ -131,6 +147,7 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
         jsonWriter.writeStringField("queryTime",
             this.queryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queryTime));
         jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("fileArguments", this.fileArguments);
         return jsonWriter.writeEndObject();
     }
@@ -157,6 +174,7 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
             String knowledgeSourceName = null;
             OffsetDateTime queryTime = null;
             Integer count = null;
+            ImageServingStatistics imageServing = null;
             KnowledgeBaseFileActivityArguments fileArguments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -184,6 +202,8 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("count".equals(fieldName)) {
                     count = reader.getNullable(JsonReader::getInt);
+                } else if ("imageServing".equals(fieldName)) {
+                    imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("fileArguments".equals(fieldName)) {
                     fileArguments = KnowledgeBaseFileActivityArguments.fromJson(reader);
                 } else {
@@ -201,6 +221,7 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
             deserializedKnowledgeBaseFileActivityRecord.knowledgeSourceName = knowledgeSourceName;
             deserializedKnowledgeBaseFileActivityRecord.queryTime = queryTime;
             deserializedKnowledgeBaseFileActivityRecord.count = count;
+            deserializedKnowledgeBaseFileActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseFileActivityRecord.fileArguments = fileArguments;
             return deserializedKnowledgeBaseFileActivityRecord;
         });

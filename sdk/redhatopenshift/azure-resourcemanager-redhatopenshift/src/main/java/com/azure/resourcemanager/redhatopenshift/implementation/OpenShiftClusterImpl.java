@@ -158,10 +158,7 @@ public final class OpenShiftClusterImpl
     }
 
     public OpenShiftCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenShiftClusters()
-            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OpenShiftCluster create(Context context) {
@@ -183,10 +180,7 @@ public final class OpenShiftClusterImpl
     }
 
     public OpenShiftCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenShiftClusters()
-            .update(resourceGroupName, resourceName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OpenShiftCluster apply(Context context) {
@@ -209,11 +203,7 @@ public final class OpenShiftClusterImpl
     }
 
     public OpenShiftCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenShiftClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OpenShiftCluster refresh(Context context) {

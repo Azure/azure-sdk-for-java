@@ -60,10 +60,7 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
     }
 
     public Enrollment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnrollments()
-            .createOrUpdate(resourceGroupName, usagePlanName, enrollmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Enrollment create(Context context) {
@@ -85,10 +82,7 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
     }
 
     public Enrollment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnrollments()
-            .createOrUpdate(resourceGroupName, usagePlanName, enrollmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Enrollment apply(Context context) {
@@ -114,11 +108,7 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
     }
 
     public Enrollment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnrollments()
-            .getWithResponse(resourceGroupName, usagePlanName, enrollmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Enrollment refresh(Context context) {

@@ -131,18 +131,7 @@ public final class SupportedOperatingSystemsOperationsClientImpl implements Supp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the data of supported operating systems by SRS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param instanceType The instance type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data of supported operating systems by SRS along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupportedOperatingSystemsInner> getWithResponse(String resourceGroupName, String resourceName,
         String instanceType, Context context) {
@@ -169,16 +158,7 @@ public final class SupportedOperatingSystemsOperationsClientImpl implements Supp
             resourceGroupName, resourceName, instanceType, accept, context);
     }
 
-    /**
-     * Gets the data of supported operating systems by SRS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data of supported operating systems by SRS.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportedOperatingSystemsInner get(String resourceGroupName, String resourceName) {
         final String instanceType = null;
