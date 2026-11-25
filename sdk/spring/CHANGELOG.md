@@ -1,5 +1,40 @@
 # Release History
 
+## 6.6.0 (2026-11-24)
+- This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.10.
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.certificate-alias-filter-patterns` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.certificate-alias-filter-patterns` configuration. The patterns are passed to the Key Vault JCA provider to limit which certificate aliases are loaded. ([#50013](https://github.com/Azure/azure-sdk-for-java/issues/50013))
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.disable-aia-download` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.disable-aia-download` configuration to disable automatic Authority Information Access (AIA) certificate downloads. The default is `false`. ([#50184](https://github.com/Azure/azure-sdk-for-java/pull/50184))
+
+#### Bugs Fixed
+
+- Fixed native-image binding of global Azure and Key Vault property-source settings, credential initialization, and secret response deserialization. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing global Azure properties in AOT-generated application contexts, including Service Bus binder child contexts, while retaining runtime configuration binding. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing native-image binding metadata for JDBC passwordless settings and for Cosmos, Event Hubs, Service Bus, Blob, and Queue settings when using ConnectionDetails. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed AOT processing of Service Bus JMS connection factories by replacing instance suppliers with factory-method bean definitions. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing reflection metadata for Service Bus JMS URI prefetch options and Standard-tier AMQP customization in native images. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed Qpid factory discovery for Service Bus JMS native connections by retaining provider, SSL transport, SASL, and default tracing descriptors and factory metadata. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing native proxy metadata for cached Service Bus JMS connections and sessions. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Aligned the autoconfigure module's Netty and Reactor dependencies with the Azure SDK to prevent linkage errors when optional Redis and JMS dependencies are present. ([#51377](https://github.com/Azure/azure-sdk-for-java/pull/51377))
+- Fixed the default Microsoft Entra ID resource server filter chain to require authentication for every request. ([#51191](https://github.com/Azure/azure-sdk-for-java/issues/51191))
+- Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#660-2026-11-24) for more details.
+
 ## 7.5.0 (2026-11-24)
 - This release is compatible with Spring Boot 4.0.0-4.1.2. (Note: 4.1.x (x>2) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.1.0-2025.1.3. (Note: 2025.1.x (x>3) should be supported, but they aren't tested with this release.)
