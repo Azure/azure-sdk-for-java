@@ -24,7 +24,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWind
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateNetworkStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
@@ -94,7 +93,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().administratorLoginPassword();
     }
 
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.innerModel().version();
     }
 
@@ -217,10 +216,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .createOrUpdate(resourceGroupName, serverName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Server create(Context context) {
@@ -242,10 +238,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Server apply(Context context) {
@@ -268,11 +261,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Server refresh(Context context) {
@@ -375,7 +364,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withVersion(PostgresMajorVersion version) {
+    public ServerImpl withVersion(String version) {
         if (isInCreateMode()) {
             this.innerModel().withVersion(version);
             return this;

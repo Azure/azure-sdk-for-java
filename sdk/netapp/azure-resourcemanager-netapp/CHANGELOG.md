@@ -1,6 +1,6 @@
 # Release History
 
-## 2.6.0-beta.2 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,84 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.6.0 (2026-11-16)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+Subvolume operations and configuration were removed from the service API specification for API version `2026-09-01`. Applications using the APIs listed below must remove those usages before upgrading.
+
+#### `models.SubvolumeInfo$Update` was removed
+
+#### `models.SubvolumeInfo` was removed
+
+#### `models.SubvolumeModel` was removed
+
+#### `models.EnableSubvolumes` was removed
+
+#### `models.SubvolumeInfo$UpdateStages` was removed
+
+#### `models.SubvolumePatchRequest` was removed
+
+#### `models.SubvolumeInfo$DefinitionStages` was removed
+
+#### `models.SubvolumeInfo$Definition` was removed
+
+#### `models.Subvolumes` was removed
+
+#### `models.Volume$Definition` was modified
+
+* `withEnableSubvolumes(models.EnableSubvolumes)` was removed
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withEnableSubvolumes(models.EnableSubvolumes)` was removed
+* `enableSubvolumes()` was removed
+
+#### `models.Volume` was modified
+
+* `enableSubvolumes()` was removed
+
+#### `NetAppFilesManager` was modified
+
+* `subvolumes()` was removed
+
+### Features Added
+
+* `models.SmbOplocks` was added
+
+#### `models.Volume$Update` was modified
+
+* `withSmbOplocks(models.SmbOplocks)` was added
+
+#### `models.SmbSettings` was modified
+
+* `withSmbOplocks(models.SmbOplocks)` was added
+* `smbOplocks()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withLdapServerType(models.LdapServerType)` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withLdapServerType(models.LdapServerType)` was added
+* `ldapServerType()` was added
+* `smbOplocks()` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
+
+#### `models.Volume` was modified
+
+* `ldapServerType()` was added
+* `smbOplocks()` was added
+
+#### `models.VolumePatch` was modified
+
+* `smbOplocks()` was added
+* `withSmbOplocks(models.SmbOplocks)` was added
 
 ## 2.6.0-beta.1 (2026-10-28)
 

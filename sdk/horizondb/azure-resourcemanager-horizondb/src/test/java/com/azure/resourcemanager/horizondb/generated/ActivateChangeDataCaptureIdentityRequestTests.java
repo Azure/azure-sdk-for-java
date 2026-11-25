@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ActivateChangeDataCaptureIdentityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActivateChangeDataCaptureIdentityRequest model
-            = BinaryData.fromString("{\"identityAssignmentResourceId\":\"ayffim\",\"drainExistingSessions\":false}")
-                .toObject(ActivateChangeDataCaptureIdentityRequest.class);
-        Assertions.assertEquals("ayffim", model.identityAssignmentResourceId());
-        Assertions.assertFalse(model.drainExistingSessions());
+        ActivateChangeDataCaptureIdentityRequest model = BinaryData
+            .fromString("{\"identityAssignmentResourceId\":\"mejzanlfzxia\",\"drainExistingSessions\":true}")
+            .toObject(ActivateChangeDataCaptureIdentityRequest.class);
+        Assertions.assertEquals("mejzanlfzxia", model.identityAssignmentResourceId());
+        Assertions.assertTrue(model.drainExistingSessions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActivateChangeDataCaptureIdentityRequest model
-            = new ActivateChangeDataCaptureIdentityRequest().withIdentityAssignmentResourceId("ayffim")
-                .withDrainExistingSessions(false);
+            = new ActivateChangeDataCaptureIdentityRequest().withIdentityAssignmentResourceId("mejzanlfzxia")
+                .withDrainExistingSessions(true);
         model = BinaryData.fromObject(model).toObject(ActivateChangeDataCaptureIdentityRequest.class);
-        Assertions.assertEquals("ayffim", model.identityAssignmentResourceId());
-        Assertions.assertFalse(model.drainExistingSessions());
+        Assertions.assertEquals("mejzanlfzxia", model.identityAssignmentResourceId());
+        Assertions.assertTrue(model.drainExistingSessions());
     }
 }

@@ -43,8 +43,7 @@ public final class JobsImpl implements Jobs {
     }
 
     public PagedIterable<Job> listByTarget(String resourceUri) {
-        PagedIterable<JobInner> inner = this.serviceClient().listByTarget(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
+        return this.listByTarget(resourceUri, Context.NONE);
     }
 
     public PagedIterable<Job> listByTarget(String resourceUri, Context context) {

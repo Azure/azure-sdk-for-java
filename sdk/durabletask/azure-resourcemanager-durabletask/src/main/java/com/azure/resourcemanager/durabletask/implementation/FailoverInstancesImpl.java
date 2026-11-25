@@ -45,12 +45,7 @@ public final class FailoverInstancesImpl implements FailoverInstances {
 
     public FailoverInstance createOrReplace(String resourceGroupName, String schedulerName,
         FailoverInstanceInner resource) {
-        FailoverInstanceInner inner = this.serviceClient().createOrReplace(resourceGroupName, schedulerName, resource);
-        if (inner != null) {
-            return new FailoverInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     public FailoverInstance createOrReplace(String resourceGroupName, String schedulerName,
@@ -65,7 +60,7 @@ public final class FailoverInstancesImpl implements FailoverInstances {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String schedulerName) {
-        this.serviceClient().delete(resourceGroupName, schedulerName);
+        this.delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schedulerName, Context context) {
@@ -73,9 +68,7 @@ public final class FailoverInstancesImpl implements FailoverInstances {
     }
 
     public PagedIterable<FailoverInstance> listByScheduler(String resourceGroupName, String schedulerName) {
-        PagedIterable<FailoverInstanceInner> inner
-            = this.serviceClient().listByScheduler(resourceGroupName, schedulerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FailoverInstanceImpl(inner1, this.manager()));
+        return this.listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public PagedIterable<FailoverInstance> listByScheduler(String resourceGroupName, String schedulerName,
@@ -86,12 +79,7 @@ public final class FailoverInstancesImpl implements FailoverInstances {
     }
 
     public FailoverInstance failover(String resourceGroupName, String schedulerName) {
-        FailoverInstanceInner inner = this.serviceClient().failover(resourceGroupName, schedulerName);
-        if (inner != null) {
-            return new FailoverInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failover(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public FailoverInstance failover(String resourceGroupName, String schedulerName, Context context) {
@@ -104,12 +92,7 @@ public final class FailoverInstancesImpl implements FailoverInstances {
     }
 
     public FailoverInstance forceFailoverAllowDataLoss(String resourceGroupName, String schedulerName) {
-        FailoverInstanceInner inner = this.serviceClient().forceFailoverAllowDataLoss(resourceGroupName, schedulerName);
-        if (inner != null) {
-            return new FailoverInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.forceFailoverAllowDataLoss(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public FailoverInstance forceFailoverAllowDataLoss(String resourceGroupName, String schedulerName,

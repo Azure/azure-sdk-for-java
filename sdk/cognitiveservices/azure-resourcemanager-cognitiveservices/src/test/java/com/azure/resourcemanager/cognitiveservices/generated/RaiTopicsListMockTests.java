@@ -22,7 +22,7 @@ public final class RaiTopicsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"topicId\":\"uyapvibzicyvich\",\"topicName\":\"ptkhjxnrkbnv\",\"description\":\"cklzhznfgvlxy\",\"sampleBlobUrl\":\"nctigpksywi\",\"status\":\"lktgkdp\",\"failedReason\":\"qj\",\"createdAt\":\"2021-05-04T14:05:05Z\",\"lastModifiedAt\":\"2021-04-25T03:01:48Z\"},\"etag\":\"fuhbdwbvjsbg\",\"tags\":{\"ltcwsexheeocnqo\":\"moaxcaytnpkvbp\",\"yfhxohzbzhhav\":\"bvepvlryszfhd\",\"ehoui\":\"fuxnvkdslcofuvtf\"},\"id\":\"klhjfddxqfu\",\"name\":\"subzsspmj\",\"type\":\"ailf\"}]}";
+            = "{\"value\":[{\"properties\":{\"topicId\":\"pncdocloepjz\",\"topicName\":\"bod\",\"description\":\"azburskuff\",\"sampleBlobUrl\":\"bkvunn\",\"status\":\"oasnzlawow\",\"failedReason\":\"nixxwdqzur\",\"createdAt\":\"2021-12-10T03:09:28Z\",\"lastModifiedAt\":\"2021-02-06T02:25:10Z\"},\"etag\":\"mxbhhpvvaegh\",\"tags\":{\"ecuvwate\":\"onxvnmcy\",\"ishkm\":\"swbrnbo\",\"mifhfutjyxntmg\":\"fvbksksmqmwowrm\"},\"id\":\"uqaemoyg\",\"name\":\"axjy\",\"type\":\"dqr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,18 @@ public final class RaiTopicsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiTopic> response
-            = manager.raiTopics().list("wrrlccklyf", "jmspauemqomxoa", com.azure.core.util.Context.NONE);
+            = manager.raiTopics().list("fqd", "wvsxfrwvlypzt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uyapvibzicyvich", response.iterator().next().properties().topicId());
-        Assertions.assertEquals("ptkhjxnrkbnv", response.iterator().next().properties().topicName());
-        Assertions.assertEquals("cklzhznfgvlxy", response.iterator().next().properties().description());
-        Assertions.assertEquals("nctigpksywi", response.iterator().next().properties().sampleBlobUrl());
-        Assertions.assertEquals("lktgkdp", response.iterator().next().properties().status());
-        Assertions.assertEquals("qj", response.iterator().next().properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T14:05:05Z"),
+        Assertions.assertEquals("pncdocloepjz", response.iterator().next().properties().topicId());
+        Assertions.assertEquals("bod", response.iterator().next().properties().topicName());
+        Assertions.assertEquals("azburskuff", response.iterator().next().properties().description());
+        Assertions.assertEquals("bkvunn", response.iterator().next().properties().sampleBlobUrl());
+        Assertions.assertEquals("oasnzlawow", response.iterator().next().properties().status());
+        Assertions.assertEquals("nixxwdqzur", response.iterator().next().properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T03:09:28Z"),
             response.iterator().next().properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T03:01:48Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T02:25:10Z"),
             response.iterator().next().properties().lastModifiedAt());
-        Assertions.assertEquals("moaxcaytnpkvbp", response.iterator().next().tags().get("ltcwsexheeocnqo"));
+        Assertions.assertEquals("onxvnmcy", response.iterator().next().tags().get("ecuvwate"));
     }
 }

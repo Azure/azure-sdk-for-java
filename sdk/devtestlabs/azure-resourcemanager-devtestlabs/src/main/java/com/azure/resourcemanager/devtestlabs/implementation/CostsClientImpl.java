@@ -137,19 +137,7 @@ public final class CostsClientImpl implements CostsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get cost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabCostInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
         Context context) {
@@ -158,17 +146,7 @@ public final class CostsClientImpl implements CostsClient {
             resourceGroupName, labName, name, expand, accept, context);
     }
 
-    /**
-     * Get cost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabCostInner get(String resourceGroupName, String labName, String name) {
         final String expand = null;
@@ -218,19 +196,7 @@ public final class CostsClientImpl implements CostsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or replace an existing cost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @param labCost A cost item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabCostInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
         LabCostInner labCost, Context context) {
@@ -240,18 +206,7 @@ public final class CostsClientImpl implements CostsClient {
             this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType, accept, labCost, context);
     }
 
-    /**
-     * Create or replace an existing cost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @param labCost A cost item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabCostInner createOrUpdate(String resourceGroupName, String labName, String name, LabCostInner labCost) {
         return createOrUpdateWithResponse(resourceGroupName, labName, name, labCost, Context.NONE).getValue();

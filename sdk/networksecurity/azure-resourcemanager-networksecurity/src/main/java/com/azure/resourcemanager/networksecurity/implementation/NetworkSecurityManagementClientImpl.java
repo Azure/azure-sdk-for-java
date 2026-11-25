@@ -22,10 +22,15 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.networksecurity.fluent.AgentFabricsClient;
+import com.azure.resourcemanager.networksecurity.fluent.ClusterAssociationsClient;
+import com.azure.resourcemanager.networksecurity.fluent.EgressTrustBundlesClient;
+import com.azure.resourcemanager.networksecurity.fluent.MembersClient;
 import com.azure.resourcemanager.networksecurity.fluent.NetworkSecurityManagementClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldFindingsClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldMitigationsClient;
@@ -33,7 +38,9 @@ import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldOperationStat
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldProtectedResourcesClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldSummariesClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldsClient;
+import com.azure.resourcemanager.networksecurity.fluent.OperationStatusClient;
 import com.azure.resourcemanager.networksecurity.fluent.OperationsClient;
+import com.azure.resourcemanager.networksecurity.fluent.PolicyGroupsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -60,20 +67,6 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Version parameter.
-     */
-    private final String apiVersion;
-
-    /**
-     * Gets Version parameter.
-     * 
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /**
@@ -231,6 +224,90 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
     }
 
     /**
+     * The AgentFabricsClient object to access its operations.
+     */
+    private final AgentFabricsClient agentFabrics;
+
+    /**
+     * Gets the AgentFabricsClient object to access its operations.
+     * 
+     * @return the AgentFabricsClient object.
+     */
+    public AgentFabricsClient getAgentFabrics() {
+        return this.agentFabrics;
+    }
+
+    /**
+     * The MembersClient object to access its operations.
+     */
+    private final MembersClient members;
+
+    /**
+     * Gets the MembersClient object to access its operations.
+     * 
+     * @return the MembersClient object.
+     */
+    public MembersClient getMembers() {
+        return this.members;
+    }
+
+    /**
+     * The PolicyGroupsClient object to access its operations.
+     */
+    private final PolicyGroupsClient policyGroups;
+
+    /**
+     * Gets the PolicyGroupsClient object to access its operations.
+     * 
+     * @return the PolicyGroupsClient object.
+     */
+    public PolicyGroupsClient getPolicyGroups() {
+        return this.policyGroups;
+    }
+
+    /**
+     * The OperationStatusClient object to access its operations.
+     */
+    private final OperationStatusClient operationStatus;
+
+    /**
+     * Gets the OperationStatusClient object to access its operations.
+     * 
+     * @return the OperationStatusClient object.
+     */
+    public OperationStatusClient getOperationStatus() {
+        return this.operationStatus;
+    }
+
+    /**
+     * The ClusterAssociationsClient object to access its operations.
+     */
+    private final ClusterAssociationsClient clusterAssociations;
+
+    /**
+     * Gets the ClusterAssociationsClient object to access its operations.
+     * 
+     * @return the ClusterAssociationsClient object.
+     */
+    public ClusterAssociationsClient getClusterAssociations() {
+        return this.clusterAssociations;
+    }
+
+    /**
+     * The EgressTrustBundlesClient object to access its operations.
+     */
+    private final EgressTrustBundlesClient egressTrustBundles;
+
+    /**
+     * Gets the EgressTrustBundlesClient object to access its operations.
+     * 
+     * @return the EgressTrustBundlesClient object.
+     */
+    public EgressTrustBundlesClient getEgressTrustBundles() {
+        return this.egressTrustBundles;
+    }
+
+    /**
      * Initializes an instance of NetworkSecurityManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -247,7 +324,6 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-10-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.neuroShieldOperationStatuses = new NeuroShieldOperationStatusesClientImpl(this);
         this.neuroShields = new NeuroShieldsClientImpl(this);
@@ -255,6 +331,12 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
         this.neuroShieldProtectedResources = new NeuroShieldProtectedResourcesClientImpl(this);
         this.neuroShieldFindings = new NeuroShieldFindingsClientImpl(this);
         this.neuroShieldMitigations = new NeuroShieldMitigationsClientImpl(this);
+        this.agentFabrics = new AgentFabricsClientImpl(this);
+        this.members = new MembersClientImpl(this);
+        this.policyGroups = new PolicyGroupsClientImpl(this);
+        this.operationStatus = new OperationStatusClientImpl(this);
+        this.clusterAssociations = new ClusterAssociationsClientImpl(this);
+        this.egressTrustBundles = new EgressTrustBundlesClientImpl(this);
     }
 
     /**
@@ -312,6 +394,24 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -320,17 +420,25 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -349,12 +457,11 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

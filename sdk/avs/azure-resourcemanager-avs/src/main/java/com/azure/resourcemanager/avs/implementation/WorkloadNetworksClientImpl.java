@@ -1106,17 +1106,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkInner> getWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -1143,16 +1133,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             resourceGroupName, privateCloudName, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkInner get(String resourceGroupName, String privateCloudName) {
         return getWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
@@ -1225,29 +1206,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1289,33 +1248,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetwork resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetwork resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -1391,30 +1330,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDhcpInner> listDhcpSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkDhcpList> res
-            = service.listDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDhcpSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1457,33 +1373,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkDhcp resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDhcpInner> listDhcp(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listDhcpSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listDhcpNextSinglePage(nextLink));
+        return listDhcp(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkDhcp resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDhcpInner> listDhcp(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -1549,18 +1445,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkDhcp along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkDhcpInner> getDhcpWithResponse(String resourceGroupName, String dhcpId,
         String privateCloudName, Context context) {
@@ -1591,17 +1476,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, dhcpId, privateCloudName, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkDhcp.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner getDhcp(String resourceGroupName, String dhcpId, String privateCloudName) {
         return getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, Context.NONE).getValue();
@@ -1671,39 +1546,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, contentType, accept,
-            workloadNetworkDhcp, Context.NONE);
+        return createDhcpWithResponse(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, Context.NONE);
     }
 
     /**
@@ -1780,41 +1623,15 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        Response<BinaryData> response
-            = createDhcpWithResponse(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp);
-        return this.client.<WorkloadNetworkDhcpInner, WorkloadNetworkDhcpInner>getLroResult(response,
-            WorkloadNetworkDhcpInner.class, WorkloadNetworkDhcpInner.class, Context.NONE);
+        return beginCreateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp,
@@ -1844,42 +1661,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner createDhcp(String resourceGroupName, String privateCloudName, String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        return beginCreateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getFinalResult();
+        return createDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner createDhcp(String resourceGroupName, String privateCloudName, String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
-        return beginCreateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context));
     }
 
     /**
@@ -1946,39 +1740,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, contentType, accept,
-            workloadNetworkDhcp, Context.NONE);
+        return updateDhcpWithResponse(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, Context.NONE);
     }
 
     /**
@@ -2055,41 +1817,15 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        Response<BinaryData> response
-            = updateDhcpWithResponse(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp);
-        return this.client.<WorkloadNetworkDhcpInner, WorkloadNetworkDhcpInner>getLroResult(response,
-            WorkloadNetworkDhcpInner.class, WorkloadNetworkDhcpInner.class, Context.NONE);
+        return beginUpdateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp,
@@ -2119,42 +1855,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner updateDhcp(String resourceGroupName, String privateCloudName, String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        return beginUpdateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getFinalResult();
+        return updateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param workloadNetworkDhcp The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner updateDhcp(String resourceGroupName, String privateCloudName, String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
-        return beginUpdateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateDhcp(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context));
     }
 
     /**
@@ -2210,30 +1923,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        return service.deleteDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, Context.NONE);
+        return deleteDhcpWithResponse(resourceGroupName, privateCloudName, dhcpId, Context.NONE);
     }
 
     /**
@@ -2297,36 +1987,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(String resourceGroupName, String privateCloudName,
         String dhcpId) {
-        Response<BinaryData> response = deleteDhcpWithResponse(resourceGroupName, privateCloudName, dhcpId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteDhcp(resourceGroupName, privateCloudName, dhcpId, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(String resourceGroupName, String privateCloudName,
         String dhcpId, Context context) {
@@ -2351,35 +2019,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDhcp(String resourceGroupName, String privateCloudName, String dhcpId) {
-        beginDeleteDhcp(resourceGroupName, privateCloudName, dhcpId).getFinalResult();
+        deleteDhcp(resourceGroupName, privateCloudName, dhcpId, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkDhcp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dhcpId The ID of the DHCP configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDhcp(String resourceGroupName, String privateCloudName, String dhcpId, Context context) {
-        beginDeleteDhcp(resourceGroupName, privateCloudName, dhcpId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteDhcp(resourceGroupName, privateCloudName, dhcpId, context));
     }
 
     /**
@@ -2451,30 +2100,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsServiceInner> listDnsServicesSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkDnsServicesList> res
-            = service.listDnsServicesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDnsServicesSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -2517,36 +2143,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkDnsService resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkDnsService list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsServiceInner> listDnsServices(String resourceGroupName,
         String privateCloudName) {
-        return new PagedIterable<>(() -> listDnsServicesSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listDnsServicesNextSinglePage(nextLink));
+        return listDnsServices(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkDnsService resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkDnsService list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsServiceInner> listDnsServices(String resourceGroupName,
         String privateCloudName, Context context) {
@@ -2612,18 +2216,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkDnsService along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkDnsServiceInner> getDnsServiceWithResponse(String resourceGroupName,
         String privateCloudName, String dnsServiceId, Context context) {
@@ -2654,17 +2247,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsServiceId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkDnsService.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner getDnsService(String resourceGroupName, String privateCloudName,
         String dnsServiceId) {
@@ -2735,39 +2318,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDnsServiceWithResponse(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsServiceId, contentType, accept,
+        return createDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId,
             workloadNetworkDnsService, Context.NONE);
     }
 
@@ -2846,41 +2397,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        Response<BinaryData> response = createDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId,
-            workloadNetworkDnsService);
-        return this.client.<WorkloadNetworkDnsServiceInner, WorkloadNetworkDnsServiceInner>getLroResult(response,
-            WorkloadNetworkDnsServiceInner.class, WorkloadNetworkDnsServiceInner.class, Context.NONE);
+        return beginCreateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService,
+            Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
@@ -2911,43 +2437,20 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner createDnsService(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        return beginCreateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
-            .getFinalResult();
+        return createDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService,
+            Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner createDnsService(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
-        return beginCreateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateDnsService(resourceGroupName, privateCloudName,
+            dnsServiceId, workloadNetworkDnsService, context));
     }
 
     /**
@@ -3014,39 +2517,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDnsServiceWithResponse(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsServiceId, contentType, accept,
+        return updateDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId,
             workloadNetworkDnsService, Context.NONE);
     }
 
@@ -3125,41 +2596,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        Response<BinaryData> response = updateDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId,
-            workloadNetworkDnsService);
-        return this.client.<WorkloadNetworkDnsServiceInner, WorkloadNetworkDnsServiceInner>getLroResult(response,
-            WorkloadNetworkDnsServiceInner.class, WorkloadNetworkDnsServiceInner.class, Context.NONE);
+        return beginUpdateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService,
+            Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
@@ -3190,43 +2636,20 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner updateDnsService(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        return beginUpdateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
-            .getFinalResult();
+        return updateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService,
+            Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId ID of the DNS service.
-     * @param workloadNetworkDnsService The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner updateDnsService(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
-        return beginUpdateDnsService(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateDnsService(resourceGroupName, privateCloudName,
+            dnsServiceId, workloadNetworkDnsService, context));
     }
 
     /**
@@ -3282,30 +2705,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDnsServiceWithResponse(String resourceGroupName, String dnsServiceId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deleteDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
+        return deleteDnsServiceWithResponse(resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -3369,36 +2769,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsServiceId ID of the DNS service.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(String resourceGroupName, String dnsServiceId,
         String privateCloudName) {
-        Response<BinaryData> response = deleteDnsServiceWithResponse(resourceGroupName, dnsServiceId, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteDnsService(resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsServiceId ID of the DNS service.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(String resourceGroupName, String dnsServiceId,
         String privateCloudName, Context context) {
@@ -3424,36 +2802,18 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsServiceId ID of the DNS service.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDnsService(String resourceGroupName, String dnsServiceId, String privateCloudName) {
-        beginDeleteDnsService(resourceGroupName, dnsServiceId, privateCloudName).getFinalResult();
+        deleteDnsService(resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsServiceId ID of the DNS service.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDnsService(String resourceGroupName, String dnsServiceId, String privateCloudName,
         Context context) {
-        beginDeleteDnsService(resourceGroupName, dnsServiceId, privateCloudName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDeleteDnsService(resourceGroupName, dnsServiceId, privateCloudName, context));
     }
 
     /**
@@ -3525,30 +2885,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsZoneInner> listDnsZonesSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkDnsZonesList> res
-            = service.listDnsZonesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDnsZonesSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -3591,33 +2928,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkDnsZone resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsZoneInner> listDnsZones(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listDnsZonesSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listDnsZonesNextSinglePage(nextLink));
+        return listDnsZones(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkDnsZone resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsZoneInner> listDnsZones(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -3683,18 +3000,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkDnsZone along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkDnsZoneInner> getDnsZoneWithResponse(String resourceGroupName,
         String privateCloudName, String dnsZoneId, Context context) {
@@ -3725,17 +3031,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsZoneId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkDnsZone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsZoneInner getDnsZone(String resourceGroupName, String privateCloudName, String dnsZoneId) {
         return getDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, Context.NONE).getValue();
@@ -3805,39 +3101,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsZoneId, contentType, accept,
-            workloadNetworkDnsZone, Context.NONE);
+        return createDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone,
+            Context.NONE);
     }
 
     /**
@@ -3914,41 +3179,15 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        Response<BinaryData> response
-            = createDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone);
-        return this.client.<WorkloadNetworkDnsZoneInner, WorkloadNetworkDnsZoneInner>getLroResult(response,
-            WorkloadNetworkDnsZoneInner.class, WorkloadNetworkDnsZoneInner.class, Context.NONE);
+        return beginCreateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
@@ -3978,43 +3217,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsZoneInner createDnsZone(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        return beginCreateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
-            .getFinalResult();
+        return createDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsZoneInner createDnsZone(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context) {
-        return beginCreateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context));
     }
 
     /**
@@ -4081,39 +3296,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsZoneId, contentType, accept,
-            workloadNetworkDnsZone, Context.NONE);
+        return updateDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone,
+            Context.NONE);
     }
 
     /**
@@ -4190,41 +3374,15 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        Response<BinaryData> response
-            = updateDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone);
-        return this.client.<WorkloadNetworkDnsZoneInner, WorkloadNetworkDnsZoneInner>getLroResult(response,
-            WorkloadNetworkDnsZoneInner.class, WorkloadNetworkDnsZoneInner.class, Context.NONE);
+        return beginUpdateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
@@ -4254,43 +3412,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsZoneInner updateDnsZone(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        return beginUpdateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
-            .getFinalResult();
+        return updateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param workloadNetworkDnsZone The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsZoneInner updateDnsZone(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context) {
-        return beginUpdateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context));
     }
 
     /**
@@ -4346,30 +3480,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDnsZoneWithResponse(String resourceGroupName, String dnsZoneId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deleteDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
+        return deleteDnsZoneWithResponse(resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -4433,36 +3544,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(String resourceGroupName, String dnsZoneId,
         String privateCloudName) {
-        Response<BinaryData> response = deleteDnsZoneWithResponse(resourceGroupName, dnsZoneId, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(String resourceGroupName, String dnsZoneId,
         String privateCloudName, Context context) {
@@ -4488,35 +3577,17 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDnsZone(String resourceGroupName, String dnsZoneId, String privateCloudName) {
-        beginDeleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName).getFinalResult();
+        deleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkDnsZone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsZoneId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDnsZone(String resourceGroupName, String dnsZoneId, String privateCloudName, Context context) {
-        beginDeleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDeleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName, context));
     }
 
     /**
@@ -4588,30 +3659,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkGatewayInner> listGatewaysSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkGatewayList> res
-            = service.listGatewaysSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGatewaysSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -4654,33 +3702,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkGateway resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkGatewayInner> listGateways(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listGatewaysSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listGatewaysNextSinglePage(nextLink));
+        return listGateways(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkGateway resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkGatewayInner> listGateways(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -4746,18 +3774,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param gatewayId The ID of the NSX Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkGateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkGatewayInner> getGatewayWithResponse(String resourceGroupName,
         String privateCloudName, String gatewayId, Context context) {
@@ -4788,17 +3805,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, gatewayId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param gatewayId The ID of the NSX Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkGateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkGatewayInner getGateway(String resourceGroupName, String privateCloudName, String gatewayId) {
         return getGatewayWithResponse(resourceGroupName, privateCloudName, gatewayId, Context.NONE).getValue();
@@ -4874,30 +3881,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPortMirroringInner> listPortMirroringSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkPortMirroringList> res
-            = service.listPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPortMirroringSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -4940,36 +3924,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkPortMirroring resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkPortMirroring list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPortMirroringInner> listPortMirroring(String resourceGroupName,
         String privateCloudName) {
-        return new PagedIterable<>(() -> listPortMirroringSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listPortMirroringNextSinglePage(nextLink));
+        return listPortMirroring(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkPortMirroring resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkPortMirroring list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPortMirroringInner> listPortMirroring(String resourceGroupName,
         String privateCloudName, Context context) {
@@ -5036,18 +3998,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkPortMirroring along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkPortMirroringInner> getPortMirroringWithResponse(String resourceGroupName,
         String privateCloudName, String portMirroringId, Context context) {
@@ -5078,17 +4029,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, portMirroringId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkPortMirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner getPortMirroring(String resourceGroupName, String privateCloudName,
         String portMirroringId) {
@@ -5162,39 +4103,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createPortMirroringWithResponse(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, portMirroringId, contentType, accept,
+        return createPortMirroringWithResponse(resourceGroupName, privateCloudName, portMirroringId,
             workloadNetworkPortMirroring, Context.NONE);
     }
 
@@ -5273,41 +4182,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             WorkloadNetworkPortMirroringInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginCreatePortMirroring(String resourceGroupName, String privateCloudName, String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        Response<BinaryData> response = createPortMirroringWithResponse(resourceGroupName, privateCloudName,
-            portMirroringId, workloadNetworkPortMirroring);
-        return this.client.<WorkloadNetworkPortMirroringInner, WorkloadNetworkPortMirroringInner>getLroResult(response,
-            WorkloadNetworkPortMirroringInner.class, WorkloadNetworkPortMirroringInner.class, Context.NONE);
+        return beginCreatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
+            workloadNetworkPortMirroring, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginCreatePortMirroring(String resourceGroupName, String privateCloudName, String portMirroringId,
@@ -5338,43 +4222,20 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             workloadNetworkPortMirroring).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner createPortMirroring(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        return beginCreatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
-            workloadNetworkPortMirroring).getFinalResult();
+        return createPortMirroring(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring,
+            Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner createPortMirroring(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
-        return beginCreatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
-            workloadNetworkPortMirroring, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreatePortMirroring(resourceGroupName, privateCloudName,
+            portMirroringId, workloadNetworkPortMirroring, context));
     }
 
     /**
@@ -5443,39 +4304,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updatePortMirroringWithResponse(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updatePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, portMirroringId, contentType, accept,
+        return updatePortMirroringWithResponse(resourceGroupName, privateCloudName, portMirroringId,
             workloadNetworkPortMirroring, Context.NONE);
     }
 
@@ -5554,41 +4383,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             WorkloadNetworkPortMirroringInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroring(String resourceGroupName, String privateCloudName, String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        Response<BinaryData> response = updatePortMirroringWithResponse(resourceGroupName, privateCloudName,
-            portMirroringId, workloadNetworkPortMirroring);
-        return this.client.<WorkloadNetworkPortMirroringInner, WorkloadNetworkPortMirroringInner>getLroResult(response,
-            WorkloadNetworkPortMirroringInner.class, WorkloadNetworkPortMirroringInner.class, Context.NONE);
+        return beginUpdatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
+            workloadNetworkPortMirroring, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroring(String resourceGroupName, String privateCloudName, String portMirroringId,
@@ -5619,43 +4423,20 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             workloadNetworkPortMirroring).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner updatePortMirroring(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        return beginUpdatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
-            workloadNetworkPortMirroring).getFinalResult();
+        return updatePortMirroring(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring,
+            Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param workloadNetworkPortMirroring The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner updatePortMirroring(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
-        return beginUpdatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
-            workloadNetworkPortMirroring, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdatePortMirroring(resourceGroupName, privateCloudName,
+            portMirroringId, workloadNetworkPortMirroring, context));
     }
 
     /**
@@ -5712,30 +4493,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePortMirroringWithResponse(String resourceGroupName, String portMirroringId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deletePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
+        return deletePortMirroringWithResponse(resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -5799,37 +4557,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(String resourceGroupName, String portMirroringId,
         String privateCloudName) {
-        Response<BinaryData> response
-            = deletePortMirroringWithResponse(resourceGroupName, portMirroringId, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeletePortMirroring(resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(String resourceGroupName, String portMirroringId,
         String privateCloudName, Context context) {
@@ -5856,36 +4591,18 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePortMirroring(String resourceGroupName, String portMirroringId, String privateCloudName) {
-        beginDeletePortMirroring(resourceGroupName, portMirroringId, privateCloudName).getFinalResult();
+        deletePortMirroring(resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkPortMirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param portMirroringId ID of the NSX port mirroring profile.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePortMirroring(String resourceGroupName, String portMirroringId, String privateCloudName,
         Context context) {
-        beginDeletePortMirroring(resourceGroupName, portMirroringId, privateCloudName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDeletePortMirroring(resourceGroupName, portMirroringId, privateCloudName, context));
     }
 
     /**
@@ -5957,30 +4674,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPublicIpInner> listPublicIPsSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkPublicIPsList> res
-            = service.listPublicIPsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPublicIPsSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -6023,36 +4717,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkPublicIP resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkPublicIP list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPublicIpInner> listPublicIPs(String resourceGroupName,
         String privateCloudName) {
-        return new PagedIterable<>(() -> listPublicIPsSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listPublicIPsNextSinglePage(nextLink));
+        return listPublicIPs(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkPublicIP resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkPublicIP list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPublicIpInner> listPublicIPs(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -6118,18 +4790,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIPId ID of the DNS zone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkPublicIP along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkPublicIpInner> getPublicIpWithResponse(String resourceGroupName,
         String privateCloudName, String publicIPId, Context context) {
@@ -6160,17 +4821,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIPId ID of the DNS zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkPublicIP.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPublicIpInner getPublicIp(String resourceGroupName, String privateCloudName,
         String publicIPId) {
@@ -6241,39 +4892,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createPublicIpWithResponse(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (publicIPId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIPId is required and cannot be null."));
-        }
-        if (workloadNetworkPublicIp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkPublicIp is required and cannot be null."));
-        } else {
-            workloadNetworkPublicIp.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createPublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, contentType, accept,
-            workloadNetworkPublicIp, Context.NONE);
+        return createPublicIpWithResponse(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp,
+            Context.NONE);
     }
 
     /**
@@ -6350,41 +4970,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIPId ID of the DNS zone.
-     * @param workloadNetworkPublicIp Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Public IP Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        Response<BinaryData> response
-            = createPublicIpWithResponse(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp);
-        return this.client.<WorkloadNetworkPublicIpInner, WorkloadNetworkPublicIpInner>getLroResult(response,
-            WorkloadNetworkPublicIpInner.class, WorkloadNetworkPublicIpInner.class, Context.NONE);
+        return beginCreatePublicIp(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp,
+            Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIPId ID of the DNS zone.
-     * @param workloadNetworkPublicIp Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Public IP Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName, String privateCloudName, String publicIPId,
@@ -6414,43 +5009,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIPId ID of the DNS zone.
-     * @param workloadNetworkPublicIp Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPublicIpInner createPublicIp(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        return beginCreatePublicIp(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp)
-            .getFinalResult();
+        return createPublicIp(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIPId ID of the DNS zone.
-     * @param workloadNetworkPublicIp Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPublicIpInner createPublicIp(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIp, Context context) {
-        return beginCreatePublicIp(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreatePublicIp(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIp, context));
     }
 
     /**
@@ -6506,30 +5077,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePublicIpWithResponse(String resourceGroupName, String publicIpId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicIpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIpId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deletePublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, Context.NONE);
+        return deletePublicIpWithResponse(resourceGroupName, publicIpId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -6593,36 +5141,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(String resourceGroupName, String publicIpId,
         String privateCloudName) {
-        Response<BinaryData> response = deletePublicIpWithResponse(resourceGroupName, publicIpId, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeletePublicIp(resourceGroupName, publicIpId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(String resourceGroupName, String publicIpId,
         String privateCloudName, Context context) {
@@ -6648,35 +5174,17 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePublicIp(String resourceGroupName, String publicIpId, String privateCloudName) {
-        beginDeletePublicIp(resourceGroupName, publicIpId, privateCloudName).getFinalResult();
+        deletePublicIp(resourceGroupName, publicIpId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkPublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIpId ID of the DNS zone.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePublicIp(String resourceGroupName, String publicIpId, String privateCloudName, Context context) {
-        beginDeletePublicIp(resourceGroupName, publicIpId, privateCloudName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDeletePublicIp(resourceGroupName, publicIpId, privateCloudName, context));
     }
 
     /**
@@ -6748,30 +5256,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkSegmentInner> listSegmentsSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkSegmentsList> res
-            = service.listSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSegmentsSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -6814,33 +5299,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkSegment resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkSegmentInner> listSegments(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSegmentsSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listSegmentsNextSinglePage(nextLink));
+        return listSegments(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkSegment resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkSegmentInner> listSegments(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -6906,18 +5371,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkSegment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkSegmentInner> getSegmentWithResponse(String resourceGroupName,
         String privateCloudName, String segmentId, Context context) {
@@ -6948,17 +5402,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkSegment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner getSegment(String resourceGroupName, String privateCloudName, String segmentId) {
         return getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, Context.NONE).getValue();
@@ -7028,39 +5472,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createSegmentsWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, contentType, accept,
-            workloadNetworkSegment, Context.NONE);
+        return createSegmentsWithResponse(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment,
+            Context.NONE);
     }
 
     /**
@@ -7137,41 +5550,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        Response<BinaryData> response
-            = createSegmentsWithResponse(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment);
-        return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(response,
-            WorkloadNetworkSegmentInner.class, WorkloadNetworkSegmentInner.class, Context.NONE);
+        return beginCreateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment,
+            Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
@@ -7201,43 +5589,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner createSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginCreateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
-            .getFinalResult();
+        return createSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner createSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
-        return beginCreateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context));
     }
 
     /**
@@ -7304,39 +5668,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateSegmentsWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, contentType, accept,
-            workloadNetworkSegment, Context.NONE);
+        return updateSegmentsWithResponse(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment,
+            Context.NONE);
     }
 
     /**
@@ -7413,41 +5746,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        Response<BinaryData> response
-            = updateSegmentsWithResponse(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment);
-        return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(response,
-            WorkloadNetworkSegmentInner.class, WorkloadNetworkSegmentInner.class, Context.NONE);
+        return beginUpdateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment,
+            Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
@@ -7477,43 +5785,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginUpdateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
-            .getFinalResult();
+        return updateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param workloadNetworkSegment The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
-        return beginUpdateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateSegments(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context));
     }
 
     /**
@@ -7569,30 +5853,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteSegmentWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        return service.deleteSegmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, Context.NONE);
+        return deleteSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, Context.NONE);
     }
 
     /**
@@ -7656,36 +5917,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(String resourceGroupName, String privateCloudName,
         String segmentId) {
-        Response<BinaryData> response = deleteSegmentWithResponse(resourceGroupName, privateCloudName, segmentId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteSegment(resourceGroupName, privateCloudName, segmentId, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(String resourceGroupName, String privateCloudName,
         String segmentId, Context context) {
@@ -7711,35 +5950,17 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSegment(String resourceGroupName, String privateCloudName, String segmentId) {
-        beginDeleteSegment(resourceGroupName, privateCloudName, segmentId).getFinalResult();
+        deleteSegment(resourceGroupName, privateCloudName, segmentId, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkSegment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId The ID of the NSX Segment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSegment(String resourceGroupName, String privateCloudName, String segmentId, Context context) {
-        beginDeleteSegment(resourceGroupName, privateCloudName, segmentId, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDeleteSegment(resourceGroupName, privateCloudName, segmentId, context));
     }
 
     /**
@@ -7812,30 +6033,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVirtualMachineInner> listVirtualMachinesSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkVirtualMachinesList> res
-            = service.listVirtualMachinesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVirtualMachinesSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -7878,36 +6076,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkVirtualMachine resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkVirtualMachine list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVirtualMachineInner> listVirtualMachines(String resourceGroupName,
         String privateCloudName) {
-        return new PagedIterable<>(() -> listVirtualMachinesSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listVirtualMachinesNextSinglePage(nextLink));
+        return listVirtualMachines(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkVirtualMachine resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkVirtualMachine list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVirtualMachineInner> listVirtualMachines(String resourceGroupName,
         String privateCloudName, Context context) {
@@ -7975,18 +6151,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkVirtualMachine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param virtualMachineId ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkVirtualMachine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkVirtualMachineInner> getVirtualMachineWithResponse(String resourceGroupName,
         String privateCloudName, String virtualMachineId, Context context) {
@@ -8017,17 +6182,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, virtualMachineId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkVirtualMachine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param virtualMachineId ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkVirtualMachine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVirtualMachineInner getVirtualMachine(String resourceGroupName, String privateCloudName,
         String virtualMachineId) {
@@ -8104,30 +6259,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVMGroupInner> listVMGroupsSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkVMGroupsList> res
-            = service.listVMGroupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVMGroupsSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -8170,33 +6302,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List WorkloadNetworkVMGroup resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVMGroupInner> listVMGroups(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listVMGroupsSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listVMGroupsNextSinglePage(nextLink));
+        return listVMGroups(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List WorkloadNetworkVMGroup resources by WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVMGroupInner> listVMGroups(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -8262,18 +6374,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkVMGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkVMGroupInner> getVMGroupWithResponse(String resourceGroupName,
         String privateCloudName, String vmGroupId, Context context) {
@@ -8304,17 +6405,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, vmGroupId, accept, context);
     }
 
-    /**
-     * Get a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetworkVMGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner getVMGroup(String resourceGroupName, String privateCloudName, String vmGroupId) {
         return getVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, Context.NONE).getValue();
@@ -8384,39 +6475,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVMGroupWithResponse(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, vmGroupId, contentType, accept,
-            workloadNetworkVMGroup, Context.NONE);
+        return createVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup,
+            Context.NONE);
     }
 
     /**
@@ -8493,41 +6553,15 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
         String resourceGroupName, String privateCloudName, String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        Response<BinaryData> response
-            = createVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup);
-        return this.client.<WorkloadNetworkVMGroupInner, WorkloadNetworkVMGroupInner>getLroResult(response,
-            WorkloadNetworkVMGroupInner.class, WorkloadNetworkVMGroupInner.class, Context.NONE);
+        return beginCreateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
         String resourceGroupName, String privateCloudName, String vmGroupId,
@@ -8557,43 +6591,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner createVMGroup(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        return beginCreateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
-            .getFinalResult();
+        return createVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, Context.NONE);
     }
 
-    /**
-     * Create a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner createVMGroup(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
-        return beginCreateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context));
     }
 
     /**
@@ -8660,39 +6670,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateVMGroupWithResponse(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, vmGroupId, contentType, accept,
-            workloadNetworkVMGroup, Context.NONE);
+        return updateVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup,
+            Context.NONE);
     }
 
     /**
@@ -8769,41 +6748,15 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
         String resourceGroupName, String privateCloudName, String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        Response<BinaryData> response
-            = updateVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup);
-        return this.client.<WorkloadNetworkVMGroupInner, WorkloadNetworkVMGroupInner>getLroResult(response,
-            WorkloadNetworkVMGroupInner.class, WorkloadNetworkVMGroupInner.class, Context.NONE);
+        return beginUpdateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
         String resourceGroupName, String privateCloudName, String vmGroupId,
@@ -8833,43 +6786,19 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner updateVMGroup(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        return beginUpdateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
-            .getFinalResult();
+        return updateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, Context.NONE);
     }
 
-    /**
-     * Update a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId ID of the VM group.
-     * @param workloadNetworkVMGroup The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner updateVMGroup(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
-        return beginUpdateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateVMGroup(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context));
     }
 
     /**
@@ -8925,30 +6854,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteVMGroupWithResponse(String resourceGroupName, String vmGroupId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deleteVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
+        return deleteVMGroupWithResponse(resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -9012,36 +6918,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmGroupId ID of the VM group.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(String resourceGroupName, String vmGroupId,
         String privateCloudName) {
-        Response<BinaryData> response = deleteVMGroupWithResponse(resourceGroupName, vmGroupId, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteVMGroup(resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmGroupId ID of the VM group.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(String resourceGroupName, String vmGroupId,
         String privateCloudName, Context context) {
@@ -9067,35 +6951,17 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmGroupId ID of the VM group.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteVMGroup(String resourceGroupName, String vmGroupId, String privateCloudName) {
-        beginDeleteVMGroup(resourceGroupName, vmGroupId, privateCloudName).getFinalResult();
+        deleteVMGroup(resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a WorkloadNetworkVMGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmGroupId ID of the VM group.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteVMGroup(String resourceGroupName, String vmGroupId, String privateCloudName, Context context) {
-        beginDeleteVMGroup(resourceGroupName, vmGroupId, privateCloudName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDeleteVMGroup(resourceGroupName, vmGroupId, privateCloudName, context));
     }
 
     /**
@@ -9135,20 +7001,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9216,20 +7069,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDhcpInner> listDhcpNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkDhcpList> res
-            = service.listDhcpNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDhcpNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9298,20 +7138,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsServiceInner> listDnsServicesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkDnsServicesList> res
-            = service.listDnsServicesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDnsServicesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9381,20 +7208,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsZoneInner> listDnsZonesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkDnsZonesList> res
-            = service.listDnsZonesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDnsZonesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9463,20 +7277,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkGatewayInner> listGatewaysNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkGatewayList> res
-            = service.listGatewaysNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGatewaysNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9546,20 +7347,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPortMirroringInner> listPortMirroringNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkPortMirroringList> res
-            = service.listPortMirroringNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPortMirroringNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9629,20 +7417,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPublicIpInner> listPublicIPsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkPublicIPsList> res
-            = service.listPublicIPsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPublicIPsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9711,20 +7486,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkSegmentInner> listSegmentsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkSegmentsList> res
-            = service.listSegmentsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSegmentsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9795,20 +7557,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVirtualMachineInner> listVirtualMachinesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkVirtualMachinesList> res
-            = service.listVirtualMachinesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVirtualMachinesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -9878,20 +7627,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVMGroupInner> listVMGroupsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<WorkloadNetworkVMGroupsList> res
-            = service.listVMGroupsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVMGroupsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -173,15 +173,7 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the trace association at the scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace association at the scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceAssociationResourceInner> getWithResponse(Context context) {
         final String accept = "application/json";
@@ -189,13 +181,7 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
             accept, context);
     }
 
-    /**
-     * Gets the trace association at the scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace association at the scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceAssociationResourceInner get() {
         return getWithResponse(Context.NONE).getValue();
@@ -237,17 +223,7 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
         return createOrUpdateWithResponseAsync(resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces the trace association at the scope.
-     * 
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an association between an Azure resource scope and an Azure Monitor Workspace along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceAssociationResourceInner> createOrUpdateWithResponse(TraceAssociationResourceInner resource,
         Context context) {
@@ -257,15 +233,7 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
             this.client.getSubscriptionId(), contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or replaces the trace association at the scope.
-     * 
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an association between an Azure resource scope and an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceAssociationResourceInner createOrUpdate(TraceAssociationResourceInner resource) {
         return createOrUpdateWithResponse(resource, Context.NONE).getValue();
@@ -298,27 +266,14 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
         return deleteWithResponseAsync().flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the trace association at the scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), context);
     }
 
-    /**
-     * Deletes the trace association at the scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
         deleteWithResponse(Context.NONE);
@@ -364,11 +319,7 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceAssociationResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<TraceAssociationResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -389,29 +340,13 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the trace associations that apply to the scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceAssociationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceAssociationResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists the trace associations that apply to the scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceAssociationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceAssociationResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -447,11 +382,7 @@ public final class TraceAssociationsAtSubscriptionsClientImpl implements TraceAs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceAssociationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TraceAssociationResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

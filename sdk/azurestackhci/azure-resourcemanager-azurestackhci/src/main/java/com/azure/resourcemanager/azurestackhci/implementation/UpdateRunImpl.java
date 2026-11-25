@@ -138,11 +138,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .putWithResponse(resourceGroupName, clusterName, updateName, updateRunName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public UpdateRun create(Context context) {
@@ -164,11 +160,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .putWithResponse(resourceGroupName, clusterName, updateName, updateRunName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public UpdateRun apply(Context context) {
@@ -198,11 +190,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .getWithResponse(resourceGroupName, clusterName, updateName, updateRunName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public UpdateRun refresh(Context context) {

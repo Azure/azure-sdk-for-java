@@ -84,10 +84,7 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationvCenters()
-            .create(resourceGroupName, resourceName, fabricName, vcenterName, createAddVCenterRequest, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VCenter create(Context context) {
@@ -110,10 +107,7 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationvCenters()
-            .update(resourceGroupName, resourceName, fabricName, vcenterName, updateUpdateVCenterRequest, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VCenter apply(Context context) {
@@ -142,11 +136,7 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationvCenters()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VCenter refresh(Context context) {

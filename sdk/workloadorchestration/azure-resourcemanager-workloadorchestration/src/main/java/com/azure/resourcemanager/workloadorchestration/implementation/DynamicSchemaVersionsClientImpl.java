@@ -237,19 +237,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dynamic Schema Version Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DynamicSchemaVersionInner> getWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, Context context) {
@@ -258,18 +246,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, accept, context);
     }
 
-    /**
-     * Get a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dynamic Schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaVersionInner get(String resourceGroupName, String schemaName, String dynamicSchemaName,
         String dynamicSchemaVersionName) {
@@ -319,11 +296,8 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
+            resource, Context.NONE);
     }
 
     /**
@@ -375,43 +349,16 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             this.client.getContext());
     }
 
-    /**
-     * Create or update a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dynamic Schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DynamicSchemaVersionInner>, DynamicSchemaVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String schemaName, String dynamicSchemaName, String dynamicSchemaVersionName,
         DynamicSchemaVersionInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, schemaName, dynamicSchemaName,
-            dynamicSchemaVersionName, resource);
-        return this.client.<DynamicSchemaVersionInner, DynamicSchemaVersionInner>getLroResult(response,
-            DynamicSchemaVersionInner.class, DynamicSchemaVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dynamic Schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DynamicSchemaVersionInner>, DynamicSchemaVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String schemaName, String dynamicSchemaName, String dynamicSchemaVersionName,
@@ -442,46 +389,21 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamic Schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaVersionInner createOrUpdate(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamic Schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaVersionInner createOrUpdate(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, schemaName,
+            dynamicSchemaName, dynamicSchemaVersionName, resource, context));
     }
 
     /**
@@ -530,20 +452,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamic Schema Version Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DynamicSchemaVersionInner> updateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner properties,
@@ -555,19 +464,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             contentType, accept, properties, context);
     }
 
-    /**
-     * update a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamic Schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaVersionInner update(String resourceGroupName, String schemaName, String dynamicSchemaName,
         String dynamicSchemaVersionName, DynamicSchemaVersionInner properties) {
@@ -612,8 +509,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
+        return deleteWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
             Context.NONE);
     }
 
@@ -659,39 +555,14 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             this.client.getContext());
     }
 
-    /**
-     * Delete a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, Context context) {
@@ -719,40 +590,19 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaName, String dynamicSchemaName,
         String dynamicSchemaVersionName) {
-        beginDelete(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName).getFinalResult();
+        delete(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a Dynamic Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param dynamicSchemaVersionName The name of the DynamicSchemaVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaName, String dynamicSchemaName,
         String dynamicSchemaVersionName, Context context) {
-        beginDelete(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, context));
     }
 
     /**
@@ -812,12 +662,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaVersionInner> listByDynamicSchemaSinglePage(String resourceGroupName,
         String schemaName, String dynamicSchemaName) {
-        final String accept = "application/json";
-        Response<DynamicSchemaVersionListResult> res = service.listByDynamicSchemaSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, schemaName,
-            dynamicSchemaName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDynamicSchemaSinglePage(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
     }
 
     /**
@@ -843,37 +688,14 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by Dynamic Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynamicSchemaVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DynamicSchemaVersionInner> listByDynamicSchema(String resourceGroupName, String schemaName,
         String dynamicSchemaName) {
-        return new PagedIterable<>(
-            () -> listByDynamicSchemaSinglePage(resourceGroupName, schemaName, dynamicSchemaName),
-            nextLink -> listByDynamicSchemaNextSinglePage(nextLink));
+        return listByDynamicSchema(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
     }
 
-    /**
-     * List by Dynamic Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynamicSchemaVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DynamicSchemaVersionInner> listByDynamicSchema(String resourceGroupName, String schemaName,
         String dynamicSchemaName, Context context) {
@@ -914,11 +736,7 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaVersionInner> listByDynamicSchemaNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DynamicSchemaVersionListResult> res
-            = service.listByDynamicSchemaNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDynamicSchemaNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

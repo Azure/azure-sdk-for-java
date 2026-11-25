@@ -166,6 +166,8 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
         jsonWriter.writeArrayField("extractionOptions", this.extractionOptions,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("chunkingProperties", this.chunkingProperties);
+        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeStringField("modelDeployment", this.modelDeployment);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,6 +191,8 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
             String odataType = "#Microsoft.Skills.Util.ContentUnderstandingSkill";
             List<ContentUnderstandingSkillExtractionOptions> extractionOptions = null;
             ContentUnderstandingSkillChunkingProperties chunkingProperties = null;
+            String modelName = null;
+            String modelDeployment = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -209,6 +213,10 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
                         reader1 -> ContentUnderstandingSkillExtractionOptions.fromString(reader1.getString()));
                 } else if ("chunkingProperties".equals(fieldName)) {
                     chunkingProperties = ContentUnderstandingSkillChunkingProperties.fromJson(reader);
+                } else if ("modelName".equals(fieldName)) {
+                    modelName = reader.getString();
+                } else if ("modelDeployment".equals(fieldName)) {
+                    modelDeployment = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -221,7 +229,70 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
             deserializedContentUnderstandingSkill.odataType = odataType;
             deserializedContentUnderstandingSkill.extractionOptions = extractionOptions;
             deserializedContentUnderstandingSkill.chunkingProperties = chunkingProperties;
+            deserializedContentUnderstandingSkill.modelName = modelName;
+            deserializedContentUnderstandingSkill.modelDeployment = modelDeployment;
             return deserializedContentUnderstandingSkill;
         });
+    }
+
+    /*
+     * The name of the chat-completion model used for image description. Must be provided together with modelDeployment.
+     */
+    @Generated
+    private String modelName;
+
+    /*
+     * The deployment name of the chat-completion model used for image description. Must be provided together with
+     * modelName.
+     */
+    @Generated
+    private String modelDeployment;
+
+    /**
+     * Get the modelName property: The name of the chat-completion model used for image description. Must be provided
+     * together with modelDeployment.
+     *
+     * @return the modelName value.
+     */
+    @Generated
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: The name of the chat-completion model used for image description. Must be provided
+     * together with modelDeployment.
+     *
+     * @param modelName the modelName value to set.
+     * @return the ContentUnderstandingSkill object itself.
+     */
+    @Generated
+    public ContentUnderstandingSkill setModelName(String modelName) {
+        this.modelName = modelName;
+        return this;
+    }
+
+    /**
+     * Get the modelDeployment property: The deployment name of the chat-completion model used for image description.
+     * Must be provided together with modelName.
+     *
+     * @return the modelDeployment value.
+     */
+    @Generated
+    public String getModelDeployment() {
+        return this.modelDeployment;
+    }
+
+    /**
+     * Set the modelDeployment property: The deployment name of the chat-completion model used for image description.
+     * Must be provided together with modelName.
+     *
+     * @param modelDeployment the modelDeployment value to set.
+     * @return the ContentUnderstandingSkill object itself.
+     */
+    @Generated
+    public ContentUnderstandingSkill setModelDeployment(String modelDeployment) {
+        this.modelDeployment = modelDeployment;
+        return this;
     }
 }

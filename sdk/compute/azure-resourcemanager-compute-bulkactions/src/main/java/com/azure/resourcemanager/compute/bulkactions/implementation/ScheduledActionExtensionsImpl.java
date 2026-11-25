@@ -26,8 +26,7 @@ public final class ScheduledActionExtensionsImpl implements ScheduledActionExten
     }
 
     public PagedIterable<ScheduledActionResources> listByVms(String resourceUri) {
-        PagedIterable<ScheduledActionResourcesInner> inner = this.serviceClient().listByVms(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionResourcesImpl(inner1, this.manager()));
+        return this.listByVms(resourceUri, Context.NONE);
     }
 
     public PagedIterable<ScheduledActionResources> listByVms(String resourceUri, Context context) {

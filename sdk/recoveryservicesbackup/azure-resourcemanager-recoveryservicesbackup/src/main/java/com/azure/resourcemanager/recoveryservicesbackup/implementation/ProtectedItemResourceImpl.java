@@ -96,11 +96,7 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .createOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectedItemResource create(Context context) {
@@ -123,11 +119,7 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .createOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectedItemResource apply(Context context) {
@@ -160,13 +152,7 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource refresh() {
-        String localFilter = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectedItemResource refresh(Context context) {

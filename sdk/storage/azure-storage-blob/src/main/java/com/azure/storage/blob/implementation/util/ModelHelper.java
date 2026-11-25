@@ -36,6 +36,7 @@ import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -332,6 +333,23 @@ public final class ModelHelper {
             }
         }
         return false;
+    }
+
+    /**
+     * Determines whether a failure is a 409 Conflict that the service answered with the given error code.
+     *
+     * <p>The status code alone does not say why the service refused a request: it also answers 409 for reasons such as
+     * ContainerBeingDeleted or InvalidBlobType. Methods that treat a conflict as "already exists" use this so that
+     * other conflicts still fail.</p>
+     *
+     * @param throwable The failure.
+     * @param errorCode The error code of the conflict to match.
+     * @return Whether the failure is a {@link BlobStorageException} with status code 409 and the given error code.
+     */
+    public static boolean isConflictWithErrorCode(Throwable throwable, BlobErrorCode errorCode) {
+        return throwable instanceof BlobStorageException
+            && ((BlobStorageException) throwable).getStatusCode() == 409
+            && errorCode.equals(((BlobStorageException) throwable).getErrorCode());
     }
 
     /**

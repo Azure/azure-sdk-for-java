@@ -182,17 +182,7 @@ public final class LocationsClientImpl implements LocationsClient {
         return getQuotasWithResponseAsync(locationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Batch service quotas for the specified subscription at the given location.
-     * 
-     * @param locationName The region for which to retrieve Batch service quotas.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchLocationQuotaInner> getQuotasWithResponse(String locationName, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -214,15 +204,7 @@ public final class LocationsClientImpl implements LocationsClient {
             this.client.getSubscriptionId(), locationName, accept, context);
     }
 
-    /**
-     * Gets the Batch service quotas for the specified subscription at the given location.
-     * 
-     * @param locationName The region for which to retrieve Batch service quotas.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchLocationQuotaInner getQuotas(String locationName) {
         return getQuotasWithResponse(locationName, Context.NONE).getValue();
@@ -316,26 +298,7 @@ public final class LocationsClientImpl implements LocationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SupportedSkuInner> listSupportedVirtualMachineSkusSinglePage(String locationName,
         Integer maxresults, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SupportedSkusResult> res
-            = service.listSupportedVirtualMachineSkusSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), locationName, maxresults, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSupportedVirtualMachineSkusSinglePage(locationName, maxresults, filter, Context.NONE);
     }
 
     /**
@@ -376,37 +339,15 @@ public final class LocationsClientImpl implements LocationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     * 
-     * @param locationName The region for which to retrieve Batch service supported SKUs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(String locationName) {
         final Integer maxresults = null;
         final String filter = null;
-        return new PagedIterable<>(() -> listSupportedVirtualMachineSkusSinglePage(locationName, maxresults, filter),
-            nextLink -> listSupportedVirtualMachineSkusNextSinglePage(nextLink));
+        return listSupportedVirtualMachineSkus(locationName, maxresults, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     * 
-     * @param locationName The region for which to retrieve Batch service supported SKUs.
-     * @param maxresults The maximum number of items to return in the response.
-     * @param filter OData filter expression. Valid properties for filtering are "familyName".
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(String locationName, Integer maxresults,
         String filter, Context context) {
@@ -471,17 +412,7 @@ public final class LocationsClientImpl implements LocationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the Batch account name is available in the specified region.
-     * 
-     * @param locationName The desired region for the name check.
-     * @param parameters Properties needed to check the availability of a name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String locationName,
         CheckNameAvailabilityParameters parameters, Context context) {
@@ -511,16 +442,7 @@ public final class LocationsClientImpl implements LocationsClient {
             this.client.getSubscriptionId(), locationName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Checks whether the Batch account name is available in the specified region.
-     * 
-     * @param locationName The desired region for the name check.
-     * @param parameters Properties needed to check the availability of a name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(String locationName,
         CheckNameAvailabilityParameters parameters) {
@@ -567,20 +489,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SupportedSkuInner> listSupportedVirtualMachineSkusNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SupportedSkusResult> res = service.listSupportedVirtualMachineSkusNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSupportedVirtualMachineSkusNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

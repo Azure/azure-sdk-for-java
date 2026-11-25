@@ -46,7 +46,7 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
     }
 
     public void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        this.serviceClient().delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
+        this.delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
@@ -55,9 +55,7 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
     }
 
     public PagedIterable<CollectorPolicy> list(String resourceGroupName, String azureTrafficCollectorName) {
-        PagedIterable<CollectorPolicyInner> inner
-            = this.serviceClient().list(resourceGroupName, azureTrafficCollectorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CollectorPolicyImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
     public PagedIterable<CollectorPolicy> list(String resourceGroupName, String azureTrafficCollectorName,
@@ -68,103 +66,36 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
     }
 
     public CollectorPolicy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "azureTrafficCollectorName");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
-        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "collectorPolicyName");
-        if (collectorPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CollectorPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureTrafficCollectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "azureTrafficCollectorName");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
-        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "azureTrafficCollectorName", "azureTrafficCollectors", LOGGER);
+        String collectorPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "collectorPolicyName");
-        if (collectorPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
-        }
+            "collectorPolicyName", "collectorPolicies", LOGGER);
         return this.getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "azureTrafficCollectorName");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
-        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "collectorPolicyName");
-        if (collectorPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
-        }
-        this.delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureTrafficCollectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "azureTrafficCollectorName");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
-        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "azureTrafficCollectorName", "azureTrafficCollectors", LOGGER);
+        String collectorPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
-            "collectorPolicyName");
-        if (collectorPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
-        }
+            "collectorPolicyName", "collectorPolicies", LOGGER);
         this.delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
     }
 

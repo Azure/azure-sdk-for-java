@@ -142,34 +142,13 @@ public final class EligibleChildResourcesClientImpl implements EligibleChildReso
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the child resources of a resource on which user has eligible access.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only
-     * resource of type = 'Subscription'. Use $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup'
-     * to filter on resource of type = 'Subscription' or 'ResourceGroup'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the child resources of a resource on which user has eligible access as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EligibleChildResourceInner> getAsync(String scope, String filter) {
         return new PagedFlux<>(() -> getSinglePageAsync(scope, filter), nextLink -> getNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get the child resources of a resource on which user has eligible access.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the child resources of a resource on which user has eligible access as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EligibleChildResourceInner> getAsync(String scope) {
         final String filter = null;
@@ -196,36 +175,14 @@ public final class EligibleChildResourcesClientImpl implements EligibleChildReso
             nextLink -> getNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the child resources of a resource on which user has eligible access.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the child resources of a resource on which user has eligible access as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EligibleChildResourceInner> get(String scope) {
         final String filter = null;
         return new PagedIterable<>(getAsync(scope, filter));
     }
 
-    /**
-     * Get the child resources of a resource on which user has eligible access.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only
-     * resource of type = 'Subscription'. Use $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup'
-     * to filter on resource of type = 'Subscription' or 'ResourceGroup'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the child resources of a resource on which user has eligible access as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EligibleChildResourceInner> get(String scope, String filter, Context context) {
         return new PagedIterable<>(getAsync(scope, filter, context));

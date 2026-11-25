@@ -7,6 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where `AzureFileSystemProvider.checkAccess` would throw `AccessDeniedException` when `AccessMode.READ` was
+  specified, which caused `Files.copy` and `Files.move` from an Azure path to a path on a different file system to fail
+  on Java 22 and later.
 
 ### Other Changes
 

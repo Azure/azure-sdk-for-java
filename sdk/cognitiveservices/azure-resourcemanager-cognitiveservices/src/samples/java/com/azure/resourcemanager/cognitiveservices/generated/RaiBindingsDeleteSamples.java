@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiBindingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/DeleteRaiBinding.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteRaiBinding.json
      */
     /**
      * Sample code: Delete a RAI binding.

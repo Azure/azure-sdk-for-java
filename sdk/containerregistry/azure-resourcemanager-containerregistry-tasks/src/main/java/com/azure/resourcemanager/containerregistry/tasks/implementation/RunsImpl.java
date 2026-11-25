@@ -99,7 +99,7 @@ public final class RunsImpl implements Runs {
     }
 
     public void cancel(String resourceGroupName, String registryName, String runId) {
-        this.serviceClient().cancel(resourceGroupName, registryName, runId);
+        this.cancelWithResponse(resourceGroupName, registryName, runId, Context.NONE);
     }
 
     private RunsClient serviceClient() {

@@ -244,17 +244,7 @@ public final class VaultsClientImpl implements VaultsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Vault details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Vault details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultInner> getByResourceGroupWithResponse(String resourceGroupName, String vaultName,
         Context context) {
@@ -263,16 +253,7 @@ public final class VaultsClientImpl implements VaultsClient {
             this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, context);
     }
 
-    /**
-     * Get the Vault details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Vault details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultInner getByResourceGroup(String resourceGroupName, String vaultName) {
         return getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
@@ -315,10 +296,7 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
         VaultInner vault) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, vault, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, vaultName, vault, Context.NONE);
     }
 
     /**
@@ -361,37 +339,14 @@ public final class VaultsClientImpl implements VaultsClient {
             VaultInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Recovery Services vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(String resourceGroupName,
         String vaultName, VaultInner vault) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, vaultName, vault);
-        return this.client.<VaultInner, VaultInner>getLroResult(response, VaultInner.class, VaultInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, vaultName, vault, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Recovery Services vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(String resourceGroupName,
         String vaultName, VaultInner vault, Context context) {
@@ -416,37 +371,16 @@ public final class VaultsClientImpl implements VaultsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Recovery Services vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultInner vault) {
-        return beginCreateOrUpdate(resourceGroupName, vaultName, vault).getFinalResult();
+        return createOrUpdate(resourceGroupName, vaultName, vault, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Recovery Services vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultInner vault, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, vaultName, vault, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, vaultName, vault, context));
     }
 
     /**
@@ -485,10 +419,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String vaultName, PatchVault vault) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, vault, Context.NONE);
+        return updateWithResponse(resourceGroupName, vaultName, vault, Context.NONE);
     }
 
     /**
@@ -531,37 +462,14 @@ public final class VaultsClientImpl implements VaultsClient {
             VaultInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(String resourceGroupName, String vaultName,
         PatchVault vault) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, vaultName, vault);
-        return this.client.<VaultInner, VaultInner>getLroResult(response, VaultInner.class, VaultInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, vaultName, vault, Context.NONE);
     }
 
-    /**
-     * Updates the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(String resourceGroupName, String vaultName,
         PatchVault vault, Context context) {
@@ -586,37 +494,16 @@ public final class VaultsClientImpl implements VaultsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultInner update(String resourceGroupName, String vaultName, PatchVault vault) {
-        return beginUpdate(resourceGroupName, vaultName, vault).getFinalResult();
+        return update(resourceGroupName, vaultName, vault, Context.NONE);
     }
 
-    /**
-     * Updates the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param vault Recovery Services Vault to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information, as returned by the resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultInner update(String resourceGroupName, String vaultName, PatchVault vault, Context context) {
-        return beginUpdate(resourceGroupName, vaultName, vault, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, vaultName, vault, context));
     }
 
     /**
@@ -649,8 +536,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String vaultName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -687,33 +573,13 @@ public final class VaultsClientImpl implements VaultsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, vaultName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Deletes a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, vaultName, context);
@@ -735,33 +601,16 @@ public final class VaultsClientImpl implements VaultsClient {
         return beginDeleteAsync(resourceGroupName, vaultName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName) {
-        beginDelete(resourceGroupName, vaultName).getFinalResult();
+        delete(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Deletes a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, Context context) {
-        beginDelete(resourceGroupName, vaultName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, vaultName, context));
     }
 
     /**
@@ -805,11 +654,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<VaultList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -830,27 +675,13 @@ public final class VaultsClientImpl implements VaultsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Fetches all the resources of the specified type in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for a list of Vaults as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionIdNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Fetches all the resources of the specified type in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for a list of Vaults as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -904,11 +735,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<VaultList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -930,31 +757,13 @@ public final class VaultsClientImpl implements VaultsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Retrieve a list of Vaults.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for a list of Vaults as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Retrieve a list of Vaults.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for a list of Vaults as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -993,11 +802,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultInner> listBySubscriptionIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VaultList> res
-            = service.listBySubscriptionIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1051,11 +856,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VaultList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -204,18 +204,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ModelSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ModelSource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ModelSourceInner> getWithResponse(String resourceGroupName, String aiManagerName,
         String modelSourceName, Context context) {
@@ -224,17 +213,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
             resourceGroupName, aiManagerName, modelSourceName, accept, context);
     }
 
-    /**
-     * Get a ModelSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ModelSource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelSourceInner get(String resourceGroupName, String aiManagerName, String modelSourceName) {
         return getWithResponse(resourceGroupName, aiManagerName, modelSourceName, Context.NONE).getValue();
@@ -290,11 +269,8 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String aiManagerName,
         String modelSourceName, ModelSourceInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, aiManagerName, modelSourceName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, aiManagerName, modelSourceName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -396,58 +372,23 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
      * @return the {@link SyncPoller} for polling of a model source registered with an AI Manager.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ModelSourceInner>, ModelSourceInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ModelSourceInner>, ModelSourceInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String modelSourceName, ModelSourceInner resource, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, modelSourceName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<ModelSourceInner, ModelSourceInner>getLroResult(response, ModelSourceInner.class,
-            ModelSourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, modelSourceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a `ModelSource`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a model source registered with an AI Manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ModelSourceInner>, ModelSourceInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String modelSourceName, ModelSourceInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, modelSourceName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<ModelSourceInner, ModelSourceInner>getLroResult(response, ModelSourceInner.class,
-            ModelSourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, modelSourceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a `ModelSource`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a model source registered with an AI Manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ModelSourceInner>, ModelSourceInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String modelSourceName, ModelSourceInner resource, String ifMatch, String ifNoneMatch,
@@ -506,53 +447,22 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a `ModelSource`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a model source registered with an AI Manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelSourceInner createOrUpdate(String resourceGroupName, String aiManagerName, String modelSourceName,
         ModelSourceInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, modelSourceName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, aiManagerName, modelSourceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a `ModelSource`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a model source registered with an AI Manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelSourceInner createOrUpdate(String resourceGroupName, String aiManagerName, String modelSourceName,
         ModelSourceInner resource, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, modelSourceName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, aiManagerName,
+            modelSourceName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -591,8 +501,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String aiManagerName,
         String modelSourceName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, aiManagerName, modelSourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, aiManagerName, modelSourceName, ifMatch, Context.NONE);
     }
 
     /**
@@ -670,44 +579,20 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String modelSourceName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, modelSourceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, modelSourceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ModelSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String modelSourceName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, modelSourceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, modelSourceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ModelSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String modelSourceName, String ifMatch, Context context) {
@@ -753,38 +638,19 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ModelSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String modelSourceName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, aiManagerName, modelSourceName, ifMatch).getFinalResult();
+        delete(resourceGroupName, aiManagerName, modelSourceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ModelSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param modelSourceName The name of the model source resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String modelSourceName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, aiManagerName, modelSourceName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, aiManagerName, modelSourceName, ifMatch, context));
     }
 
     /**
@@ -837,11 +703,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelSourceInner> listSinglePage(String resourceGroupName, String aiManagerName) {
-        final String accept = "application/json";
-        Response<ModelSourceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, aiManagerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, aiManagerName, Context.NONE);
     }
 
     /**
@@ -865,33 +727,13 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ModelSource resources by AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ModelSource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelSourceInner> list(String resourceGroupName, String aiManagerName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, aiManagerName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, aiManagerName, Context.NONE);
     }
 
-    /**
-     * List ModelSource resources by AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ModelSource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelSourceInner> list(String resourceGroupName, String aiManagerName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, aiManagerName, context),
@@ -928,11 +770,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelSourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ModelSourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

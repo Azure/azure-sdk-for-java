@@ -95,10 +95,7 @@ public final class CodeSigningAccountImpl
     }
 
     public CodeSigningAccount create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCodeSigningAccounts()
-            .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CodeSigningAccount create(Context context) {
@@ -121,10 +118,7 @@ public final class CodeSigningAccountImpl
     }
 
     public CodeSigningAccount apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCodeSigningAccounts()
-            .update(resourceGroupName, accountName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CodeSigningAccount apply(Context context) {
@@ -147,11 +141,7 @@ public final class CodeSigningAccountImpl
     }
 
     public CodeSigningAccount refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCodeSigningAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CodeSigningAccount refresh(Context context) {

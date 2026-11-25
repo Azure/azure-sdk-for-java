@@ -173,36 +173,13 @@ public final class PricingsClientImpl implements PricingsClient {
         return getWithResponseAsync(scopeId, pricingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
-     * subscription id). At the resource level, supported resource types are 'VirtualMachines, VMSS and ARC Machines'.
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param pricingName name of the pricing configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
-     * subscription id) along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingInner> getWithResponse(String scopeId, String pricingName, Context context) {
         return getWithResponseAsync(scopeId, pricingName, context).block();
     }
 
-    /**
-     * Get the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
-     * subscription id). At the resource level, supported resource types are 'VirtualMachines, VMSS and ARC Machines'.
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param pricingName name of the pricing configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
-     * subscription id).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricingInner get(String scopeId, String pricingName) {
         return getWithResponse(scopeId, pricingName, Context.NONE).getValue();
@@ -309,40 +286,14 @@ public final class PricingsClientImpl implements PricingsClient {
         return updateWithResponseAsync(scopeId, pricingName, pricing).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a provided Microsoft Defender for Cloud pricing configuration in the scope. Valid scopes are:
-     * subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and ARC Machines' and
-     * only for plan='VirtualMachines' and subPlan='P1').
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param pricingName name of the pricing configuration.
-     * @param pricing Pricing object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingInner> updateWithResponse(String scopeId, String pricingName, PricingInner pricing,
         Context context) {
         return updateWithResponseAsync(scopeId, pricingName, pricing, context).block();
     }
 
-    /**
-     * Updates a provided Microsoft Defender for Cloud pricing configuration in the scope. Valid scopes are:
-     * subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and ARC Machines' and
-     * only for plan='VirtualMachines' and subPlan='P1').
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param pricingName name of the pricing configuration.
-     * @param pricing Pricing object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricingInner update(String scopeId, String pricingName, PricingInner pricing) {
         return updateWithResponse(scopeId, pricingName, pricing, Context.NONE).getValue();
@@ -423,33 +374,13 @@ public final class PricingsClientImpl implements PricingsClient {
         return deleteWithResponseAsync(scopeId, pricingName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for
-     * resource scope (Supported resources are: 'VirtualMachines, VMSS, ARC Machines, and Containers').
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param pricingName name of the pricing configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scopeId, String pricingName, Context context) {
         return deleteWithResponseAsync(scopeId, pricingName, context).block();
     }
 
-    /**
-     * Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for
-     * resource scope (Supported resources are: 'VirtualMachines, VMSS, ARC Machines, and Containers').
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param pricingName name of the pricing configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scopeId, String pricingName) {
         deleteWithResponse(scopeId, pricingName, Context.NONE);
@@ -537,39 +468,13 @@ public final class PricingsClientImpl implements PricingsClient {
         return listWithResponseAsync(scopeId, filter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists Microsoft Defender for Cloud pricing configurations of the scopeId, that match the optional given $filter.
-     * Valid scopes are: subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and
-     * ARC Machines'). Valid $filter is: 'name in ({planName1},{planName2},...)'. If $filter is not provided, the
-     * unfiltered list will be returned. If '$filter=name in (planName1,planName2)' is provided, the returned list
-     * includes the pricings set for 'planName1' and 'planName2' only.
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingListInner> listWithResponse(String scopeId, String filter, Context context) {
         return listWithResponseAsync(scopeId, filter, context).block();
     }
 
-    /**
-     * Lists Microsoft Defender for Cloud pricing configurations of the scopeId, that match the optional given $filter.
-     * Valid scopes are: subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and
-     * ARC Machines'). Valid $filter is: 'name in ({planName1},{planName2},...)'. If $filter is not provided, the
-     * unfiltered list will be returned. If '$filter=name in (planName1,planName2)' is provided, the returned list
-     * includes the pricings set for 'planName1' and 'planName2' only.
-     * 
-     * @param scopeId The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricingListInner list(String scopeId) {
         final String filter = null;

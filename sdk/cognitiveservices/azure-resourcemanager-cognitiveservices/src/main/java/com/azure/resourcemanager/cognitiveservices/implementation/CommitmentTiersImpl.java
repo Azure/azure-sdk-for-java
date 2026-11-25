@@ -26,8 +26,7 @@ public final class CommitmentTiersImpl implements CommitmentTiers {
     }
 
     public PagedIterable<CommitmentTier> list(String location) {
-        PagedIterable<CommitmentTierInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentTierImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<CommitmentTier> list(String location, Context context) {

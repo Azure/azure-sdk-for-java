@@ -186,9 +186,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bmsPrepareDataMoveWithResponse(String vaultName, String resourceGroupName,
         PrepareDataMoveRequest parameters) {
-        final String contentType = "application/json";
-        return service.bmsPrepareDataMoveSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, parameters, Context.NONE);
+        return bmsPrepareDataMoveWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     /**
@@ -231,36 +229,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getContext());
     }
 
-    /**
-     * Prepares source vault for Data Move operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Prepare data move request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
         PrepareDataMoveRequest parameters) {
-        Response<BinaryData> response = bmsPrepareDataMoveWithResponse(vaultName, resourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Prepares source vault for Data Move operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Prepare data move request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
         PrepareDataMoveRequest parameters, Context context) {
@@ -287,36 +263,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Prepares source vault for Data Move operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Prepare data move request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters).getFinalResult();
+        bmsPrepareDataMove(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Prepares source vault for Data Move operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Prepare data move request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
         Context context) {
-        beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters, context));
     }
 
     /**
@@ -354,9 +312,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bmsTriggerDataMoveWithResponse(String vaultName, String resourceGroupName,
         TriggerDataMoveRequest parameters) {
-        final String contentType = "application/json";
-        return service.bmsTriggerDataMoveSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, parameters, Context.NONE);
+        return bmsTriggerDataMoveWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     /**
@@ -399,36 +355,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getContext());
     }
 
-    /**
-     * Triggers Data Move Operation on target vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Trigger data move request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
         TriggerDataMoveRequest parameters) {
-        Response<BinaryData> response = bmsTriggerDataMoveWithResponse(vaultName, resourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers Data Move Operation on target vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Trigger data move request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
         TriggerDataMoveRequest parameters, Context context) {
@@ -455,36 +389,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers Data Move Operation on target vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Trigger data move request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters).getFinalResult();
+        bmsTriggerDataMove(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers Data Move Operation on target vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Trigger data move request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
         Context context) {
-        beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters, context));
     }
 
     /**
@@ -526,18 +442,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches Operation Result for Prepare Data Move.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId The name of the BackupResourceConfigResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
         String operationId, Context context) {
@@ -546,17 +451,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), resourceGroupName, vaultName, operationId, accept, context);
     }
 
-    /**
-     * Fetches Operation Result for Prepare Data Move.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId The name of the BackupResourceConfigResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
         return getOperationStatusWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();
@@ -608,10 +503,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Response<BinaryData> moveRecoveryPointWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        final String contentType = "application/json";
-        return service.moveRecoveryPointSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            recoveryPointId, contentType, parameters, Context.NONE);
+        return moveRecoveryPointWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, Context.NONE);
     }
 
     /**
@@ -665,46 +558,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getContext());
     }
 
-    /**
-     * Move recovery point from one datastore to another store.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Move Resource Across Tiers Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        Response<BinaryData> response = moveRecoveryPointWithResponse(vaultName, resourceGroupName, fabricName,
-            containerName, protectedItemName, recoveryPointId, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginMoveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, Context.NONE);
     }
 
-    /**
-     * Move recovery point from one datastore to another store.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Move Resource Across Tiers Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
@@ -736,46 +599,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             recoveryPointId, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Move recovery point from one datastore to another store.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Move Resource Across Tiers Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
-        beginMoveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters).getFinalResult();
+        moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+            parameters, Context.NONE);
     }
 
-    /**
-     * Move recovery point from one datastore to another store.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Move Resource Across Tiers Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters, Context context) {
-        beginMoveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginMoveRecoveryPoint(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, recoveryPointId, parameters, context));
     }
 }

@@ -27,10 +27,7 @@ public final class LocationBasedModelCapacitiesImpl implements LocationBasedMode
 
     public PagedIterable<ModelCapacityListResultValueItem> list(String location, String modelFormat, String modelName,
         String modelVersion) {
-        PagedIterable<ModelCapacityListResultValueItemInner> inner
-            = this.serviceClient().list(location, modelFormat, modelName, modelVersion);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ModelCapacityListResultValueItemImpl(inner1, this.manager()));
+        return this.list(location, modelFormat, modelName, modelVersion, Context.NONE);
     }
 
     public PagedIterable<ModelCapacityListResultValueItem> list(String location, String modelFormat, String modelName,

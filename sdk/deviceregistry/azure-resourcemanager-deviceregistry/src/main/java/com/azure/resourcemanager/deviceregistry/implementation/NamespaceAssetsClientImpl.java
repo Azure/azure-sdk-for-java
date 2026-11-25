@@ -222,18 +222,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceAsset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceAssetInner> getWithResponse(String resourceGroupName, String namespaceName,
         String assetName, Context context) {
@@ -242,17 +231,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             resourceGroupName, namespaceName, assetName, accept, context);
     }
 
-    /**
-     * Get a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceAsset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAssetInner get(String resourceGroupName, String namespaceName, String assetName) {
         return getWithResponse(resourceGroupName, namespaceName, assetName, Context.NONE).getValue();
@@ -297,11 +276,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String namespaceName,
         String assetName, NamespaceAssetInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, assetName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, namespaceName, assetName, resource, Context.NONE);
     }
 
     /**
@@ -348,40 +323,14 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             NamespaceAssetInner.class, NamespaceAssetInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceAssetInner>, NamespaceAssetInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String assetName, NamespaceAssetInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, namespaceName, assetName, resource);
-        return this.client.<NamespaceAssetInner, NamespaceAssetInner>getLroResult(response, NamespaceAssetInner.class,
-            NamespaceAssetInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, namespaceName, assetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceAssetInner>, NamespaceAssetInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String assetName, NamespaceAssetInner resource,
@@ -411,41 +360,19 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAssetInner createOrReplace(String resourceGroupName, String namespaceName, String assetName,
         NamespaceAssetInner resource) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, assetName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, namespaceName, assetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAssetInner createOrReplace(String resourceGroupName, String namespaceName, String assetName,
         NamespaceAssetInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, assetName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, namespaceName, assetName, resource, context));
     }
 
     /**
@@ -487,11 +414,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName, String assetName,
         NamespaceAssetUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, assetName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, assetName, properties, Context.NONE);
     }
 
     /**
@@ -538,39 +461,14 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             NamespaceAssetInner.class, NamespaceAssetInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceAssetInner>, NamespaceAssetInner> beginUpdate(String resourceGroupName,
         String namespaceName, String assetName, NamespaceAssetUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, namespaceName, assetName, properties);
-        return this.client.<NamespaceAssetInner, NamespaceAssetInner>getLroResult(response, NamespaceAssetInner.class,
-            NamespaceAssetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, assetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceAssetInner>, NamespaceAssetInner> beginUpdate(String resourceGroupName,
         String namespaceName, String assetName, NamespaceAssetUpdate properties, Context context) {
@@ -599,41 +497,19 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAssetInner update(String resourceGroupName, String namespaceName, String assetName,
         NamespaceAssetUpdate properties) {
-        return beginUpdate(resourceGroupName, namespaceName, assetName, properties).getFinalResult();
+        return update(resourceGroupName, namespaceName, assetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAssetInner update(String resourceGroupName, String namespaceName, String assetName,
         NamespaceAssetUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, assetName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, namespaceName, assetName, properties, context));
     }
 
     /**
@@ -669,8 +545,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName, String assetName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, assetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, assetName, Context.NONE);
     }
 
     /**
@@ -711,36 +586,14 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String assetName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, assetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, assetName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String assetName, Context context) {
@@ -765,35 +618,16 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String assetName) {
-        beginDelete(resourceGroupName, namespaceName, assetName).getFinalResult();
+        delete(resourceGroupName, namespaceName, assetName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param assetName The name of the asset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String assetName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, assetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, assetName, context));
     }
 
     /**
@@ -848,12 +682,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceAssetInner> listByResourceGroupSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<NamespaceAssetListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -878,33 +707,13 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NamespaceAsset resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceAssetInner> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List NamespaceAsset resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceAssetInner> listByResourceGroup(String resourceGroupName, String namespaceName,
         Context context) {
@@ -944,11 +753,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceAssetInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NamespaceAssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

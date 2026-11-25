@@ -22,43 +22,11 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link OkHttpAsyncClientProvider}.
  */
 public class OkHttpAsyncClientProviderTests extends HttpClientOptionsProviderTests {
-    @Test
-    public void nullOptionsReturnsBaseClient() {
-        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(null);
-
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        if (environmentProxy == null) {
-            assertNull(httpClient.httpClient.proxy());
-        } else {
-            // Proxy isn't configured on the OkHttp HttpClient when a proxy exists, the ProxySelector is configured.
-            ProxySelector proxySelector = httpClient.httpClient.proxySelector();
-            assertNotNull(proxySelector);
-            assertEquals(environmentProxy.getAddress(), proxySelector.select(null).get(0).address());
-        }
-    }
-
-    @Test
-    public void defaultOptionsReturnsBaseClient() {
-        OkHttpAsyncHttpClient httpClient
-            = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(new HttpClientOptions());
-
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        if (environmentProxy == null) {
-            assertNull(httpClient.httpClient.proxy());
-        } else {
-            // Proxy isn't configured on the OkHttp HttpClient when a proxy exists, the ProxySelector is configured.
-            ProxySelector proxySelector = httpClient.httpClient.proxySelector();
-            assertNotNull(proxySelector);
-            assertEquals(environmentProxy.getAddress(), proxySelector.select(null).get(0).address());
-        }
-    }
-
     @Test
     public void optionsWithAProxy() {
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888));

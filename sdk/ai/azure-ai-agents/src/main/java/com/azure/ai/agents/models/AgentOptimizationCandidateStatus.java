@@ -25,7 +25,7 @@ public final class AgentOptimizationCandidateStatus extends ExpandableStringEnum
     public static final AgentOptimizationCandidateStatus EVALUATING = fromString("evaluating");
 
     /**
-     * The candidate completed full evaluation.
+     * Candidate processing completed, including evaluation when applicable.
      */
     @Generated
     public static final AgentOptimizationCandidateStatus COMPLETED = fromString("completed");
@@ -66,4 +66,10 @@ public final class AgentOptimizationCandidateStatus extends ExpandableStringEnum
     public static Collection<AgentOptimizationCandidateStatus> values() {
         return values(AgentOptimizationCandidateStatus.class);
     }
+
+    /**
+     * Required input was unavailable, so skill optimization did not run.
+     */
+    @Generated
+    public static final AgentOptimizationCandidateStatus SKIPPED = fromString("skipped");
 }

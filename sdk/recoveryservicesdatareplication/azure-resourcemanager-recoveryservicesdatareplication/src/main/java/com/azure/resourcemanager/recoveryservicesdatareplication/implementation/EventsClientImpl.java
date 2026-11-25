@@ -152,18 +152,7 @@ public final class EventsClientImpl implements EventsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param eventName The event name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the event along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventModelInner> getWithResponse(String resourceGroupName, String vaultName, String eventName,
         Context context) {
@@ -172,17 +161,7 @@ public final class EventsClientImpl implements EventsClient {
             resourceGroupName, vaultName, eventName, accept, context);
     }
 
-    /**
-     * Gets the details of the event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param eventName The event name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the event.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventModelInner get(String resourceGroupName, String vaultName, String eventName) {
         return getWithResponse(resourceGroupName, vaultName, eventName, Context.NONE).getValue();
@@ -272,12 +251,7 @@ public final class EventsClientImpl implements EventsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventModelInner> listSinglePage(String resourceGroupName, String vaultName,
         String odataOptions, String continuationToken, Integer pageSize) {
-        final String accept = "application/json";
-        Response<EventModelListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, odataOptions, continuationToken, pageSize, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize, Context.NONE);
     }
 
     /**
@@ -305,40 +279,16 @@ public final class EventsClientImpl implements EventsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of events in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of events in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventModelInner> list(String resourceGroupName, String vaultName) {
         final String odataOptions = null;
         final String continuationToken = null;
         final Integer pageSize = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize, Context.NONE);
     }
 
-    /**
-     * Gets the list of events in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param odataOptions OData options.
-     * @param continuationToken Continuation token.
-     * @param pageSize Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of events in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventModelInner> list(String resourceGroupName, String vaultName, String odataOptions,
         String continuationToken, Integer pageSize, Context context) {
@@ -377,11 +327,7 @@ public final class EventsClientImpl implements EventsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

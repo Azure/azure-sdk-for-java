@@ -181,16 +181,7 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> postSinglePage(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, managedNetworkName, accept, body, Context.NONE);
-        OutboundRuleListResult lroPageableResult = this.client
-            .<OutboundRuleListResult, OutboundRuleListResult>getLroResult(res, OutboundRuleListResult.class,
-                OutboundRuleListResult.class, Context.NONE)
-            .getFinalResult();
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            lroPageableResult.value(), lroPageableResult.nextLink(), null);
+        return postSinglePage(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
     /**
@@ -216,51 +207,20 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
         Response<BinaryData> res = service.postSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, accept, body, context);
         OutboundRuleListResult lroPageableResult = this.client
-            .<OutboundRuleListResult, OutboundRuleListResult>getLroResult(res, OutboundRuleListResult.class,
-                OutboundRuleListResult.class, context)
-            .getFinalResult();
+            .getLroFinalResultOrError(this.client.<OutboundRuleListResult, OutboundRuleListResult>getLroResult(res,
+                OutboundRuleListResult.class, OutboundRuleListResult.class, context));
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             lroPageableResult.value(), lroPageableResult.nextLink(), null);
     }
 
-    /**
-     * The POST API for updating the outbound rules of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleBasicResourceInner> post(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body) {
-        return new PagedIterable<>(() -> postSinglePage(resourceGroupName, accountName, managedNetworkName, body),
-            nextLink -> postNextSinglePage(nextLink));
+        return post(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * The POST API for updating the outbound rules of the managed network associated with the cognitive services
-     * account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleBasicResourceInner> post(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body, Context context) {
@@ -306,11 +266,7 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> postNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OutboundRuleListResult> res
-            = service.postNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return postNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

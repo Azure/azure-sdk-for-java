@@ -147,36 +147,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreVolumeWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.restoreVolumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, volumeName, accept,
-            Context.NONE);
+        return restoreVolumeWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE);
     }
 
     /**
@@ -250,42 +221,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             VolumeInner.class, VolumeInner.class, this.client.getContext());
     }
 
-    /**
-     * Restore Soft Deleted Volumes. The volume name is obtained by using the API to list soft deleted volumes by volume
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginRestoreVolume(String resourceGroupName,
         String elasticSanName, String volumeGroupName, String volumeName) {
-        Response<BinaryData> response
-            = restoreVolumeWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName);
-        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
-            Context.NONE);
+        return beginRestoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE);
     }
 
-    /**
-     * Restore Soft Deleted Volumes. The volume name is obtained by using the API to list soft deleted volumes by volume
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginRestoreVolume(String resourceGroupName,
         String elasticSanName, String volumeGroupName, String volumeName, Context context) {
@@ -315,44 +258,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restore Soft Deleted Volumes. The volume name is obtained by using the API to list soft deleted volumes by volume
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner restoreVolume(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String volumeName) {
-        return beginRestoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName).getFinalResult();
+        return restoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE);
     }
 
-    /**
-     * Restore Soft Deleted Volumes. The volume name is obtained by using the API to list soft deleted volumes by volume
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner restoreVolume(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String volumeName, Context context) {
-        return beginRestoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRestoreVolume(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersClientImpl.class);

@@ -212,17 +212,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
         return getWithResponseAsync(providerNamespace, applicationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the authorized application details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorized application details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizedApplicationInner> getWithResponse(String providerNamespace, UUID applicationId,
         Context context) {
@@ -249,16 +239,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
             providerNamespace, applicationId, accept, context);
     }
 
-    /**
-     * Gets the authorized application details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorized application details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizedApplicationInner get(String providerNamespace, UUID applicationId) {
         return getWithResponse(providerNamespace, applicationId, Context.NONE).getValue();
@@ -323,35 +304,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String providerNamespace, UUID applicationId,
         AuthorizedApplicationInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, applicationId, contentType, accept, properties,
-            Context.NONE);
+        return createOrUpdateWithResponse(providerNamespace, applicationId, properties, Context.NONE);
     }
 
     /**
@@ -423,39 +376,14 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates the authorized application.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @param properties The authorized application properties supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AuthorizedApplicationInner>, AuthorizedApplicationInner>
         beginCreateOrUpdate(String providerNamespace, UUID applicationId, AuthorizedApplicationInner properties) {
-        Response<BinaryData> response = createOrUpdateWithResponse(providerNamespace, applicationId, properties);
-        return this.client.<AuthorizedApplicationInner, AuthorizedApplicationInner>getLroResult(response,
-            AuthorizedApplicationInner.class, AuthorizedApplicationInner.class, Context.NONE);
+        return beginCreateOrUpdate(providerNamespace, applicationId, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates the authorized application.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @param properties The authorized application properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AuthorizedApplicationInner>, AuthorizedApplicationInner> beginCreateOrUpdate(
         String providerNamespace, UUID applicationId, AuthorizedApplicationInner properties, Context context) {
@@ -484,39 +412,19 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the authorized application.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @param properties The authorized application properties supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizedApplicationInner createOrUpdate(String providerNamespace, UUID applicationId,
         AuthorizedApplicationInner properties) {
-        return beginCreateOrUpdate(providerNamespace, applicationId, properties).getFinalResult();
+        return createOrUpdate(providerNamespace, applicationId, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates the authorized application.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @param properties The authorized application properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizedApplicationInner createOrUpdate(String providerNamespace, UUID applicationId,
         AuthorizedApplicationInner properties, Context context) {
-        return beginCreateOrUpdate(providerNamespace, applicationId, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(providerNamespace, applicationId, properties, context));
     }
 
     /**
@@ -567,17 +475,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
         return deleteWithResponseAsync(providerNamespace, applicationId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an authorized application.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, UUID applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -602,15 +500,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
             this.client.getSubscriptionId(), providerNamespace, applicationId, context);
     }
 
-    /**
-     * Deletes an authorized application.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param applicationId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, UUID applicationId) {
         deleteWithResponse(providerNamespace, applicationId, Context.NONE);
@@ -676,25 +566,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizedApplicationInner> listSinglePage(String providerNamespace) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<AuthorizedApplicationArrayResponseWithContinuation> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(providerNamespace, Context.NONE);
     }
 
     /**
@@ -730,32 +602,13 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of the authorized applications in the provider namespace.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the authorized applications in the provider namespace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizedApplicationInner> list(String providerNamespace) {
-        return new PagedIterable<>(() -> listSinglePage(providerNamespace), nextLink -> listNextSinglePage(nextLink));
+        return list(providerNamespace, Context.NONE);
     }
 
-    /**
-     * Gets the list of the authorized applications in the provider namespace.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the authorized applications in the provider namespace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizedApplicationInner> list(String providerNamespace, Context context) {
         return new PagedIterable<>(() -> listSinglePage(providerNamespace, context),
@@ -799,20 +652,7 @@ public final class AuthorizedApplicationsClientImpl implements AuthorizedApplica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizedApplicationInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<AuthorizedApplicationArrayResponseWithContinuation> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

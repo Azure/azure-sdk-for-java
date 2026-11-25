@@ -170,25 +170,7 @@ public final class ClusterRecoveryPointOperationsClientImpl implements ClusterRe
             replicationProtectionClusterName, recoveryPointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a recovery point.
-     * 
-     * Get the details of specified recovery point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param recoveryPointName The recovery point name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery point.
-     * 
-     * Get the details of specified recovery point along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterRecoveryPointInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
@@ -234,24 +216,7 @@ public final class ClusterRecoveryPointOperationsClientImpl implements ClusterRe
             recoveryPointName, accept, context);
     }
 
-    /**
-     * Gets a recovery point.
-     * 
-     * Get the details of specified recovery point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param recoveryPointName The recovery point name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery point.
-     * 
-     * Get the details of specified recovery point.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterRecoveryPointInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName, String recoveryPointName) {

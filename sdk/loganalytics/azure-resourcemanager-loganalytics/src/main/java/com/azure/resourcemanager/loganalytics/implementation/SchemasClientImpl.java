@@ -110,17 +110,7 @@ public final class SchemasClientImpl implements SchemasClient {
         return getWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the schema for a given workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchGetSchemaResponseInner> getWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -129,16 +119,7 @@ public final class SchemasClientImpl implements SchemasClient {
             resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Gets the schema for a given workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchGetSchemaResponseInner get(String resourceGroupName, String workspaceName) {
         return getWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();

@@ -156,9 +156,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resubscribeWithResponse(String resourceGroupName, String monitorName,
         ResubscribeProperties body) {
-        final String accept = "application/json";
-        return service.resubscribeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return resubscribeWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -233,44 +231,20 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+    private SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body) {
-        Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
-            ElasticMonitorResourceInner.class, ElasticMonitorResourceInner.class, Context.NONE);
+        return beginResubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Resubscribe the Elasticsearch Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName) {
         final ResubscribeProperties body = null;
-        Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
-            ElasticMonitorResourceInner.class, ElasticMonitorResourceInner.class, Context.NONE);
+        return beginResubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Resubscribe the Elasticsearch Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Resubscribe Properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body, Context context) {
@@ -314,38 +288,18 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resubscribe the Elasticsearch Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner resubscribe(String resourceGroupName, String monitorName) {
         final ResubscribeProperties body = null;
-        return beginResubscribe(resourceGroupName, monitorName, body).getFinalResult();
+        return resubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Resubscribe the Elasticsearch Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Resubscribe Properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticMonitorResourceInner resubscribe(String resourceGroupName, String monitorName,
         ResubscribeProperties body, Context context) {
-        return beginResubscribe(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResubscribe(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -383,18 +337,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
         return getApiKeyWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetch the User API Key from the internal database, if it was generated and stored during the creation of the
-     * Elasticsearch Organization.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     * request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserApiKeyResponseInner> getApiKeyWithResponse(UserEmailId body, Context context) {
         final String accept = "application/json";
@@ -402,15 +345,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), accept, body, context);
     }
 
-    /**
-     * Fetch the User API Key from the internal database, if it was generated and stored during the creation of the
-     * Elasticsearch Organization.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     * request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserApiKeyResponseInner getApiKey() {
         final UserEmailId body = null;
@@ -457,20 +392,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
         return getElasticToAzureSubscriptionMappingWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
-     * 
-     * &gt;;
-     * /**
-     * Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ElasticOrganizationToAzureSubscriptionMappingResponseInner>
         getElasticToAzureSubscriptionMappingWithResponse(Context context) {
@@ -479,17 +401,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
-     * 
-     * &gt;;
-     * /**
-     * Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticOrganizationToAzureSubscriptionMappingResponseInner getElasticToAzureSubscriptionMapping() {
         return getElasticToAzureSubscriptionMappingWithResponse(Context.NONE).getValue();

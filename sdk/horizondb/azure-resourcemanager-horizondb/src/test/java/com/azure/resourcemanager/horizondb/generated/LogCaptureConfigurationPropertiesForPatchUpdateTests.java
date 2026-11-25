@@ -13,19 +13,19 @@ public final class LogCaptureConfigurationPropertiesForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCaptureConfigurationPropertiesForPatchUpdate model
-            = BinaryData.fromString("{\"state\":\"Disabled\",\"retentionDays\":485732763}")
+            = BinaryData.fromString("{\"state\":\"Disabled\",\"retentionDays\":1937777224}")
                 .toObject(LogCaptureConfigurationPropertiesForPatchUpdate.class);
         Assertions.assertEquals(LogCaptureState.DISABLED, model.state());
-        Assertions.assertEquals(485732763, model.retentionDays());
+        Assertions.assertEquals(1937777224, model.retentionDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogCaptureConfigurationPropertiesForPatchUpdate model
             = new LogCaptureConfigurationPropertiesForPatchUpdate().withState(LogCaptureState.DISABLED)
-                .withRetentionDays(485732763);
+                .withRetentionDays(1937777224);
         model = BinaryData.fromObject(model).toObject(LogCaptureConfigurationPropertiesForPatchUpdate.class);
         Assertions.assertEquals(LogCaptureState.DISABLED, model.state());
-        Assertions.assertEquals(485732763, model.retentionDays());
+        Assertions.assertEquals(1937777224, model.retentionDays());
     }
 }

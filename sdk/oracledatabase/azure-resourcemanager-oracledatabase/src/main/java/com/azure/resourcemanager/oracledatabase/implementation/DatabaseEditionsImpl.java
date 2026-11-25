@@ -44,8 +44,7 @@ public final class DatabaseEditionsImpl implements DatabaseEditions {
     }
 
     public PagedIterable<DatabaseEdition> listByLocation(String location) {
-        PagedIterable<DatabaseEditionInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseEditionImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<DatabaseEdition> listByLocation(String location, Context context) {

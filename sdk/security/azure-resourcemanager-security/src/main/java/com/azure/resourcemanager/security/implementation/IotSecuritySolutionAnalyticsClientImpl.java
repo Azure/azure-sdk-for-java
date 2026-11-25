@@ -166,33 +166,14 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
         return getWithResponseAsync(resourceGroupName, solutionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Use this method to get IoT Security Analytics metrics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecuritySolutionAnalyticsModelInner> getWithResponse(String resourceGroupName,
         String solutionName, Context context) {
         return getWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
-    /**
-     * Use this method to get IoT Security Analytics metrics.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionAnalyticsModelInner get(String resourceGroupName, String solutionName) {
         return getWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
@@ -287,33 +268,14 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
         return listWithResponseAsync(resourceGroupName, solutionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Use this method to get IoT security Analytics metrics in an array.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecuritySolutionAnalyticsModelListInner> listWithResponse(String resourceGroupName,
         String solutionName, Context context) {
         return listWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
-    /**
-     * Use this method to get IoT security Analytics metrics in an array.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionAnalyticsModelListInner list(String resourceGroupName, String solutionName) {
         return listWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();

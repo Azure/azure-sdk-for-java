@@ -61,11 +61,7 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BaseBackupPolicyResource create(Context context) {
@@ -88,11 +84,7 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BaseBackupPolicyResource apply(Context context) {
@@ -119,11 +111,7 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BaseBackupPolicyResource refresh(Context context) {

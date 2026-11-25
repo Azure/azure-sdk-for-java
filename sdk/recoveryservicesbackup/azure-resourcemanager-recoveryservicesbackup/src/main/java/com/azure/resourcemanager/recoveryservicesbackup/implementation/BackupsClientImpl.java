@@ -128,22 +128,7 @@ public final class BackupsClientImpl implements BackupsClient {
             parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters resource backup request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, BackupRequestResource parameters, Context context) {
@@ -153,20 +138,7 @@ public final class BackupsClientImpl implements BackupsClient {
             contentType, parameters, context);
     }
 
-    /**
-     * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param parameters resource backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, BackupRequestResource parameters) {

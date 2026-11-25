@@ -338,17 +338,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a prepared image specification at the latest version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a prepared image specification at the latest version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreparedImageSpecificationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String preparedImageSpecificationName, Context context) {
@@ -357,16 +347,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             this.client.getSubscriptionId(), resourceGroupName, preparedImageSpecificationName, accept, context);
     }
 
-    /**
-     * Get a prepared image specification at the latest version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a prepared image specification at the latest version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreparedImageSpecificationInner getByResourceGroup(String resourceGroupName,
         String preparedImageSpecificationName) {
@@ -422,11 +403,8 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String preparedImageSpecificationName, PreparedImageSpecificationInner resource, String ifMatch,
         String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, preparedImageSpecificationName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, preparedImageSpecificationName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -523,54 +501,24 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      * @return the {@link SyncPoller} for polling of the Prepared Image Specification resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PreparedImageSpecificationInner>, PreparedImageSpecificationInner> beginCreateOrUpdate(
-        String resourceGroupName, String preparedImageSpecificationName, PreparedImageSpecificationInner resource,
-        String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, preparedImageSpecificationName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<PreparedImageSpecificationInner, PreparedImageSpecificationInner>getLroResult(response,
-            PreparedImageSpecificationInner.class, PreparedImageSpecificationInner.class, Context.NONE);
+    private SyncPoller<PollResult<PreparedImageSpecificationInner>, PreparedImageSpecificationInner>
+        beginCreateOrUpdate(String resourceGroupName, String preparedImageSpecificationName,
+            PreparedImageSpecificationInner resource, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdate(resourceGroupName, preparedImageSpecificationName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a prepared image specification resource with a client-provided version. Created versions are
-     * immutable; provide a different properties.version value to create a new version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Prepared Image Specification resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreparedImageSpecificationInner>, PreparedImageSpecificationInner> beginCreateOrUpdate(
         String resourceGroupName, String preparedImageSpecificationName, PreparedImageSpecificationInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, preparedImageSpecificationName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<PreparedImageSpecificationInner, PreparedImageSpecificationInner>getLroResult(response,
-            PreparedImageSpecificationInner.class, PreparedImageSpecificationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, preparedImageSpecificationName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a prepared image specification resource with a client-provided version. Created versions are
-     * immutable; provide a different properties.version value to create a new version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param ifNoneMatch The request should only proceed if the targeted resource's etag does not match the value
-     * provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Prepared Image Specification resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreparedImageSpecificationInner>, PreparedImageSpecificationInner> beginCreateOrUpdate(
         String resourceGroupName, String preparedImageSpecificationName, PreparedImageSpecificationInner resource,
@@ -625,49 +573,23 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a prepared image specification resource with a client-provided version. Created versions are
-     * immutable; provide a different properties.version value to create a new version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Prepared Image Specification resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreparedImageSpecificationInner createOrUpdate(String resourceGroupName,
         String preparedImageSpecificationName, PreparedImageSpecificationInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, preparedImageSpecificationName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, preparedImageSpecificationName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a prepared image specification resource with a client-provided version. Created versions are
-     * immutable; provide a different properties.version value to create a new version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param ifNoneMatch The request should only proceed if the targeted resource's etag does not match the value
-     * provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Prepared Image Specification resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreparedImageSpecificationInner createOrUpdate(String resourceGroupName,
         String preparedImageSpecificationName, PreparedImageSpecificationInner resource, String ifMatch,
         String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, preparedImageSpecificationName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName,
+            preparedImageSpecificationName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -714,19 +636,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the tags of a prepared image specification.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Prepared Image Specification resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreparedImageSpecificationInner> updateWithResponse(String resourceGroupName,
         String preparedImageSpecificationName, PreparedImageSpecificationPatch properties, String ifMatch,
@@ -738,17 +648,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             accept, properties, context);
     }
 
-    /**
-     * Update the tags of a prepared image specification.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Prepared Image Specification resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreparedImageSpecificationInner update(String resourceGroupName, String preparedImageSpecificationName,
         PreparedImageSpecificationPatch properties) {
@@ -791,8 +691,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String preparedImageSpecificationName,
         String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, preparedImageSpecificationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, preparedImageSpecificationName, ifMatch, Context.NONE);
     }
 
     /**
@@ -866,42 +765,20 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String preparedImageSpecificationName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, preparedImageSpecificationName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, preparedImageSpecificationName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a prepared image specification. This operation will be blocked if the resource is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String preparedImageSpecificationName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, preparedImageSpecificationName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, preparedImageSpecificationName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a prepared image specification. This operation will be blocked if the resource is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String preparedImageSpecificationName, String ifMatch, Context context) {
@@ -944,36 +821,19 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a prepared image specification. This operation will be blocked if the resource is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String preparedImageSpecificationName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, preparedImageSpecificationName, ifMatch).getFinalResult();
+        delete(resourceGroupName, preparedImageSpecificationName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a prepared image specification. This operation will be blocked if the resource is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String preparedImageSpecificationName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, preparedImageSpecificationName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, preparedImageSpecificationName, ifMatch, context));
     }
 
     /**
@@ -1015,8 +875,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteVersionWithResponse(String resourceGroupName,
         String preparedImageSpecificationName, String version, String ifMatch) {
-        return service.deleteVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, preparedImageSpecificationName, version,
+        return deleteVersionWithResponse(resourceGroupName, preparedImageSpecificationName, version, ifMatch,
             Context.NONE);
     }
 
@@ -1100,48 +959,20 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteVersion(String resourceGroupName,
+    private SyncPoller<PollResult<Void>, Void> beginDeleteVersion(String resourceGroupName,
         String preparedImageSpecificationName, String version, String ifMatch) {
-        Response<BinaryData> response
-            = deleteVersionWithResponse(resourceGroupName, preparedImageSpecificationName, version, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteVersion(resourceGroupName, preparedImageSpecificationName, version, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a prepared image specification version. This operation will be blocked if the prepared image specification
-     * version is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param version The version of the Prepared Image Specification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVersion(String resourceGroupName,
         String preparedImageSpecificationName, String version) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteVersionWithResponse(resourceGroupName, preparedImageSpecificationName, version, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteVersion(resourceGroupName, preparedImageSpecificationName, version, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a prepared image specification version. This operation will be blocked if the prepared image specification
-     * version is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param version The version of the Prepared Image Specification.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVersion(String resourceGroupName,
         String preparedImageSpecificationName, String version, String ifMatch, Context context) {
@@ -1190,41 +1021,19 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a prepared image specification version. This operation will be blocked if the prepared image specification
-     * version is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param version The version of the Prepared Image Specification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteVersion(String resourceGroupName, String preparedImageSpecificationName, String version) {
         final String ifMatch = null;
-        beginDeleteVersion(resourceGroupName, preparedImageSpecificationName, version, ifMatch).getFinalResult();
+        deleteVersion(resourceGroupName, preparedImageSpecificationName, version, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a prepared image specification version. This operation will be blocked if the prepared image specification
-     * version is in use.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param version The version of the Prepared Image Specification.
-     * @param ifMatch The request should only proceed if the targeted resource's etag matches the value provided.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteVersion(String resourceGroupName, String preparedImageSpecificationName, String version,
         String ifMatch, Context context) {
-        beginDeleteVersion(resourceGroupName, preparedImageSpecificationName, version, ifMatch, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDeleteVersion(resourceGroupName, preparedImageSpecificationName, version, ifMatch, context));
     }
 
     /**
@@ -1275,11 +1084,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<PreparedImgSpecListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1302,33 +1107,13 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the prepared image specifications in a resource group at the latest version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreparedImageSpecification list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreparedImageSpecificationInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List the prepared image specifications in a resource group at the latest version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreparedImageSpecification list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreparedImageSpecificationInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -1377,11 +1162,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<PreparedImgSpecListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1402,29 +1183,13 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the prepared image specifications in a subscription at the latest version.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreparedImageSpecification list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreparedImageSpecificationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List the prepared image specifications in a subscription at the latest version.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreparedImageSpecification list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreparedImageSpecificationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1472,18 +1237,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a prepared image specification at a particular version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param version The version of the Prepared Image Specification.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a prepared image specification at a particular version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreparedImageSpecificationVersionInner> getVersionWithResponse(String resourceGroupName,
         String preparedImageSpecificationName, String version, Context context) {
@@ -1493,17 +1247,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             context);
     }
 
-    /**
-     * Get a prepared image specification at a particular version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param version The version of the Prepared Image Specification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a prepared image specification at a particular version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreparedImageSpecificationVersionInner getVersion(String resourceGroupName,
         String preparedImageSpecificationName, String version) {
@@ -1565,12 +1309,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationVersionInner> listVersionsSinglePage(String resourceGroupName,
         String preparedImageSpecificationName) {
-        final String accept = "application/json";
-        Response<PreparedImgSpecVersionListResult> res = service.listVersionsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            preparedImageSpecificationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVersionsSinglePage(resourceGroupName, preparedImageSpecificationName, Context.NONE);
     }
 
     /**
@@ -1595,36 +1334,14 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all versions of a prepared image specification.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreparedImageSpecificationVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreparedImageSpecificationVersionInner> listVersions(String resourceGroupName,
         String preparedImageSpecificationName) {
-        return new PagedIterable<>(() -> listVersionsSinglePage(resourceGroupName, preparedImageSpecificationName),
-            nextLink -> listVersionsNextSinglePage(nextLink));
+        return listVersions(resourceGroupName, preparedImageSpecificationName, Context.NONE);
     }
 
-    /**
-     * List all versions of a prepared image specification.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param preparedImageSpecificationName The name of the Prepared Image Specification resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreparedImageSpecificationVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreparedImageSpecificationVersionInner> listVersions(String resourceGroupName,
         String preparedImageSpecificationName, Context context) {
@@ -1666,11 +1383,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PreparedImgSpecListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1726,11 +1439,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PreparedImgSpecListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1785,11 +1494,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationVersionInner> listVersionsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PreparedImgSpecVersionListResult> res
-            = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVersionsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

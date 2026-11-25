@@ -151,17 +151,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches resource vault config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceVaultConfigResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         Context context) {
@@ -170,16 +160,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             resourceGroupName, vaultName, accept, context);
     }
 
-    /**
-     * Fetches resource vault config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceVaultConfigResourceInner get(String vaultName, String resourceGroupName) {
         return getWithResponse(vaultName, resourceGroupName, Context.NONE).getValue();
@@ -225,18 +206,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates vault security config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource config request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceVaultConfigResourceInner> putWithResponse(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters, Context context) {
@@ -246,17 +216,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             resourceGroupName, vaultName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates vault security config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceVaultConfigResourceInner put(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters) {
@@ -303,18 +263,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates vault security config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource config request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceVaultConfigResourceInner> updateWithResponse(String vaultName,
         String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context) {
@@ -324,17 +273,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates vault security config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceVaultConfigResourceInner update(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters) {

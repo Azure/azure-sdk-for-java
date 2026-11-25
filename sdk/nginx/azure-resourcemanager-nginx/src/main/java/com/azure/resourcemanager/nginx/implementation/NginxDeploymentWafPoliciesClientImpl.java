@@ -124,19 +124,7 @@ public final class NginxDeploymentWafPoliciesClientImpl implements NginxDeployme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Analyze an Nginx Waf Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Waf Policy Analysis Response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxDeploymentWafPolicyAnalysisResponseInner> analysisWithResponse(String resourceGroupName,
         String deploymentName, String wafPolicyName, NginxDeploymentWafPolicyAnalysisCreateRequest body,
@@ -146,17 +134,7 @@ public final class NginxDeploymentWafPoliciesClientImpl implements NginxDeployme
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, wafPolicyName, accept, body, context);
     }
 
-    /**
-     * Analyze an Nginx Waf Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Waf Policy Analysis Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentWafPolicyAnalysisResponseInner analysis(String resourceGroupName, String deploymentName,
         String wafPolicyName) {

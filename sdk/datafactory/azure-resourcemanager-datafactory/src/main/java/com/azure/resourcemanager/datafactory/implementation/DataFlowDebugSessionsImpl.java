@@ -39,13 +39,7 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
 
     public CreateDataFlowDebugSessionResponse create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request) {
-        CreateDataFlowDebugSessionResponseInner inner
-            = this.serviceClient().create(resourceGroupName, factoryName, request);
-        if (inner != null) {
-            return new CreateDataFlowDebugSessionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.create(resourceGroupName, factoryName, request, Context.NONE);
     }
 
     public CreateDataFlowDebugSessionResponse create(String resourceGroupName, String factoryName,
@@ -60,9 +54,7 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
     }
 
     public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<DataFlowDebugSessionInfoInner> inner
-            = this.serviceClient().queryByFactory(resourceGroupName, factoryName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
+        return this.queryByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
     public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName,
@@ -97,18 +89,12 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
     }
 
     public void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
-        this.serviceClient().delete(resourceGroupName, factoryName, request);
+        this.deleteWithResponse(resourceGroupName, factoryName, request, Context.NONE);
     }
 
     public DataFlowDebugCommandResponse executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request) {
-        DataFlowDebugCommandResponseInner inner
-            = this.serviceClient().executeCommand(resourceGroupName, factoryName, request);
-        if (inner != null) {
-            return new DataFlowDebugCommandResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.executeCommand(resourceGroupName, factoryName, request, Context.NONE);
     }
 
     public DataFlowDebugCommandResponse executeCommand(String resourceGroupName, String factoryName,

@@ -290,20 +290,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceLongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
@@ -392,19 +379,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             backupName, accept, context);
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceLongTermRetentionBackupInner> getByResourceGroupAsync(String resourceGroupName,
         String locationName, String managedInstanceName, String databaseName, String backupName) {
@@ -412,20 +387,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             backupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceLongTermRetentionBackupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
@@ -434,19 +396,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             backupName, context).block();
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceLongTermRetentionBackupInner getByResourceGroup(String resourceGroupName, String locationName,
         String managedInstanceName, String databaseName, String backupName) {
@@ -454,19 +404,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             backupName, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(String resourceGroupName,
         String locationName, String managedInstanceName, String databaseName, String backupName) {
@@ -550,19 +488,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             backupName, context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(String resourceGroupName,
         String locationName, String managedInstanceName, String databaseName, String backupName) {
@@ -596,19 +522,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(String resourceGroupName, String locationName,
         String managedInstanceName, String databaseName, String backupName) {
@@ -618,20 +532,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(String resourceGroupName, String locationName,
         String managedInstanceName, String databaseName, String backupName, Context context) {
@@ -641,19 +542,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String locationName,
         String managedInstanceName, String databaseName, String backupName) {
@@ -682,18 +571,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByResourceGroup(String resourceGroupName, String locationName, String managedInstanceName,
         String databaseName, String backupName) {
@@ -701,19 +579,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             .block();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByResourceGroup(String resourceGroupName, String locationName, String managedInstanceName,
         String databaseName, String backupName, Context context) {
@@ -1989,21 +1855,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
@@ -2014,19 +1866,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName) {
@@ -2064,19 +1904,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName) {
@@ -2086,22 +1914,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName,
@@ -2110,19 +1923,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState, context));
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceLongTermRetentionBackupInner>> getWithResponseAsync(String locationName,
         String managedInstanceName, String databaseName, String backupName) {
@@ -2199,18 +2000,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             locationName, managedInstanceName, databaseName, backupName, accept, context);
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceLongTermRetentionBackupInner> getAsync(String locationName, String managedInstanceName,
         String databaseName, String backupName) {
@@ -2218,55 +2008,21 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceLongTermRetentionBackupInner> getWithResponse(String locationName,
         String managedInstanceName, String databaseName, String backupName, Context context) {
         return getWithResponseAsync(locationName, managedInstanceName, databaseName, backupName, context).block();
     }
 
-    /**
-     * Gets a long term retention backup for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceLongTermRetentionBackupInner get(String locationName, String managedInstanceName,
         String databaseName, String backupName) {
         return getWithResponse(locationName, managedInstanceName, databaseName, backupName, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String locationName, String managedInstanceName,
         String databaseName, String backupName) {
@@ -2339,18 +2095,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             locationName, managedInstanceName, databaseName, backupName, context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String locationName, String managedInstanceName,
         String databaseName, String backupName) {
@@ -2383,37 +2128,14 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String locationName, String managedInstanceName,
         String databaseName, String backupName) {
         return this.beginDeleteAsync(locationName, managedInstanceName, databaseName, backupName).getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String locationName, String managedInstanceName,
         String databaseName, String backupName, Context context) {
@@ -2421,18 +2143,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String locationName, String managedInstanceName, String databaseName,
         String backupName) {
@@ -2460,34 +2171,13 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String locationName, String managedInstanceName, String databaseName, String backupName) {
         deleteAsync(locationName, managedInstanceName, databaseName, backupName).block();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String locationName, String managedInstanceName, String databaseName, String backupName,
         Context context) {
@@ -2587,20 +2277,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(String locationName,
         String managedInstanceName, String databaseName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
@@ -2608,18 +2285,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             onlyLatestPerDatabase, databaseState), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(String locationName,
         String managedInstanceName, String databaseName) {
@@ -2653,18 +2319,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(String locationName,
         String managedInstanceName, String databaseName) {
@@ -2674,21 +2329,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             listByDatabaseAsync(locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState));
     }
 
-    /**
-     * Lists all long term retention backups for a managed database.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(String locationName,
         String managedInstanceName, String databaseName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
@@ -2778,21 +2419,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(String locationName,
         Boolean onlyLatestPerDatabase, DatabaseState databaseState, Long skip, Long top, String filter) {
@@ -2801,16 +2428,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
@@ -2847,16 +2465,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             skip, top, filter, context), nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
@@ -2868,22 +2477,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, skip, top, filter));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(String locationName,
         Boolean onlyLatestPerDatabase, DatabaseState databaseState, Long skip, Long top, String filter,
@@ -2976,19 +2570,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByInstanceAsync(String locationName,
         String managedInstanceName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
@@ -2996,17 +2578,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             onlyLatestPerDatabase, databaseState), nextLink -> listByInstanceNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByInstanceAsync(String locationName,
         String managedInstanceName) {
@@ -3038,17 +2610,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByInstance(String locationName,
         String managedInstanceName) {
@@ -3058,20 +2620,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             listByInstanceAsync(locationName, managedInstanceName, onlyLatestPerDatabase, databaseState));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByInstance(String locationName,
         String managedInstanceName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
@@ -3171,22 +2720,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
         String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
@@ -3197,17 +2731,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner>
         listByResourceGroupLocationAsync(String resourceGroupName, String locationName) {
@@ -3249,17 +2773,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner>
         listByResourceGroupLocation(String resourceGroupName, String locationName) {
@@ -3272,23 +2786,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             onlyLatestPerDatabase, databaseState, skip, top, filter));
     }
 
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
         String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
@@ -3393,20 +2891,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstanceAsync(
         String resourceGroupName, String locationName, String managedInstanceName, Boolean onlyLatestPerDatabase,
@@ -3417,18 +2902,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByResourceGroupInstanceNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceLongTermRetentionBackupInner>
         listByResourceGroupInstanceAsync(String resourceGroupName, String locationName, String managedInstanceName) {
@@ -3465,18 +2939,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             nextLink -> listByResourceGroupInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner>
         listByResourceGroupInstance(String resourceGroupName, String locationName, String managedInstanceName) {
@@ -3486,21 +2949,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             managedInstanceName, onlyLatestPerDatabase, databaseState));
     }
 
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedInstanceLongTermRetentionBackup list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstance(
         String resourceGroupName, String locationName, String managedInstanceName, Boolean onlyLatestPerDatabase,

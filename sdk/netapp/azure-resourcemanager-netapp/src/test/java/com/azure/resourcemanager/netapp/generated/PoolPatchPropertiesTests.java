@@ -13,24 +13,24 @@ public final class PoolPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolPatchProperties model = BinaryData.fromString(
-            "{\"size\":7768101030321083728,\"qosType\":\"Auto\",\"coolAccess\":true,\"customThroughputMibps\":577030893}")
+            "{\"size\":1342503335647338523,\"qosType\":\"Manual\",\"coolAccess\":false,\"customThroughputMibps\":2013269428}")
             .toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(7768101030321083728L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(577030893, model.customThroughputMibps());
+        Assertions.assertEquals(1342503335647338523L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertFalse(model.coolAccess());
+        Assertions.assertEquals(2013269428, model.customThroughputMibps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolPatchProperties model = new PoolPatchProperties().withSize(7768101030321083728L)
-            .withQosType(QosType.AUTO)
-            .withCoolAccess(true)
-            .withCustomThroughputMibps(577030893);
+        PoolPatchProperties model = new PoolPatchProperties().withSize(1342503335647338523L)
+            .withQosType(QosType.MANUAL)
+            .withCoolAccess(false)
+            .withCustomThroughputMibps(2013269428);
         model = BinaryData.fromObject(model).toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(7768101030321083728L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(577030893, model.customThroughputMibps());
+        Assertions.assertEquals(1342503335647338523L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertFalse(model.coolAccess());
+        Assertions.assertEquals(2013269428, model.customThroughputMibps());
     }
 }

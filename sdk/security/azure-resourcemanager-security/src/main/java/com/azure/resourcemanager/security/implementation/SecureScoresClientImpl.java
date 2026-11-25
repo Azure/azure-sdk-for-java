@@ -172,35 +172,13 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
         return getWithResponseAsync(secureScoreName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
-     * Default initiative, use 'ascScore'.
-     * 
-     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
-     * request below.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecureScoreItemInner> getWithResponse(String secureScoreName, Context context) {
         return getWithResponseAsync(secureScoreName, context).block();
     }
 
-    /**
-     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
-     * Default initiative, use 'ascScore'.
-     * 
-     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
-     * request below.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecureScoreItemInner get(String secureScoreName) {
         return getWithResponse(secureScoreName, Context.NONE).getValue();
@@ -287,27 +265,13 @@ public final class SecureScoresClientImpl implements SecureScoresClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreItemInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreItemInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

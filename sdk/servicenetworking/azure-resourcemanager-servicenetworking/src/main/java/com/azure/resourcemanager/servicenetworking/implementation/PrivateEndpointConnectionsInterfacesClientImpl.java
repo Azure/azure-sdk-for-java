@@ -216,18 +216,7 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String trafficControllerName, String privateEndpointConnectionName, Context context) {
@@ -236,17 +225,7 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             resourceGroupName, trafficControllerName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateEndpointConnection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName) {
@@ -294,11 +273,8 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, privateEndpointConnectionName,
-            contentType, accept, resource, Context.NONE);
+        return updateWithResponse(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource,
+            Context.NONE);
     }
 
     /**
@@ -347,41 +323,16 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Create a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private Endpoint Connection resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String trafficControllerName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner resource) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private Endpoint Connection resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String trafficControllerName, String privateEndpointConnectionName,
@@ -412,43 +363,19 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
-        return beginUpdate(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource)
-            .getFinalResult();
+        return update(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection resource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource, Context context) {
-        return beginUpdate(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource, context));
     }
 
     /**
@@ -486,8 +413,7 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, privateEndpointConnectionName,
+        return deleteWithResponse(resourceGroupName, trafficControllerName, privateEndpointConnectionName,
             Context.NONE);
     }
 
@@ -531,37 +457,14 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Delete a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, trafficControllerName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trafficControllerName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName, Context context) {
@@ -588,36 +491,18 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, trafficControllerName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, trafficControllerName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a PrivateEndpointConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateEndpointConnectionName Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, trafficControllerName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, trafficControllerName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -674,12 +559,7 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     /**
@@ -704,36 +584,14 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PrivateEndpointConnection resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(() -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName),
-            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
+        return listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * List PrivateEndpointConnection resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName, Context context) {
@@ -775,11 +633,7 @@ public final class PrivateEndpointConnectionsInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByTrafficControllerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

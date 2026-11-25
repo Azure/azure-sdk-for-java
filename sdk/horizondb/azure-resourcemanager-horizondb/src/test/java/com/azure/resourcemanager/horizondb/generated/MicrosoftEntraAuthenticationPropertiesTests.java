@@ -13,16 +13,16 @@ public final class MicrosoftEntraAuthenticationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftEntraAuthenticationProperties model
-            = BinaryData.fromString("{\"state\":\"Disabled\",\"provisioningState\":\"Succeeded\"}")
+            = BinaryData.fromString("{\"state\":\"Enabled\",\"provisioningState\":\"Failed\"}")
                 .toObject(MicrosoftEntraAuthenticationProperties.class);
-        Assertions.assertEquals(AuthenticationState.DISABLED, model.state());
+        Assertions.assertEquals(AuthenticationState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MicrosoftEntraAuthenticationProperties model
-            = new MicrosoftEntraAuthenticationProperties().withState(AuthenticationState.DISABLED);
+            = new MicrosoftEntraAuthenticationProperties().withState(AuthenticationState.ENABLED);
         model = BinaryData.fromObject(model).toObject(MicrosoftEntraAuthenticationProperties.class);
-        Assertions.assertEquals(AuthenticationState.DISABLED, model.state());
+        Assertions.assertEquals(AuthenticationState.ENABLED, model.state());
     }
 }

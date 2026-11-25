@@ -177,11 +177,7 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
     }
 
     public L3Network create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL3Networks()
-            .createOrUpdate(resourceGroupName, l3NetworkName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public L3Network create(Context context) {
@@ -208,12 +204,7 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
     }
 
     public L3Network apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL3Networks()
-            .updateWithResponse(resourceGroupName, l3NetworkName, updateIfMatch, updateIfNoneMatch,
-                updateL3NetworkUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public L3Network apply(Context context) {
@@ -238,11 +229,7 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
     }
 
     public L3Network refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL3Networks()
-            .getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public L3Network refresh(Context context) {

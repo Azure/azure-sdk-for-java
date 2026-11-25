@@ -135,14 +135,7 @@ public final class ClassicAdministratorsClientImpl implements ClassicAdministrat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets service administrator, account administrator, and co-administrators for the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service administrator, account administrator, and co-administrators for the subscription as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassicAdministratorInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -164,29 +157,13 @@ public final class ClassicAdministratorsClientImpl implements ClassicAdministrat
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets service administrator, account administrator, and co-administrators for the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service administrator, account administrator, and co-administrators for the subscription as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassicAdministratorInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets service administrator, account administrator, and co-administrators for the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service administrator, account administrator, and co-administrators for the subscription as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassicAdministratorInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

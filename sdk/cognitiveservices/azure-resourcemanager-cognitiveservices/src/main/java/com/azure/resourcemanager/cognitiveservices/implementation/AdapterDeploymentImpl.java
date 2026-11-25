@@ -73,11 +73,7 @@ public final class AdapterDeploymentImpl
     }
 
     public AdapterDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdapterDeployments()
-            .createOrUpdate(resourceGroupName, accountName, adapterDeploymentName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AdapterDeployment create(Context context) {
@@ -104,11 +100,7 @@ public final class AdapterDeploymentImpl
     }
 
     public AdapterDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdapterDeployments()
-            .createOrUpdate(resourceGroupName, accountName, adapterDeploymentName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AdapterDeployment apply(Context context) {
@@ -135,11 +127,7 @@ public final class AdapterDeploymentImpl
     }
 
     public AdapterDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdapterDeployments()
-            .getWithResponse(resourceGroupName, accountName, adapterDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AdapterDeployment refresh(Context context) {

@@ -167,27 +167,13 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List the available security controls, their assessments, and the max score.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List the available security controls, their assessments, and the max score.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
@@ -279,27 +265,13 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * For a specified subscription, list the available security controls, their assessments, and the max score.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> listBySubscription() {
         return new PagedIterable<>(listBySubscriptionAsync());
     }
 
-    /**
-     * For a specified subscription, list the available security controls, their assessments, and the max score.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> listBySubscription(Context context) {
         return new PagedIterable<>(listBySubscriptionAsync(context));

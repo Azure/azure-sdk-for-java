@@ -160,17 +160,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FailoverGroupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -240,69 +230,27 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             resourceGroupName, serverName, failoverGroupName, accept, context);
     }
 
-    /**
-     * Gets a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> getAsync(String resourceGroupName, String serverName, String failoverGroupName) {
         return getWithResponseAsync(resourceGroupName, serverName, failoverGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FailoverGroupInner> getWithResponse(String resourceGroupName, String serverName,
         String failoverGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, failoverGroupName, context).block();
     }
 
-    /**
-     * Gets a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner get(String resourceGroupName, String serverName, String failoverGroupName) {
         return getWithResponse(resourceGroupName, serverName, failoverGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String failoverGroupName, FailoverGroupInner parameters) {
@@ -387,18 +335,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             parameters, context);
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
@@ -432,18 +369,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             FailoverGroupInner.class, FailoverGroupInner.class, context);
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String failoverGroupName, FailoverGroupInner parameters) {
@@ -451,19 +377,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String failoverGroupName, FailoverGroupInner parameters, Context context) {
@@ -471,18 +385,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String failoverGroupName, FailoverGroupInner parameters) {
@@ -510,55 +413,21 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner createOrUpdate(String resourceGroupName, String serverName, String failoverGroupName,
         FailoverGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).block();
     }
 
-    /**
-     * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner createOrUpdate(String resourceGroupName, String serverName, String failoverGroupName,
         FailoverGroupInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context).block();
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String failoverGroupName, FailoverGroupUpdate parameters) {
@@ -642,18 +511,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             resourceGroupName, serverName, failoverGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdateAsync(String resourceGroupName,
         String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
@@ -686,37 +544,14 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             FailoverGroupInner.class, FailoverGroupInner.class, context);
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(String resourceGroupName,
         String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(String resourceGroupName,
         String serverName, String failoverGroupName, FailoverGroupUpdate parameters, Context context) {
@@ -724,18 +559,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> updateAsync(String resourceGroupName, String serverName, String failoverGroupName,
         FailoverGroupUpdate parameters) {
@@ -763,54 +587,21 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner update(String resourceGroupName, String serverName, String failoverGroupName,
         FailoverGroupUpdate parameters) {
         return updateAsync(resourceGroupName, serverName, failoverGroupName, parameters).block();
     }
 
-    /**
-     * Updates a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters The failover group parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner update(String resourceGroupName, String serverName, String failoverGroupName,
         FailoverGroupUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context).block();
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -878,17 +669,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             resourceGroupName, serverName, failoverGroupName, context);
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -920,52 +701,21 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             context);
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String failoverGroupName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String failoverGroupName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String failoverGroupName) {
         return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName).last()
@@ -991,32 +741,13 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String failoverGroupName) {
         deleteAsync(resourceGroupName, serverName, failoverGroupName).block();
     }
 
-    /**
-     * Deletes a failover group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String failoverGroupName, Context context) {
         deleteAsync(resourceGroupName, serverName, failoverGroupName, context).block();
@@ -1099,16 +830,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the failover groups in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FailoverGroup list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FailoverGroupInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -1133,49 +855,20 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the failover groups in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FailoverGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FailoverGroupInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Lists the failover groups in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FailoverGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FailoverGroupInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -1245,17 +938,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             resourceGroupName, serverName, failoverGroupName, accept, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(String resourceGroupName,
         String serverName, String failoverGroupName) {
@@ -1287,52 +970,21 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             FailoverGroupInner.class, FailoverGroupInner.class, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(String resourceGroupName,
         String serverName, String failoverGroupName) {
         return this.beginFailoverAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(String resourceGroupName,
         String serverName, String failoverGroupName, Context context) {
         return this.beginFailoverAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> failoverAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -1359,51 +1011,20 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName) {
         return failoverAsync(resourceGroupName, serverName, failoverGroupName).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName,
         Context context) {
         return failoverAsync(resourceGroupName, serverName, failoverGroupName, context).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(String resourceGroupName,
         String serverName, String failoverGroupName) {
@@ -1474,17 +1095,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, serverName, failoverGroupName, accept, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner>
         beginForceFailoverAllowDataLossAsync(String resourceGroupName, String serverName, String failoverGroupName) {
@@ -1516,17 +1127,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             FailoverGroupInner.class, FailoverGroupInner.class, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner>
         beginForceFailoverAllowDataLoss(String resourceGroupName, String serverName, String failoverGroupName) {
@@ -1534,18 +1135,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String failoverGroupName, Context context) {
@@ -1553,17 +1143,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -1590,53 +1170,21 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String serverName,
         String failoverGroupName) {
         return forceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String serverName,
         String failoverGroupName, Context context) {
         return forceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> tryPlannedBeforeForcedFailoverWithResponseAsync(String resourceGroupName,
         String serverName, String failoverGroupName) {
@@ -1708,18 +1256,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, serverName, failoverGroupName, accept, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailoverAsync(
         String resourceGroupName, String serverName, String failoverGroupName) {
@@ -1752,18 +1289,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             FailoverGroupInner.class, FailoverGroupInner.class, context);
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner>
         beginTryPlannedBeforeForcedFailover(String resourceGroupName, String serverName, String failoverGroupName) {
@@ -1771,19 +1297,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailover(
         String resourceGroupName, String serverName, String failoverGroupName, Context context) {
@@ -1791,18 +1305,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> tryPlannedBeforeForcedFailoverAsync(String resourceGroupName, String serverName,
         String failoverGroupName) {
@@ -1831,37 +1334,14 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner tryPlannedBeforeForcedFailover(String resourceGroupName, String serverName,
         String failoverGroupName) {
         return tryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName).block();
     }
 
-    /**
-     * Fails over from the current primary server to this server. This operation tries planned before forced failover
-     * but might still result in data loss.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner tryPlannedBeforeForcedFailover(String resourceGroupName, String serverName,
         String failoverGroupName, Context context) {

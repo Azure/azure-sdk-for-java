@@ -88,10 +88,7 @@ public final class DisconnectedOperationImpl
     }
 
     public DisconnectedOperation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisconnectedOperations()
-            .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DisconnectedOperation create(Context context) {
@@ -114,11 +111,7 @@ public final class DisconnectedOperationImpl
     }
 
     public DisconnectedOperation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisconnectedOperations()
-            .updateWithResponse(resourceGroupName, name, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DisconnectedOperation apply(Context context) {
@@ -142,11 +135,7 @@ public final class DisconnectedOperationImpl
     }
 
     public DisconnectedOperation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisconnectedOperations()
-            .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DisconnectedOperation refresh(Context context) {

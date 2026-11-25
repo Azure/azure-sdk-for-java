@@ -198,18 +198,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebPubSubHubInner> getWithResponse(String resourceGroupName, String resourceName, String hubName,
         Context context) {
@@ -218,17 +207,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             resourceGroupName, resourceName, hubName, accept, context);
     }
 
-    /**
-     * Get a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubHubInner get(String resourceGroupName, String resourceName, String hubName) {
         return getWithResponse(resourceGroupName, resourceName, hubName, Context.NONE).getValue();
@@ -273,11 +252,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         String hubName, WebPubSubHubInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, hubName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, hubName, parameters, Context.NONE);
     }
 
     /**
@@ -324,40 +299,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             WebPubSubHubInner.class, WebPubSubHubInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param parameters The resource of WebPubSubHub and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a hub setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String hubName, WebPubSubHubInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, resourceName, hubName, parameters);
-        return this.client.<WebPubSubHubInner, WebPubSubHubInner>getLroResult(response, WebPubSubHubInner.class,
-            WebPubSubHubInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, hubName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param parameters The resource of WebPubSubHub and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a hub setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String hubName, WebPubSubHubInner parameters, Context context) {
@@ -386,41 +335,19 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param parameters The resource of WebPubSubHub and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubHubInner createOrUpdate(String resourceGroupName, String resourceName, String hubName,
         WebPubSubHubInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, hubName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, hubName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param parameters The resource of WebPubSubHub and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubHubInner createOrUpdate(String resourceGroupName, String resourceName, String hubName,
         WebPubSubHubInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, hubName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, resourceName, hubName, parameters, context));
     }
 
     /**
@@ -456,8 +383,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String hubName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, hubName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, hubName, Context.NONE);
     }
 
     /**
@@ -498,36 +424,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String hubName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, hubName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, hubName, Context.NONE);
     }
 
-    /**
-     * Delete a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String hubName,
         Context context) {
@@ -552,35 +456,16 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String hubName) {
-        beginDelete(resourceGroupName, resourceName, hubName).getFinalResult();
+        delete(resourceGroupName, resourceName, hubName, Context.NONE);
     }
 
-    /**
-     * Delete a hub setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param hubName The hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String hubName, Context context) {
-        beginDelete(resourceGroupName, resourceName, hubName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, hubName, context));
     }
 
     /**
@@ -632,11 +517,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebPubSubHubInner> listSinglePage(String resourceGroupName, String resourceName) {
-        final String accept = "application/json";
-        Response<WebPubSubHubList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -660,33 +541,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List hub settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub setting list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebPubSubHubInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * List hub settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub setting list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebPubSubHubInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -722,11 +583,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebPubSubHubInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WebPubSubHubList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -213,17 +213,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
         return getWithResponseAsync(resourceGroupName, schedulerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Retention Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RetentionPolicyInner> getWithResponse(String resourceGroupName, String schedulerName,
         Context context) {
@@ -232,16 +222,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             resourceGroupName, schedulerName, accept, context);
     }
 
-    /**
-     * Get a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Retention Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RetentionPolicyInner get(String resourceGroupName, String schedulerName) {
         return getWithResponse(resourceGroupName, schedulerName, Context.NONE).getValue();
@@ -285,11 +266,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String schedulerName,
         RetentionPolicyInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     /**
@@ -333,37 +310,14 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             RetentionPolicyInner.class, RetentionPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RetentionPolicyInner>, RetentionPolicyInner>
         beginCreateOrReplace(String resourceGroupName, String schedulerName, RetentionPolicyInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, schedulerName, resource);
-        return this.client.<RetentionPolicyInner, RetentionPolicyInner>getLroResult(response,
-            RetentionPolicyInner.class, RetentionPolicyInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RetentionPolicyInner>, RetentionPolicyInner> beginCreateOrReplace(
         String resourceGroupName, String schedulerName, RetentionPolicyInner resource, Context context) {
@@ -391,39 +345,19 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RetentionPolicyInner createOrReplace(String resourceGroupName, String schedulerName,
         RetentionPolicyInner resource) {
-        return beginCreateOrReplace(resourceGroupName, schedulerName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RetentionPolicyInner createOrReplace(String resourceGroupName, String schedulerName,
         RetentionPolicyInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, schedulerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, schedulerName, resource, context));
     }
 
     /**
@@ -464,11 +398,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String schedulerName,
         RetentionPolicyInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
     /**
@@ -512,37 +442,14 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             RetentionPolicyInner.class, RetentionPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RetentionPolicyInner>, RetentionPolicyInner> beginUpdate(String resourceGroupName,
         String schedulerName, RetentionPolicyInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, schedulerName, properties);
-        return this.client.<RetentionPolicyInner, RetentionPolicyInner>getLroResult(response,
-            RetentionPolicyInner.class, RetentionPolicyInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RetentionPolicyInner>, RetentionPolicyInner> beginUpdate(String resourceGroupName,
         String schedulerName, RetentionPolicyInner properties, Context context) {
@@ -569,39 +476,18 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RetentionPolicyInner update(String resourceGroupName, String schedulerName,
         RetentionPolicyInner properties) {
-        return beginUpdate(resourceGroupName, schedulerName, properties).getFinalResult();
+        return update(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retention policy resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RetentionPolicyInner update(String resourceGroupName, String schedulerName, RetentionPolicyInner properties,
         Context context) {
-        return beginUpdate(resourceGroupName, schedulerName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, schedulerName, properties, context));
     }
 
     /**
@@ -634,8 +520,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schedulerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -672,33 +557,13 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schedulerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName,
         Context context) {
@@ -721,33 +586,16 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
         return beginDeleteAsync(resourceGroupName, schedulerName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName) {
-        beginDelete(resourceGroupName, schedulerName).getFinalResult();
+        delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Retention Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName, Context context) {
-        beginDelete(resourceGroupName, schedulerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schedulerName, context));
     }
 
     /**
@@ -802,12 +650,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RetentionPolicyInner> listBySchedulerSinglePage(String resourceGroupName,
         String schedulerName) {
-        final String accept = "application/json";
-        Response<RetentionPolicyListResult> res
-            = service.listBySchedulerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerSinglePage(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -832,33 +675,13 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Retention Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RetentionPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RetentionPolicyInner> listByScheduler(String resourceGroupName, String schedulerName) {
-        return new PagedIterable<>(() -> listBySchedulerSinglePage(resourceGroupName, schedulerName),
-            nextLink -> listBySchedulerNextSinglePage(nextLink));
+        return listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * List Retention Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RetentionPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RetentionPolicyInner> listByScheduler(String resourceGroupName, String schedulerName,
         Context context) {
@@ -897,11 +720,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RetentionPolicyInner> listBySchedulerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RetentionPolicyListResult> res
-            = service.listBySchedulerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

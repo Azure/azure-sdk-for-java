@@ -62,7 +62,7 @@ public final class UpdateSummariesOperationsImpl implements UpdateSummariesOpera
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
-        this.serviceClient().delete(resourceGroupName, clusterName);
+        this.delete(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, Context context) {
@@ -70,8 +70,7 @@ public final class UpdateSummariesOperationsImpl implements UpdateSummariesOpera
     }
 
     public PagedIterable<UpdateSummaries> list(String resourceGroupName, String clusterName) {
-        PagedIterable<UpdateSummariesInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateSummariesImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<UpdateSummaries> list(String resourceGroupName, String clusterName, Context context) {

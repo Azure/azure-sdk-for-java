@@ -92,10 +92,7 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapDatabaseInstances()
-            .create(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SapDatabaseInstance create(Context context) {
@@ -118,12 +115,7 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapDatabaseInstances()
-            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SapDatabaseInstance apply(Context context) {
@@ -151,11 +143,7 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapDatabaseInstances()
-            .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SapDatabaseInstance refresh(Context context) {

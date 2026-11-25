@@ -216,35 +216,14 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> getWithResponse(String resourceGroupName, String securityConnectorName,
         String applicationId, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, context).block();
     }
 
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner get(String resourceGroupName, String securityConnectorName, String applicationId) {
         return getWithResponse(resourceGroupName, securityConnectorName, applicationId, Context.NONE).getValue();
@@ -368,19 +347,7 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or update a security Application on the given security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> createOrUpdateWithResponse(String resourceGroupName, String securityConnectorName,
         String applicationId, ApplicationInner application, Context context) {
@@ -388,18 +355,7 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
             context).block();
     }
 
-    /**
-     * Creates or update a security Application on the given security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner createOrUpdate(String resourceGroupName, String securityConnectorName, String applicationId,
         ApplicationInner application) {
@@ -504,34 +460,14 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an Application over a given scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName,
         String applicationId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, context).block();
     }
 
-    /**
-     * Delete an Application over a given scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {
         deleteWithResponse(resourceGroupName, securityConnectorName, applicationId, Context.NONE);
@@ -654,34 +590,13 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant applications over a security connector level scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant applications over a security connector level scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String resourceGroupName, String securityConnectorName) {
         return new PagedIterable<>(listAsync(resourceGroupName, securityConnectorName));
     }
 
-    /**
-     * Get a list of all relevant applications over a security connector level scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant applications over a security connector level scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String resourceGroupName, String securityConnectorName,
         Context context) {

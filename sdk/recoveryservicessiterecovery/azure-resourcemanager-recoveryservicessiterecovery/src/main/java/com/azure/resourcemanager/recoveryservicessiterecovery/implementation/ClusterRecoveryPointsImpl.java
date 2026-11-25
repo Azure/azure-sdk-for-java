@@ -28,10 +28,8 @@ public final class ClusterRecoveryPointsImpl implements ClusterRecoveryPoints {
     public PagedIterable<ClusterRecoveryPoint> listByReplicationProtectionCluster(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName) {
-        PagedIterable<ClusterRecoveryPointInner> inner = this.serviceClient()
-            .listByReplicationProtectionCluster(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterRecoveryPointImpl(inner1, this.manager()));
+        return this.listByReplicationProtectionCluster(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, Context.NONE);
     }
 
     public PagedIterable<ClusterRecoveryPoint> listByReplicationProtectionCluster(String resourceGroupName,

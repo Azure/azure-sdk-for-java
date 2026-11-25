@@ -224,18 +224,7 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Java Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Java Component along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JavaComponentInner> getWithResponse(String resourceGroupName, String environmentName, String name,
         Context context) {
@@ -244,17 +233,7 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             resourceGroupName, environmentName, name, accept, context);
     }
 
-    /**
-     * Get a Java Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JavaComponentInner get(String resourceGroupName, String environmentName, String name) {
         return getWithResponse(resourceGroupName, environmentName, name, Context.NONE).getValue();
@@ -303,11 +282,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String name, JavaComponentInner javaComponentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, name, contentType, accept,
-            javaComponentEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, name, javaComponentEnvelope,
+            Context.NONE);
     }
 
     /**
@@ -358,44 +334,14 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             JavaComponentInner.class, JavaComponentInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Java Component.
-     * 
-     * Creates or updates a Java Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JavaComponentInner>, JavaComponentInner> beginCreateOrUpdate(String resourceGroupName,
         String environmentName, String name, JavaComponentInner javaComponentEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, environmentName, name, javaComponentEnvelope);
-        return this.client.<JavaComponentInner, JavaComponentInner>getLroResult(response, JavaComponentInner.class,
-            JavaComponentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Java Component.
-     * 
-     * Creates or updates a Java Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JavaComponentInner>, JavaComponentInner> beginCreateOrUpdate(String resourceGroupName,
         String environmentName, String name, JavaComponentInner javaComponentEnvelope, Context context) {
@@ -426,46 +372,19 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Java Component.
-     * 
-     * Creates or updates a Java Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JavaComponentInner createOrUpdate(String resourceGroupName, String environmentName, String name,
         JavaComponentInner javaComponentEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Java Component.
-     * 
-     * Creates or updates a Java Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JavaComponentInner createOrUpdate(String resourceGroupName, String environmentName, String name,
         JavaComponentInner javaComponentEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, context));
     }
 
     /**
@@ -511,11 +430,7 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String environmentName, String name,
         JavaComponentInner javaComponentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, name, contentType, accept,
-            javaComponentEnvelope, Context.NONE);
+        return updateWithResponse(resourceGroupName, environmentName, name, javaComponentEnvelope, Context.NONE);
     }
 
     /**
@@ -566,44 +481,14 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             JavaComponentInner.class, JavaComponentInner.class, this.client.getContext());
     }
 
-    /**
-     * Update properties of a Java Component
-     * 
-     * Patches a Java Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JavaComponentInner>, JavaComponentInner> beginUpdate(String resourceGroupName,
         String environmentName, String name, JavaComponentInner javaComponentEnvelope) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, environmentName, name, javaComponentEnvelope);
-        return this.client.<JavaComponentInner, JavaComponentInner>getLroResult(response, JavaComponentInner.class,
-            JavaComponentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a Java Component
-     * 
-     * Patches a Java Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JavaComponentInner>, JavaComponentInner> beginUpdate(String resourceGroupName,
         String environmentName, String name, JavaComponentInner javaComponentEnvelope, Context context) {
@@ -634,45 +519,19 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of a Java Component
-     * 
-     * Patches a Java Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JavaComponentInner update(String resourceGroupName, String environmentName, String name,
         JavaComponentInner javaComponentEnvelope) {
-        return beginUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope).getFinalResult();
+        return update(resourceGroupName, environmentName, name, javaComponentEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a Java Component
-     * 
-     * Patches a Java Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param javaComponentEnvelope Configuration details of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return java Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JavaComponentInner update(String resourceGroupName, String environmentName, String name,
         JavaComponentInner javaComponentEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, environmentName, name, javaComponentEnvelope, context));
     }
 
     /**
@@ -712,8 +571,7 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, environmentName, name, Context.NONE);
     }
 
     /**
@@ -758,40 +616,14 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete.
-     * 
-     * Delete a Java Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, environmentName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, environmentName, name, Context.NONE);
     }
 
-    /**
-     * Delete.
-     * 
-     * Delete a Java Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName, String name,
         Context context) {
@@ -818,39 +650,16 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete.
-     * 
-     * Delete a Java Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String name) {
-        beginDelete(resourceGroupName, environmentName, name).getFinalResult();
+        delete(resourceGroupName, environmentName, name, Context.NONE);
     }
 
-    /**
-     * Delete.
-     * 
-     * Delete a Java Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param name Name of the Java Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String name, Context context) {
-        beginDelete(resourceGroupName, environmentName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, environmentName, name, context));
     }
 
     /**
@@ -904,12 +713,7 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JavaComponentInner> listSinglePage(String resourceGroupName, String environmentName) {
-        final String accept = "application/json";
-        Response<JavaComponentsCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -934,33 +738,13 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Java Components for a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Java Components for a managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JavaComponentInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Get the Java Components for a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Java Components for a managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JavaComponentInner> list(String resourceGroupName, String environmentName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, context),
@@ -1001,11 +785,7 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JavaComponentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JavaComponentsCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

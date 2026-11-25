@@ -30,8 +30,7 @@ public final class ArtifactsImpl implements Artifacts {
     }
 
     public PagedIterable<Artifact> listByParent(String resourceGroupName, String name, String imageName) {
-        PagedIterable<ArtifactInner> inner = this.serviceClient().listByParent(resourceGroupName, name, imageName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, name, imageName, Context.NONE);
     }
 
     public PagedIterable<Artifact> listByParent(String resourceGroupName, String name, String imageName,

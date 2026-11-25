@@ -247,19 +247,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VM application along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VmApplicationInner> getWithResponse(String resourceGroupName, String machineName,
         String applicationName, Context context) {
@@ -268,18 +256,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             resourceGroupName, machineName, applicationName, accept, context);
     }
 
-    /**
-     * Gets a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VM application.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmApplicationInner get(String resourceGroupName, String machineName, String applicationName) {
         return getWithResponse(resourceGroupName, machineName, applicationName, Context.NONE).getValue();
@@ -327,19 +304,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the instance view of a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a VM application along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VmApplicationInner> getInstanceViewWithResponse(String resourceGroupName, String machineName,
         String applicationName, Context context) {
@@ -348,18 +313,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             this.client.getSubscriptionId(), resourceGroupName, machineName, applicationName, accept, context);
     }
 
-    /**
-     * Gets the instance view of a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a VM application.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmApplicationInner getInstanceView(String resourceGroupName, String machineName, String applicationName) {
         return getInstanceViewWithResponse(resourceGroupName, machineName, applicationName, Context.NONE).getValue();
@@ -407,11 +361,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String machineName,
         String applicationName, VmApplicationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, applicationName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, machineName, applicationName, resource, Context.NONE);
     }
 
     /**
@@ -460,42 +410,14 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             VmApplicationInner.class, VmApplicationInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param resource The VM application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmApplicationInner>, VmApplicationInner> beginCreateOrUpdate(String resourceGroupName,
         String machineName, String applicationName, VmApplicationInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, machineName, applicationName, resource);
-        return this.client.<VmApplicationInner, VmApplicationInner>getLroResult(response, VmApplicationInner.class,
-            VmApplicationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, machineName, applicationName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param resource The VM application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmApplicationInner>, VmApplicationInner> beginCreateOrUpdate(String resourceGroupName,
         String machineName, String applicationName, VmApplicationInner resource, Context context) {
@@ -525,43 +447,19 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param resource The VM application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmApplicationInner createOrUpdate(String resourceGroupName, String machineName, String applicationName,
         VmApplicationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, applicationName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, machineName, applicationName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param resource The VM application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmApplicationInner createOrUpdate(String resourceGroupName, String machineName, String applicationName,
         VmApplicationInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, applicationName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, machineName, applicationName, resource, context));
     }
 
     /**
@@ -606,11 +504,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String machineName,
         String applicationName, VmApplicationUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, applicationName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, machineName, applicationName, properties, Context.NONE);
     }
 
     /**
@@ -659,41 +553,14 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             VmApplicationInner.class, VmApplicationInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param properties The VM application update properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmApplicationInner>, VmApplicationInner> beginUpdate(String resourceGroupName,
         String machineName, String applicationName, VmApplicationUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, machineName, applicationName, properties);
-        return this.client.<VmApplicationInner, VmApplicationInner>getLroResult(response, VmApplicationInner.class,
-            VmApplicationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, machineName, applicationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param properties The VM application update properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmApplicationInner>, VmApplicationInner> beginUpdate(String resourceGroupName,
         String machineName, String applicationName, VmApplicationUpdate properties, Context context) {
@@ -723,43 +590,19 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param properties The VM application update properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmApplicationInner update(String resourceGroupName, String machineName, String applicationName,
         VmApplicationUpdate properties) {
-        return beginUpdate(resourceGroupName, machineName, applicationName, properties).getFinalResult();
+        return update(resourceGroupName, machineName, applicationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param properties The VM application update properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VM application installed on a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmApplicationInner update(String resourceGroupName, String machineName, String applicationName,
         VmApplicationUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, machineName, applicationName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, machineName, applicationName, properties, context));
     }
 
     /**
@@ -798,8 +641,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String machineName,
         String applicationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, applicationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, machineName, applicationName, Context.NONE);
     }
 
     /**
@@ -843,38 +685,14 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         String applicationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, machineName, applicationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, machineName, applicationName, Context.NONE);
     }
 
-    /**
-     * Deletes a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         String applicationName, Context context) {
@@ -900,37 +718,16 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, String applicationName) {
-        beginDelete(resourceGroupName, machineName, applicationName).getFinalResult();
+        delete(resourceGroupName, machineName, applicationName, Context.NONE);
     }
 
-    /**
-     * Deletes a VM application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param applicationName The name of the VM application. When creating the resource, this name must match the
-     * application name in the selected gallery reference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, String applicationName, Context context) {
-        beginDelete(resourceGroupName, machineName, applicationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, machineName, applicationName, context));
     }
 
     /**
@@ -1009,12 +806,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VmApplicationInner> listSinglePage(String resourceGroupName, String machineName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<VmApplicationsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, machineName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, machineName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1041,37 +833,15 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the VM applications installed on a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of VM applications as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VmApplicationInner> list(String resourceGroupName, String machineName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, machineName, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, machineName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Lists the VM applications installed on a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param top The maximum number of results to return.
-     * @param skipToken The continuation token for the next page of results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of VM applications as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VmApplicationInner> list(String resourceGroupName, String machineName, Integer top,
         String skipToken, Context context) {
@@ -1108,11 +878,7 @@ public final class VmApplicationsClientImpl implements VmApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VmApplicationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VmApplicationsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

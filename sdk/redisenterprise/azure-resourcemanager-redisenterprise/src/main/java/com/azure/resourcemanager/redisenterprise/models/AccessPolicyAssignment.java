@@ -48,12 +48,28 @@ public interface AccessPolicyAssignment {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the accessPolicyName property: Name of access policy under specific access policy assignment. Only "default"
-     * policy is supported for now.
+     * Gets the accessPolicyName property: **Deprecated.** This property always returns "default". Use `accessString` to
+     * configure custom Redis ACL permissions instead.
      * 
      * @return the accessPolicyName value.
      */
     String accessPolicyName();
+
+    /**
+     * Gets the accessString property: The Redis ACL permissions string applied to this assignment, for example
+     * `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
+     * 
+     * @return the accessString value.
+     */
+    String accessString();
+
+    /**
+     * Gets the provisioningError property: Provisioning error details when the access string failed to apply (e.g.,
+     * invalid ACL syntax). Null when provisioning succeeded.
+     * 
+     * @return the provisioningError value.
+     */
+    AccessPolicyAssignmentProvisioningError provisioningError();
 
     /**
      * Gets the user property: The user associated with the access policy.
@@ -113,7 +129,8 @@ public interface AccessPolicyAssignment {
          * The stage of the AccessPolicyAssignment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithAccessPolicyName, DefinitionStages.WithUser {
+        interface WithCreate extends DefinitionStages.WithAccessPolicyName, DefinitionStages.WithAccessString,
+            DefinitionStages.WithUser {
             /**
              * Executes the create request.
              * 
@@ -135,14 +152,29 @@ public interface AccessPolicyAssignment {
          */
         interface WithAccessPolicyName {
             /**
-             * Specifies the accessPolicyName property: Name of access policy under specific access policy assignment.
-             * Only "default" policy is supported for now..
+             * Specifies the accessPolicyName property: **Deprecated.** This property always returns "default". Use
+             * `accessString` to configure custom Redis ACL permissions instead..
              * 
-             * @param accessPolicyName Name of access policy under specific access policy assignment. Only "default"
-             * policy is supported for now.
+             * @param accessPolicyName **Deprecated.** This property always returns "default". Use `accessString` to
+             * configure custom Redis ACL permissions instead.
              * @return the next definition stage.
              */
             WithCreate withAccessPolicyName(String accessPolicyName);
+        }
+
+        /**
+         * The stage of the AccessPolicyAssignment definition allowing to specify accessString.
+         */
+        interface WithAccessString {
+            /**
+             * Specifies the accessString property: The Redis ACL permissions string applied to this assignment, for
+             * example `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified..
+             * 
+             * @param accessString The Redis ACL permissions string applied to this assignment, for example `+&#064;read
+             * ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
+             * @return the next definition stage.
+             */
+            WithCreate withAccessString(String accessString);
         }
 
         /**
@@ -169,7 +201,7 @@ public interface AccessPolicyAssignment {
     /**
      * The template for AccessPolicyAssignment update.
      */
-    interface Update extends UpdateStages.WithAccessPolicyName, UpdateStages.WithUser {
+    interface Update extends UpdateStages.WithAccessPolicyName, UpdateStages.WithAccessString, UpdateStages.WithUser {
         /**
          * Executes the update request.
          * 
@@ -195,14 +227,29 @@ public interface AccessPolicyAssignment {
          */
         interface WithAccessPolicyName {
             /**
-             * Specifies the accessPolicyName property: Name of access policy under specific access policy assignment.
-             * Only "default" policy is supported for now..
+             * Specifies the accessPolicyName property: **Deprecated.** This property always returns "default". Use
+             * `accessString` to configure custom Redis ACL permissions instead..
              * 
-             * @param accessPolicyName Name of access policy under specific access policy assignment. Only "default"
-             * policy is supported for now.
+             * @param accessPolicyName **Deprecated.** This property always returns "default". Use `accessString` to
+             * configure custom Redis ACL permissions instead.
              * @return the next definition stage.
              */
             Update withAccessPolicyName(String accessPolicyName);
+        }
+
+        /**
+         * The stage of the AccessPolicyAssignment update allowing to specify accessString.
+         */
+        interface WithAccessString {
+            /**
+             * Specifies the accessString property: The Redis ACL permissions string applied to this assignment, for
+             * example `+&#064;read ~cache:*`. Defaults to `+&#064;all ~*` if not specified..
+             * 
+             * @param accessString The Redis ACL permissions string applied to this assignment, for example `+&#064;read
+             * ~cache:*`. Defaults to `+&#064;all ~*` if not specified.
+             * @return the next definition stage.
+             */
+            Update withAccessString(String accessString);
         }
 
         /**

@@ -91,11 +91,7 @@ public final class CustomRecommendationImpl
     }
 
     public CustomRecommendation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomRecommendations()
-            .createOrUpdateWithResponse(scope, customRecommendationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomRecommendation create(Context context) {
@@ -117,11 +113,7 @@ public final class CustomRecommendationImpl
     }
 
     public CustomRecommendation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomRecommendations()
-            .createOrUpdateWithResponse(scope, customRecommendationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomRecommendation apply(Context context) {
@@ -144,11 +136,7 @@ public final class CustomRecommendationImpl
     }
 
     public CustomRecommendation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomRecommendations()
-            .getWithResponse(scope, customRecommendationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomRecommendation refresh(Context context) {

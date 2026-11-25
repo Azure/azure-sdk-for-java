@@ -147,17 +147,7 @@ public final class ActionsClientImpl implements ActionsClient {
         return getWithResponseAsync(location, actionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Action resource for a given location.
-     * 
-     * @param location The name of the Azure region.
-     * @param actionName String that represents an Action resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Action resource for a given location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActionInner> getWithResponse(String location, String actionName, Context context) {
         final String accept = "application/json";
@@ -165,16 +155,7 @@ public final class ActionsClientImpl implements ActionsClient {
             location, actionName, accept, context);
     }
 
-    /**
-     * Get an Action resource for a given location.
-     * 
-     * @param location The name of the Azure region.
-     * @param actionName String that represents an Action resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Action resource for a given location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActionInner get(String location, String actionName) {
         return getWithResponse(location, actionName, Context.NONE).getValue();
@@ -246,11 +227,7 @@ public final class ActionsClientImpl implements ActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActionInner> listSinglePage(String location, String continuationToken) {
-        final String accept = "application/json";
-        Response<ActionListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, continuationToken, Context.NONE);
     }
 
     /**
@@ -273,33 +250,14 @@ public final class ActionsClientImpl implements ActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Action resources for a given location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Action resources for a given location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionInner> list(String location) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(location, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(location, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Action resources for a given location.
-     * 
-     * @param location The name of the Azure region.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Action resources for a given location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionInner> list(String location, String continuationToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, continuationToken, context),
@@ -336,11 +294,7 @@ public final class ActionsClientImpl implements ActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ActionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

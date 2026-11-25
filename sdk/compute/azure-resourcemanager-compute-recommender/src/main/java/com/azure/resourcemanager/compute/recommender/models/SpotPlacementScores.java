@@ -21,7 +21,7 @@ public interface SpotPlacementScores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return spot Placement Scores metadata along with {@link Response}.
      */
-    Response<ComputeDiagnosticBase> getWithResponse(String location, Context context);
+    Response<SpotPlacementScoresBase> getWithResponse(String location, Context context);
 
     /**
      * Gets Spot Placement Scores metadata.
@@ -32,7 +32,7 @@ public interface SpotPlacementScores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return spot Placement Scores metadata.
      */
-    ComputeDiagnosticBase get(String location);
+    SpotPlacementScoresBase get(String location);
 
     /**
      * Generates placement scores for Spot VM skus.

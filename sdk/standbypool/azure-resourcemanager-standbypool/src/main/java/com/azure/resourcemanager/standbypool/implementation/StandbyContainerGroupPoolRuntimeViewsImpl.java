@@ -48,10 +48,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsImpl implements StandbyC
 
     public PagedIterable<StandbyContainerGroupPoolRuntimeViewResource> listByStandbyPool(String resourceGroupName,
         String standbyContainerGroupPoolName) {
-        PagedIterable<StandbyContainerGroupPoolRuntimeViewResourceInner> inner
-            = this.serviceClient().listByStandbyPool(resourceGroupName, standbyContainerGroupPoolName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StandbyContainerGroupPoolRuntimeViewResourceImpl(inner1, this.manager()));
+        return this.listByStandbyPool(resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
     public PagedIterable<StandbyContainerGroupPoolRuntimeViewResource> listByStandbyPool(String resourceGroupName,

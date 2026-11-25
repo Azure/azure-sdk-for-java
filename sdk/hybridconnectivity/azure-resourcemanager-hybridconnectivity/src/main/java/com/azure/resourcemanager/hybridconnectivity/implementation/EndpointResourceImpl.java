@@ -61,11 +61,7 @@ public final class EndpointResourceImpl
     }
 
     public EndpointResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdateWithResponse(resourceUri, endpointName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EndpointResource create(Context context) {
@@ -88,11 +84,7 @@ public final class EndpointResourceImpl
     }
 
     public EndpointResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .updateWithResponse(resourceUri, endpointName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EndpointResource apply(Context context) {
@@ -114,11 +106,7 @@ public final class EndpointResourceImpl
     }
 
     public EndpointResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .getWithResponse(resourceUri, endpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EndpointResource refresh(Context context) {

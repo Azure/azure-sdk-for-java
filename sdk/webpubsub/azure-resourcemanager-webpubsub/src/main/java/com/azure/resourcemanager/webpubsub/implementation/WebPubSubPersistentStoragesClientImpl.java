@@ -198,18 +198,7 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a persistent storage along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersistentStorageInner> getWithResponse(String resourceGroupName, String resourceName, String name,
         Context context) {
@@ -218,17 +207,7 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             resourceGroupName, resourceName, name, accept, context);
     }
 
-    /**
-     * Get a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a persistent storage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersistentStorageInner get(String resourceGroupName, String resourceName, String name) {
         return getWithResponse(resourceGroupName, resourceName, name, Context.NONE).getValue();
@@ -273,11 +252,7 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName, String name,
         PersistentStorageInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, name, parameters, Context.NONE);
     }
 
     /**
@@ -325,39 +300,14 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             this.client.getContext());
     }
 
-    /**
-     * Create or update a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param parameters The resource of persistent storage and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a persistent storage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PersistentStorageInner>, PersistentStorageInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String name, PersistentStorageInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, name, parameters);
-        return this.client.<PersistentStorageInner, PersistentStorageInner>getLroResult(response,
-            PersistentStorageInner.class, PersistentStorageInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param parameters The resource of persistent storage and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a persistent storage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PersistentStorageInner>, PersistentStorageInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String name, PersistentStorageInner parameters,
@@ -387,41 +337,19 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param parameters The resource of persistent storage and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a persistent storage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersistentStorageInner createOrUpdate(String resourceGroupName, String resourceName, String name,
         PersistentStorageInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, name, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param parameters The resource of persistent storage and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a persistent storage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersistentStorageInner createOrUpdate(String resourceGroupName, String resourceName, String name,
         PersistentStorageInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, name, parameters, context));
     }
 
     /**
@@ -457,8 +385,7 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, name, Context.NONE);
     }
 
     /**
@@ -499,35 +426,13 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             this.client.getContext());
     }
 
-    /**
-     * Delete a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, name, Context.NONE);
     }
 
-    /**
-     * Delete a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name,
         Context context) {
@@ -552,35 +457,16 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String name) {
-        beginDelete(resourceGroupName, resourceName, name).getFinalResult();
+        delete(resourceGroupName, resourceName, name, Context.NONE);
     }
 
-    /**
-     * Delete a persistent storage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param name Persistent storage name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String name, Context context) {
-        beginDelete(resourceGroupName, resourceName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, name, context));
     }
 
     /**
@@ -633,11 +519,7 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PersistentStorageInner> listSinglePage(String resourceGroupName, String resourceName) {
-        final String accept = "application/json";
-        Response<PersistentStorageList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -661,33 +543,13 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all persistent storages.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return persistent storages list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PersistentStorageInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * List all persistent storages.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return persistent storages list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PersistentStorageInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -723,11 +585,7 @@ public final class WebPubSubPersistentStoragesClientImpl implements WebPubSubPer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PersistentStorageInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PersistentStorageList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

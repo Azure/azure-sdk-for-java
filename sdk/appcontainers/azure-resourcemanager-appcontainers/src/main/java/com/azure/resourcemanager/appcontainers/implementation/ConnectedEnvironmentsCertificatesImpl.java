@@ -45,7 +45,7 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, certificateName);
+        this.delete(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName,
@@ -54,8 +54,7 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
     }
 
     public PagedIterable<Certificate> list(String resourceGroupName, String connectedEnvironmentName) {
-        PagedIterable<CertificateInner> inner = this.serviceClient().list(resourceGroupName, connectedEnvironmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
     public PagedIterable<Certificate> list(String resourceGroupName, String connectedEnvironmentName, Context context) {
@@ -65,103 +64,36 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
     }
 
     public Certificate getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "certificateName");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Certificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectedEnvironmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "connectedEnvironmentName", "connectedEnvironments", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "certificateName");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+            "certificateName", "certificates", LOGGER);
         return this.getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "certificateName");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        this.delete(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectedEnvironmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "connectedEnvironmentName", "connectedEnvironments", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
-            "certificateName");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+            "certificateName", "certificates", LOGGER);
         this.delete(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 

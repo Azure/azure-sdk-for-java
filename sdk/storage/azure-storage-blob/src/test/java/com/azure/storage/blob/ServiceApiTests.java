@@ -1133,6 +1133,41 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createContainerIfNotExistsOnContainerBeingDeleted() {
+        String containerName = cc.getBlobContainerName();
+        primaryBlobServiceClient.deleteBlobContainer(containerName);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> primaryBlobServiceClient.createBlobContainerIfNotExists(containerName));
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
+    public void createContainerOnContainerBeingDeleted() {
+        String containerName = cc.getBlobContainerName();
+        primaryBlobServiceClient.deleteBlobContainer(containerName);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> primaryBlobServiceClient.createBlobContainer(containerName));
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
+    // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createContainerIfNotExistsAfterContainerDeleteCompletes() {
+        String containerName = cc.getBlobContainerName();
+        primaryBlobServiceClient.deleteBlobContainer(containerName);
+
+        Response<BlobContainerClient> response = createAfterContainerDeleteCompletes(
+            () -> primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null));
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(response.getValue().exists());
+    }
+
+    @Test
     public void deleteContainerIfExists() {
         String containerName = generateContainerName();
         primaryBlobServiceClient.createBlobContainer(containerName);

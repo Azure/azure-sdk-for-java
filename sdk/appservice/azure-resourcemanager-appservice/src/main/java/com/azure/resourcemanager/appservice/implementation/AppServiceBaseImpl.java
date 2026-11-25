@@ -193,7 +193,7 @@ abstract class AppServiceBaseImpl<FluentT extends WebAppBase, FluentImplT extend
         return manager().serviceClient()
             .getWebApps()
             .listPublishingProfileXmlWithSecretsAsync(resourceGroupName(), name(), new CsmPublishingProfileOptions())
-            .map(xmlString -> new PublishingProfileImpl(xmlString, this));
+            .map(binaryData -> new PublishingProfileImpl(binaryData.toString(), this));
     }
 
     @Override

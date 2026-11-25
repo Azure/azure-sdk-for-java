@@ -255,17 +255,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AssetEndpointProfile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssetEndpointProfileInner> getByResourceGroupWithResponse(String resourceGroupName,
         String assetEndpointProfileName, Context context) {
@@ -274,16 +264,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, context);
     }
 
-    /**
-     * Get a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AssetEndpointProfile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner getByResourceGroup(String resourceGroupName, String assetEndpointProfileName) {
         return getByResourceGroupWithResponse(resourceGroupName, assetEndpointProfileName, Context.NONE).getValue();
@@ -326,11 +307,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, assetEndpointProfileName, resource, Context.NONE);
     }
 
     /**
@@ -376,38 +353,14 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             this.client.getContext());
     }
 
-    /**
-     * Create a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginCreateOrReplace(
         String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, assetEndpointProfileName, resource);
-        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(response,
-            AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, assetEndpointProfileName, resource, Context.NONE);
     }
 
-    /**
-     * Create a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginCreateOrReplace(
         String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner resource,
@@ -436,39 +389,19 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner createOrReplace(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileInner resource) {
-        return beginCreateOrReplace(resourceGroupName, assetEndpointProfileName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, assetEndpointProfileName, resource, Context.NONE);
     }
 
-    /**
-     * Create a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner createOrReplace(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, assetEndpointProfileName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, assetEndpointProfileName, resource, context));
     }
 
     /**
@@ -508,11 +441,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, assetEndpointProfileName, properties, Context.NONE);
     }
 
     /**
@@ -558,37 +487,14 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             this.client.getContext());
     }
 
-    /**
-     * Update a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner>
         beginUpdate(String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, assetEndpointProfileName, properties);
-        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(response,
-            AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, assetEndpointProfileName, properties, Context.NONE);
     }
 
-    /**
-     * Update a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdate(
         String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties,
@@ -617,39 +523,19 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileUpdate properties) {
-        return beginUpdate(resourceGroupName, assetEndpointProfileName, properties).getFinalResult();
+        return update(resourceGroupName, assetEndpointProfileName, properties, Context.NONE);
     }
 
-    /**
-     * Update a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, assetEndpointProfileName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, assetEndpointProfileName, properties, context));
     }
 
     /**
@@ -683,8 +569,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String assetEndpointProfileName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, assetEndpointProfileName, Context.NONE);
     }
 
     /**
@@ -723,33 +608,13 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             this.client.getContext());
     }
 
-    /**
-     * Delete a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String assetEndpointProfileName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, assetEndpointProfileName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, assetEndpointProfileName, Context.NONE);
     }
 
-    /**
-     * Delete a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String assetEndpointProfileName,
         Context context) {
@@ -773,33 +638,16 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String assetEndpointProfileName) {
-        beginDelete(resourceGroupName, assetEndpointProfileName).getFinalResult();
+        delete(resourceGroupName, assetEndpointProfileName, Context.NONE);
     }
 
-    /**
-     * Delete a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String assetEndpointProfileName, Context context) {
-        beginDelete(resourceGroupName, assetEndpointProfileName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, assetEndpointProfileName, context));
     }
 
     /**
@@ -850,11 +698,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetEndpointProfileInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AssetEndpointProfileListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -877,31 +721,13 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AssetEndpointProfile resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List AssetEndpointProfile resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -949,11 +775,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetEndpointProfileInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AssetEndpointProfileListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -974,27 +796,13 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AssetEndpointProfile resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List AssetEndpointProfile resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1033,11 +841,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetEndpointProfileInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssetEndpointProfileListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1092,11 +896,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetEndpointProfileInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssetEndpointProfileListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

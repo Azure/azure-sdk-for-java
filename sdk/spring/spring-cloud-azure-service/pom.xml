@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-service</artifactId>
-  <version>7.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+  <version>7.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
 
   <name>Spring Cloud Azure Service</name>
   <description>Spring Cloud Azure Service</description>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>7.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>7.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -116,7 +116,7 @@
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
-      <version>4.2.1</version> <!-- {x-version-update;springboot4_org.apache.kafka:kafka-clients;external_dependency} -->
+      <version>4.2.2</version> <!-- {x-version-update;springboot4_org.apache.kafka:kafka-clients;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -138,13 +138,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.15</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.15</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -156,7 +156,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.9</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.10</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -213,8 +213,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.kafka:kafka-clients:[4.2.1]</include> <!-- {x-include-update;springboot4_org.apache.kafka:kafka-clients;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.7.13]</include> <!-- {x-include-update;springboot4_org.postgresql:postgresql;external_dependency} -->
+                <include>org.apache.kafka:kafka-clients:[4.2.2]</include> <!-- {x-include-update;springboot4_org.apache.kafka:kafka-clients;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.7.14]</include> <!-- {x-include-update;springboot4_org.postgresql:postgresql;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[10.8]</include> <!-- {x-include-update;springboot4_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>

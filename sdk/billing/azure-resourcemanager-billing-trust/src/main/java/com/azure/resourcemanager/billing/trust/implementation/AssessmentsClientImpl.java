@@ -208,31 +208,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Assessment.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Assessment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssessmentInner> getWithResponse(String resourceUri, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
 
-    /**
-     * Get a Assessment.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssessmentInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
@@ -273,10 +256,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, AssessmentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, resource, Context.NONE);
     }
 
     /**
@@ -319,37 +299,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             AssessmentInner.class, AssessmentInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an Assessment. Long-running operation — returns 200 (replace) or 201 (create) with the
-     * `Azure-AsyncOperation` polling header on both responses.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a billing trust assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssessmentInner>, AssessmentInner> beginCreateOrUpdate(String resourceUri,
         AssessmentInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, resource);
-        return this.client.<AssessmentInner, AssessmentInner>getLroResult(response, AssessmentInner.class,
-            AssessmentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Assessment. Long-running operation — returns 200 (replace) or 201 (create) with the
-     * `Azure-AsyncOperation` polling header on both responses.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a billing trust assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssessmentInner>, AssessmentInner> beginCreateOrUpdate(String resourceUri,
         AssessmentInner resource, Context context) {
@@ -374,37 +331,16 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return beginCreateOrUpdateAsync(resourceUri, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Assessment. Long-running operation — returns 200 (replace) or 201 (create) with the
-     * `Azure-AsyncOperation` polling header on both responses.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing trust assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssessmentInner createOrUpdate(String resourceUri, AssessmentInner resource) {
-        return beginCreateOrUpdate(resourceUri, resource).getFinalResult();
+        return createOrUpdate(resourceUri, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Assessment. Long-running operation — returns 200 (replace) or 201 (create) with the
-     * `Azure-AsyncOperation` polling header on both responses.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing trust assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssessmentInner createOrUpdate(String resourceUri, AssessmentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceUri, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, resource, context));
     }
 
     /**
@@ -437,7 +373,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
+        return deleteWithResponse(resourceUri, Context.NONE);
     }
 
     /**
@@ -473,33 +409,13 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an assessment. Long-running operation — returns 202 + 204 + default with `Azure-AsyncOperation`
-     * (preferred) and `Location` polling headers.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, Context.NONE);
     }
 
-    /**
-     * Delete an assessment. Long-running operation — returns 202 + 204 + default with `Azure-AsyncOperation`
-     * (preferred) and `Location` polling headers.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceUri, context);
@@ -521,33 +437,16 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return beginDeleteAsync(resourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an assessment. Long-running operation — returns 202 + 204 + default with `Azure-AsyncOperation`
-     * (preferred) and `Location` polling headers.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri) {
-        beginDelete(resourceUri).getFinalResult();
+        delete(resourceUri, Context.NONE);
     }
 
-    /**
-     * Delete an assessment. Long-running operation — returns 202 + 204 + default with `Azure-AsyncOperation`
-     * (preferred) and `Location` polling headers.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, Context context) {
-        beginDelete(resourceUri, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, context));
     }
 
     /**
@@ -596,11 +495,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssessmentInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<AssessmentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -622,30 +517,13 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Assessment resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Assessment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssessmentInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List Assessment resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Assessment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssessmentInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -686,16 +564,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return listUploadTokenWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Request a time-bound, principal-bound upload token for supplemental document uploads.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing an upload token for supplemental document uploads along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateUploadTokenResponseInner> listUploadTokenWithResponse(String resourceUri, Context context) {
         final String accept = "application/json";
@@ -703,15 +572,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             context);
     }
 
-    /**
-     * Request a time-bound, principal-bound upload token for supplemental document uploads.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing an upload token for supplemental document uploads.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateUploadTokenResponseInner listUploadToken(String resourceUri) {
         return listUploadTokenWithResponse(resourceUri, Context.NONE).getValue();
@@ -747,11 +608,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssessmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssessmentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
