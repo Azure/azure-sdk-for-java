@@ -53,34 +53,15 @@ public final class BatchPricingsImpl implements BatchPricings {
     }
 
     public PricingBatch getById(String id) {
-        String scopeId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scopeId}/providers/Microsoft.Security/batchPricings/{pricingBatchName}", "scopeId");
-        if (scopeId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scopeId'.", id)));
-        }
-        String pricingBatchName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scopeId}/providers/Microsoft.Security/batchPricings/{pricingBatchName}", "pricingBatchName");
-        if (pricingBatchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'batchPricings'.", id)));
-        }
-        return this.getWithResponse(scopeId, pricingBatchName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PricingBatch> getByIdWithResponse(String id, Context context) {
-        String scopeId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scopeId}/providers/Microsoft.Security/batchPricings/{pricingBatchName}", "scopeId");
-        if (scopeId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scopeId'.", id)));
-        }
-        String pricingBatchName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scopeId}/providers/Microsoft.Security/batchPricings/{pricingBatchName}", "pricingBatchName");
-        if (pricingBatchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'batchPricings'.", id)));
-        }
+        String scopeId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scopeId}/providers/Microsoft.Security/batchPricings/{pricingBatchName}", "scopeId", "scopeId", LOGGER);
+        String pricingBatchName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scopeId}/providers/Microsoft.Security/batchPricings/{pricingBatchName}", "pricingBatchName",
+            "batchPricings", LOGGER);
         return this.getWithResponse(scopeId, pricingBatchName, context);
     }
 

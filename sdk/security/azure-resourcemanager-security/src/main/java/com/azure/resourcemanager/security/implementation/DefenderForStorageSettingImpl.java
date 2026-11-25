@@ -25,8 +25,8 @@ public final class DefenderForStorageSettingImpl
         this.serviceManager = serviceManager;
         this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "resourceId");
-        this.settingName = SettingName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName"));
+        this.settingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName");
     }
 
     public String id() {

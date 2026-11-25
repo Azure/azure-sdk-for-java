@@ -184,30 +184,13 @@ public final class BatchPricingsClientImpl implements BatchPricingsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the pricing batch resources for the specified scope.
-     * 
-     * @param scopeId The subscription scope for the batch pricing resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pricing batch resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PricingBatchInner> list(String scopeId) {
         return new PagedIterable<>(listAsync(scopeId));
     }
 
-    /**
-     * Lists the pricing batch resources for the specified scope.
-     * 
-     * @param scopeId The subscription scope for the batch pricing resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pricing batch resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PricingBatchInner> list(String scopeId, Context context) {
         return new PagedIterable<>(listAsync(scopeId, context));
@@ -291,32 +274,13 @@ public final class BatchPricingsClientImpl implements BatchPricingsClient {
         return getWithResponseAsync(scopeId, pricingBatchName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the current pricing batch configuration for the specified scope.
-     * 
-     * @param scopeId The subscription scope for the batch pricing resource.
-     * @param pricingBatchName Name of the pricing batch resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current pricing batch configuration for the specified scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingBatchInner> getWithResponse(String scopeId, String pricingBatchName, Context context) {
         return getWithResponseAsync(scopeId, pricingBatchName, context).block();
     }
 
-    /**
-     * Gets the current pricing batch configuration for the specified scope.
-     * 
-     * @param scopeId The subscription scope for the batch pricing resource.
-     * @param pricingBatchName Name of the pricing batch resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current pricing batch configuration for the specified scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricingBatchInner get(String scopeId, String pricingBatchName) {
         return getWithResponse(scopeId, pricingBatchName, Context.NONE).getValue();
@@ -421,35 +385,14 @@ public final class BatchPricingsClientImpl implements BatchPricingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates multiple pricing plan configurations in a single operation.
-     * 
-     * @param scopeId The subscription scope for the batch pricing resource.
-     * @param pricingBatchName Name of the pricing batch resource.
-     * @param pricingBatch Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pricing batch resource for updating multiple pricing configurations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingBatchInner> createOrUpdateWithResponse(String scopeId, String pricingBatchName,
         PricingBatchInner pricingBatch, Context context) {
         return createOrUpdateWithResponseAsync(scopeId, pricingBatchName, pricingBatch, context).block();
     }
 
-    /**
-     * Updates multiple pricing plan configurations in a single operation.
-     * 
-     * @param scopeId The subscription scope for the batch pricing resource.
-     * @param pricingBatchName Name of the pricing batch resource.
-     * @param pricingBatch Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pricing batch resource for updating multiple pricing configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricingBatchInner createOrUpdate(String scopeId, String pricingBatchName, PricingBatchInner pricingBatch) {
         return createOrUpdateWithResponse(scopeId, pricingBatchName, pricingBatch, Context.NONE).getValue();

@@ -53,11 +53,7 @@ public final class PricingBatchImpl implements PricingBatch, PricingBatch.Defini
     }
 
     public PricingBatch create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchPricings()
-            .createOrUpdateWithResponse(scopeId, pricingBatchName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PricingBatch create(Context context) {
@@ -79,11 +75,7 @@ public final class PricingBatchImpl implements PricingBatch, PricingBatch.Defini
     }
 
     public PricingBatch apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchPricings()
-            .createOrUpdateWithResponse(scopeId, pricingBatchName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PricingBatch apply(Context context) {
@@ -104,11 +96,7 @@ public final class PricingBatchImpl implements PricingBatch, PricingBatch.Defini
     }
 
     public PricingBatch refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchPricings()
-            .getWithResponse(scopeId, pricingBatchName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PricingBatch refresh(Context context) {
