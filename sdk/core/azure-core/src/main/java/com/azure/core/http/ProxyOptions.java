@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.util.ProxyOptionsAccessHelper;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
@@ -74,6 +75,13 @@ public class ProxyOptions {
     private static final Pattern ANY = Pattern.compile("\\*");
     private static final Pattern BRACKETED_IPV6_LITERAL = Pattern.compile("\\[[^\\[\\]]*:[^\\[\\]]*\\]");
 
+    /*
+     * Selects how non-proxy hosts are converted to a regex. Version 1, the default, keeps the original conversion, and
+     * version 2 stops non-proxy hosts from matching unintended hosts. Version 2 will become the default in a future
+     * release.
+     */
+    private static final String NON_PROXY_PARSER_VERSION = "AZURE_NON_PROXY_PARSER_VERSION";
+
     private static final ConfigurationProperty<String> NON_PROXY_PROPERTY
         = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
             .shared(true)
@@ -102,6 +110,11 @@ public class ProxyOptions {
     private String username;
     private String password;
     private String nonProxyHosts;
+    private int nonProxyHostsParserVersion = 1;
+
+    static {
+        ProxyOptionsAccessHelper.setAccessor(proxyOptions -> proxyOptions.nonProxyHostsParserVersion);
+    }
 
     /**
      * Creates ProxyOptions.
@@ -131,21 +144,27 @@ public class ProxyOptions {
      * Sets the hosts which bypass the proxy.
      * <p>
      * The expected format of the passed string is a {@code '|'} delimited list of hosts which should bypass the proxy.
-     * In each host, {@code '*'} is a wildcard and {@code '.'} is a literal dot. Other regex characters, such as
-     * character classes, keep their regex meaning. For example:
+     * <p>
+     * The {@code AZURE_NON_PROXY_PARSER_VERSION} environment variable or system property, read from the global
+     * configuration when this method is called, selects how the hosts are matched:
      * <ul>
-     *     <li>{@code *.example.com} matches any subdomain of {@code example.com}.</li>
-     *     <li>{@code 10.*}, or {@code 10.}, matches hosts beginning with {@code 10.}, such as {@code 10.0.0.1} but not
-     *     {@code 100.64.0.1}.</li>
-     *     <li>{@code .example.com} matches {@code example.com} and its subdomains, but not {@code badexample.com}.</li>
-     *     <li>{@code [::1]} matches the bracketed IPv6 address literally.</li>
+     *     <li>{@code 1}, the default, keeps the original matching. Individual host strings may contain regex
+     *     characters such as {@code '*'}, and some match more hosts than intended. For example, {@code 10.*} also
+     *     matches {@code 100.64.0.1}.</li>
+     *     <li>{@code 2} treats {@code '*'} as a wildcard and {@code '.'} as a literal dot. Other regex characters, such
+     *     as character classes, keep their regex meaning. {@code 10.*}, or {@code 10.}, matches hosts beginning with
+     *     {@code 10.}, such as {@code 10.0.0.1} but not {@code 100.64.0.1}. {@code .example.com} matches
+     *     {@code example.com} and its subdomains, but not {@code badexample.com}. Bracketed IPv6 addresses, such as
+     *     {@code [::1]}, are matched literally.</li>
      * </ul>
+     * Version {@code 2} will become the default in a future release.
      *
      * @param nonProxyHosts Hosts that bypass the proxy.
      * @return the updated ProxyOptions object
      */
     public ProxyOptions setNonProxyHosts(String nonProxyHosts) {
-        this.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHosts);
+        this.nonProxyHostsParserVersion = getNonProxyParserVersion(Configuration.getGlobalConfiguration());
+        this.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHosts, nonProxyHostsParserVersion);
         return this;
     }
 
@@ -211,6 +230,10 @@ public class ProxyOptions {
      * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
      *
      * <p>
+     * Non-proxy hosts are matched according to the {@code AZURE_NON_PROXY_PARSER_VERSION} setting in the
+     * configuration, as described in {@link #setNonProxyHosts(String)}.
+     *
+     * <p>
      * {@code null} will be returned if no proxy was found in the environment.
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
@@ -239,6 +262,9 @@ public class ProxyOptions {
      *
      * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
      * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
+     * <p>
+     * Non-proxy hosts are matched according to the {@code AZURE_NON_PROXY_PARSER_VERSION} setting in the
+     * configuration, as described in {@link #setNonProxyHosts(String)}.
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.
      *
@@ -322,7 +348,9 @@ public class ProxyOptions {
 
             String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
             if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
-                proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
+                proxyOptions.nonProxyHostsParserVersion = getNonProxyParserVersion(configuration);
+                proxyOptions.nonProxyHosts
+                    = sanitizeNoProxy(nonProxyHostsString, proxyOptions.nonProxyHostsParserVersion);
 
                 LOGGER.atVerbose().addKeyValue("regex", proxyOptions.nonProxyHosts).log("Using non-proxy hosts");
             }
@@ -351,8 +379,8 @@ public class ProxyOptions {
     /*
      * Helper function that sanitizes 'NO_PROXY' into a Pattern safe string.
      */
-    static String sanitizeNoProxy(String noProxyString) {
-        return sanitizeNonProxyHosts(NO_PROXY_SPLIT.split(noProxyString));
+    static String sanitizeNoProxy(String noProxyString, int parserVersion) {
+        return sanitizeNonProxyHosts(NO_PROXY_SPLIT.split(noProxyString), parserVersion);
     }
 
     private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
@@ -375,7 +403,7 @@ public class ProxyOptions {
         String username = configuration.get(type + "." + JAVA_PROXY_USER);
         String password = configuration.get(type + "." + JAVA_PROXY_PASSWORD);
 
-        return createOptions(host, port, nonProxyHostsString, username, password, createUnresolved);
+        return createOptions(configuration, host, port, nonProxyHostsString, username, password, createUnresolved);
     }
 
     private static ProxyOptions attemptToLoadAzureSdkProxy(Configuration configuration, boolean createUnresolved) {
@@ -391,18 +419,20 @@ public class ProxyOptions {
         String username = configuration.get(USER_PROPERTY);
         String password = configuration.get(PASSWORD_PROPERTY);
 
-        return createOptions(host, port, nonProxyHostsString, username, password, createUnresolved);
+        return createOptions(configuration, host, port, nonProxyHostsString, username, password, createUnresolved);
     }
 
-    private static ProxyOptions createOptions(String host, int port, String nonProxyHostsString, String username,
-        String password, boolean createUnresolved) {
+    private static ProxyOptions createOptions(Configuration configuration, String host, int port,
+        String nonProxyHostsString, String username, String password, boolean createUnresolved) {
         InetSocketAddress socketAddress
             = (createUnresolved) ? InetSocketAddress.createUnresolved(host, port) : new InetSocketAddress(host, port);
 
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, socketAddress);
 
         if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
-            proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
+            proxyOptions.nonProxyHostsParserVersion = getNonProxyParserVersion(configuration);
+            proxyOptions.nonProxyHosts
+                = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString, proxyOptions.nonProxyHostsParserVersion);
 
             LOGGER.atVerbose().addKeyValue("regex", proxyOptions.nonProxyHosts).log("Using non-proxy host regex");
         }
@@ -417,11 +447,28 @@ public class ProxyOptions {
     /*
      * Helper function that sanitizes 'http.nonProxyHosts' into a Pattern safe string.
      */
-    static String sanitizeJavaHttpNonProxyHosts(String nonProxyHostsString) {
-        return sanitizeNonProxyHosts(HTTP_NON_PROXY_HOSTS_SPLIT.split(nonProxyHostsString));
+    static String sanitizeJavaHttpNonProxyHosts(String nonProxyHostsString, int parserVersion) {
+        return sanitizeNonProxyHosts(HTTP_NON_PROXY_HOSTS_SPLIT.split(nonProxyHostsString), parserVersion);
     }
 
-    private static String sanitizeNonProxyHosts(String[] nonProxyHosts) {
+    /*
+     * Gets the non-proxy hosts parser version from the configuration. Unknown versions fall back to version 1.
+     */
+    private static int getNonProxyParserVersion(Configuration configuration) {
+        String version = configuration.get(NON_PROXY_PARSER_VERSION);
+        if (CoreUtils.isNullOrEmpty(version) || "1".equals(version.trim())) {
+            return 1;
+        } else if ("2".equals(version.trim())) {
+            return 2;
+        }
+
+        LOGGER.atWarning()
+            .addKeyValue(NON_PROXY_PARSER_VERSION, version)
+            .log("Unknown non-proxy hosts parser version. Using version 1.");
+        return 1;
+    }
+
+    private static String sanitizeNonProxyHosts(String[] nonProxyHosts, int parserVersion) {
         StringBuilder sanitizedBuilder = new StringBuilder();
 
         for (int i = 0; i < nonProxyHosts.length; i++) {
@@ -429,78 +476,153 @@ public class ProxyOptions {
                 sanitizedBuilder.append("|");
             }
 
-            String prefixWildcard = "";
-            String suffixWildcard = "";
-            String sanitizedNonProxyHost = nonProxyHosts[i];
-
-            /*
-             * If the non-proxy host begins with '*', '.*', or either with a trailing '?', it matches any prefix. If it
-             * begins with '.', or '.?', it matches the domain and its subdomains, so '.example.com' matches
-             * 'example.com' and 'api.example.com' but not 'badexample.com'.
-             */
-            if (sanitizedNonProxyHost.startsWith(".*?")) {
-                prefixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(3);
-            } else if (sanitizedNonProxyHost.startsWith(".*") || sanitizedNonProxyHost.startsWith("*?")) {
-                prefixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
-            } else if (sanitizedNonProxyHost.startsWith("*")) {
-                prefixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(1);
-            } else if (sanitizedNonProxyHost.startsWith(".?")) {
-                prefixWildcard = "(?:.*?\\.)?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
-            } else if (sanitizedNonProxyHost.startsWith(".")) {
-                prefixWildcard = "(?:.*?\\.)?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(1);
-            }
-
-            /*
-             * If the non-proxy host ends with '*', '.', or either with a trailing '?', it matches any suffix. Only the
-             * '*' and '?' are trimmed. A '.' is a literal dot, so '10.*' matches '10.0.0.1' but not '100.64.0.1', and
-             * '192.168.' matches '192.168.0.1' but not '192.1689.0.1'.
-             */
-            if (sanitizedNonProxyHost.endsWith("*?")) {
-                suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 2);
-            } else if (sanitizedNonProxyHost.endsWith("*") || sanitizedNonProxyHost.endsWith(".?")) {
-                suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 1);
-            } else if (sanitizedNonProxyHost.endsWith(".")) {
-                suffixWildcard = ".*?";
-            }
-
-            if (BRACKETED_IPV6_LITERAL.matcher(sanitizedNonProxyHost).matches()) {
-                // Match IPv6 literals such as '[::1]' as-is. As a regex, the brackets would be a character class.
-                sanitizedNonProxyHost = Pattern.quote(sanitizedNonProxyHost);
-            } else {
-                try {
-                    // Sanitize the non-proxy host before any appending to prevent errant characters being added to
-                    // the final response if the non-proxy host isn't a valid Pattern.
-                    String attemptToSanitizeAsRegex = sanitizedNonProxyHost;
-                    attemptToSanitizeAsRegex = UNESCAPED_PERIOD.matcher(attemptToSanitizeAsRegex).replaceAll("\\\\.");
-                    attemptToSanitizeAsRegex = ANY.matcher(attemptToSanitizeAsRegex).replaceAll("\\.*?");
-                    sanitizedNonProxyHost = Pattern.compile(attemptToSanitizeAsRegex).pattern();
-                } catch (PatternSyntaxException ex) {
-                    /*
-                     * Replace the non-proxy host with the sanitized value.
-                     *
-                     * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.azure.com'
-                     * where without quoting the '.' in the string would be treated as the match any character instead
-                     * of the literal '.' character.
-                     */
-                    sanitizedNonProxyHost = Pattern.quote(sanitizedNonProxyHost);
-                }
-            }
-
             sanitizedBuilder.append("(")
-                .append(prefixWildcard)
-                .append(sanitizedNonProxyHost)
-                .append(suffixWildcard)
+                .append((parserVersion == 2)
+                    ? sanitizeNonProxyHostVersion2(nonProxyHosts[i])
+                    : sanitizeNonProxyHostVersion1(nonProxyHosts[i]))
                 .append(")");
         }
 
         return sanitizedBuilder.toString();
+    }
+
+    /*
+     * Version 1 of the non-proxy host conversion, kept as it was released except that entries such as '.*' no longer
+     * throw. Its suffix wildcards remove the character before them, so '10.*' also matches '100.64.0.1', and a leading
+     * '.' matches any prefix.
+     */
+    private static String sanitizeNonProxyHostVersion1(String nonProxyHost) {
+        String prefixWildcard = "";
+        String suffixWildcard = "";
+        String sanitizedNonProxyHost = nonProxyHost;
+
+        /*
+         * If the non-proxy host begins with either '.', '*', '.*', or any of the previous with a trailing '?'
+         * substring the non-proxy host and set the wildcard prefix.
+         */
+        if (sanitizedNonProxyHost.startsWith(".")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(1);
+        } else if (sanitizedNonProxyHost.startsWith(".?")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
+        } else if (sanitizedNonProxyHost.startsWith("*?")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
+        } else if (sanitizedNonProxyHost.startsWith("*")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(1);
+        } else if (sanitizedNonProxyHost.startsWith(".*?")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(3);
+        } else if (sanitizedNonProxyHost.startsWith(".*")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
+        }
+
+        /*
+         * Same with the ending of the non-proxy host, if it has a suffix wildcard trim the non-proxy host and retain the
+         * suffix wildcard.
+         */
+        if (sanitizedNonProxyHost.endsWith(".")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = removeEnd(sanitizedNonProxyHost, 2);
+        } else if (sanitizedNonProxyHost.endsWith(".?")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = removeEnd(sanitizedNonProxyHost, 3);
+        } else if (sanitizedNonProxyHost.endsWith("*?")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = removeEnd(sanitizedNonProxyHost, 3);
+        } else if (sanitizedNonProxyHost.endsWith("*")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = removeEnd(sanitizedNonProxyHost, 2);
+        } else if (sanitizedNonProxyHost.endsWith(".*?")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = removeEnd(sanitizedNonProxyHost, 4);
+        } else if (sanitizedNonProxyHost.endsWith(".*")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = removeEnd(sanitizedNonProxyHost, 3);
+        }
+
+        return prefixWildcard + toRegexOrQuote(sanitizedNonProxyHost) + suffixWildcard;
+    }
+
+    /*
+     * Removes characters from the end of the non-proxy host. Version 1 removes more characters than the suffix it
+     * matched, so stop at an empty string rather than throwing for entries such as '.*'.
+     */
+    private static String removeEnd(String nonProxyHost, int count) {
+        return nonProxyHost.substring(0, Math.max(0, nonProxyHost.length() - count));
+    }
+
+    private static String sanitizeNonProxyHostVersion2(String nonProxyHost) {
+        String prefixWildcard = "";
+        String suffixWildcard = "";
+        String sanitizedNonProxyHost = nonProxyHost;
+
+        /*
+         * If the non-proxy host begins with '*', '.*', or either with a trailing '?', it matches any prefix. If it
+         * begins with '.', or '.?', it matches the domain and its subdomains, so '.example.com' matches 'example.com'
+         * and 'api.example.com' but not 'badexample.com'.
+         */
+        if (sanitizedNonProxyHost.startsWith(".*?")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(3);
+        } else if (sanitizedNonProxyHost.startsWith(".*") || sanitizedNonProxyHost.startsWith("*?")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
+        } else if (sanitizedNonProxyHost.startsWith("*")) {
+            prefixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(1);
+        } else if (sanitizedNonProxyHost.startsWith(".?")) {
+            prefixWildcard = "(?:.*?\\.)?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(2);
+        } else if (sanitizedNonProxyHost.startsWith(".")) {
+            prefixWildcard = "(?:.*?\\.)?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(1);
+        }
+
+        /*
+         * If the non-proxy host ends with '*', '.', or either with a trailing '?', it matches any suffix. Only the '*'
+         * and '?' are trimmed. A '.' is a literal dot, so '10.*' matches '10.0.0.1' but not '100.64.0.1', and
+         * '192.168.' matches '192.168.0.1' but not '192.1689.0.1'.
+         */
+        if (sanitizedNonProxyHost.endsWith("*?")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 2);
+        } else if (sanitizedNonProxyHost.endsWith("*") || sanitizedNonProxyHost.endsWith(".?")) {
+            suffixWildcard = ".*?";
+            sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 1);
+        } else if (sanitizedNonProxyHost.endsWith(".")) {
+            suffixWildcard = ".*?";
+        }
+
+        // Match IPv6 literals such as '[::1]' as-is. As a regex, the brackets would be a character class.
+        String body = BRACKETED_IPV6_LITERAL.matcher(sanitizedNonProxyHost).matches()
+            ? Pattern.quote(sanitizedNonProxyHost)
+            : toRegexOrQuote(sanitizedNonProxyHost);
+
+        return prefixWildcard + body + suffixWildcard;
+    }
+
+    private static String toRegexOrQuote(String nonProxyHost) {
+        try {
+            // Sanitize the non-proxy host before any appending to prevent errant characters being added to the final
+            // response if the non-proxy host isn't a valid Pattern.
+            String attemptToSanitizeAsRegex = nonProxyHost;
+            attemptToSanitizeAsRegex = UNESCAPED_PERIOD.matcher(attemptToSanitizeAsRegex).replaceAll("\\\\.");
+            attemptToSanitizeAsRegex = ANY.matcher(attemptToSanitizeAsRegex).replaceAll("\\.*?");
+            return Pattern.compile(attemptToSanitizeAsRegex).pattern();
+        } catch (PatternSyntaxException ex) {
+            /*
+             * Replace the non-proxy host with the sanitized value.
+             *
+             * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.azure.com' where
+             * without quoting the '.' in the string would be treated as the match any character instead of the literal
+             * '.' character.
+             */
+            return Pattern.quote(nonProxyHost);
+        }
     }
 
     /**

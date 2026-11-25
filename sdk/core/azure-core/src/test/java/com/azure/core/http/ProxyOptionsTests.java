@@ -49,6 +49,7 @@ public class ProxyOptionsTests {
 
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
+    private static final String NON_PROXY_PARSER_VERSION = "AZURE_NON_PROXY_PARSER_VERSION";
 
     private static final String JAVA_HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String JAVA_HTTPS_PROXY_PORT = "https.proxyPort";
@@ -497,33 +498,27 @@ public class ProxyOptionsTests {
     public void sanitizeNoProxyDoesNotSplitEscapedCommas() {
         String noProxy = "noproxy\\,withescapedcomma";
 
-        assertEquals("(" + noProxy + ")", ProxyOptions.sanitizeNoProxy(noProxy));
+        assertEquals("(" + noProxy + ")", ProxyOptions.sanitizeNoProxy(noProxy, 1));
     }
 
     @Test
     public void sanitizeJavaHttpNonProxyHostsDoesNotSplitEscapedPipes() {
         String nonProxyHosts = "nonproxyhosts\\|withescapedpipe";
 
-        assertEquals("(" + nonProxyHosts + ")", ProxyOptions.sanitizeNoProxy(nonProxyHosts));
+        assertEquals("(" + nonProxyHosts + ")", ProxyOptions.sanitizeNoProxy(nonProxyHosts, 1));
     }
 
     /**
-     * Tests that wildcards, leading and trailing dots, and IPv6 literals in non-proxy hosts only match the intended
-     * hosts, however the non-proxy hosts are configured. Hosts are matched the way HTTP clients match them: the whole
-     * host, ignoring case.
+     * Tests that with AZURE_NON_PROXY_PARSER_VERSION set to 2, wildcards, leading and trailing dots, and IPv6 literals
+     * in non-proxy hosts only match the intended hosts, however the non-proxy hosts are configured. Hosts are matched
+     * the way HTTP clients match them: the whole host, ignoring case.
      */
     @ParameterizedTest
     @MethodSource("nonProxyHostsMatchOnlyIntendedHostsSupplier")
-    public void nonProxyHostsMatchOnlyIntendedHosts(String nonProxyHost, List<String> bypassedHosts,
+    public void nonProxyHostsParserVersion2MatchesOnlyIntendedHosts(String nonProxyHost, List<String> bypassedHosts,
         List<String> proxiedHosts) {
-        String[] sanitizedNonProxyHosts = {
-            new ProxyOptions(ProxyOptions.Type.HTTP, InetSocketAddress.createUnresolved("localhost", 7777))
-                .setNonProxyHosts(nonProxyHost)
-                .getNonProxyHosts(),
-            fromConfiguration(createJavaEnvConfiguration(null, null, nonProxyHost, true), true).getNonProxyHosts(),
-            fromConfiguration(createExplicitConfiguration(null, null, nonProxyHost), true).getNonProxyHosts(),
-            fromConfiguration(setJavaSystemProxyPrerequisiteToTrue("http://localhost:7777", nonProxyHost, true), true)
-                .getNonProxyHosts() };
+        List<String> sanitizedNonProxyHosts = new ArrayList<>(loadNonProxyHostsRegexes(nonProxyHost, "2"));
+        sanitizedNonProxyHosts.add(ProxyOptions.sanitizeJavaHttpNonProxyHosts(nonProxyHost, 2));
 
         for (String sanitizedNonProxyHost : sanitizedNonProxyHosts) {
             Pattern pattern = compile(sanitizedNonProxyHost, Pattern.CASE_INSENSITIVE);
@@ -558,6 +553,65 @@ public class ProxyOptionsTests {
             Arguments.of(".*", anyHost, Collections.emptyList()), Arguments.of("*", anyHost, Collections.emptyList()),
             Arguments.of("*?", anyHost, Collections.emptyList()),
             Arguments.of(".*?", anyHost, Collections.emptyList()));
+    }
+
+    /**
+     * Tests that version 1 of the non-proxy hosts parser is used when AZURE_NON_PROXY_PARSER_VERSION is unset, 1, or
+     * unknown, and that it keeps the released regex, except that entries such as '.*' no longer throw.
+     */
+    @ParameterizedTest
+    @MethodSource("nonProxyHostsParserVersion1Supplier")
+    public void nonProxyHostsParserVersion1KeepsReleasedRegex(String nonProxyHost, String expectedRegex) {
+        assertEquals(expectedRegex, ProxyOptions.sanitizeJavaHttpNonProxyHosts(nonProxyHost, 1));
+
+        for (String parserVersion : new String[] { null, "1", "3" }) {
+            for (String regex : loadNonProxyHostsRegexes(nonProxyHost, parserVersion)) {
+                assertEquals(expectedRegex, regex, () -> "AZURE_NON_PROXY_PARSER_VERSION=" + parserVersion);
+            }
+        }
+    }
+
+    private static Stream<Arguments> nonProxyHostsParserVersion1Supplier() {
+        return Stream.of(Arguments.of("storage1*", "(storage.*?)"), Arguments.of("10.*", "(10.*?)"),
+            Arguments.of("192.168.", "(192\\.16.*?)"), Arguments.of(".example.com", "(.*?example\\.com)"),
+            Arguments.of("[::1]", "([::1])"), Arguments.of(".*", "(.*?.*?)"), Arguments.of(".*?", "(.*?.*?)"));
+    }
+
+    /*
+     * Loads the non-proxy host from the Java proxy system properties, the Azure SDK proxy properties, and NO_PROXY, with
+     * AZURE_NON_PROXY_PARSER_VERSION set to the given value, and returns the regex each creates. A null value masks the
+     * setting in the real environment.
+     */
+    private static List<String> loadNonProxyHostsRegexes(String nonProxyHost, String parserVersion) {
+        TestConfigurationSource javaProxy = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
+            .put(JAVA_HTTPS_PROXY_HOST, PROXY_HOST)
+            .put(JAVA_HTTPS_PROXY_PORT, "443")
+            .put(JAVA_HTTPS_PROXY_USER, null)
+            .put(JAVA_HTTPS_PROXY_PASSWORD, null)
+            .put(JAVA_NON_PROXY_HOSTS, nonProxyHost)
+            .put(NON_PROXY_PARSER_VERSION, parserVersion);
+
+        TestConfigurationSource azureSdkProxy = new TestConfigurationSource().put("http.proxy.hostname", PROXY_HOST)
+            .put("http.proxy.port", "443")
+            .put("http.proxy.non-proxy-hosts", nonProxyHost);
+        TestConfigurationSource azureSdkProxySystemProperties
+            = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
+                .put(NON_PROXY_PARSER_VERSION, parserVersion);
+
+        TestConfigurationSource environmentProxy
+            = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "http://localhost:7777")
+                .put(Configuration.PROPERTY_NO_PROXY, nonProxyHost)
+                .put(NON_PROXY_PARSER_VERSION, parserVersion);
+
+        return Arrays.asList(
+            fromConfiguration(new ConfigurationBuilder(EMPTY_SOURCE, javaProxy, EMPTY_SOURCE).build(), true)
+                .getNonProxyHosts(),
+            fromConfiguration(
+                new ConfigurationBuilder(azureSdkProxy, azureSdkProxySystemProperties, EMPTY_SOURCE).build(), true)
+                    .getNonProxyHosts(),
+            fromConfiguration(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, environmentProxy).build(), true)
+                .getNonProxyHosts());
     }
 
     private static Configuration setJavaSystemProxyPrerequisiteToTrue(String proxy, String nonProxyHosts,

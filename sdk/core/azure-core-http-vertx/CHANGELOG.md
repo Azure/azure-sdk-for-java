@@ -7,6 +7,11 @@
 - Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback without changing defaults or mutating
   caller-supplied Vert.x options.
 - Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+- Added support for azure-core's `AZURE_NON_PROXY_PARSER_VERSION` setting. With version `2`, non-proxy hosts are
+  matched the same way as in the other HTTP clients, and the proxy is set on each request to a host that doesn't match
+  them. Version `1`, the default, still converts them to Vert.x's non-proxy host list, which can bypass the proxy for
+  the wrong hosts. For example, `10.*` bypasses the proxy for `100.64.0.1`, and entries without a wildcard are compared
+  case-sensitively.
 
 ### Breaking Changes
 
@@ -15,10 +20,6 @@
 - Fixed the `Expect: 100-continue` fallback wait starting before the request headers were written. Time the headers
   spent reaching the wire, such as on the first request in a JVM, shortened the wait for `100 Continue` and could
   cause the body to be sent before the service had a chance to answer.
-- Fixed `ProxyOptions` non-proxy hosts being converted to Vert.x's non-proxy host list, which bypassed the proxy for
-  the wrong hosts. For example, `10.*` bypassed the proxy for `100.64.0.1`, and entries without a wildcard were
-  compared case-sensitively. Non-proxy hosts are now matched the same way as in the other HTTP clients, and the proxy
-  is set on each request to a host that doesn't match them.
 
 ### Other Changes
 

@@ -221,11 +221,7 @@ public class VertxHttpClientBuilderTests {
 
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
 
-        // The proxy is set on each request whose host isn't a non-proxy host, not on the Vert.x options.
-        assertNull(httpClient.buildOptions.getProxyOptions());
-        assertNull(httpClient.getProxyOptions("microsoft.com"));
-
-        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.getProxyOptions("example.com");
+        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.buildOptions.getProxyOptions();
         assertNotNull(vertxProxyOptions);
         assertEquals(address.getHostName(), vertxProxyOptions.getHost());
         assertEquals(address.getPort(), vertxProxyOptions.getPort());
@@ -235,9 +231,9 @@ public class VertxHttpClientBuilderTests {
     }
 
     /**
-     * Tests that the proxy is only skipped for request hosts matching the non-proxy hosts. They're matched like in the
-     * other HTTP clients, rather than by Vert.x, which matched '10.*' with '100.64.0.1' and compared hosts without
-     * wildcards case-sensitively.
+     * Tests that with AZURE_NON_PROXY_PARSER_VERSION set to 2, the proxy is only skipped for request hosts matching the
+     * non-proxy hosts. They're matched like in the other HTTP clients, rather than by Vert.x, which matched '10.*' with
+     * '100.64.0.1' and compared hosts without wildcards case-sensitively.
      */
     @ParameterizedTest
     @CsvSource({
@@ -249,12 +245,15 @@ public class VertxHttpClientBuilderTests {
         ".example.com, https://badexample.com, true",
         "[::1], http://[::1]:8080, false",
         "[::1], http://1, true" })
-    public void proxyIsSkippedOnlyForNonProxyHosts(String nonProxyHosts, String url, boolean proxied) throws Exception {
-        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
-            .setNonProxyHosts(nonProxyHosts);
-        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
+    public void parserVersion2SkipsProxyOnlyForNonProxyHosts(String nonProxyHosts, String url, boolean proxied)
+        throws Exception {
+        VertxHttpClient httpClient
+            = (VertxHttpClient) new VertxHttpClientBuilder().proxy(loadProxyWithParserVersion2(8888, nonProxyHosts))
+                .build();
 
         try {
+            assertNull(httpClient.buildOptions.getProxyOptions());
+
             String host = new HttpRequest(HttpMethod.GET, url).getUrl().getHost();
             assertEquals(proxied, httpClient.getProxyOptions(host) != null);
         } finally {
@@ -264,7 +263,7 @@ public class VertxHttpClientBuilderTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "localhost", "LOCALHOST", "local*", ".localhost" })
-    public void requestToNonProxyHostConnectsDirectly(String nonProxyHosts) throws IOException {
+    public void parserVersion2RequestToNonProxyHostConnectsDirectly(String nonProxyHosts) throws IOException {
         HttpClient httpClient = buildWithUnreachableProxy(nonProxyHosts);
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, SERVER_HTTP_URI + SERVICE_ENDPOINT)))
@@ -274,7 +273,7 @@ public class VertxHttpClientBuilderTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "localhost.*", "localhostx*", "example.com" })
-    public void requestToOtherHostUsesProxy(String nonProxyHosts) throws IOException {
+    public void parserVersion2RequestToOtherHostUsesProxy(String nonProxyHosts) throws IOException {
         HttpClient httpClient = buildWithUnreachableProxy(nonProxyHosts);
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, SERVER_HTTP_URI + SERVICE_ENDPOINT)))
@@ -290,10 +289,23 @@ public class VertxHttpClientBuilderTests {
             unusedPort = socket.getLocalPort();
         }
 
-        return new VertxHttpClientBuilder()
-            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", unusedPort))
-                .setNonProxyHosts(nonProxyHosts))
-            .build();
+        return new VertxHttpClientBuilder().proxy(loadProxyWithParserVersion2(unusedPort, nonProxyHosts)).build();
+    }
+
+    /*
+     * Loads a proxy whose non-proxy hosts are converted by version 2 of the ProxyOptions parser, which VertxHttpClient
+     * matches on each request.
+     */
+    private static ProxyOptions loadProxyWithParserVersion2(int port, String nonProxyHosts) {
+        Configuration configuration = new ConfigurationBuilder(
+            new TestConfigurationSource().put("http.proxy.hostname", "localhost")
+                .put("http.proxy.port", String.valueOf(port))
+                .put("http.proxy.non-proxy-hosts", nonProxyHosts),
+            new TestConfigurationSource().put("java.net.useSystemProxies", "false")
+                .put("AZURE_NON_PROXY_PARSER_VERSION", "2"),
+            EMPTY_SOURCE).build();
+
+        return ProxyOptions.fromConfiguration(configuration, true);
     }
 
     @Test
