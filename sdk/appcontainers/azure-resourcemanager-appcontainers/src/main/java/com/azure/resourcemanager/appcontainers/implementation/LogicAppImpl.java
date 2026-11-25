@@ -57,12 +57,7 @@ public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicA
     }
 
     public LogicApp create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLogicApps()
-            .createOrUpdateWithResponse(resourceGroupName, containerAppName, logicAppName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LogicApp create(Context context) {
@@ -84,12 +79,7 @@ public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicA
     }
 
     public LogicApp apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLogicApps()
-            .createOrUpdateWithResponse(resourceGroupName, containerAppName, logicAppName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LogicApp apply(Context context) {
@@ -116,11 +106,7 @@ public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicA
     }
 
     public LogicApp refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLogicApps()
-            .getWithResponse(resourceGroupName, containerAppName, logicAppName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LogicApp refresh(Context context) {

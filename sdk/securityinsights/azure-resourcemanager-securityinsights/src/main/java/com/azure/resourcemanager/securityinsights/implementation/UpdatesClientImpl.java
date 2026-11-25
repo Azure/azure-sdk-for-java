@@ -121,19 +121,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Patch a recommendation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param recommendationId Recommendation Id.
-     * @param recommendationPatch Recommendation Fields to Update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recommendation object along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationInner> recommendationWithResponse(String resourceGroupName, String workspaceName,
         String recommendationId, RecommendationPatch recommendationPatch, Context context) {
@@ -144,18 +132,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
             recommendationPatch, context);
     }
 
-    /**
-     * Patch a recommendation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param recommendationId Recommendation Id.
-     * @param recommendationPatch Recommendation Fields to Update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recommendation object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendationInner recommendation(String resourceGroupName, String workspaceName, String recommendationId,
         RecommendationPatch recommendationPatch) {

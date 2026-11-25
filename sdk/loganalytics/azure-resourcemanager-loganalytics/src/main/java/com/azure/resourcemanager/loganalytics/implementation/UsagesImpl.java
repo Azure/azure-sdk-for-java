@@ -26,8 +26,7 @@ public final class UsagesImpl implements Usages {
     }
 
     public PagedIterable<UsageMetric> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<UsageMetricInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageMetricImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<UsageMetric> list(String resourceGroupName, String workspaceName, Context context) {

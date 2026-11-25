@@ -26,8 +26,7 @@ public final class AscUsagesImpl implements AscUsages {
     }
 
     public PagedIterable<ResourceUsage> list(String location) {
-        PagedIterable<ResourceUsageInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceUsageImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<ResourceUsage> list(String location, Context context) {

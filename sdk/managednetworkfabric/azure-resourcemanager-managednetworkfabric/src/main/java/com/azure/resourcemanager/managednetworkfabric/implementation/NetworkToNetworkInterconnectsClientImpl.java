@@ -309,18 +309,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements NetworkToNetworkInterconnects GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network To Network Interconnect resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkToNetworkInterconnectInner> getWithResponse(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, Context context) {
@@ -329,17 +318,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             resourceGroupName, networkFabricName, networkToNetworkInterconnectName, accept, context);
     }
 
-    /**
-     * Implements NetworkToNetworkInterconnects GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner get(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName) {
@@ -387,11 +366,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, NetworkToNetworkInterconnectInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            contentType, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body,
+            Context.NONE);
     }
 
     /**
@@ -440,41 +416,15 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             NetworkToNetworkInterconnectInner.class, this.client.getContext());
     }
 
-    /**
-     * Configuration used to setup CE-PE connectivity PUT Method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
         String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
         NetworkToNetworkInterconnectInner body) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
-        return this.client.<NetworkToNetworkInterconnectInner, NetworkToNetworkInterconnectInner>getLroResult(response,
-            NetworkToNetworkInterconnectInner.class, NetworkToNetworkInterconnectInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, Context.NONE);
     }
 
-    /**
-     * Configuration used to setup CE-PE connectivity PUT Method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
         String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
@@ -504,43 +454,19 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Configuration used to setup CE-PE connectivity PUT Method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner create(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, NetworkToNetworkInterconnectInner body) {
-        return beginCreate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
-            .getFinalResult();
+        return create(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, Context.NONE);
     }
 
-    /**
-     * Configuration used to setup CE-PE connectivity PUT Method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner create(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, NetworkToNetworkInterconnectInner body, Context context) {
-        return beginCreate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context));
     }
 
     /**
@@ -583,11 +509,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, NetworkToNetworkInterconnectPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body,
+            Context.NONE);
     }
 
     /**
@@ -636,41 +559,15 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             NetworkToNetworkInterconnectInner.class, this.client.getContext());
     }
 
-    /**
-     * Update certain properties of the Network To NetworkInterconnects resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Network to Network Interconnect properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
         String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
         NetworkToNetworkInterconnectPatch body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
-        return this.client.<NetworkToNetworkInterconnectInner, NetworkToNetworkInterconnectInner>getLroResult(response,
-            NetworkToNetworkInterconnectInner.class, NetworkToNetworkInterconnectInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network To NetworkInterconnects resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Network to Network Interconnect properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
         String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
@@ -700,43 +597,19 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update certain properties of the Network To NetworkInterconnects resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Network to Network Interconnect properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner update(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, NetworkToNetworkInterconnectPatch body) {
-        return beginUpdate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
-            .getFinalResult();
+        return update(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network To NetworkInterconnects resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Network to Network Interconnect properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network To Network Interconnect resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner update(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, NetworkToNetworkInterconnectPatch body, Context context) {
-        return beginUpdate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context));
     }
 
     /**
@@ -774,9 +647,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE);
     }
 
     /**
@@ -819,37 +690,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             this.client.getContext());
     }
 
-    /**
-     * Implements NetworkToNetworkInterconnects DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE);
     }
 
-    /**
-     * Implements NetworkToNetworkInterconnects DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricName,
         String networkToNetworkInterconnectName, Context context) {
@@ -876,36 +724,18 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements NetworkToNetworkInterconnects DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName) {
-        beginDelete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName).getFinalResult();
+        delete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE);
     }
 
-    /**
-     * Implements NetworkToNetworkInterconnects DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
         Context context) {
-        beginDelete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context));
     }
 
     /**
@@ -961,12 +791,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkToNetworkInterconnectInner> listByNetworkFabricSinglePage(String resourceGroupName,
         String networkFabricName) {
-        final String accept = "application/json";
-        Response<NetworkToNetworkInterconnectsList> res
-            = service.listByNetworkFabricSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, networkFabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNetworkFabricSinglePage(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     /**
@@ -991,34 +816,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements Network To Network Interconnects list by Network Fabric GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkToNetworkInterconnect items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(String resourceGroupName,
         String networkFabricName) {
-        return new PagedIterable<>(() -> listByNetworkFabricSinglePage(resourceGroupName, networkFabricName),
-            nextLink -> listByNetworkFabricNextSinglePage(nextLink));
+        return listByNetworkFabric(resourceGroupName, networkFabricName, Context.NONE);
     }
 
-    /**
-     * Implements Network To Network Interconnects list by Network Fabric GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkToNetworkInterconnect items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(String resourceGroupName,
         String networkFabricName, Context context) {
@@ -1067,11 +872,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateNpbStaticRouteBfdAdministrativeStateWithResponse(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateNpbStaticRouteBfdAdministrativeStateSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, networkFabricName,
-            networkToNetworkInterconnectName, contentType, accept, body, Context.NONE);
+        return updateNpbStaticRouteBfdAdministrativeStateWithResponse(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, Context.NONE);
     }
 
     /**
@@ -1121,42 +923,16 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the NPB Static Route BFD Administrative State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateNpbStaticRouteBfdAdministrativeState(String resourceGroupName, String networkFabricName,
             String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateNpbStaticRouteBfdAdministrativeStateWithResponse(resourceGroupName,
-            networkFabricName, networkToNetworkInterconnectName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
-            Context.NONE);
+        return beginUpdateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, Context.NONE);
     }
 
-    /**
-     * Updates the NPB Static Route BFD Administrative State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateNpbStaticRouteBfdAdministrativeState(String resourceGroupName, String networkFabricName,
@@ -1188,44 +964,21 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             networkToNetworkInterconnectName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the NPB Static Route BFD Administrative State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        return beginUpdateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
-            networkToNetworkInterconnectName, body).getFinalResult();
+        return updateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, Context.NONE);
     }
 
-    /**
-     * Updates the NPB Static Route BFD Administrative State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body,
         Context context) {
-        return beginUpdateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
-            networkToNetworkInterconnectName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateNpbStaticRouteBfdAdministrativeState(resourceGroupName,
+            networkFabricName, networkToNetworkInterconnectName, body, context));
     }
 
     /**
@@ -1268,11 +1021,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            contentType, accept, body, Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, Context.NONE);
     }
 
     /**
@@ -1322,42 +1072,16 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkFabricName,
             String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateAdministrativeStateWithResponse(resourceGroupName, networkFabricName,
-            networkToNetworkInterconnectName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
-            Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
+            body, Context.NONE);
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkFabricName,
@@ -1388,44 +1112,21 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             networkToNetworkInterconnectName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body,
+            Context.NONE);
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body,
         Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateAdministrativeState(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, context));
     }
 
     /**
@@ -1470,11 +1171,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     private Response<BinaryData> updateBfdAdministrativeStateWithResponse(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName,
         NniUpdateBfdAdministrativeStateRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateBfdAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            contentType, accept, body, Context.NONE);
+        return updateBfdAdministrativeStateWithResponse(resourceGroupName, networkFabricName,
+            networkToNetworkInterconnectName, body, Context.NONE);
     }
 
     /**
@@ -1527,46 +1225,17 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
                 NniUpdateBfdAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nNI Bidirectional Forwarding Detection (BFD) Administrative State
-     * response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NniUpdateBfdAdministrativeStateResponseInner>, NniUpdateBfdAdministrativeStateResponseInner>
         beginUpdateBfdAdministrativeState(String resourceGroupName, String networkFabricName,
             String networkToNetworkInterconnectName, NniUpdateBfdAdministrativeStateRequest body) {
-        Response<BinaryData> response = updateBfdAdministrativeStateWithResponse(resourceGroupName, networkFabricName,
-            networkToNetworkInterconnectName, body);
-        return this.client
-            .<NniUpdateBfdAdministrativeStateResponseInner, NniUpdateBfdAdministrativeStateResponseInner>getLroResult(
-                response, NniUpdateBfdAdministrativeStateResponseInner.class,
-                NniUpdateBfdAdministrativeStateResponseInner.class, Context.NONE);
+        return beginUpdateBfdAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
+            body, Context.NONE);
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nNI Bidirectional Forwarding Detection (BFD) Administrative State
-     * response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NniUpdateBfdAdministrativeStateResponseInner>, NniUpdateBfdAdministrativeStateResponseInner>
@@ -1601,45 +1270,22 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             networkToNetworkInterconnectName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nNI Bidirectional Forwarding Detection (BFD) Administrative State response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NniUpdateBfdAdministrativeStateResponseInner updateBfdAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName,
         NniUpdateBfdAdministrativeStateRequest body) {
-        return beginUpdateBfdAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            body).getFinalResult();
+        return updateBfdAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
+            body, Context.NONE);
     }
 
-    /**
-     * Updates the Admin State.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nNI Bidirectional Forwarding Detection (BFD) Administrative State response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NniUpdateBfdAdministrativeStateResponseInner updateBfdAdministrativeState(String resourceGroupName,
         String networkFabricName, String networkToNetworkInterconnectName, NniUpdateBfdAdministrativeStateRequest body,
         Context context) {
-        return beginUpdateBfdAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName,
-            body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateBfdAdministrativeState(resourceGroupName,
+            networkFabricName, networkToNetworkInterconnectName, body, context));
     }
 
     /**
@@ -1675,11 +1321,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkToNetworkInterconnectInner> listByNetworkFabricNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkToNetworkInterconnectsList> res
-            = service.listByNetworkFabricNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNetworkFabricNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

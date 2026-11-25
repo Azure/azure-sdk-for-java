@@ -171,21 +171,7 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
             encodedMetricNamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a metric namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricNamespaceResourceInner> getWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String encodedMetricNamespace, Context context) {
@@ -195,20 +181,7 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
             context);
     }
 
-    /**
-     * Gets a metric namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricNamespaceResourceInner get(String resourceGroupName, String azureMonitorWorkspaceName,
         String metricsContainerName, String encodedMetricNamespace) {
@@ -276,12 +249,8 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricNamespaceResourceInner> listByMetricsContainerSinglePage(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName) {
-        final String accept = "application/json";
-        Response<MetricNamespaceResourceListResult> res = service.listByMetricsContainerSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName,
-            metricsContainerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMetricsContainerSinglePage(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
+            Context.NONE);
     }
 
     /**
@@ -308,41 +277,14 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists metric namespaces for an Azure Monitor Workspace. Resource
-     * properties may be omitted in collection responses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricNamespaceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespaceResourceInner> listByMetricsContainer(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName) {
-        return new PagedIterable<>(
-            () -> listByMetricsContainerSinglePage(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName),
-            nextLink -> listByMetricsContainerNextSinglePage(nextLink));
+        return listByMetricsContainer(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, Context.NONE);
     }
 
-    /**
-     * Lists metric namespaces for an Azure Monitor Workspace. Resource
-     * properties may be omitted in collection responses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricNamespaceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespaceResourceInner> listByMetricsContainer(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, Context context) {
@@ -383,11 +325,7 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricNamespaceResourceInner> listByMetricsContainerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetricNamespaceResourceListResult> res
-            = service.listByMetricsContainerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMetricsContainerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

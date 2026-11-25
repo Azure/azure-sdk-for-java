@@ -138,16 +138,7 @@ public final class DefaultParameterGroupsClientImpl implements DefaultParameterG
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists default parameter groups available for a subscription in a specific region. The response contains at most
-     * one default parameter group for each PostgreSQL version.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DefaultParameterGroup list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DefaultParameterGroupInner> listBySubscriptionAndRegionAsync(String location) {
         return new PagedFlux<>(() -> listBySubscriptionAndRegionSinglePageAsync(location),
@@ -166,12 +157,7 @@ public final class DefaultParameterGroupsClientImpl implements DefaultParameterG
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DefaultParameterGroupInner> listBySubscriptionAndRegionSinglePage(String location) {
-        final String accept = "application/json";
-        Response<DefaultParameterGroupListResult> res
-            = service.listBySubscriptionAndRegionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionAndRegionSinglePage(location, Context.NONE);
     }
 
     /**
@@ -196,51 +182,20 @@ public final class DefaultParameterGroupsClientImpl implements DefaultParameterG
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists default parameter groups available for a subscription in a specific region. The response contains at most
-     * one default parameter group for each PostgreSQL version.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DefaultParameterGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DefaultParameterGroupInner> listBySubscriptionAndRegion(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionAndRegionSinglePage(location),
-            nextLink -> listBySubscriptionAndRegionNextSinglePage(nextLink));
+        return listBySubscriptionAndRegion(location, Context.NONE);
     }
 
-    /**
-     * Lists default parameter groups available for a subscription in a specific region. The response contains at most
-     * one default parameter group for each PostgreSQL version.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DefaultParameterGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DefaultParameterGroupInner> listBySubscriptionAndRegion(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionAndRegionSinglePage(location, context),
             nextLink -> listBySubscriptionAndRegionNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Gets a default parameter group available for a subscription in a specific region. Each PostgreSQL version has at
-     * most one default parameter group in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the DefaultParameterGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a default parameter group available for a subscription in a specific region along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DefaultParameterGroupInner>> getWithResponseAsync(String location, String name) {
         final String accept = "application/json";
@@ -250,35 +205,13 @@ public final class DefaultParameterGroupsClientImpl implements DefaultParameterG
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a default parameter group available for a subscription in a specific region. Each PostgreSQL version has at
-     * most one default parameter group in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the DefaultParameterGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a default parameter group available for a subscription in a specific region on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DefaultParameterGroupInner> getAsync(String location, String name) {
         return getWithResponseAsync(location, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a default parameter group available for a subscription in a specific region. Each PostgreSQL version has at
-     * most one default parameter group in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the DefaultParameterGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a default parameter group available for a subscription in a specific region along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DefaultParameterGroupInner> getWithResponse(String location, String name, Context context) {
         final String accept = "application/json";
@@ -286,17 +219,7 @@ public final class DefaultParameterGroupsClientImpl implements DefaultParameterG
             location, name, accept, context);
     }
 
-    /**
-     * Gets a default parameter group available for a subscription in a specific region. Each PostgreSQL version has at
-     * most one default parameter group in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param name The name of the DefaultParameterGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a default parameter group available for a subscription in a specific region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DefaultParameterGroupInner get(String location, String name) {
         return getWithResponse(location, name, Context.NONE).getValue();
@@ -334,11 +257,7 @@ public final class DefaultParameterGroupsClientImpl implements DefaultParameterG
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DefaultParameterGroupInner> listBySubscriptionAndRegionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DefaultParameterGroupListResult> res
-            = service.listBySubscriptionAndRegionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionAndRegionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

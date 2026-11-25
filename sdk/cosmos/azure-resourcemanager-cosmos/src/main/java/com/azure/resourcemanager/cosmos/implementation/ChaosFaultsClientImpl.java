@@ -105,18 +105,7 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get Chaos Fault for a CosmosdB account for a particular Chaos Fault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault for a CosmosdB account for a particular Chaos Fault along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChaosFaultResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String chaosFault) {
@@ -185,70 +174,27 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             resourceGroupName, accountName, chaosFault, accept, context);
     }
 
-    /**
-     * Get Chaos Fault for a CosmosdB account for a particular Chaos Fault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault for a CosmosdB account for a particular Chaos Fault on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChaosFaultResourceInner> getAsync(String resourceGroupName, String accountName, String chaosFault) {
         return getWithResponseAsync(resourceGroupName, accountName, chaosFault)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Chaos Fault for a CosmosdB account for a particular Chaos Fault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault for a CosmosdB account for a particular Chaos Fault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChaosFaultResourceInner> getWithResponse(String resourceGroupName, String accountName,
         String chaosFault, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, chaosFault, context).block();
     }
 
-    /**
-     * Get Chaos Fault for a CosmosdB account for a particular Chaos Fault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault for a CosmosdB account for a particular Chaos Fault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChaosFaultResourceInner get(String resourceGroupName, String accountName, String chaosFault) {
         return getWithResponse(resourceGroupName, accountName, chaosFault, Context.NONE).getValue();
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a request object to enable/disable the chaos fault along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> enableDisableWithResponseAsync(String resourceGroupName, String accountName,
         String chaosFault, ChaosFaultResourceInner chaosFaultRequest) {
@@ -334,18 +280,7 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             chaosFaultRequest, context);
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a request object to enable/disable the chaos fault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChaosFaultResourceInner>, ChaosFaultResourceInner> beginEnableDisableAsync(
         String resourceGroupName, String accountName, String chaosFault, ChaosFaultResourceInner chaosFaultRequest) {
@@ -380,18 +315,7 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             this.client.getHttpPipeline(), ChaosFaultResourceInner.class, ChaosFaultResourceInner.class, context);
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a request object to enable/disable the chaos fault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChaosFaultResourceInner>, ChaosFaultResourceInner> beginEnableDisable(
         String resourceGroupName, String accountName, String chaosFault, ChaosFaultResourceInner chaosFaultRequest) {
@@ -399,19 +323,7 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a request object to enable/disable the chaos fault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChaosFaultResourceInner>, ChaosFaultResourceInner> beginEnableDisable(
         String resourceGroupName, String accountName, String chaosFault, ChaosFaultResourceInner chaosFaultRequest,
@@ -420,18 +332,7 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a request object to enable/disable the chaos fault on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChaosFaultResourceInner> enableDisableAsync(String resourceGroupName, String accountName,
         String chaosFault, ChaosFaultResourceInner chaosFaultRequest) {
@@ -459,37 +360,14 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a request object to enable/disable the chaos fault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChaosFaultResourceInner enableDisable(String resourceGroupName, String accountName, String chaosFault,
         ChaosFaultResourceInner chaosFaultRequest) {
         return enableDisableAsync(resourceGroupName, accountName, chaosFault, chaosFaultRequest).block();
     }
 
-    /**
-     * Enable, disable Chaos Fault in a CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param chaosFault The name of the ChaosFault.
-     * @param chaosFaultRequest A request object to enable/disable the chaos fault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a request object to enable/disable the chaos fault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChaosFaultResourceInner enableDisable(String resourceGroupName, String accountName, String chaosFault,
         ChaosFaultResourceInner chaosFaultRequest, Context context) {
@@ -571,16 +449,7 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List Chaos Faults for CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault List Response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChaosFaultResourceInner> listAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName),
@@ -605,32 +474,13 @@ public final class ChaosFaultsClientImpl implements ChaosFaultsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List Chaos Faults for CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChaosFaultResourceInner> list(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * List Chaos Faults for CosmosDB account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chaos Fault List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChaosFaultResourceInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, context));

@@ -105,10 +105,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public Configuration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .put(resourceGroupName, serverName, configurationName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Configuration create(Context context) {
@@ -131,10 +128,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public Configuration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .update(resourceGroupName, serverName, configurationName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Configuration apply(Context context) {
@@ -160,11 +154,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public Configuration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Configuration refresh(Context context) {

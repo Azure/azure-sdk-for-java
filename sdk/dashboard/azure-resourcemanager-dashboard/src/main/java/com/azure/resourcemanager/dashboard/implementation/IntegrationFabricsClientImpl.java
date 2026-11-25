@@ -224,18 +224,7 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a IntegrationFabric along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationFabricInner> getWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, Context context) {
@@ -244,17 +233,7 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             resourceGroupName, workspaceName, integrationFabricName, accept, context);
     }
 
-    /**
-     * Get a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a IntegrationFabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationFabricInner get(String resourceGroupName, String workspaceName, String integrationFabricName) {
         return getWithResponse(resourceGroupName, workspaceName, integrationFabricName, Context.NONE).getValue();
@@ -300,11 +279,8 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricInner requestBodyParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, contentType,
-            accept, requestBodyParameters, Context.NONE);
+        return createWithResponse(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters,
+            Context.NONE);
     }
 
     /**
@@ -353,40 +329,15 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Create a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationFabricInner>, IntegrationFabricInner> beginCreate(String resourceGroupName,
         String workspaceName, String integrationFabricName, IntegrationFabricInner requestBodyParameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters);
-        return this.client.<IntegrationFabricInner, IntegrationFabricInner>getLroResult(response,
-            IntegrationFabricInner.class, IntegrationFabricInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters,
+            Context.NONE);
     }
 
-    /**
-     * Create a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationFabricInner>, IntegrationFabricInner> beginCreate(String resourceGroupName,
         String workspaceName, String integrationFabricName, IntegrationFabricInner requestBodyParameters,
@@ -416,43 +367,19 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationFabricInner create(String resourceGroupName, String workspaceName, String integrationFabricName,
         IntegrationFabricInner requestBodyParameters) {
-        return beginCreate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters)
-            .getFinalResult();
+        return create(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, Context.NONE);
     }
 
-    /**
-     * Create a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationFabricInner create(String resourceGroupName, String workspaceName, String integrationFabricName,
         IntegrationFabricInner requestBodyParameters, Context context) {
-        return beginCreate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, context));
     }
 
     /**
@@ -495,11 +422,8 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricUpdateParameters requestBodyParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, contentType,
-            accept, requestBodyParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters,
+            Context.NONE);
     }
 
     /**
@@ -548,40 +472,15 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Update a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationFabricInner>, IntegrationFabricInner> beginUpdate(String resourceGroupName,
         String workspaceName, String integrationFabricName, IntegrationFabricUpdateParameters requestBodyParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters);
-        return this.client.<IntegrationFabricInner, IntegrationFabricInner>getLroResult(response,
-            IntegrationFabricInner.class, IntegrationFabricInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationFabricInner>, IntegrationFabricInner> beginUpdate(String resourceGroupName,
         String workspaceName, String integrationFabricName, IntegrationFabricUpdateParameters requestBodyParameters,
@@ -611,43 +510,19 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationFabricInner update(String resourceGroupName, String workspaceName, String integrationFabricName,
         IntegrationFabricUpdateParameters requestBodyParameters) {
-        return beginUpdate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters)
-            .getFinalResult();
+        return update(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, Context.NONE);
     }
 
-    /**
-     * Update a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration fabric resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationFabricInner update(String resourceGroupName, String workspaceName, String integrationFabricName,
         IntegrationFabricUpdateParameters requestBodyParameters, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, workspaceName, integrationFabricName, requestBodyParameters, context));
     }
 
     /**
@@ -684,8 +559,7 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, integrationFabricName, Context.NONE);
     }
 
     /**
@@ -727,36 +601,14 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String integrationFabricName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, integrationFabricName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, integrationFabricName, Context.NONE);
     }
 
-    /**
-     * Delete a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String integrationFabricName, Context context) {
@@ -782,35 +634,17 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String integrationFabricName) {
-        beginDelete(resourceGroupName, workspaceName, integrationFabricName).getFinalResult();
+        delete(resourceGroupName, workspaceName, integrationFabricName, Context.NONE);
     }
 
-    /**
-     * Delete a IntegrationFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param integrationFabricName The integration fabric name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String integrationFabricName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, integrationFabricName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, integrationFabricName, context));
     }
 
     /**
@@ -864,12 +698,7 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IntegrationFabricInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<IntegrationFabricListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -894,33 +723,13 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List IntegrationFabric resources by ManagedGrafana.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IntegrationFabric items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationFabricInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List IntegrationFabric resources by ManagedGrafana.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IntegrationFabric items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationFabricInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -957,11 +766,7 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IntegrationFabricInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IntegrationFabricListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

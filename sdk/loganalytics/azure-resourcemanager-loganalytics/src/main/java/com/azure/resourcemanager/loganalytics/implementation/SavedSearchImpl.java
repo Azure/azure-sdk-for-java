@@ -95,12 +95,7 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
     }
 
     public SavedSearch create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSavedSearches()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, savedSearchId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SavedSearch create(Context context) {
@@ -122,12 +117,7 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
     }
 
     public SavedSearch apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSavedSearches()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, savedSearchId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SavedSearch apply(Context context) {
@@ -154,11 +144,7 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
     }
 
     public SavedSearch refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSavedSearches()
-            .getWithResponse(resourceGroupName, workspaceName, savedSearchId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SavedSearch refresh(Context context) {

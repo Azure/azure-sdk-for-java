@@ -163,17 +163,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the resource description of the specified Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource description of the specified Event Hubs Cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -235,66 +225,27 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets the resource description of the specified Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource description of the specified Event Hubs Cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the resource description of the specified Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource description of the specified Event Hubs Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
-    /**
-     * Gets the resource description of the specified Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource description of the specified Event Hubs Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, ClusterInner parameters) {
@@ -370,17 +321,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String clusterName, ClusterInner parameters) {
@@ -412,52 +353,21 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             ClusterInner.class, ClusterInner.class, context);
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, ClusterInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, ClusterInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
         ClusterInner parameters) {
@@ -484,52 +394,20 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, parameters).block();
     }
 
-    /**
-     * Creates or updates an instance of an Event Hubs Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters Parameters for creating a eventhub cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, clusterName, parameters, context).block();
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         ClusterInner parameters) {
@@ -603,17 +481,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             resourceGroupName, clusterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
         String clusterName, ClusterInner parameters) {
@@ -644,52 +512,21 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             ClusterInner.class, ClusterInner.class, context);
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterInner parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName, ClusterInner parameters) {
         return beginUpdateAsync(resourceGroupName, clusterName, parameters).last()
@@ -715,49 +552,19 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterInner parameters) {
         return updateAsync(resourceGroupName, clusterName, parameters).block();
     }
 
-    /**
-     * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param parameters The properties of the Event Hubs Cluster which should be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Event Hubs Cluster resource in List or Get operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterInner parameters, Context context) {
         return updateAsync(resourceGroupName, clusterName, parameters, context).block();
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
@@ -815,16 +622,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             resourceGroupName, clusterName, context);
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
@@ -852,48 +650,20 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             context);
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -916,30 +686,13 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
         deleteAsync(resourceGroupName, clusterName).block();
     }
 
-    /**
-     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
         deleteAsync(resourceGroupName, clusterName, context).block();
@@ -1013,15 +766,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the available Event Hubs Clusters within an ARM resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClusterInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1044,30 +789,13 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the available Event Hubs Clusters within an ARM resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists the available Event Hubs Clusters within an ARM resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1129,13 +857,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the available Event Hubs Clusters within an ARM resource group.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClusterInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1157,43 +879,19 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the available Event Hubs Clusters within an ARM resource group.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists the available Event Hubs Clusters within an ARM resource group.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace IDs operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EHNamespaceIdListResultInner>> listNamespacesWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -1255,62 +953,27 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace IDs operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EHNamespaceIdListResultInner> listNamespacesAsync(String resourceGroupName, String clusterName) {
         return listNamespacesWithResponseAsync(resourceGroupName, clusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace IDs operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EHNamespaceIdListResultInner> listNamespacesWithResponse(String resourceGroupName,
         String clusterName, Context context) {
         return listNamespacesWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
-    /**
-     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace IDs operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EHNamespaceIdListResultInner listNamespaces(String resourceGroupName, String clusterName) {
         return listNamespacesWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Available Clusters operation along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailableClustersListInner>> listAvailableClusterRegionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -1354,39 +1017,19 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Available Clusters operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailableClustersListInner> listAvailableClusterRegionAsync() {
         return listAvailableClusterRegionWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Available Clusters operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailableClustersListInner> listAvailableClusterRegionWithResponse(Context context) {
         return listAvailableClusterRegionWithResponseAsync(context).block();
     }
 
-    /**
-     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Available Clusters operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailableClustersListInner listAvailableClusterRegion() {
         return listAvailableClusterRegionWithResponse(Context.NONE).getValue();

@@ -154,18 +154,7 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get quota by name for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Name of account.
-     * @param quotaName The Playwright service account quota name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota by name for an account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountQuotaInner> getWithResponse(String resourceGroupName, String accountName,
         QuotaNames quotaName, Context context) {
@@ -174,17 +163,7 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
             resourceGroupName, accountName, quotaName, accept, context);
     }
 
-    /**
-     * Get quota by name for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Name of account.
-     * @param quotaName The Playwright service account quota name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota by name for an account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountQuotaInner get(String resourceGroupName, String accountName, QuotaNames quotaName) {
         return getWithResponse(resourceGroupName, accountName, quotaName, Context.NONE).getValue();
@@ -241,12 +220,7 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountQuotaInner> listByAccountSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<AccountQuotaListResult> res
-            = service.listByAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAccountSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -271,33 +245,13 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List quotas for a given account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Name of account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccountQuota list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountQuotaInner> listByAccount(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listByAccountSinglePage(resourceGroupName, accountName),
-            nextLink -> listByAccountNextSinglePage(nextLink));
+        return listByAccount(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * List quotas for a given account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Name of account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AccountQuota list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountQuotaInner> listByAccount(String resourceGroupName, String accountName,
         Context context) {
@@ -336,11 +290,7 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountQuotaInner> listByAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccountQuotaListResult> res
-            = service.listByAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

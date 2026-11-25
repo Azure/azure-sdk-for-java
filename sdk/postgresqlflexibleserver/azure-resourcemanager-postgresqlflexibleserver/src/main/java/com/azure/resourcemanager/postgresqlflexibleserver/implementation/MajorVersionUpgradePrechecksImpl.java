@@ -47,10 +47,7 @@ public final class MajorVersionUpgradePrechecksImpl implements MajorVersionUpgra
     }
 
     public PagedIterable<MajorVersionUpgradePrecheckResource> list(String resourceGroupName, String serverName) {
-        PagedIterable<MajorVersionUpgradePrecheckResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new MajorVersionUpgradePrecheckResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<MajorVersionUpgradePrecheckResource> list(String resourceGroupName, String serverName,

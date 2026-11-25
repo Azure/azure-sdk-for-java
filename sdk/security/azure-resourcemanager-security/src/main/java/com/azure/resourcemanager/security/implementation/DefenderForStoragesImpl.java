@@ -108,34 +108,16 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
     }
 
     public DefenderForStorageSetting getById(String id) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String settingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName");
-        if (settingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'defenderForStorageSettings'.", id)));
-        }
-        return this.getWithResponse(resourceId, settingName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DefenderForStorageSetting> getByIdWithResponse(String id, Context context) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String settingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName");
-        if (settingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'defenderForStorageSettings'.", id)));
-        }
+        String resourceId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "resourceId",
+            "resourceId", LOGGER);
+        String settingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName",
+            "defenderForStorageSettings", LOGGER);
         return this.getWithResponse(resourceId, settingName, context);
     }
 

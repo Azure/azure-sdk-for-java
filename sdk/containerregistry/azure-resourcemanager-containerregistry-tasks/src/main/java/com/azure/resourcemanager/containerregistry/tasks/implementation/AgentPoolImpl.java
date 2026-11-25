@@ -89,10 +89,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .create(resourceGroupName, registryName, agentPoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentPool create(Context context) {
@@ -115,10 +112,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .update(resourceGroupName, registryName, agentPoolName, updateUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentPool apply(Context context) {
@@ -144,11 +138,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .getWithResponse(resourceGroupName, registryName, agentPoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentPool refresh(Context context) {

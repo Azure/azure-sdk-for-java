@@ -214,19 +214,7 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get confluent network gateway by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent network gateway by Id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkGatewayResourceInner> getWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, Context context) {
@@ -235,18 +223,7 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             resourceGroupName, organizationName, environmentId, networkGatewayId, accept, context);
     }
 
-    /**
-     * Get confluent network gateway by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent network gateway by Id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkGatewayResourceInner get(String resourceGroupName, String organizationName, String environmentId,
         String networkGatewayId) {
@@ -295,11 +272,8 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, NetworkGatewayResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, networkGatewayId,
-            contentType, accept, resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId,
+            resource, Context.NONE);
     }
 
     /**
@@ -350,43 +324,16 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             this.client.getContext());
     }
 
-    /**
-     * Create or replace a confluent network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param resource Confluent Network Gateway resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of network gateway record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkGatewayResourceInner>, NetworkGatewayResourceInner> beginCreateOrReplace(
         String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
         NetworkGatewayResourceInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, organizationName, environmentId,
-            networkGatewayId, resource);
-        return this.client.<NetworkGatewayResourceInner, NetworkGatewayResourceInner>getLroResult(response,
-            NetworkGatewayResourceInner.class, NetworkGatewayResourceInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or replace a confluent network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param resource Confluent Network Gateway resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of details of network gateway record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkGatewayResourceInner>, NetworkGatewayResourceInner> beginCreateOrReplace(
         String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
@@ -418,45 +365,20 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace a confluent network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param resource Confluent Network Gateway resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of network gateway record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkGatewayResourceInner createOrReplace(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, NetworkGatewayResourceInner resource) {
-        return beginCreateOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, resource)
-            .getFinalResult();
+        return createOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or replace a confluent network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param resource Confluent Network Gateway resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of network gateway record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkGatewayResourceInner createOrReplace(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, NetworkGatewayResourceInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, organizationName,
+            environmentId, networkGatewayId, resource, context));
     }
 
     /**
@@ -496,9 +418,7 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, networkGatewayId,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId, Context.NONE);
     }
 
     /**
@@ -543,39 +463,14 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             this.client.getContext());
     }
 
-    /**
-     * Delete confluent network gateway by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, Context.NONE);
     }
 
-    /**
-     * Delete confluent network gateway by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String networkGatewayId, Context context) {
@@ -603,39 +498,19 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete confluent network gateway by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId,
         String networkGatewayId) {
-        beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId).getFinalResult();
+        delete(resourceGroupName, organizationName, environmentId, networkGatewayId, Context.NONE);
     }
 
-    /**
-     * Delete confluent network gateway by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param networkGatewayId Confluent network gateway id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String networkGatewayId,
         Context context) {
-        beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, organizationName, environmentId, networkGatewayId, context));
     }
 
     /**
@@ -694,12 +569,7 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkGatewayResourceInner> listSinglePage(String resourceGroupName, String organizationName,
         String environmentId) {
-        final String accept = "application/json";
-        Response<NetworkGatewayResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, organizationName, environmentId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, environmentId, Context.NONE);
     }
 
     /**
@@ -725,36 +595,14 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all network gateways in an environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkGatewayResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkGatewayResourceInner> list(String resourceGroupName, String organizationName,
         String environmentId) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, environmentId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, environmentId, Context.NONE);
     }
 
-    /**
-     * Lists all network gateways in an environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkGatewayResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkGatewayResourceInner> list(String resourceGroupName, String organizationName,
         String environmentId, Context context) {
@@ -792,11 +640,7 @@ public final class NetworkGatewayResourcesClientImpl implements NetworkGatewayRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkGatewayResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkGatewayResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

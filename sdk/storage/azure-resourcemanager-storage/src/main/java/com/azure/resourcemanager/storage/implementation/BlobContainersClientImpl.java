@@ -235,20 +235,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets properties of a specified container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String containerName) {
@@ -319,83 +306,27 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             resourceGroupName, accountName, containerName, accept, context);
     }
 
-    /**
-     * Gets properties of a specified container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> getAsync(String resourceGroupName, String accountName, String containerName) {
         return getWithResponseAsync(resourceGroupName, accountName, containerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of a specified container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerInner> getWithResponse(String resourceGroupName, String accountName,
         String containerName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, containerName, context).block();
     }
 
-    /**
-     * Gets properties of a specified container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainerInner get(String resourceGroupName, String accountName, String containerName) {
         return getWithResponse(resourceGroupName, accountName, containerName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes
-     * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerInner>> createWithResponseAsync(String resourceGroupName, String accountName,
         String containerName, BlobContainerInner blobContainer) {
@@ -482,23 +413,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             resourceGroupName, accountName, containerName, contentType, accept, blobContainer, context);
     }
 
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes
-     * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName,
         BlobContainerInner blobContainer) {
@@ -506,46 +421,14 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes
-     * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container to create.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerInner> createWithResponse(String resourceGroupName, String accountName,
         String containerName, BlobContainerInner blobContainer, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer, context).block();
     }
 
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes
-     * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainerInner create(String resourceGroupName, String accountName, String containerName,
         BlobContainerInner blobContainer) {
@@ -553,23 +436,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .getValue();
     }
 
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be
-     * unchanged. Update fails if the specified container doesn't already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties to update for the blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
         String containerName, BlobContainerInner blobContainer) {
@@ -656,23 +523,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             resourceGroupName, accountName, containerName, contentType, accept, blobContainer, context);
     }
 
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be
-     * unchanged. Update fails if the specified container doesn't already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties to update for the blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName,
         BlobContainerInner blobContainer) {
@@ -680,46 +531,14 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be
-     * unchanged. Update fails if the specified container doesn't already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties to update for the blob container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerInner> updateWithResponse(String resourceGroupName, String accountName,
         String containerName, BlobContainerInner blobContainer, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer, context).block();
     }
 
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be
-     * unchanged. Update fails if the specified container doesn't already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties to update for the blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainerInner update(String resourceGroupName, String accountName, String containerName,
         BlobContainerInner blobContainer) {
@@ -727,20 +546,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .getValue();
     }
 
-    /**
-     * Deletes specified container under its account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
         String containerName) {
@@ -809,81 +615,26 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             resourceGroupName, accountName, containerName, context);
     }
 
-    /**
-     * Deletes specified container under its account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String containerName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, containerName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes specified container under its account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String containerName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, containerName, context).block();
     }
 
-    /**
-     * Deletes specified container under its account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String containerName) {
         deleteWithResponse(resourceGroupName, accountName, containerName, Context.NONE);
     }
 
-    /**
-     * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
-     * pattern and does not clear out the existing tags that are not specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be set to a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LegalHoldInner>> setLegalHoldWithResponseAsync(String resourceGroupName, String accountName,
         String containerName, LegalHoldInner legalHold) {
@@ -971,22 +722,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             legalHold, context);
     }
 
-    /**
-     * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
-     * pattern and does not clear out the existing tags that are not specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be set to a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LegalHoldInner> setLegalHoldAsync(String resourceGroupName, String accountName, String containerName,
         LegalHoldInner legalHold) {
@@ -994,45 +730,14 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
-     * pattern and does not clear out the existing tags that are not specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be set to a blob container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LegalHoldInner> setLegalHoldWithResponse(String resourceGroupName, String accountName,
         String containerName, LegalHoldInner legalHold, Context context) {
         return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold, context).block();
     }
 
-    /**
-     * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
-     * pattern and does not clear out the existing tags that are not specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be set to a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LegalHoldInner setLegalHold(String resourceGroupName, String accountName, String containerName,
         LegalHoldInner legalHold) {
@@ -1040,23 +745,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .getValue();
     }
 
-    /**
-     * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
-     * clears out only the specified tags in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be clear from a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LegalHoldInner>> clearLegalHoldWithResponseAsync(String resourceGroupName, String accountName,
         String containerName, LegalHoldInner legalHold) {
@@ -1144,22 +833,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             legalHold, context);
     }
 
-    /**
-     * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
-     * clears out only the specified tags in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be clear from a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LegalHoldInner> clearLegalHoldAsync(String resourceGroupName, String accountName, String containerName,
         LegalHoldInner legalHold) {
@@ -1167,23 +841,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
-     * clears out only the specified tags in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be clear from a blob container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LegalHoldInner> clearLegalHoldWithResponse(String resourceGroupName, String accountName,
         String containerName, LegalHoldInner legalHold, Context context) {
@@ -1191,22 +849,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .block();
     }
 
-    /**
-     * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
-     * clears out only the specified tags in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param legalHold The LegalHold property that will be clear from a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LegalHoldInner clearLegalHold(String resourceGroupName, String accountName, String containerName,
         LegalHoldInner legalHold) {
@@ -1214,22 +857,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .getValue();
     }
 
-    /**
-     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
-     * duration can be 15 to 60 seconds, or can be infinite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LeaseContainerResponseInner>> leaseWithResponseAsync(String resourceGroupName,
         String accountName, String containerName, LeaseContainerRequest parameters) {
@@ -1309,21 +937,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             resourceGroupName, accountName, containerName, accept, parameters, context);
     }
 
-    /**
-     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
-     * duration can be 15 to 60 seconds, or can be infinite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LeaseContainerResponseInner> leaseAsync(String resourceGroupName, String accountName,
         String containerName) {
@@ -1332,66 +946,21 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
-     * duration can be 15 to 60 seconds, or can be infinite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LeaseContainerResponseInner> leaseWithResponse(String resourceGroupName, String accountName,
         String containerName, LeaseContainerRequest parameters, Context context) {
         return leaseWithResponseAsync(resourceGroupName, accountName, containerName, parameters, context).block();
     }
 
-    /**
-     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
-     * duration can be 15 to 60 seconds, or can be infinite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LeaseContainerResponseInner lease(String resourceGroupName, String accountName, String containerName) {
         final LeaseContainerRequest parameters = null;
         return leaseWithResponse(resourceGroupName, accountName, containerName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> objectLevelWormWithResponseAsync(String resourceGroupName,
         String accountName, String containerName) {
@@ -1462,22 +1031,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, containerName, context);
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginObjectLevelWormAsync(String resourceGroupName, String accountName,
         String containerName) {
@@ -1514,67 +1068,21 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             context);
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginObjectLevelWorm(String resourceGroupName, String accountName,
         String containerName) {
         return this.beginObjectLevelWormAsync(resourceGroupName, accountName, containerName).getSyncPoller();
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginObjectLevelWorm(String resourceGroupName, String accountName,
         String containerName, Context context) {
         return this.beginObjectLevelWormAsync(resourceGroupName, accountName, containerName, context).getSyncPoller();
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> objectLevelWormAsync(String resourceGroupName, String accountName, String containerName) {
         return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName).last()
@@ -1605,42 +1113,13 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void objectLevelWorm(String resourceGroupName, String accountName, String containerName) {
         objectLevelWormAsync(resourceGroupName, accountName, containerName).block();
     }
 
-    /**
-     * This operation migrates a blob container from container level WORM to object level immutability enabled
-     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
-     * Account level versioning must be enabled and there should be no Legal hold on the container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void objectLevelWorm(String resourceGroupName, String accountName, String containerName, Context context) {
         objectLevelWormAsync(resourceGroupName, accountName, containerName, context).block();
@@ -1732,21 +1211,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-     * token.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
-     * @param filter Optional. When specified, only container names starting with the filter will be listed.
-     * @param include Optional, used to include the properties for soft deleted blob containers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName, String maxpagesize,
         String filter, ListContainersInclude include) {
@@ -1754,18 +1219,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-     * token.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
@@ -1799,18 +1253,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-     * token.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
@@ -1819,46 +1262,14 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include));
     }
 
-    /**
-     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-     * token.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
-     * @param filter Optional. When specified, only container names starting with the filter will be listed.
-     * @param include Optional, used to include the properties for soft deleted blob containers.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName, String maxpagesize,
         String filter, ListContainersInclude include, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include, context));
     }
 
-    /**
-     * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
@@ -1934,21 +1345,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, containerName, ifMatch, accept, context);
     }
 
-    /**
-     * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyAsync(String resourceGroupName, String accountName,
         String containerName) {
@@ -1957,24 +1354,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainersGetImmutabilityPolicyResponse getImmutabilityPolicyWithResponse(String resourceGroupName,
         String accountName, String containerName, String ifMatch, Context context) {
@@ -1982,20 +1362,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .block();
     }
 
-    /**
-     * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImmutabilityPolicyInner getImmutabilityPolicy(String resourceGroupName, String accountName,
         String containerName) {
@@ -2004,26 +1371,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .getValue();
     }
 
-    /**
-     * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
-     * this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersCreateOrUpdateImmutabilityPolicyResponse>
         createOrUpdateImmutabilityPolicyWithResponseAsync(String resourceGroupName, String accountName,
@@ -2110,22 +1458,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             context);
     }
 
-    /**
-     * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
-     * this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName,
         String accountName, String containerName) {
@@ -2135,26 +1468,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
-     * this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainersCreateOrUpdateImmutabilityPolicyResponse createOrUpdateImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch,
@@ -2163,21 +1477,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             parameters, context).block();
     }
 
-    /**
-     * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
-     * this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImmutabilityPolicyInner createOrUpdateImmutabilityPolicy(String resourceGroupName, String accountName,
         String containerName) {
@@ -2187,26 +1487,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
-     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
@@ -2290,26 +1571,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, containerName, ifMatch, accept, context);
     }
 
-    /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
-     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName,
         String containerName, String ifMatch) {
@@ -2317,26 +1579,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
-     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainersDeleteImmutabilityPolicyResponse deleteImmutabilityPolicyWithResponse(String resourceGroupName,
         String accountName, String containerName, String ifMatch, Context context) {
@@ -2344,25 +1587,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             context).block();
     }
 
-    /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
-     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImmutabilityPolicyInner deleteImmutabilityPolicy(String resourceGroupName, String accountName,
         String containerName, String ifMatch) {
@@ -2370,25 +1595,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
-     * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
@@ -2471,25 +1678,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, containerName, ifMatch, accept, context);
     }
 
-    /**
-     * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
-     * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName,
         String containerName, String ifMatch) {
@@ -2497,25 +1686,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
-     * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainersLockImmutabilityPolicyResponse lockImmutabilityPolicyWithResponse(String resourceGroupName,
         String accountName, String containerName, String ifMatch, Context context) {
@@ -2523,24 +1694,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .block();
     }
 
-    /**
-     * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
-     * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImmutabilityPolicyInner lockImmutabilityPolicy(String resourceGroupName, String accountName,
         String containerName, String ifMatch) {
@@ -2548,26 +1702,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             .getValue();
     }
 
-    /**
-     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
-     * Locked policy will be this action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersExtendImmutabilityPolicyResponse> extendImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch,
@@ -2660,25 +1795,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             context);
     }
 
-    /**
-     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
-     * Locked policy will be this action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName,
         String containerName, String ifMatch) {
@@ -2687,26 +1804,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
-     * Locked policy will be this action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainersExtendImmutabilityPolicyResponse extendImmutabilityPolicyWithResponse(String resourceGroupName,
         String accountName, String containerName, String ifMatch, ImmutabilityPolicyInner parameters, Context context) {
@@ -2714,24 +1812,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             parameters, context).block();
     }
 
-    /**
-     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
-     * Locked policy will be this action. ETag in If-Match is required for this operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names
-     * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
-     * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
-     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
-     * by the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImmutabilityPolicyInner extendImmutabilityPolicy(String resourceGroupName, String accountName,
         String containerName, String ifMatch) {

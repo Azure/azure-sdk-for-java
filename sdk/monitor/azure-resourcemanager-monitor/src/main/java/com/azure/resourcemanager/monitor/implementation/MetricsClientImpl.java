@@ -111,48 +111,7 @@ public final class MetricsClientImpl implements MetricsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * **Lists the metric data for a subscription**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
-     * case for 'FULL' value that returns single datapoint for entire time span requested.
-     * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Limit 20 metrics.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * *Examples: average, minimum, maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request.
-     * Valid only if filter is specified.
-     * Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
-     * Only one order can be specified.
-     * *Examples: sum asc*.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
-     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
-     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
-     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
-     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     * operation's description for details.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
-     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
-     * timespan parameters. Defaults to false.
-     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
-     * an error is returned for invalid filter parameters. Defaults to true.
-     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
-     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
-     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResponseInner>> listAtSubscriptionScopeWithResponseAsync(String region, String timespan,
         Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
@@ -244,16 +203,7 @@ public final class MetricsClientImpl implements MetricsClient {
             autoAdjustTimegrain, validateDimensions, rollupby, accept, context);
     }
 
-    /**
-     * **Lists the metric data for a subscription**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseInner> listAtSubscriptionScopeAsync(String region) {
         final String timespan = null;
@@ -273,49 +223,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * **Lists the metric data for a subscription**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
-     * case for 'FULL' value that returns single datapoint for entire time span requested.
-     * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Limit 20 metrics.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * *Examples: average, minimum, maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request.
-     * Valid only if filter is specified.
-     * Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
-     * Only one order can be specified.
-     * *Examples: sum asc*.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
-     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
-     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
-     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
-     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     * operation's description for details.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
-     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
-     * timespan parameters. Defaults to false.
-     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
-     * an error is returned for invalid filter parameters. Defaults to true.
-     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
-     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
-     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResponseInner> listAtSubscriptionScopeWithResponse(String region, String timespan,
         Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
@@ -326,16 +234,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 .block();
     }
 
-    /**
-     * **Lists the metric data for a subscription**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseInner listAtSubscriptionScope(String region) {
         final String timespan = null;
@@ -355,50 +254,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 .getValue();
     }
 
-    /**
-     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
-     * This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
-     * case for 'FULL' value that returns single datapoint for entire time span requested.
-     * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Limit 20 metrics.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * *Examples: average, minimum, maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request.
-     * Valid only if filter is specified.
-     * Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
-     * Only one order can be specified.
-     * *Examples: sum asc*.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
-     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
-     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
-     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
-     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     * operation's description for details.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
-     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
-     * timespan parameters. Defaults to false.
-     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
-     * an error is returned for invalid filter parameters. Defaults to true.
-     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
-     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
-     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResponseInner>> listAtSubscriptionScopePostWithResponseAsync(String region, String timespan,
         Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
@@ -500,17 +356,7 @@ public final class MetricsClientImpl implements MetricsClient {
             resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, accept, body, context);
     }
 
-    /**
-     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
-     * This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseInner> listAtSubscriptionScopePostAsync(String region) {
         final String timespan = null;
@@ -531,51 +377,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
-     * This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
-     * case for 'FULL' value that returns single datapoint for entire time span requested.
-     * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Limit 20 metrics.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * *Examples: average, minimum, maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request.
-     * Valid only if filter is specified.
-     * Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
-     * Only one order can be specified.
-     * *Examples: sum asc*.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
-     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
-     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
-     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
-     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     * operation's description for details.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
-     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
-     * timespan parameters. Defaults to false.
-     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
-     * an error is returned for invalid filter parameters. Defaults to true.
-     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
-     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
-     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResponseInner> listAtSubscriptionScopePostWithResponse(String region, String timespan,
         Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
@@ -586,17 +388,7 @@ public final class MetricsClientImpl implements MetricsClient {
             context).block();
     }
 
-    /**
-     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
-     * This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param region The region where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseInner listAtSubscriptionScopePost(String region) {
         final String timespan = null;
@@ -617,48 +409,7 @@ public final class MetricsClientImpl implements MetricsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * **Lists the metric values for a resource**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
-     * case for 'FULL' value that returns single datapoint for entire time span requested.
-     * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Limit 20 metrics.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * *Examples: average, minimum, maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request.
-     * Valid only if filter is specified.
-     * Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
-     * Only one order can be specified.
-     * *Examples: sum asc*.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
-     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
-     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
-     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
-     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     * operation's description for details.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
-     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
-     * timespan parameters. Defaults to false.
-     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
-     * an error is returned for invalid filter parameters. Defaults to true.
-     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
-     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
-     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResponseInner>> listWithResponseAsync(String resourceUri, String timespan, Duration interval,
         String metricnames, String aggregation, Integer top, String orderBy, String filter, ResultType resultType,
@@ -742,16 +493,7 @@ public final class MetricsClientImpl implements MetricsClient {
             rollupby, accept, context);
     }
 
-    /**
-     * **Lists the metric values for a resource**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseInner> listAsync(String resourceUri) {
         final String timespan = null;
@@ -771,49 +513,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * **Lists the metric values for a resource**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
-     * case for 'FULL' value that returns single datapoint for entire time span requested.
-     * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Limit 20 metrics.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * *Examples: average, minimum, maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request.
-     * Valid only if filter is specified.
-     * Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
-     * Only one order can be specified.
-     * *Examples: sum asc*.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
-     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
-     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
-     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
-     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
-     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
-     * operation's description for details.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
-     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
-     * timespan parameters. Defaults to false.
-     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
-     * an error is returned for invalid filter parameters. Defaults to true.
-     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
-     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
-     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResponseInner> listWithResponse(String resourceUri, String timespan, Duration interval,
         String metricnames, String aggregation, Integer top, String orderBy, String filter, ResultType resultType,
@@ -823,16 +523,7 @@ public final class MetricsClientImpl implements MetricsClient {
             resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context).block();
     }
 
-    /**
-     * **Lists the metric values for a resource**. This API used the [default ARM throttling
-     * limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling).
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseInner list(String resourceUri) {
         final String timespan = null;

@@ -92,18 +92,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified load balancer outbound rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param outboundRuleName The name of the outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OutboundRuleInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
         String outboundRuleName) {
@@ -127,7 +116,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono
                 .error(new IllegalArgumentException("Parameter outboundRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -171,24 +160,14 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono
                 .error(new IllegalArgumentException("Parameter outboundRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, outboundRuleName, accept, context);
     }
 
-    /**
-     * Gets the specified load balancer outbound rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param outboundRuleName The name of the outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OutboundRuleInner> getAsync(String resourceGroupName, String loadBalancerName,
         String outboundRuleName) {
@@ -196,35 +175,14 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified load balancer outbound rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param outboundRuleName The name of the outbound rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OutboundRuleInner> getWithResponse(String resourceGroupName, String loadBalancerName,
         String outboundRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, outboundRuleName, context).block();
     }
 
-    /**
-     * Gets the specified load balancer outbound rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param outboundRuleName The name of the outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundRuleInner get(String resourceGroupName, String loadBalancerName, String outboundRuleName) {
         return getWithResponse(resourceGroupName, loadBalancerName, outboundRuleName, Context.NONE).getValue();
@@ -260,7 +218,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -301,7 +259,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,16 +269,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the outbound rules in a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OutboundRuleInner> listAsync(String resourceGroupName, String loadBalancerName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, loadBalancerName),
@@ -344,32 +293,13 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the outbound rules in a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleInner> list(String resourceGroupName, String loadBalancerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName));
     }
 
-    /**
-     * Gets all the outbound rules in a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleInner> list(String resourceGroupName, String loadBalancerName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName, context));

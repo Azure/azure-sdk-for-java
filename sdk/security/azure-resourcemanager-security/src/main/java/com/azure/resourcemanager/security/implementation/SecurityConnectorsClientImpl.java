@@ -229,33 +229,14 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves details of a specific security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityConnectorInner> getByResourceGroupWithResponse(String resourceGroupName,
         String securityConnectorName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, securityConnectorName, context).block();
     }
 
-    /**
-     * Retrieves details of a specific security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityConnectorInner getByResourceGroup(String resourceGroupName, String securityConnectorName) {
         return getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE).getValue();
@@ -373,19 +354,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a security connector. If a security connector is already created and a subsequent request is
-     * issued for the same security connector id, then it will be updated.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param securityConnector The security connector resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityConnectorInner> createOrUpdateWithResponse(String resourceGroupName,
         String securityConnectorName, SecurityConnectorInner securityConnector, Context context) {
@@ -393,18 +362,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             .block();
     }
 
-    /**
-     * Creates or updates a security connector. If a security connector is already created and a subsequent request is
-     * issued for the same security connector id, then it will be updated.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param securityConnector The security connector resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityConnectorInner createOrUpdate(String resourceGroupName, String securityConnectorName,
         SecurityConnectorInner securityConnector) {
@@ -521,35 +479,14 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param securityConnector The security connector resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityConnectorInner> updateWithResponse(String resourceGroupName, String securityConnectorName,
         SecurityConnectorInner securityConnector, Context context) {
         return updateWithResponseAsync(resourceGroupName, securityConnectorName, securityConnector, context).block();
     }
 
-    /**
-     * Updates a security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param securityConnector The security connector resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security connector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityConnectorInner update(String resourceGroupName, String securityConnectorName,
         SecurityConnectorInner securityConnector) {
@@ -642,31 +579,13 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName, context).block();
     }
 
-    /**
-     * Deletes a security connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String securityConnectorName) {
         deleteWithResponse(resourceGroupName, securityConnectorName, Context.NONE);
@@ -777,32 +696,13 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the security connectors in the specified resource group. Use the 'nextLink' property in the response to
-     * get the next page of security connectors for the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security connectors response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityConnectorInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the security connectors in the specified resource group. Use the 'nextLink' property in the response to
-     * get the next page of security connectors for the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security connectors response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityConnectorInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -895,29 +795,13 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
-     * get the next page of security connectors for the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security connectors response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityConnectorInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
-     * get the next page of security connectors for the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security connectors response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityConnectorInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

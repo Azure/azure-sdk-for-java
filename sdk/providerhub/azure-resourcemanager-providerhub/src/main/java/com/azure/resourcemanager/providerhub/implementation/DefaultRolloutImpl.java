@@ -54,10 +54,7 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
     }
 
     public DefaultRollout create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefaultRollouts()
-            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DefaultRollout create(Context context) {
@@ -78,10 +75,7 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
     }
 
     public DefaultRollout apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefaultRollouts()
-            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DefaultRollout apply(Context context) {
@@ -104,11 +98,7 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
     }
 
     public DefaultRollout refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefaultRollouts()
-            .getWithResponse(providerNamespace, rolloutName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DefaultRollout refresh(Context context) {

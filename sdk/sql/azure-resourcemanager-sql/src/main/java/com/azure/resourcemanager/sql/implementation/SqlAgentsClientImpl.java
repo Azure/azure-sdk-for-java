@@ -80,17 +80,7 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
             @BodyParam("application/json") SqlAgentConfigurationInner parameters, Context context);
     }
 
-    /**
-     * Gets current instance sql agent configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current instance sql agent configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlAgentConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -154,66 +144,27 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
             resourceGroupName, managedInstanceName, accept, context);
     }
 
-    /**
-     * Gets current instance sql agent configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current instance sql agent configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlAgentConfigurationInner> getAsync(String resourceGroupName, String managedInstanceName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets current instance sql agent configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current instance sql agent configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlAgentConfigurationInner> getWithResponse(String resourceGroupName, String managedInstanceName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, context).block();
     }
 
-    /**
-     * Gets current instance sql agent configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current instance sql agent configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlAgentConfigurationInner get(String resourceGroupName, String managedInstanceName) {
         return getWithResponse(resourceGroupName, managedInstanceName, Context.NONE).getValue();
     }
 
-    /**
-     * Puts new sql agent configuration to instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlAgentConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, SqlAgentConfigurationInner parameters) {
@@ -292,17 +243,7 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
             context);
     }
 
-    /**
-     * Puts new sql agent configuration to instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlAgentConfigurationInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
         SqlAgentConfigurationInner parameters) {
@@ -310,35 +251,14 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Puts new sql agent configuration to instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlAgentConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
         String managedInstanceName, SqlAgentConfigurationInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters, context).block();
     }
 
-    /**
-     * Puts new sql agent configuration to instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlAgentConfigurationInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         SqlAgentConfigurationInner parameters) {

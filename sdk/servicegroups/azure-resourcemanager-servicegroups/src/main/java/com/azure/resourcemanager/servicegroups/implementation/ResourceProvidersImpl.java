@@ -26,13 +26,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public ServiceGroup createOrUpdateServiceGroup(String serviceGroupName,
         ServiceGroupInner createServiceGroupRequest) {
-        ServiceGroupInner inner
-            = this.serviceClient().createOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest);
-        if (inner != null) {
-            return new ServiceGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest, Context.NONE);
     }
 
     public ServiceGroup createOrUpdateServiceGroup(String serviceGroupName, ServiceGroupInner createServiceGroupRequest,
@@ -47,12 +41,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public ServiceGroup updateServiceGroup(String serviceGroupName, ServiceGroupInner updateServiceGroupRequest) {
-        ServiceGroupInner inner = this.serviceClient().updateServiceGroup(serviceGroupName, updateServiceGroupRequest);
-        if (inner != null) {
-            return new ServiceGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateServiceGroup(serviceGroupName, updateServiceGroupRequest, Context.NONE);
     }
 
     public ServiceGroup updateServiceGroup(String serviceGroupName, ServiceGroupInner updateServiceGroupRequest,
@@ -67,7 +56,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public void deleteServiceGroup(String serviceGroupName) {
-        this.serviceClient().deleteServiceGroup(serviceGroupName);
+        this.deleteServiceGroup(serviceGroupName, Context.NONE);
     }
 
     public void deleteServiceGroup(String serviceGroupName, Context context) {

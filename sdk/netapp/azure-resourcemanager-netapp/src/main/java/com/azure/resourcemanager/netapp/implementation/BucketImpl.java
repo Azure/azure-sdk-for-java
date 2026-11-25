@@ -104,11 +104,7 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     }
 
     public Bucket create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBuckets()
-            .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Bucket create(Context context) {
@@ -131,10 +127,7 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     }
 
     public Bucket apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBuckets()
-            .update(resourceGroupName, accountName, poolName, volumeName, bucketName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Bucket apply(Context context) {
@@ -165,11 +158,7 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     }
 
     public Bucket refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBuckets()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Bucket refresh(Context context) {

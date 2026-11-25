@@ -555,18 +555,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties and configuration details of a specific New Relic monitor resource, providing insight
-     * into its setup and status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NewRelicMonitorResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -575,17 +564,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Retrieves the properties and configuration details of a specific New Relic monitor resource, providing insight
-     * into its setup and status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName) {
         return getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -632,11 +611,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
         NewRelicMonitorResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, monitorName, resource, Context.NONE);
     }
 
     /**
@@ -685,41 +660,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Creates a new or updates an existing New Relic monitor resource in your Azure subscription. This sets up the
-     * integration between Azure and your New Relic account, enabling observability and monitoring of your Azure
-     * resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String monitorName, NewRelicMonitorResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, monitorName, resource);
-        return this.client.<NewRelicMonitorResourceInner, NewRelicMonitorResourceInner>getLroResult(response,
-            NewRelicMonitorResourceInner.class, NewRelicMonitorResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, monitorName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new or updates an existing New Relic monitor resource in your Azure subscription. This sets up the
-     * integration between Azure and your New Relic account, enabling observability and monitoring of your Azure
-     * resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String monitorName, NewRelicMonitorResourceInner resource, Context context) {
@@ -748,43 +696,19 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new or updates an existing New Relic monitor resource in your Azure subscription. This sets up the
-     * integration between Azure and your New Relic account, enabling observability and monitoring of your Azure
-     * resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner createOrUpdate(String resourceGroupName, String monitorName,
         NewRelicMonitorResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, monitorName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, monitorName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new or updates an existing New Relic monitor resource in your Azure subscription. This sets up the
-     * integration between Azure and your New Relic account, enabling observability and monitoring of your Azure
-     * resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner createOrUpdate(String resourceGroupName, String monitorName,
         NewRelicMonitorResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, monitorName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, monitorName, resource, context));
     }
 
     /**
@@ -822,11 +746,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName,
         NewRelicMonitorResourceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, monitorName, properties, Context.NONE);
     }
 
     /**
@@ -870,37 +790,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates an existing New Relic monitor resource from your Azure subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName, NewRelicMonitorResourceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, properties);
-        return this.client.<NewRelicMonitorResourceInner, NewRelicMonitorResourceInner>getLroResult(response,
-            NewRelicMonitorResourceInner.class, NewRelicMonitorResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing New Relic monitor resource from your Azure subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner> beginUpdate(
         String resourceGroupName, String monitorName, NewRelicMonitorResourceUpdate properties, Context context) {
@@ -927,39 +824,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing New Relic monitor resource from your Azure subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner update(String resourceGroupName, String monitorName,
         NewRelicMonitorResourceUpdate properties) {
-        return beginUpdate(resourceGroupName, monitorName, properties).getFinalResult();
+        return update(resourceGroupName, monitorName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing New Relic monitor resource from your Azure subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner update(String resourceGroupName, String monitorName,
         NewRelicMonitorResourceUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, monitorName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, monitorName, properties, context));
     }
 
     /**
@@ -997,8 +873,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, String userEmail) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, userEmail, Context.NONE);
+        return deleteWithResponse(resourceGroupName, monitorName, userEmail, Context.NONE);
     }
 
     /**
@@ -1041,38 +916,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration and
-     * stopping the observability of your Azure resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param userEmail User Email.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         String userEmail) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, userEmail);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, monitorName, userEmail, Context.NONE);
     }
 
-    /**
-     * Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration and
-     * stopping the observability of your Azure resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param userEmail User Email.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         String userEmail, Context context) {
@@ -1098,37 +949,16 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration and
-     * stopping the observability of your Azure resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param userEmail User Email.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String userEmail) {
-        beginDelete(resourceGroupName, monitorName, userEmail).getFinalResult();
+        delete(resourceGroupName, monitorName, userEmail, Context.NONE);
     }
 
-    /**
-     * Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration and
-     * stopping the observability of your Azure resources through New Relic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param userEmail User Email.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String userEmail, Context context) {
-        beginDelete(resourceGroupName, monitorName, userEmail, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, monitorName, userEmail, context));
     }
 
     /**
@@ -1179,11 +1009,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NewRelicMonitorResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NewRelicMonitorResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1206,33 +1032,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Retrieves a list of all New Relic monitor resources either a specific resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NewRelicMonitorResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Retrieves a list of all New Relic monitor resources either a specific resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NewRelicMonitorResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1280,11 +1086,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NewRelicMonitorResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NewRelicMonitorResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1305,29 +1107,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all New Relic monitor resources either within a specific subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NewRelicMonitorResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all New Relic monitor resources either within a specific subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NewRelicMonitorResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1375,18 +1161,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the metric rules that are configured in the New Relic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the get metrics status request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return set of rules for sending metrics for the Monitor resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricRulesInner> getMetricRulesWithResponse(String resourceGroupName, String monitorName,
         MetricsRequest request, Context context) {
@@ -1396,17 +1171,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, request, context);
     }
 
-    /**
-     * Retrieves the metric rules that are configured in the New Relic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the get metrics status request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return set of rules for sending metrics for the Monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricRulesInner getMetricRules(String resourceGroupName, String monitorName, MetricsRequest request) {
         return getMetricRulesWithResponse(resourceGroupName, monitorName, request, Context.NONE).getValue();
@@ -1453,18 +1218,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the metric status that are configured in the New Relic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the get metrics status request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get metrics status Operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsStatusResponseInner> getMetricStatusWithResponse(String resourceGroupName,
         String monitorName, MetricsStatusRequest request, Context context) {
@@ -1474,17 +1228,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, request, context);
     }
 
-    /**
-     * Retrieves the metric status that are configured in the New Relic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the get metrics status request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get metrics status Operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsStatusResponseInner getMetricStatus(String resourceGroupName, String monitorName,
         MetricsStatusRequest request) {
@@ -1550,12 +1294,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppServiceInfoInner> listAppServicesSinglePage(String resourceGroupName, String monitorName,
         AppServicesGetRequest request) {
-        final String accept = "application/json";
-        Response<AppServicesListResponse> res
-            = service.listAppServicesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, request, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAppServicesSinglePage(resourceGroupName, monitorName, request, Context.NONE);
     }
 
     /**
@@ -1582,38 +1321,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the app service resources currently being monitored by the New Relic resource, helping you understand which
-     * app services are under monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the app services get request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list app services Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceInfoInner> listAppServices(String resourceGroupName, String monitorName,
         AppServicesGetRequest request) {
-        return new PagedIterable<>(() -> listAppServicesSinglePage(resourceGroupName, monitorName, request),
-            nextLink -> listAppServicesNextSinglePage(nextLink));
+        return listAppServices(resourceGroupName, monitorName, request, Context.NONE);
     }
 
-    /**
-     * Lists the app service resources currently being monitored by the New Relic resource, helping you understand which
-     * app services are under monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the app services get request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list app services Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceInfoInner> listAppServices(String resourceGroupName, String monitorName,
         AppServicesGetRequest request, Context context) {
@@ -1661,18 +1376,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Switches the billing for the New Relic Monitor resource to be billed by Azure Marketplace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the switch billing request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorsSwitchBillingResponse switchBillingWithResponse(String resourceGroupName, String monitorName,
         SwitchBillingRequest request, Context context) {
@@ -1682,17 +1386,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, request, context);
     }
 
-    /**
-     * Switches the billing for the New Relic Monitor resource to be billed by Azure Marketplace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the switch billing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner switchBilling(String resourceGroupName, String monitorName,
         SwitchBillingRequest request) {
@@ -1758,12 +1452,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VMInfoInner> listHostsSinglePage(String resourceGroupName, String monitorName,
         HostsGetRequest request) {
-        final String accept = "application/json";
-        Response<VMHostsListResponse> res
-            = service.listHostsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, request, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listHostsSinglePage(resourceGroupName, monitorName, request, Context.NONE);
     }
 
     /**
@@ -1790,37 +1479,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all VM resources currently being monitored by the New Relic monitor resource, helping you manage
-     * observability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the Hosts get request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMInfoInner> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request) {
-        return new PagedIterable<>(() -> listHostsSinglePage(resourceGroupName, monitorName, request),
-            nextLink -> listHostsNextSinglePage(nextLink));
+        return listHosts(resourceGroupName, monitorName, request, Context.NONE);
     }
 
-    /**
-     * Lists all VM resources currently being monitored by the New Relic monitor resource, helping you manage
-     * observability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param request The details of the Hosts get request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMInfoInner> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request,
         Context context) {
@@ -1861,17 +1526,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
         return refreshIngestionKeyWithResponseAsync(resourceGroupName, monitorName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Refreshes the ingestion key for all monitors linked to the same account associated to the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> refreshIngestionKeyWithResponse(String resourceGroupName, String monitorName,
         Context context) {
@@ -1879,15 +1534,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, context);
     }
 
-    /**
-     * Refreshes the ingestion key for all monitors linked to the same account associated to the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshIngestionKey(String resourceGroupName, String monitorName) {
         refreshIngestionKeyWithResponse(resourceGroupName, monitorName, Context.NONE);
@@ -1951,12 +1598,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoredResourceInner> listMonitoredResourcesSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<MonitoredResourceListResponse> res
-            = service.listMonitoredResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listMonitoredResourcesSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -1982,37 +1624,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Azure resources that are currently being monitored by the specified New Relic monitor resource,
-     * providing insight into the coverage of your observability setup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by NewRelic monitor resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listMonitoredResourcesSinglePage(resourceGroupName, monitorName),
-            nextLink -> listMonitoredResourcesNextSinglePage(nextLink));
+        return listMonitoredResources(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * Lists all Azure resources that are currently being monitored by the specified New Relic monitor resource,
-     * providing insight into the coverage of your observability setup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by NewRelic monitor resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
         Context context) {
@@ -2074,12 +1692,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LinkedResourceInner> listLinkedResourcesSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<LinkedResourceListResponse> res
-            = service.listLinkedResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listLinkedResourcesSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -2105,35 +1718,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Azure resources that are linked to the same New Relic organization as the specified monitor resource,
-     * helping you understand the scope of integration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedResourceInner> listLinkedResources(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listLinkedResourcesSinglePage(resourceGroupName, monitorName),
-            nextLink -> listLinkedResourcesNextSinglePage(nextLink));
+        return listLinkedResources(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * Lists all Azure resources that are linked to the same New Relic organization as the specified monitor resource,
-     * helping you understand the scope of integration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedResourceInner> listLinkedResources(String resourceGroupName, String monitorName,
         Context context) {
@@ -2180,18 +1771,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the payload that needs to be passed in the request body for installing the New Relic agent on a VM,
-     * providing the necessary configuration details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMExtensionPayloadInner> vmHostPayloadWithResponse(String resourceGroupName, String monitorName,
         Context context) {
@@ -2200,17 +1780,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Returns the payload that needs to be passed in the request body for installing the New Relic agent on a VM,
-     * providing the necessary configuration details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMExtensionPayloadInner vmHostPayload(String resourceGroupName, String monitorName) {
         return vmHostPayloadWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -2253,17 +1823,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the latest SaaS linked to the newrelic organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -2272,16 +1832,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Returns the latest SaaS linked to the newrelic organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String monitorName) {
         return latestLinkedSaaSWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -2322,10 +1873,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String monitorName, SaaSData body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, body, Context.NONE);
+        return linkSaaSWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -2369,37 +1917,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Links a new SaaS to the newrelic organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Link SaaS body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginLinkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
-        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<NewRelicMonitorResourceInner, NewRelicMonitorResourceInner>getLroResult(response,
-            NewRelicMonitorResourceInner.class, NewRelicMonitorResourceInner.class, Context.NONE);
+        return beginLinkSaaS(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the newrelic organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Link SaaS body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginLinkSaaS(String resourceGroupName, String monitorName, SaaSData body, Context context) {
@@ -2426,38 +1951,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links a new SaaS to the newrelic organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Link SaaS body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner linkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
-        return beginLinkSaaS(resourceGroupName, monitorName, body).getFinalResult();
+        return linkSaaS(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the newrelic organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Link SaaS body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner linkSaaS(String resourceGroupName, String monitorName, SaaSData body,
         Context context) {
-        return beginLinkSaaS(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginLinkSaaS(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -2499,9 +2003,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resubscribeWithResponse(String resourceGroupName, String monitorName,
         ResubscribeProperties body) {
-        final String accept = "application/json";
-        return service.resubscribeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, body, Context.NONE);
+        return resubscribeWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -2586,46 +2088,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body) {
-        Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<NewRelicMonitorResourceInner, NewRelicMonitorResourceInner>getLroResult(response,
-            NewRelicMonitorResourceInner.class, NewRelicMonitorResourceInner.class, Context.NONE);
+        return beginResubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName) {
         final ResubscribeProperties body = null;
-        Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<NewRelicMonitorResourceInner, NewRelicMonitorResourceInner>getLroResult(response,
-            NewRelicMonitorResourceInner.class, NewRelicMonitorResourceInner.class, Context.NONE);
+        return beginResubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Resubscribe Properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body, Context context) {
@@ -2673,42 +2147,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner resubscribe(String resourceGroupName, String monitorName) {
         final ResubscribeProperties body = null;
-        return beginResubscribe(resourceGroupName, monitorName, body).getFinalResult();
+        return resubscribe(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     * 
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Resubscribe Properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NewRelicMonitorResourceInner resubscribe(String resourceGroupName, String monitorName,
         ResubscribeProperties body, Context context) {
-        return beginResubscribe(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResubscribe(resourceGroupName, monitorName, body, context));
     }
 
     /**
@@ -2743,11 +2193,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NewRelicMonitorResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NewRelicMonitorResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2802,11 +2248,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NewRelicMonitorResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NewRelicMonitorResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2860,11 +2302,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppServiceInfoInner> listAppServicesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AppServicesListResponse> res
-            = service.listAppServicesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAppServicesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2917,11 +2355,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VMInfoInner> listHostsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VMHostsListResponse> res
-            = service.listHostsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listHostsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2975,11 +2409,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoredResourceInner> listMonitoredResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MonitoredResourceListResponse> res
-            = service.listMonitoredResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listMonitoredResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3039,11 +2469,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LinkedResourceInner> listLinkedResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LinkedResourceListResponse> res
-            = service.listLinkedResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listLinkedResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -254,17 +254,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a SandboxGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SandboxGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String sandboxGroupName,
         Context context) {
@@ -273,16 +263,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, sandboxGroupName, accept, context);
     }
 
-    /**
-     * Get the properties of a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a SandboxGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SandboxGroupInner getByResourceGroup(String resourceGroupName, String sandboxGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, sandboxGroupName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String sandboxGroupName,
         SandboxGroupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sandboxGroupName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, sandboxGroupName, resource, Context.NONE);
     }
 
     /**
@@ -378,39 +355,14 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             SandboxGroupInner.class, SandboxGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a SandboxGroup resource, representing a group of sandboxes that
-     * share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String sandboxGroupName, SandboxGroupInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, sandboxGroupName, resource);
-        return this.client.<SandboxGroupInner, SandboxGroupInner>getLroResult(response, SandboxGroupInner.class,
-            SandboxGroupInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, sandboxGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a SandboxGroup resource, representing a group of sandboxes that
-     * share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String sandboxGroupName, SandboxGroupInner resource, Context context) {
@@ -439,39 +391,19 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SandboxGroupInner createOrUpdate(String resourceGroupName, String sandboxGroupName,
         SandboxGroupInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, sandboxGroupName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, sandboxGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SandboxGroupInner createOrUpdate(String resourceGroupName, String sandboxGroupName,
         SandboxGroupInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, sandboxGroupName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, sandboxGroupName, resource, context));
     }
 
     /**
@@ -513,11 +445,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String sandboxGroupName,
         SandboxGroupPatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sandboxGroupName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, sandboxGroupName, properties, Context.NONE);
     }
 
     /**
@@ -564,39 +492,14 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             SandboxGroupInner.class, SandboxGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Patches a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a SandboxGroup resource, representing a group of sandboxes that
-     * share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdate(String resourceGroupName,
         String sandboxGroupName, SandboxGroupPatch properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, sandboxGroupName, properties);
-        return this.client.<SandboxGroupInner, SandboxGroupInner>getLroResult(response, SandboxGroupInner.class,
-            SandboxGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, sandboxGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Patches a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a SandboxGroup resource, representing a group of sandboxes that
-     * share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdate(String resourceGroupName,
         String sandboxGroupName, SandboxGroupPatch properties, Context context) {
@@ -624,38 +527,18 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patches a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SandboxGroupInner update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties) {
-        return beginUpdate(resourceGroupName, sandboxGroupName, properties).getFinalResult();
+        return update(resourceGroupName, sandboxGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Patches a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SandboxGroupInner update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties,
         Context context) {
-        return beginUpdate(resourceGroupName, sandboxGroupName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, sandboxGroupName, properties, context));
     }
 
     /**
@@ -689,8 +572,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sandboxGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sandboxGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
     /**
@@ -728,33 +610,13 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sandboxGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, sandboxGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sandboxGroupName,
         Context context) {
@@ -778,33 +640,16 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sandboxGroupName) {
-        beginDelete(resourceGroupName, sandboxGroupName).getFinalResult();
+        delete(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sandboxGroupName, Context context) {
-        beginDelete(resourceGroupName, sandboxGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, sandboxGroupName, context));
     }
 
     /**
@@ -854,11 +699,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SandboxGroupInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SandboxGroupListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -880,31 +721,13 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all SandboxGroups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SandboxGroups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SandboxGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get all SandboxGroups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SandboxGroups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SandboxGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -952,11 +775,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SandboxGroupInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SandboxGroupListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -977,27 +796,13 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all SandboxGroups for a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SandboxGroups for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SandboxGroupInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get all SandboxGroups for a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SandboxGroups for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SandboxGroupInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1036,11 +841,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SandboxGroupInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SandboxGroupListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1094,11 +895,7 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SandboxGroupInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SandboxGroupListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

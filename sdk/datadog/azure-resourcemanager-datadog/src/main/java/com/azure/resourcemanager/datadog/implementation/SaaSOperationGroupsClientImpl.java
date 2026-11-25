@@ -109,16 +109,7 @@ public final class SaaSOperationGroupsClientImpl implements SaaSOperationGroupsC
         return activateResourceWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace SaaS resource details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SaaSResourceDetailsResponseInner> activateResourceWithResponse(ActivateSaaSParameterRequest body,
         Context context) {
@@ -128,15 +119,7 @@ public final class SaaSOperationGroupsClientImpl implements SaaSOperationGroupsC
             this.client.getSubscriptionId(), contentType, accept, body, context);
     }
 
-    /**
-     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace SaaS resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body) {
         return activateResourceWithResponse(body, Context.NONE).getValue();

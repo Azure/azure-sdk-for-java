@@ -51,7 +51,7 @@ public final class SchemasImpl implements Schemas {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String schemaName) {
-        this.serviceClient().delete(resourceGroupName, schemaName);
+        this.delete(resourceGroupName, schemaName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schemaName, Context context) {
@@ -60,12 +60,7 @@ public final class SchemasImpl implements Schemas {
 
     public SchemaVersion createVersion(String resourceGroupName, String schemaName,
         SchemaVersionWithUpdateTypeInner body) {
-        SchemaVersionInner inner = this.serviceClient().createVersion(resourceGroupName, schemaName, body);
-        if (inner != null) {
-            return new SchemaVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createVersion(resourceGroupName, schemaName, body, Context.NONE);
     }
 
     public SchemaVersion createVersion(String resourceGroupName, String schemaName,
@@ -96,8 +91,7 @@ public final class SchemasImpl implements Schemas {
     }
 
     public PagedIterable<Schema> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SchemaInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Schema> listByResourceGroup(String resourceGroupName, Context context) {
@@ -106,8 +100,7 @@ public final class SchemasImpl implements Schemas {
     }
 
     public PagedIterable<Schema> list() {
-        PagedIterable<SchemaInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Schema> list(Context context) {
@@ -116,74 +109,30 @@ public final class SchemasImpl implements Schemas {
     }
 
     public Schema getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, schemaName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Schema> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
+            "schemaName", "schemas", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, schemaName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        this.delete(resourceGroupName, schemaName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
+            "schemaName", "schemas", LOGGER);
         this.delete(resourceGroupName, schemaName, context);
     }
 

@@ -153,18 +153,7 @@ public final class DetectorsClientImpl implements DetectorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a diagnostic detector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param detectorId The name of the Detector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a diagnostic detector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorInner> getWithResponse(String resourceGroupName, String schedulerName, String detectorId,
         Context context) {
@@ -173,17 +162,7 @@ public final class DetectorsClientImpl implements DetectorsClient {
             resourceGroupName, schedulerName, detectorId, accept, context);
     }
 
-    /**
-     * Gets a diagnostic detector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param detectorId The name of the Detector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a diagnostic detector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectorInner get(String resourceGroupName, String schedulerName, String detectorId) {
         return getWithResponse(resourceGroupName, schedulerName, detectorId, Context.NONE).getValue();
@@ -240,12 +219,7 @@ public final class DetectorsClientImpl implements DetectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DetectorInner> listBySchedulerSinglePage(String resourceGroupName, String schedulerName) {
-        final String accept = "application/json";
-        Response<DetectorListResult> res
-            = service.listBySchedulerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerSinglePage(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -270,33 +244,13 @@ public final class DetectorsClientImpl implements DetectorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the diagnostic detectors belonging to a scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Detector list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorInner> listByScheduler(String resourceGroupName, String schedulerName) {
-        return new PagedIterable<>(() -> listBySchedulerSinglePage(resourceGroupName, schedulerName),
-            nextLink -> listBySchedulerNextSinglePage(nextLink));
+        return listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Lists the diagnostic detectors belonging to a scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Detector list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorInner> listByScheduler(String resourceGroupName, String schedulerName,
         Context context) {
@@ -335,11 +289,7 @@ public final class DetectorsClientImpl implements DetectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DetectorInner> listBySchedulerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DetectorListResult> res
-            = service.listBySchedulerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

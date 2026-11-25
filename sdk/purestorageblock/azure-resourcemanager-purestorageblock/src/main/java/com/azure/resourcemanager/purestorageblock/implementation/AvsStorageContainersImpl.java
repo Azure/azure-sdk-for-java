@@ -46,7 +46,7 @@ public final class AvsStorageContainersImpl implements AvsStorageContainers {
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String storageContainerName) {
-        this.serviceClient().delete(resourceGroupName, storagePoolName, storageContainerName);
+        this.delete(resourceGroupName, storagePoolName, storageContainerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String storageContainerName, Context context) {
@@ -54,9 +54,7 @@ public final class AvsStorageContainersImpl implements AvsStorageContainers {
     }
 
     public PagedIterable<AvsStorageContainer> listByStoragePool(String resourceGroupName, String storagePoolName) {
-        PagedIterable<AvsStorageContainerInner> inner
-            = this.serviceClient().listByStoragePool(resourceGroupName, storagePoolName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvsStorageContainerImpl(inner1, this.manager()));
+        return this.listByStoragePool(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     public PagedIterable<AvsStorageContainer> listByStoragePool(String resourceGroupName, String storagePoolName,

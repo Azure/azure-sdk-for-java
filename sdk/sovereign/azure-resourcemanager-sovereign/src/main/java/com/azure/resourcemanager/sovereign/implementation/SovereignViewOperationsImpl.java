@@ -66,7 +66,7 @@ public final class SovereignViewOperationsImpl implements SovereignViewOperation
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String sovereignViewName) {
-        this.serviceClient().delete(resourceGroupName, sovereignViewName);
+        this.delete(resourceGroupName, sovereignViewName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String sovereignViewName, Context context) {
@@ -74,8 +74,7 @@ public final class SovereignViewOperationsImpl implements SovereignViewOperation
     }
 
     public PagedIterable<SovereignViewResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SovereignViewResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SovereignViewResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SovereignViewResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -85,8 +84,7 @@ public final class SovereignViewOperationsImpl implements SovereignViewOperation
     }
 
     public PagedIterable<SovereignViewResource> list() {
-        PagedIterable<SovereignViewResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SovereignViewResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SovereignViewResource> list(Context context) {
@@ -191,13 +189,7 @@ public final class SovereignViewOperationsImpl implements SovereignViewOperation
 
     public SovereignViewRemediateResult remediate(String resourceGroupName, String sovereignViewName,
         SovereignViewRemediateContent body) {
-        SovereignViewRemediateResultInner inner
-            = this.serviceClient().remediate(resourceGroupName, sovereignViewName, body);
-        if (inner != null) {
-            return new SovereignViewRemediateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.remediate(resourceGroupName, sovereignViewName, body, Context.NONE);
     }
 
     public SovereignViewRemediateResult remediate(String resourceGroupName, String sovereignViewName,
@@ -231,74 +223,30 @@ public final class SovereignViewOperationsImpl implements SovereignViewOperation
     }
 
     public SovereignViewResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sovereignViewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "sovereignViewName");
-        if (sovereignViewName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sovereignViews'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, sovereignViewName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SovereignViewResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sovereignViewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sovereignViewName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "sovereignViewName");
-        if (sovereignViewName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sovereignViews'.", id)));
-        }
+            "sovereignViewName", "sovereignViews", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, sovereignViewName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sovereignViewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "sovereignViewName");
-        if (sovereignViewName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sovereignViews'.", id)));
-        }
-        this.delete(resourceGroupName, sovereignViewName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sovereignViewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sovereignViewName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sovereign/sovereignViews/{sovereignViewName}",
-            "sovereignViewName");
-        if (sovereignViewName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sovereignViews'.", id)));
-        }
+            "sovereignViewName", "sovereignViews", LOGGER);
         this.delete(resourceGroupName, sovereignViewName, context);
     }
 

@@ -70,19 +70,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
             @QueryParam("botRight") String botRight, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
-     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HeatMapModelInner>> getWithResponseAsync(String resourceGroupName, String profileName,
         List<Double> topLeft, List<Double> botRight) {
@@ -157,16 +145,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
             resourceGroupName, profileName, heatMapType, topLeftConverted, botRightConverted, accept, context);
     }
 
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;
@@ -175,35 +154,14 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
-     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HeatMapModelInner> getWithResponse(String resourceGroupName, String profileName,
         List<Double> topLeft, List<Double> botRight, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
     }
 
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The name of the Traffic Manager profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HeatMapModelInner get(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;

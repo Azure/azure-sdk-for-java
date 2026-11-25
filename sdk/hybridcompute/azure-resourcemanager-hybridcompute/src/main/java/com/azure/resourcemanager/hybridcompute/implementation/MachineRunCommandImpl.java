@@ -147,10 +147,7 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommand create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineRunCommands()
-            .createOrUpdate(resourceGroupName, machineName, runCommandName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MachineRunCommand create(Context context) {
@@ -171,10 +168,7 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommand apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineRunCommands()
-            .createOrUpdate(resourceGroupName, machineName, runCommandName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MachineRunCommand apply(Context context) {
@@ -200,11 +194,7 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommand refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineRunCommands()
-            .getWithResponse(resourceGroupName, machineName, runCommandName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MachineRunCommand refresh(Context context) {

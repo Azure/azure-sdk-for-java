@@ -259,17 +259,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the enterprise mcc customer resource information using this get call.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the enterprise mcc customer resource information using this get call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnterpriseMccCustomerResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String customerResourceName, Context context) {
@@ -278,16 +268,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
     }
 
-    /**
-     * Gets the enterprise mcc customer resource information using this get call.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the enterprise mcc customer resource information using this get call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCustomerResourceInner getByResourceGroup(String resourceGroupName,
         String customerResourceName) {
@@ -332,11 +313,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
         EnterpriseMccCustomerResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, customerResourceName, resource, Context.NONE);
     }
 
     /**
@@ -384,40 +361,15 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             EnterpriseMccCustomerResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * This api creates an enterprise mcc customer with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the high level Nodes needed to provision customer
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnterpriseMccCustomerResourceInner>, EnterpriseMccCustomerResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String customerResourceName,
             EnterpriseMccCustomerResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, customerResourceName, resource);
-        return this.client.<EnterpriseMccCustomerResourceInner, EnterpriseMccCustomerResourceInner>getLroResult(
-            response, EnterpriseMccCustomerResourceInner.class, EnterpriseMccCustomerResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, customerResourceName, resource, Context.NONE);
     }
 
-    /**
-     * This api creates an enterprise mcc customer with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the high level Nodes needed to provision customer
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnterpriseMccCustomerResourceInner>, EnterpriseMccCustomerResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String customerResourceName,
@@ -447,39 +399,19 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This api creates an enterprise mcc customer with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCustomerResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         EnterpriseMccCustomerResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, customerResourceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, customerResourceName, resource, Context.NONE);
     }
 
-    /**
-     * This api creates an enterprise mcc customer with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCustomerResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         EnterpriseMccCustomerResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, customerResourceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, customerResourceName, resource, context));
     }
 
     /**
@@ -525,18 +457,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This api updates an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnterpriseMccCustomerResourceInner> updateWithResponse(String resourceGroupName,
         String customerResourceName, ConnectedCachePatchResource properties, Context context) {
@@ -547,17 +468,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             context);
     }
 
-    /**
-     * This api updates an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCustomerResourceInner update(String resourceGroupName, String customerResourceName,
         ConnectedCachePatchResource properties) {
@@ -595,8 +506,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, customerResourceName, Context.NONE);
     }
 
     /**
@@ -634,33 +544,13 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             this.client.getContext());
     }
 
-    /**
-     * This api deletes an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, customerResourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, customerResourceName, Context.NONE);
     }
 
-    /**
-     * This api deletes an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName,
         Context context) {
@@ -684,33 +574,16 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This api deletes an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName) {
-        beginDelete(resourceGroupName, customerResourceName).getFinalResult();
+        delete(resourceGroupName, customerResourceName, Context.NONE);
     }
 
-    /**
-     * This api deletes an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName, Context context) {
-        beginDelete(resourceGroupName, customerResourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, customerResourceName, context));
     }
 
     /**
@@ -765,12 +638,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnterpriseMccCustomerResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<EnterpriseMccCustomerResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -795,35 +663,13 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This api gets the information about all enterprise mcc customer resources under the given subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * This api gets the information about all enterprise mcc customer resources under the given subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -873,11 +719,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnterpriseMccCustomerResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<EnterpriseMccCustomerResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -898,29 +740,13 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This api gets information about all enterpriseMccCustomer resources under the given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * This api gets information about all enterpriseMccCustomer resources under the given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -960,11 +786,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnterpriseMccCustomerResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnterpriseMccCustomerResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1020,11 +842,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnterpriseMccCustomerResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnterpriseMccCustomerResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

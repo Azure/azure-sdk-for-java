@@ -225,19 +225,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed compute deployment associated with the Cognitive Services account along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedComputeDeploymentInner> getWithResponse(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -246,17 +234,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             resourceGroupName, accountName, deploymentName, accept, context);
     }
 
-    /**
-     * Gets the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed compute deployment associated with the Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedComputeDeploymentInner get(String resourceGroupName, String accountName, String deploymentName) {
         return getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE).getValue();
@@ -303,11 +281,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String deploymentName, ManagedComputeDeploymentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, deploymentName, resource, Context.NONE);
     }
 
     /**
@@ -358,42 +332,14 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param resource The managed compute deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account managed compute deployment, backed by
-     * managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedComputeDeploymentInner>, ManagedComputeDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String deploymentName, ManagedComputeDeploymentInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, deploymentName, resource);
-        return this.client.<ManagedComputeDeploymentInner, ManagedComputeDeploymentInner>getLroResult(response,
-            ManagedComputeDeploymentInner.class, ManagedComputeDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param resource The managed compute deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account managed compute deployment, backed by
-     * managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedComputeDeploymentInner>, ManagedComputeDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String deploymentName, ManagedComputeDeploymentInner resource,
@@ -424,41 +370,19 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param resource The managed compute deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedComputeDeploymentInner createOrUpdate(String resourceGroupName, String accountName,
         String deploymentName, ManagedComputeDeploymentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, deploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param resource The managed compute deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedComputeDeploymentInner createOrUpdate(String resourceGroupName, String accountName,
         String deploymentName, ManagedComputeDeploymentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource, context));
     }
 
     /**
@@ -502,11 +426,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String deploymentName,
         PatchResourceSku properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, deploymentName, properties, Context.NONE);
     }
 
     /**
@@ -556,41 +476,14 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             this.client.getContext());
     }
 
-    /**
-     * Updates the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param properties The managed compute deployment patch properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account managed compute deployment, backed by
-     * managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedComputeDeploymentInner>, ManagedComputeDeploymentInner>
         beginUpdate(String resourceGroupName, String accountName, String deploymentName, PatchResourceSku properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, deploymentName, properties);
-        return this.client.<ManagedComputeDeploymentInner, ManagedComputeDeploymentInner>getLroResult(response,
-            ManagedComputeDeploymentInner.class, ManagedComputeDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, deploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param properties The managed compute deployment patch properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account managed compute deployment, backed by
-     * managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedComputeDeploymentInner>, ManagedComputeDeploymentInner> beginUpdate(
         String resourceGroupName, String accountName, String deploymentName, PatchResourceSku properties,
@@ -621,41 +514,19 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param properties The managed compute deployment patch properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedComputeDeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
         PatchResourceSku properties) {
-        return beginUpdate(resourceGroupName, accountName, deploymentName, properties).getFinalResult();
+        return update(resourceGroupName, accountName, deploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param properties The managed compute deployment patch properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedComputeDeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
         PatchResourceSku properties, Context context) {
-        return beginUpdate(resourceGroupName, accountName, deploymentName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, deploymentName, properties, context));
     }
 
     /**
@@ -692,8 +563,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
     /**
@@ -734,36 +604,14 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -788,35 +636,16 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String deploymentName) {
-        beginDelete(resourceGroupName, accountName, deploymentName).getFinalResult();
+        delete(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified managed compute deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the managed compute deployment associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String deploymentName, Context context) {
-        beginDelete(resourceGroupName, accountName, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, deploymentName, context));
     }
 
     /**
@@ -872,12 +701,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeDeploymentInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<ManagedComputeDeploymentListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -903,35 +727,13 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the managed compute deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed compute deployments associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeDeploymentInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the managed compute deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed compute deployments associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeDeploymentInner> list(String resourceGroupName, String accountName,
         Context context) {
@@ -970,11 +772,7 @@ public final class ManagedComputeDeploymentsClientImpl implements ManagedCompute
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeDeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedComputeDeploymentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

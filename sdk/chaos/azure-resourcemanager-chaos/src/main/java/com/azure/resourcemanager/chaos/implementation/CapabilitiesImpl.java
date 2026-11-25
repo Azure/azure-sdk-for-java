@@ -82,9 +82,8 @@ public final class CapabilitiesImpl implements Capabilities {
 
     public void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
         String parentResourceName, String targetName, String capabilityName) {
-        this.serviceClient()
-            .delete(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName,
-                capabilityName);
+        this.deleteWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName, capabilityName, Context.NONE);
     }
 
     public PagedIterable<Capability> list(String resourceGroupName, String parentProviderNamespace,

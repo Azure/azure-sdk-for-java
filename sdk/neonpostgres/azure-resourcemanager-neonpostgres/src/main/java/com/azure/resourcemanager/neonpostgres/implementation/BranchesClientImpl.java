@@ -232,19 +232,7 @@ public final class BranchesClientImpl implements BranchesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Branch along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BranchInner> getWithResponse(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
@@ -253,18 +241,7 @@ public final class BranchesClientImpl implements BranchesClient {
             resourceGroupName, organizationName, projectName, branchName, accept, context);
     }
 
-    /**
-     * Get a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Branch.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BranchInner get(String resourceGroupName, String organizationName, String projectName, String branchName) {
         return getWithResponse(resourceGroupName, organizationName, projectName, branchName, Context.NONE).getValue();
@@ -311,11 +288,8 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, String branchName, BranchInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, branchName, resource,
+            Context.NONE);
     }
 
     /**
@@ -364,42 +338,15 @@ public final class BranchesClientImpl implements BranchesClient {
             BranchInner.class, BranchInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Branch resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BranchInner>, BranchInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String branchName, BranchInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, branchName, resource);
-        return this.client.<BranchInner, BranchInner>getLroResult(response, BranchInner.class, BranchInner.class,
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, resource,
             Context.NONE);
     }
 
-    /**
-     * Create a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Branch resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BranchInner>, BranchInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String branchName, BranchInner resource, Context context) {
@@ -429,45 +376,19 @@ public final class BranchesClientImpl implements BranchesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Branch resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BranchInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String branchName, BranchInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, projectName, branchName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Branch resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BranchInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String branchName, BranchInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, resource, context));
     }
 
     /**
@@ -510,19 +431,7 @@ public final class BranchesClientImpl implements BranchesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
@@ -530,17 +439,7 @@ public final class BranchesClientImpl implements BranchesClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, context);
     }
 
-    /**
-     * Delete a Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName, String branchName) {
         deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
@@ -601,11 +500,7 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BranchInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName) {
-        final String accept = "application/json";
-        Response<BranchListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
     /**
@@ -630,35 +525,13 @@ public final class BranchesClientImpl implements BranchesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Branch resources by Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Branch list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BranchInner> list(String resourceGroupName, String organizationName, String projectName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, projectName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
-    /**
-     * List Branch resources by Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Branch list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BranchInner> list(String resourceGroupName, String organizationName, String projectName,
         Context context) {
@@ -712,20 +585,7 @@ public final class BranchesClientImpl implements BranchesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Action to validate preflight checks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param parameters Parameters for preflight checks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the pre-deletion validation operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreflightCheckResultInner> preflightWithResponse(String resourceGroupName, String organizationName,
         String projectName, String branchName, PreflightCheckParameters parameters, Context context) {
@@ -736,19 +596,7 @@ public final class BranchesClientImpl implements BranchesClient {
             accept, parameters, context);
     }
 
-    /**
-     * Action to validate preflight checks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param parameters Parameters for preflight checks.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the pre-deletion validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreflightCheckResultInner preflight(String resourceGroupName, String organizationName, String projectName,
         String branchName, PreflightCheckParameters parameters) {
@@ -786,11 +634,7 @@ public final class BranchesClientImpl implements BranchesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BranchInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BranchListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

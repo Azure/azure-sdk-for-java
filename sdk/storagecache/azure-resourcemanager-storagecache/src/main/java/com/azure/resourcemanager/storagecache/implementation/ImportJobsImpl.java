@@ -45,7 +45,7 @@ public final class ImportJobsImpl implements ImportJobs {
     }
 
     public void delete(String resourceGroupName, String amlFilesystemName, String importJobName) {
-        this.serviceClient().delete(resourceGroupName, amlFilesystemName, importJobName);
+        this.delete(resourceGroupName, amlFilesystemName, importJobName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String amlFilesystemName, String importJobName, Context context) {
@@ -53,9 +53,7 @@ public final class ImportJobsImpl implements ImportJobs {
     }
 
     public PagedIterable<ImportJob> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        PagedIterable<ImportJobInner> inner
-            = this.serviceClient().listByAmlFilesystem(resourceGroupName, amlFilesystemName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImportJobImpl(inner1, this.manager()));
+        return this.listByAmlFilesystem(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     public PagedIterable<ImportJob> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,
@@ -66,102 +64,36 @@ public final class ImportJobsImpl implements ImportJobs {
     }
 
     public ImportJob getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "amlFilesystemName");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String importJobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "importJobName");
-        if (importJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'importJobs'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, amlFilesystemName, importJobName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ImportJob> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String amlFilesystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "amlFilesystemName");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String importJobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "amlFilesystemName", "amlFilesystems", LOGGER);
+        String importJobName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "importJobName");
-        if (importJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'importJobs'.", id)));
-        }
+            "importJobName", "importJobs", LOGGER);
         return this.getWithResponse(resourceGroupName, amlFilesystemName, importJobName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "amlFilesystemName");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String importJobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "importJobName");
-        if (importJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'importJobs'.", id)));
-        }
-        this.delete(resourceGroupName, amlFilesystemName, importJobName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String amlFilesystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "amlFilesystemName");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String importJobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "amlFilesystemName", "amlFilesystems", LOGGER);
+        String importJobName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
-            "importJobName");
-        if (importJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'importJobs'.", id)));
-        }
+            "importJobName", "importJobs", LOGGER);
         this.delete(resourceGroupName, amlFilesystemName, importJobName, context);
     }
 

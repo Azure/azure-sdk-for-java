@@ -27,9 +27,7 @@ public final class CloudHsmClusterPrivateLinkResourcesImpl implements CloudHsmCl
 
     public PagedIterable<PrivateLinkResource> listByCloudHsmCluster(String resourceGroupName,
         String cloudHsmClusterName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByCloudHsmCluster(String resourceGroupName,

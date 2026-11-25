@@ -109,19 +109,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's transparent data encryption along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedTransparentDataEncryptionInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, TransparentDataEncryptionName tdeName) {
@@ -200,18 +188,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             resourceGroupName, managedInstanceName, databaseName, tdeName, accept, context);
     }
 
-    /**
-     * Gets a managed database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's transparent data encryption on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedTransparentDataEncryptionInner> getAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, TransparentDataEncryptionName tdeName) {
@@ -219,57 +196,21 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's transparent data encryption along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedTransparentDataEncryptionInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, TransparentDataEncryptionName tdeName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, tdeName, context).block();
     }
 
-    /**
-     * Gets a managed database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's transparent data encryption.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedTransparentDataEncryptionInner get(String resourceGroupName, String managedInstanceName,
         String databaseName, TransparentDataEncryptionName tdeName) {
         return getWithResponse(resourceGroupName, managedInstanceName, databaseName, tdeName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database transparent data encryption state along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedTransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName,
@@ -364,19 +305,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             accept, parameters, context);
     }
 
-    /**
-     * Updates a database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database transparent data encryption state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedTransparentDataEncryptionInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, TransparentDataEncryptionName tdeName,
@@ -385,20 +314,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database transparent data encryption state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedTransparentDataEncryptionInner> createOrUpdateWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, TransparentDataEncryptionName tdeName,
@@ -407,19 +323,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             parameters, context).block();
     }
 
-    /**
-     * Updates a database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database transparent data encryption state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedTransparentDataEncryptionInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String databaseName, TransparentDataEncryptionName tdeName, ManagedTransparentDataEncryptionInner parameters) {
@@ -514,17 +418,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed database's transparent data encryptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's transparent data encryptions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedTransparentDataEncryptionInner> listByDatabaseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -553,37 +447,14 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed database's transparent data encryptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's transparent data encryptions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedTransparentDataEncryptionInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName));
     }
 
-    /**
-     * Gets a list of managed database's transparent data encryptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's transparent data encryptions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedTransparentDataEncryptionInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName, Context context) {

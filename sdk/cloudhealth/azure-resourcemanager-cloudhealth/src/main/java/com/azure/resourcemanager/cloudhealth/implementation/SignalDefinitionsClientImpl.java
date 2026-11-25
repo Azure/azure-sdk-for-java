@@ -211,18 +211,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SignalDefinition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SignalDefinitionInner> getWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, Context context) {
@@ -231,17 +220,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             resourceGroupName, healthModelName, signalDefinitionName, accept, context);
     }
 
-    /**
-     * Get a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SignalDefinition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignalDefinitionInner get(String resourceGroupName, String healthModelName, String signalDefinitionName) {
         return getWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE).getValue();
@@ -287,11 +266,8 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, resource,
+            Context.NONE);
     }
 
     /**
@@ -339,40 +315,14 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             this.client.getContext());
     }
 
-    /**
-     * Create a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a signal definition in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalDefinitionInner>, SignalDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName, String healthModelName, String signalDefinitionName, SignalDefinitionInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, resource);
-        return this.client.<SignalDefinitionInner, SignalDefinitionInner>getLroResult(response,
-            SignalDefinitionInner.class, SignalDefinitionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a signal definition in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalDefinitionInner>, SignalDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName, String healthModelName, String signalDefinitionName, SignalDefinitionInner resource,
@@ -402,42 +352,19 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a signal definition in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignalDefinitionInner createOrUpdate(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a signal definition in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignalDefinitionInner createOrUpdate(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource, context));
     }
 
     /**
@@ -474,8 +401,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
     }
 
     /**
@@ -517,36 +443,14 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
         String signalDefinitionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
     }
 
-    /**
-     * Delete a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
         String signalDefinitionName, Context context) {
@@ -572,35 +476,17 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName) {
-        beginDelete(resourceGroupName, healthModelName, signalDefinitionName).getFinalResult();
+        delete(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
     }
 
-    /**
-     * Delete a SignalDefinition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName, Context context) {
-        beginDelete(resourceGroupName, healthModelName, signalDefinitionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, healthModelName, signalDefinitionName, context));
     }
 
     /**
@@ -679,12 +565,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        final String accept = "application/json";
-        Response<SignalDefinitionListResult> res
-            = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, timestamp, healthModelName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHealthModelSinglePage(resourceGroupName, healthModelName, timestamp, Context.NONE);
     }
 
     /**
@@ -711,36 +592,14 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SignalDefinition resources by HealthModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SignalDefinition list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SignalDefinitionInner> listByHealthModel(String resourceGroupName, String healthModelName) {
         final OffsetDateTime timestamp = null;
-        return new PagedIterable<>(() -> listByHealthModelSinglePage(resourceGroupName, healthModelName, timestamp),
-            nextLink -> listByHealthModelNextSinglePage(nextLink));
+        return listByHealthModel(resourceGroupName, healthModelName, timestamp, Context.NONE);
     }
 
-    /**
-     * List SignalDefinition resources by HealthModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param timestamp Timestamp to use for the operation. When specified, the version of the resource at this point in
-     * time is retrieved. If not specified, the latest version is used.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SignalDefinition list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SignalDefinitionInner> listByHealthModel(String resourceGroupName, String healthModelName,
         OffsetDateTime timestamp, Context context) {
@@ -780,11 +639,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SignalDefinitionListResult> res
-            = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHealthModelNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -215,12 +215,7 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HardwareSettingInner> listByParentSinglePage(String resourceGroupName, String name) {
-        final String accept = "application/json";
-        Response<HardwareSettingListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, name, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -244,33 +239,13 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HardwareSetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HardwareSettingInner> listByParent(String resourceGroupName, String name) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, name),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * List by parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HardwareSetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HardwareSettingInner> listByParent(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, name, context),
@@ -315,18 +290,7 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the hardware settings resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the hardware settings resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HardwareSettingInner> getWithResponse(String resourceGroupName, String name,
         String hardwareSettingName, Context context) {
@@ -335,17 +299,7 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             resourceGroupName, name, hardwareSettingName, accept, context);
     }
 
-    /**
-     * Get the hardware settings resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the hardware settings resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HardwareSettingInner get(String resourceGroupName, String name, String hardwareSettingName) {
         return getWithResponse(resourceGroupName, name, hardwareSettingName, Context.NONE).getValue();
@@ -390,11 +344,7 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String name,
         String hardwareSettingName, HardwareSettingInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, hardwareSettingName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, name, hardwareSettingName, resource, Context.NONE);
     }
 
     /**
@@ -441,40 +391,14 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             HardwareSettingInner.class, HardwareSettingInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hardware settings resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HardwareSettingInner>, HardwareSettingInner> beginCreateOrUpdate(
         String resourceGroupName, String name, String hardwareSettingName, HardwareSettingInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, name, hardwareSettingName, resource);
-        return this.client.<HardwareSettingInner, HardwareSettingInner>getLroResult(response,
-            HardwareSettingInner.class, HardwareSettingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, name, hardwareSettingName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hardware settings resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HardwareSettingInner>, HardwareSettingInner> beginCreateOrUpdate(
         String resourceGroupName, String name, String hardwareSettingName, HardwareSettingInner resource,
@@ -504,41 +428,19 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hardware settings resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HardwareSettingInner createOrUpdate(String resourceGroupName, String name, String hardwareSettingName,
         HardwareSettingInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, name, hardwareSettingName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, name, hardwareSettingName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hardware settings resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HardwareSettingInner createOrUpdate(String resourceGroupName, String name, String hardwareSettingName,
         HardwareSettingInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, name, hardwareSettingName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, name, hardwareSettingName, resource, context));
     }
 
     /**
@@ -574,8 +476,7 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String name, String hardwareSettingName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, hardwareSettingName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, name, hardwareSettingName, Context.NONE);
     }
 
     /**
@@ -616,36 +517,14 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
         String hardwareSettingName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, name, hardwareSettingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, name, hardwareSettingName, Context.NONE);
     }
 
-    /**
-     * Delete hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
         String hardwareSettingName, Context context) {
@@ -670,35 +549,16 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, String hardwareSettingName) {
-        beginDelete(resourceGroupName, name, hardwareSettingName).getFinalResult();
+        delete(resourceGroupName, name, hardwareSettingName, Context.NONE);
     }
 
-    /**
-     * Delete hardware settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the resource.
-     * @param hardwareSettingName The name of the HardwareSetting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, String hardwareSettingName, Context context) {
-        beginDelete(resourceGroupName, name, hardwareSettingName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, name, hardwareSettingName, context));
     }
 
     /**
@@ -732,11 +592,7 @@ public final class HardwareSettingsClientImpl implements HardwareSettingsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HardwareSettingInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HardwareSettingListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

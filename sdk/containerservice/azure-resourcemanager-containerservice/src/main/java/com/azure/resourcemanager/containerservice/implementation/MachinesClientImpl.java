@@ -106,19 +106,7 @@ public final class MachinesClientImpl implements MachinesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a specific machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific machine in the specified agent pool along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MachineInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String agentPoolName, String machineName) {
@@ -195,18 +183,7 @@ public final class MachinesClientImpl implements MachinesClient {
             resourceGroupName, resourceName, agentPoolName, machineName, accept, context);
     }
 
-    /**
-     * Get a specific machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific machine in the specified agent pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MachineInner> getAsync(String resourceGroupName, String resourceName, String agentPoolName,
         String machineName) {
@@ -214,57 +191,20 @@ public final class MachinesClientImpl implements MachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific machine in the specified agent pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineInner> getWithResponse(String resourceGroupName, String resourceName, String agentPoolName,
         String machineName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, agentPoolName, machineName, context).block();
     }
 
-    /**
-     * Get a specific machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific machine in the specified agent pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner get(String resourceGroupName, String resourceName, String agentPoolName, String machineName) {
         return getWithResponse(resourceGroupName, resourceName, agentPoolName, machineName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName, String machineName, MachineInner parameters, String ifMatch,
@@ -358,21 +298,7 @@ public final class MachinesClientImpl implements MachinesClient {
             ifNoneMatch, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MachineInner>, MachineInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String resourceName, String agentPoolName, String machineName, MachineInner parameters, String ifMatch,
@@ -383,19 +309,7 @@ public final class MachinesClientImpl implements MachinesClient {
             MachineInner.class, MachineInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MachineInner>, MachineInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String resourceName, String agentPoolName, String machineName, MachineInner parameters) {
@@ -434,19 +348,7 @@ public final class MachinesClientImpl implements MachinesClient {
             MachineInner.class, MachineInner.class, context);
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineInner>, MachineInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String agentPoolName, String machineName, MachineInner parameters) {
@@ -458,22 +360,7 @@ public final class MachinesClientImpl implements MachinesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineInner>, MachineInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String agentPoolName, String machineName, MachineInner parameters, String ifMatch,
@@ -484,21 +371,7 @@ public final class MachinesClientImpl implements MachinesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MachineInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
         String machineName, MachineInner parameters, String ifMatch, String ifNoneMatch) {
@@ -506,19 +379,7 @@ public final class MachinesClientImpl implements MachinesClient {
             ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MachineInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
         String machineName, MachineInner parameters) {
@@ -551,19 +412,7 @@ public final class MachinesClientImpl implements MachinesClient {
             ifMatch, ifNoneMatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
         String machineName, MachineInner parameters) {
@@ -573,22 +422,7 @@ public final class MachinesClientImpl implements MachinesClient {
             ifNoneMatch).block();
     }
 
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
         String machineName, MachineInner parameters, String ifMatch, String ifNoneMatch, Context context) {
@@ -681,17 +515,7 @@ public final class MachinesClientImpl implements MachinesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of machines in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of machines in the specified agent pool as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MachineInner> listAsync(String resourceGroupName, String resourceName, String agentPoolName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, agentPoolName),
@@ -717,34 +541,13 @@ public final class MachinesClientImpl implements MachinesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of machines in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of machines in the specified agent pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineInner> list(String resourceGroupName, String resourceName, String agentPoolName) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, agentPoolName));
     }
 
-    /**
-     * Gets a list of machines in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of machines in the specified agent pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineInner> list(String resourceGroupName, String resourceName, String agentPoolName,
         Context context) {

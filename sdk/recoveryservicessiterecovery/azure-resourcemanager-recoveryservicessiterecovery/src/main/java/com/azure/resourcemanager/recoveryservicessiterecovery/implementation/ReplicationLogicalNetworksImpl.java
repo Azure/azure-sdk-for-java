@@ -48,9 +48,7 @@ public final class ReplicationLogicalNetworksImpl implements ReplicationLogicalN
 
     public PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        PagedIterable<LogicalNetworkInner> inner
-            = this.serviceClient().listByReplicationFabrics(resourceGroupName, resourceName, fabricName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogicalNetworkImpl(inner1, this.manager()));
+        return this.listByReplicationFabrics(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceGroupName, String resourceName,

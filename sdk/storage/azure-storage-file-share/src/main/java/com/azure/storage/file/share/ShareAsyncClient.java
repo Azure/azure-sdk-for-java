@@ -26,6 +26,7 @@ import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -438,7 +439,9 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return A reactive response {@link Mono} signaling completion. {@link ShareInfo} contains information about the
-     * created share.
+     * created share. Errors with a {@link ShareStorageException} if the share could not be created for any other reason
+     * than that it already exists, for example when a share with the same name is still being deleted (status code 409,
+     * error code ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> createIfNotExists() {
@@ -471,8 +474,11 @@ public class ShareAsyncClient {
      *
      * @param options {@link ShareCreateOptions}
      * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
-     * contains a {@link ShareInfo} containing information about the share. If {@link Response}'s status code is
-     * 201, a new share was successfully created. If status code is 409, a share already existed at this location.
+     * contains a {@link ShareInfo} containing information about the share. If {@link Response}'s status code is 201, a
+     * new share was successfully created. If status code is 409, a share already existed at this location. Errors with
+     * a {@link ShareStorageException} if the share could not be created for any other reason than that it already
+     * exists, for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options) {
@@ -486,8 +492,8 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
         try {
             options = options == null ? new ShareCreateOptions() : options;
-            return createWithResponse(options, context).onErrorResume(
-                t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> {
+            return createWithResponse(options, context)
+                .onErrorResume(t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.SHARE_ALREADY_EXISTS), t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null));
@@ -1498,7 +1504,9 @@ public class ShareAsyncClient {
      *
      * @param directoryName Name of the directory
      * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the directory
-     * created.
+     * created. Errors with a {@link ShareStorageException} if the directory could not be created for any other reason
+     * than that it already exists, for example when a file with the same name already exists at this location (status
+     * code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
@@ -1538,9 +1546,11 @@ public class ShareAsyncClient {
      * @param directoryName Name of the directory
      * @param options {@link ShareDirectoryCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link ShareDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status
-     * code is 201, a new directory was successfully created. If status code is 409, a directory with the same name
-     * already existed at this location.
+     * {@link ShareDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status code
+     * is 201, a new directory was successfully created. If status code is 409, a directory with the same name already
+     * existed at this location. Errors with a {@link ShareStorageException} if the directory could not be created for
+     * any other reason than that it already exists, for example when a file with the same name already exists at this
+     * location (status code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
@@ -1558,8 +1568,7 @@ public class ShareAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createDirectoryWithResponse(directoryName, options.getSmbProperties(), options.getFilePermission(),
                 options.getMetadata(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.RESOURCE_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), getDirectoryClient(directoryName)));

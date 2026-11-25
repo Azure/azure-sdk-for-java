@@ -155,18 +155,7 @@ public final class DiscoveredResourcesClientImpl implements DiscoveredResourcesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a discovered resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param discoveredResourceName Name of the discovered resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a discovered resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveredResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String discoveredResourceName, Context context) {
@@ -175,17 +164,7 @@ public final class DiscoveredResourcesClientImpl implements DiscoveredResourcesC
             resourceGroupName, workspaceName, discoveredResourceName, accept, context);
     }
 
-    /**
-     * Get a discovered resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param discoveredResourceName Name of the discovered resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a discovered resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoveredResourceInner get(String resourceGroupName, String workspaceName, String discoveredResourceName) {
         return getWithResponse(resourceGroupName, workspaceName, discoveredResourceName, Context.NONE).getValue();
@@ -243,12 +222,7 @@ public final class DiscoveredResourcesClientImpl implements DiscoveredResourcesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoveredResourceInner> listByWorkspaceSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<DiscoveredResourceListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -273,33 +247,13 @@ public final class DiscoveredResourcesClientImpl implements DiscoveredResourcesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of discovered resources for a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered resources for a workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredResourceInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Get a list of discovered resources for a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered resources for a workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -338,11 +292,7 @@ public final class DiscoveredResourcesClientImpl implements DiscoveredResourcesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoveredResourceInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiscoveredResourceListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

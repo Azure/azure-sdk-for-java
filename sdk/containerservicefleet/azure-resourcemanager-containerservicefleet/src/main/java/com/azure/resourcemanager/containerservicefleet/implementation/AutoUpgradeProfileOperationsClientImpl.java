@@ -120,10 +120,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateUpdateRunWithResponse(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName) {
-        final String accept = "application/json";
-        return service.generateUpdateRunSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fleetName, autoUpgradeProfileName, accept,
-            Context.NONE);
+        return generateUpdateRunWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, Context.NONE);
     }
 
     /**
@@ -167,38 +164,14 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
             this.client.getContext());
     }
 
-    /**
-     * Generates an update run for a given auto upgrade profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner>
         beginGenerateUpdateRun(String resourceGroupName, String fleetName, String autoUpgradeProfileName) {
-        Response<BinaryData> response
-            = generateUpdateRunWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName);
-        return this.client.<GenerateResponseInner, GenerateResponseInner>getLroResult(response,
-            GenerateResponseInner.class, GenerateResponseInner.class, Context.NONE);
+        return beginGenerateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName, Context.NONE);
     }
 
-    /**
-     * Generates an update run for a given auto upgrade profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner> beginGenerateUpdateRun(
         String resourceGroupName, String fleetName, String autoUpgradeProfileName, Context context) {
@@ -226,38 +199,18 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generates an update run for a given auto upgrade profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generateResponse is the response of a generate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName) {
-        return beginGenerateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName).getFinalResult();
+        return generateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName, Context.NONE);
     }
 
-    /**
-     * Generates an update run for a given auto upgrade profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param autoUpgradeProfileName The name of the AutoUpgradeProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generateResponse is the response of a generate request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, Context context) {
-        return beginGenerateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginGenerateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName, context));
     }
 }

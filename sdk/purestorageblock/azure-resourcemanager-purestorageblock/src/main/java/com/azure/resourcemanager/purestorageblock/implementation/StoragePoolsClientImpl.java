@@ -443,17 +443,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StoragePoolInner> getByResourceGroupWithResponse(String resourceGroupName, String storagePoolName,
         Context context) {
@@ -462,16 +452,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
     }
 
-    /**
-     * Get a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StoragePoolInner getByResourceGroup(String resourceGroupName, String storagePoolName) {
         return getByResourceGroupWithResponse(resourceGroupName, storagePoolName, Context.NONE).getValue();
@@ -514,11 +495,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storagePoolName,
         StoragePoolInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, storagePoolName, resource, Context.NONE);
     }
 
     /**
@@ -562,37 +539,14 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             StoragePoolInner.class, StoragePoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StoragePoolInner>, StoragePoolInner> beginCreate(String resourceGroupName,
         String storagePoolName, StoragePoolInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, storagePoolName, resource);
-        return this.client.<StoragePoolInner, StoragePoolInner>getLroResult(response, StoragePoolInner.class,
-            StoragePoolInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storagePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StoragePoolInner>, StoragePoolInner> beginCreate(String resourceGroupName,
         String storagePoolName, StoragePoolInner resource, Context context) {
@@ -619,38 +573,17 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StoragePoolInner create(String resourceGroupName, String storagePoolName, StoragePoolInner resource) {
-        return beginCreate(resourceGroupName, storagePoolName, resource).getFinalResult();
+        return create(resourceGroupName, storagePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StoragePoolInner create(String resourceGroupName, String storagePoolName, StoragePoolInner resource,
         Context context) {
-        return beginCreate(resourceGroupName, storagePoolName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, storagePoolName, resource, context));
     }
 
     /**
@@ -690,11 +623,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storagePoolName,
         StoragePoolUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
     /**
@@ -738,37 +667,14 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             StoragePoolInner.class, StoragePoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StoragePoolInner>, StoragePoolInner> beginUpdate(String resourceGroupName,
         String storagePoolName, StoragePoolUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storagePoolName, properties);
-        return this.client.<StoragePoolInner, StoragePoolInner>getLroResult(response, StoragePoolInner.class,
-            StoragePoolInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StoragePoolInner>, StoragePoolInner> beginUpdate(String resourceGroupName,
         String storagePoolName, StoragePoolUpdate properties, Context context) {
@@ -795,38 +701,18 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StoragePoolInner update(String resourceGroupName, String storagePoolName, StoragePoolUpdate properties) {
-        return beginUpdate(resourceGroupName, storagePoolName, properties).getFinalResult();
+        return update(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StoragePoolInner update(String resourceGroupName, String storagePoolName, StoragePoolUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, storagePoolName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, storagePoolName, properties, context));
     }
 
     /**
@@ -859,8 +745,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -897,33 +782,13 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storagePoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         Context context) {
@@ -947,33 +812,16 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName) {
-        beginDelete(resourceGroupName, storagePoolName).getFinalResult();
+        delete(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, Context context) {
-        beginDelete(resourceGroupName, storagePoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storagePoolName, context));
     }
 
     /**
@@ -1023,11 +871,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StoragePoolInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StoragePoolListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1049,31 +893,13 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List storage pools by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StoragePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StoragePoolInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List storage pools by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StoragePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StoragePoolInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1121,11 +947,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StoragePoolInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StoragePoolListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1146,27 +968,13 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List storage pools by Azure subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StoragePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StoragePoolInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List storage pools by Azure subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StoragePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StoragePoolInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1210,17 +1018,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve health metrics of a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health information for a storage pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StoragePoolHealthInfoInner> getHealthStatusWithResponse(String resourceGroupName,
         String storagePoolName, Context context) {
@@ -1229,16 +1027,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
     }
 
-    /**
-     * Retrieve health metrics of a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health information for a storage pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StoragePoolHealthInfoInner getHealthStatus(String resourceGroupName, String storagePoolName) {
         return getHealthStatusWithResponse(resourceGroupName, storagePoolName, Context.NONE).getValue();
@@ -1282,17 +1071,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns current information about an on-going connection to an AVS instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transient information about an on-going connection to an AVS instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvsConnectionInner> getAvsConnectionWithResponse(String resourceGroupName, String storagePoolName,
         Context context) {
@@ -1301,16 +1080,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
     }
 
-    /**
-     * Returns current information about an on-going connection to an AVS instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transient information about an on-going connection to an AVS instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvsConnectionInner getAvsConnection(String resourceGroupName, String storagePoolName) {
         return getAvsConnectionWithResponse(resourceGroupName, storagePoolName, Context.NONE).getValue();
@@ -1353,17 +1123,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the status of the storage pool connection to AVS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of storage pool / AVS connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvsStatusInner> getAvsStatusWithResponse(String resourceGroupName, String storagePoolName,
         Context context) {
@@ -1372,16 +1132,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
     }
 
-    /**
-     * Returns the status of the storage pool connection to AVS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of storage pool / AVS connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvsStatusInner getAvsStatus(String resourceGroupName, String storagePoolName) {
         return getAvsStatusWithResponse(resourceGroupName, storagePoolName, Context.NONE).getValue();
@@ -1422,9 +1173,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableAvsConnectionWithResponse(String resourceGroupName, String storagePoolName,
         StoragePoolEnableAvsConnectionPost properties) {
-        final String contentType = "application/json";
-        return service.enableAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, Context.NONE);
+        return enableAvsConnectionWithResponse(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
     /**
@@ -1467,36 +1216,14 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Initiate a connection between the storage pool and a specified AVS SDDC resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool EnableAvsConnection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolEnableAvsConnectionPost properties) {
-        Response<BinaryData> response = enableAvsConnectionWithResponse(resourceGroupName, storagePoolName, properties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginEnableAvsConnection(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Initiate a connection between the storage pool and a specified AVS SDDC resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool EnableAvsConnection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolEnableAvsConnectionPost properties, Context context) {
@@ -1523,37 +1250,19 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Initiate a connection between the storage pool and a specified AVS SDDC resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool EnableAvsConnection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolEnableAvsConnectionPost properties) {
-        beginEnableAvsConnection(resourceGroupName, storagePoolName, properties).getFinalResult();
+        enableAvsConnection(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Initiate a connection between the storage pool and a specified AVS SDDC resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool EnableAvsConnection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolEnableAvsConnectionPost properties, Context context) {
-        beginEnableAvsConnection(resourceGroupName, storagePoolName, properties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginEnableAvsConnection(resourceGroupName, storagePoolName, properties, context));
     }
 
     /**
@@ -1587,8 +1296,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableAvsConnectionWithResponse(String resourceGroupName, String storagePoolName) {
-        return service.disableAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, Context.NONE);
+        return disableAvsConnectionWithResponse(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -1628,34 +1336,14 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Disable the existing AVS connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAvsConnection(String resourceGroupName,
         String storagePoolName) {
-        Response<BinaryData> response = disableAvsConnectionWithResponse(resourceGroupName, storagePoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDisableAvsConnection(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * Disable the existing AVS connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAvsConnection(String resourceGroupName,
         String storagePoolName, Context context) {
@@ -1679,33 +1367,16 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disable the existing AVS connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableAvsConnection(String resourceGroupName, String storagePoolName) {
-        beginDisableAvsConnection(resourceGroupName, storagePoolName).getFinalResult();
+        disableAvsConnection(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * Disable the existing AVS connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableAvsConnection(String resourceGroupName, String storagePoolName, Context context) {
-        beginDisableAvsConnection(resourceGroupName, storagePoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDisableAvsConnection(resourceGroupName, storagePoolName, context));
     }
 
     /**
@@ -1744,9 +1415,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> finalizeAvsConnectionWithResponse(String resourceGroupName, String storagePoolName,
         StoragePoolFinalizeAvsConnectionPost properties) {
-        final String contentType = "application/json";
-        return service.finalizeAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, Context.NONE);
+        return finalizeAvsConnectionWithResponse(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
     /**
@@ -1789,37 +1458,14 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Finalize an already started AVS connection to a specific AVS SDDC.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool FinalizeAvsConnection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFinalizeAvsConnection(String resourceGroupName,
         String storagePoolName, StoragePoolFinalizeAvsConnectionPost properties) {
-        Response<BinaryData> response
-            = finalizeAvsConnectionWithResponse(resourceGroupName, storagePoolName, properties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFinalizeAvsConnection(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Finalize an already started AVS connection to a specific AVS SDDC.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool FinalizeAvsConnection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFinalizeAvsConnection(String resourceGroupName,
         String storagePoolName, StoragePoolFinalizeAvsConnectionPost properties, Context context) {
@@ -1846,37 +1492,19 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Finalize an already started AVS connection to a specific AVS SDDC.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool FinalizeAvsConnection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void finalizeAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolFinalizeAvsConnectionPost properties) {
-        beginFinalizeAvsConnection(resourceGroupName, storagePoolName, properties).getFinalResult();
+        finalizeAvsConnection(resourceGroupName, storagePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Finalize an already started AVS connection to a specific AVS SDDC.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param properties Storage pool FinalizeAvsConnection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void finalizeAvsConnection(String resourceGroupName, String storagePoolName,
         StoragePoolFinalizeAvsConnectionPost properties, Context context) {
-        beginFinalizeAvsConnection(resourceGroupName, storagePoolName, properties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginFinalizeAvsConnection(resourceGroupName, storagePoolName, properties, context));
     }
 
     /**
@@ -1910,8 +1538,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> repairAvsConnectionWithResponse(String resourceGroupName, String storagePoolName) {
-        return service.repairAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, Context.NONE);
+        return repairAvsConnectionWithResponse(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -1951,34 +1578,14 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Test and repair, if needed, all configuration elements of the storage pool connection to the AVS instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRepairAvsConnection(String resourceGroupName,
         String storagePoolName) {
-        Response<BinaryData> response = repairAvsConnectionWithResponse(resourceGroupName, storagePoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRepairAvsConnection(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * Test and repair, if needed, all configuration elements of the storage pool connection to the AVS instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRepairAvsConnection(String resourceGroupName, String storagePoolName,
         Context context) {
@@ -2002,33 +1609,16 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Test and repair, if needed, all configuration elements of the storage pool connection to the AVS instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void repairAvsConnection(String resourceGroupName, String storagePoolName) {
-        beginRepairAvsConnection(resourceGroupName, storagePoolName).getFinalResult();
+        repairAvsConnection(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * Test and repair, if needed, all configuration elements of the storage pool connection to the AVS instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void repairAvsConnection(String resourceGroupName, String storagePoolName, Context context) {
-        beginRepairAvsConnection(resourceGroupName, storagePoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRepairAvsConnection(resourceGroupName, storagePoolName, context));
     }
 
     /**
@@ -2070,17 +1660,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a one-time activation code for platform console access to the storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one-time activation code for platform console access along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlatformConsoleActivationCodeInner> listPlatformConsoleActivationCodeWithResponse(
         String resourceGroupName, String storagePoolName, Context context) {
@@ -2089,16 +1669,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
     }
 
-    /**
-     * Returns a one-time activation code for platform console access to the storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one-time activation code for platform console access.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlatformConsoleActivationCodeInner listPlatformConsoleActivationCode(String resourceGroupName,
         String storagePoolName) {
@@ -2148,18 +1719,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Configure authentication settings for platform console access to the storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param config Platform console authentication configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base model for platform console authentication result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlatformConsoleAuthResultInner> configurePlatformConsoleAuthWithResponse(String resourceGroupName,
         String storagePoolName, PlatformConsoleAuthConfig config, Context context) {
@@ -2169,17 +1729,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, config, context);
     }
 
-    /**
-     * Configure authentication settings for platform console access to the storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param config Platform console authentication configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base model for platform console authentication result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlatformConsoleAuthResultInner configurePlatformConsoleAuth(String resourceGroupName, String storagePoolName,
         PlatformConsoleAuthConfig config) {
@@ -2219,11 +1769,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StoragePoolInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StoragePoolListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2277,11 +1823,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StoragePoolInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StoragePoolListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

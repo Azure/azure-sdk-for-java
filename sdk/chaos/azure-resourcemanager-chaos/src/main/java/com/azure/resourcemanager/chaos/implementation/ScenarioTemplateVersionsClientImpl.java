@@ -151,17 +151,7 @@ public final class ScenarioTemplateVersionsClientImpl implements ScenarioTemplat
         return getWithResponseAsync(scenarioTemplateName, version).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a single published version of a scenario template.
-     * 
-     * @param scenarioTemplateName Name of the scenario template.
-     * @param version The version of the scenario template, for example 1.2.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single published version of a scenario template along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScenarioTemplateVersionInner> getWithResponse(String scenarioTemplateName, String version,
         Context context) {
@@ -170,16 +160,7 @@ public final class ScenarioTemplateVersionsClientImpl implements ScenarioTemplat
             accept, context);
     }
 
-    /**
-     * Get a single published version of a scenario template.
-     * 
-     * @param scenarioTemplateName Name of the scenario template.
-     * @param version The version of the scenario template, for example 1.2.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single published version of a scenario template.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioTemplateVersionInner get(String scenarioTemplateName, String version) {
         return getWithResponse(scenarioTemplateName, version, Context.NONE).getValue();
@@ -234,11 +215,7 @@ public final class ScenarioTemplateVersionsClientImpl implements ScenarioTemplat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioTemplateVersionInner> listSinglePage(String scenarioTemplateName) {
-        final String accept = "application/json";
-        Response<ScenarioTemplateVersionListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), scenarioTemplateName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scenarioTemplateName, Context.NONE);
     }
 
     /**
@@ -261,33 +238,13 @@ public final class ScenarioTemplateVersionsClientImpl implements ScenarioTemplat
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of the published versions of a scenario template, including superseded ones.
-     * 
-     * @param scenarioTemplateName Name of the scenario template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the published versions of a scenario template, including superseded ones as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioTemplateVersionInner> list(String scenarioTemplateName) {
-        return new PagedIterable<>(() -> listSinglePage(scenarioTemplateName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(scenarioTemplateName, Context.NONE);
     }
 
-    /**
-     * Get a list of the published versions of a scenario template, including superseded ones.
-     * 
-     * @param scenarioTemplateName Name of the scenario template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the published versions of a scenario template, including superseded ones as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioTemplateVersionInner> list(String scenarioTemplateName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(scenarioTemplateName, context),
@@ -325,11 +282,7 @@ public final class ScenarioTemplateVersionsClientImpl implements ScenarioTemplat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioTemplateVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScenarioTemplateVersionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

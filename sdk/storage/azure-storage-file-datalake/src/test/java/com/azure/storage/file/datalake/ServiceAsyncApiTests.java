@@ -4,7 +4,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
@@ -40,16 +39,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.retry.Retry;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -618,7 +614,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
                 .listFileSystems(new ListFileSystemsOptions().setPrefix(cc1.getFileSystemName())
                     .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)))
                 .next())
-            .flatMap(blobContainerItem -> waitUntilFileSystemIsDeletedAsync(primaryDataLakeServiceAsyncClient
+            .flatMap(blobContainerItem -> runAfterFileSystemDeleteCompletes(primaryDataLakeServiceAsyncClient
                 .undeleteFileSystem(blobContainerItem.getName(), blobContainerItem.getVersion())))
             .flatMap(restoredContainerClient -> restoredContainerClient.listPaths().collectList());
 
@@ -642,7 +638,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
                 .listFileSystems(new ListFileSystemsOptions().setPrefix(cc1.getFileSystemName())
                     .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)))
                 .next())
-            .flatMap(blobContainerItem -> waitUntilFileSystemIsDeletedAsync(
+            .flatMap(blobContainerItem -> runAfterFileSystemDeleteCompletes(
                 primaryDataLakeServiceAsyncClient.undeleteFileSystemWithResponse(
                     new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))));
 
@@ -678,7 +674,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
                         .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)))
                     .next(),
                 primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName())))
-            .flatMap(tuple -> waitUntilFileSystemIsDeletedAsync(
+            .flatMap(tuple -> runAfterFileSystemDeleteCompletes(
                 primaryDataLakeServiceAsyncClient.undeleteFileSystemWithResponse(
                     new FileSystemUndeleteOptions(tuple.getT1().getName(), tuple.getT1().getVersion())
                         .setDestinationFileSystemName(tuple.getT2().getFileSystemName()))));
@@ -716,17 +712,6 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         serviceClientBuilder.connectionString(connectionString);
 
         assertDoesNotThrow(serviceClientBuilder::buildAsyncClient);
-    }
-
-    private static <T> Mono<T> waitUntilFileSystemIsDeletedAsync(Mono<T> waitUntilOperation) {
-        Predicate<Throwable> retryPredicate
-            = ex -> ex instanceof DataLakeStorageException && ((DataLakeStorageException) ex).getStatusCode() == 409;
-
-        Retry retry = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK
-            ? Retry.max(30).filter(retryPredicate)
-            : Retry.fixedDelay(30, Duration.ofMillis(1000)).filter(retryPredicate);
-
-        return waitUntilOperation.retryWhen(retry);
     }
 
     @Test

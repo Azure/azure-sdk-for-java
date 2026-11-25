@@ -163,20 +163,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns backup management server registered to Recovery Services Vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param backupEngineName Name of the backup management server.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the base backup engine class along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupEngineBaseResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String backupEngineName, String filter, String skipToken, Context context) {
@@ -185,17 +172,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
             resourceGroupName, vaultName, backupEngineName, filter, skipToken, accept, context);
     }
 
-    /**
-     * Returns backup management server registered to Recovery Services Vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param backupEngineName Name of the backup management server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the base backup engine class.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupEngineBaseResourceInner get(String vaultName, String resourceGroupName, String backupEngineName) {
         final String filter = null;
@@ -281,12 +258,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupEngineBaseResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String filter, String skipToken) {
-        final String accept = "application/json";
-        Response<BackupEngineBaseResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, filter, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, filter, skipToken, Context.NONE);
     }
 
     /**
@@ -313,37 +285,15 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupEngineBase resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupEngineBaseResourceInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, filter, skipToken, Context.NONE);
     }
 
-    /**
-     * Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupEngineBase resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupEngineBaseResourceInner> list(String vaultName, String resourceGroupName, String filter,
         String skipToken, Context context) {
@@ -381,11 +331,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupEngineBaseResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupEngineBaseResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -275,19 +275,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Agent Application by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Agent Application by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentApplicationInner> getWithResponse(String resourceGroupName, String accountName,
         String projectName, String name, Context context) {
@@ -296,18 +284,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             resourceGroupName, accountName, projectName, name, accept, context);
     }
 
-    /**
-     * Gets an Agent Application by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Agent Application by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentApplicationInner get(String resourceGroupName, String accountName, String projectName, String name) {
         return getWithResponse(resourceGroupName, accountName, projectName, name, Context.NONE).getValue();
@@ -354,11 +331,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String projectName, String name, AgentApplicationInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, name, contentType, accept,
-            body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, projectName, name, body, Context.NONE);
     }
 
     /**
@@ -408,42 +381,14 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates an Agent Application (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param body Agent Application definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agent Application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentApplicationInner>, AgentApplicationInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String projectName, String name, AgentApplicationInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, projectName, name, body);
-        return this.client.<AgentApplicationInner, AgentApplicationInner>getLroResult(response,
-            AgentApplicationInner.class, AgentApplicationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, name, body, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Agent Application (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param body Agent Application definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agent Application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentApplicationInner>, AgentApplicationInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String projectName, String name, AgentApplicationInner body,
@@ -474,43 +419,19 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Agent Application (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param body Agent Application definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentApplicationInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String name, AgentApplicationInner body) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, name, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, projectName, name, body, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Agent Application (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param body Agent Application definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentApplicationInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String name, AgentApplicationInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, name, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, projectName, name, body, context));
     }
 
     /**
@@ -549,8 +470,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String projectName,
         String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, projectName, name, Context.NONE);
     }
 
     /**
@@ -594,38 +514,14 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             this.client.getContext());
     }
 
-    /**
-     * Delete Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, projectName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, projectName, name, Context.NONE);
     }
 
-    /**
-     * Delete Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, String name, Context context) {
@@ -651,37 +547,16 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String name) {
-        beginDelete(resourceGroupName, accountName, projectName, name).getFinalResult();
+        delete(resourceGroupName, accountName, projectName, name, Context.NONE);
     }
 
-    /**
-     * Delete Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String name, Context context) {
-        beginDelete(resourceGroupName, accountName, projectName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, projectName, name, context));
     }
 
     /**
@@ -793,15 +668,8 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
     private PagedResponse<AgentApplicationInner> listSinglePage(String resourceGroupName, String accountName,
         String projectName, Integer count, Integer skip, String skipToken, List<String> names, String searchText,
         String orderBy, Boolean orderByAsc) {
-        final String accept = "application/json";
-        List<String> namesConverted = (names == null)
-            ? new ArrayList<>()
-            : names.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        Response<AgentApplicationResourceArmPaginatedResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accountName, projectName,
-            count, skip, skipToken, namesConverted, searchText, orderBy, orderByAsc, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, projectName, count, skip, skipToken, names, searchText,
+            orderBy, orderByAsc, Context.NONE);
     }
 
     /**
@@ -838,17 +706,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Agent Applications in the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Agent Application entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentApplicationInner> list(String resourceGroupName, String accountName, String projectName) {
         final Integer count = null;
@@ -858,29 +716,11 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
         final String searchText = null;
         final String orderBy = null;
         final Boolean orderByAsc = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, projectName, count, skip,
-            skipToken, names, searchText, orderBy, orderByAsc), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, projectName, count, skip, skipToken, names, searchText, orderBy,
+            orderByAsc, Context.NONE);
     }
 
-    /**
-     * Lists Agent Applications in the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param count Number of agent applications to be retrieved in a page of results.
-     * @param skip Number of agent applications to skip.
-     * @param skipToken Continuation token for pagination.
-     * @param names Names of agent applications to retrieve.
-     * @param searchText Search text for filtering agent applications.
-     * @param orderBy Field to order by.
-     * @param orderByAsc Whether to order in ascending order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Agent Application entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentApplicationInner> list(String resourceGroupName, String accountName, String projectName,
         Integer count, Integer skip, String skipToken, List<String> names, String searchText, String orderBy,
@@ -932,19 +772,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists agents for an Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Agent Reference entities along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentReferenceResourceArmPaginatedResultInner> listAgentsWithResponse(String resourceGroupName,
         String accountName, String projectName, String name, Context context) {
@@ -953,18 +781,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, name, accept, context);
     }
 
-    /**
-     * Lists agents for an Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Agent Reference entities.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentReferenceResourceArmPaginatedResultInner listAgents(String resourceGroupName, String accountName,
         String projectName, String name) {
@@ -1010,19 +827,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Enables an Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableWithResponse(String resourceGroupName, String accountName, String projectName,
         String name, Context context) {
@@ -1030,17 +835,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, name, context);
     }
 
-    /**
-     * Enables an Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enable(String resourceGroupName, String accountName, String projectName, String name) {
         enableWithResponse(resourceGroupName, accountName, projectName, name, Context.NONE);
@@ -1085,19 +880,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Disables an Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableWithResponse(String resourceGroupName, String accountName, String projectName,
         String name, Context context) {
@@ -1105,17 +888,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
             this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, name, context);
     }
 
-    /**
-     * Disables an Agent Application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param name Name for the Agent Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disable(String resourceGroupName, String accountName, String projectName, String name) {
         disableWithResponse(resourceGroupName, accountName, projectName, name, Context.NONE);
@@ -1155,11 +928,7 @@ public final class AgentApplicationsClientImpl implements AgentApplicationsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentApplicationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AgentApplicationResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

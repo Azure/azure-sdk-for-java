@@ -61,10 +61,7 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
     }
 
     public Storage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorages()
-            .createOrUpdate(resourceGroupName, cloudAccountName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Storage create(Context context) {
@@ -86,10 +83,7 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
     }
 
     public Storage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorages()
-            .createOrUpdate(resourceGroupName, cloudAccountName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Storage apply(Context context) {
@@ -115,11 +109,7 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
     }
 
     public Storage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorages()
-            .getWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Storage refresh(Context context) {

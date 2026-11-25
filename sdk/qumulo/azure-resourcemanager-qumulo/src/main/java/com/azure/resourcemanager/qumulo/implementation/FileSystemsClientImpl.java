@@ -252,17 +252,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileSystemResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileSystemResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String fileSystemName, Context context) {
@@ -271,16 +261,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             this.client.getSubscriptionId(), resourceGroupName, fileSystemName, accept, context);
     }
 
-    /**
-     * Get a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileSystemResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileSystemResourceInner getByResourceGroup(String resourceGroupName, String fileSystemName) {
         return getByResourceGroupWithResponse(resourceGroupName, fileSystemName, Context.NONE).getValue();
@@ -325,11 +306,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String fileSystemName,
         FileSystemResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fileSystemName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, fileSystemName, resource, Context.NONE);
     }
 
     /**
@@ -376,39 +353,14 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileSystemResourceInner>, FileSystemResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String fileSystemName, FileSystemResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fileSystemName, resource);
-        return this.client.<FileSystemResourceInner, FileSystemResourceInner>getLroResult(response,
-            FileSystemResourceInner.class, FileSystemResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fileSystemName, resource, Context.NONE);
     }
 
-    /**
-     * Create a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FileSystemResourceInner>, FileSystemResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String fileSystemName, FileSystemResourceInner resource, Context context) {
@@ -437,39 +389,19 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileSystemResourceInner createOrUpdate(String resourceGroupName, String fileSystemName,
         FileSystemResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, fileSystemName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, fileSystemName, resource, Context.NONE);
     }
 
-    /**
-     * Create a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileSystemResourceInner createOrUpdate(String resourceGroupName, String fileSystemName,
         FileSystemResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, fileSystemName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, fileSystemName, resource, context));
     }
 
     /**
@@ -515,19 +447,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileSystemResourceInner> updateWithResponse(String resourceGroupName, String fileSystemName,
         FileSystemResourceUpdate properties, Context context) {
@@ -538,17 +458,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             context);
     }
 
-    /**
-     * Update a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileSystemResourceInner update(String resourceGroupName, String fileSystemName,
         FileSystemResourceUpdate properties) {
@@ -585,8 +495,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fileSystemName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fileSystemName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, fileSystemName, Context.NONE);
     }
 
     /**
@@ -623,33 +532,13 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fileSystemName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fileSystemName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fileSystemName, Context.NONE);
     }
 
-    /**
-     * Delete a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fileSystemName,
         Context context) {
@@ -673,33 +562,16 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fileSystemName) {
-        beginDelete(resourceGroupName, fileSystemName).getFinalResult();
+        delete(resourceGroupName, fileSystemName, Context.NONE);
     }
 
-    /**
-     * Delete a FileSystemResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fileSystemName Name of the File System resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fileSystemName, Context context) {
-        beginDelete(resourceGroupName, fileSystemName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, fileSystemName, context));
     }
 
     /**
@@ -749,11 +621,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileSystemResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<FileSystemResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -776,31 +644,13 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FileSystemResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileSystemResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List FileSystemResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileSystemResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -848,11 +698,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileSystemResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<FileSystemResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -873,27 +719,13 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FileSystemResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileSystemResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List FileSystemResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FileSystemResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -932,11 +764,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileSystemResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FileSystemResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -990,11 +818,7 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FileSystemResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FileSystemResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

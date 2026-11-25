@@ -94,11 +94,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     }
 
     public MigrationItem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationMigrationItems()
-            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-                createInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MigrationItem create(Context context) {
@@ -122,11 +118,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     }
 
     public MigrationItem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationMigrationItems()
-            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-                updateInput, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MigrationItem apply(Context context) {
@@ -159,12 +151,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     }
 
     public MigrationItem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationMigrationItems()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MigrationItem refresh(Context context) {

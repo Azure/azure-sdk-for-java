@@ -308,24 +308,7 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets network mapping by name.
-     * 
-     * Gets the details of an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network mapping by name.
-     * 
-     * Gets the details of an ASR network mapping along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkMappingInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String networkName, String networkMappingName, Context context) {
@@ -364,23 +347,7 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             resourceGroupName, resourceName, fabricName, networkName, networkMappingName, accept, context);
     }
 
-    /**
-     * Gets network mapping by name.
-     * 
-     * Gets the details of an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network mapping by name.
-     * 
-     * Gets the details of an ASR network mapping.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMappingInner get(String resourceGroupName, String resourceName, String fabricName, String networkName,
         String networkMappingName) {
@@ -465,46 +432,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, CreateNetworkMappingInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (networkName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkName is required and cannot be null."));
-        }
-        if (networkMappingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkMappingName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, networkName,
-            networkMappingName, contentType, accept, input, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input,
+            Context.NONE);
     }
 
     /**
@@ -595,49 +524,16 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             NetworkMappingInner.class, NetworkMappingInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates network mapping.
-     * 
-     * The operation to create an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Create network mapping input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceGroupName,
         String resourceName, String fabricName, String networkName, String networkMappingName,
         CreateNetworkMappingInput input) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input);
-        return this.client.<NetworkMappingInner, NetworkMappingInner>getLroResult(response, NetworkMappingInner.class,
-            NetworkMappingInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input,
+            Context.NONE);
     }
 
-    /**
-     * Creates network mapping.
-     * 
-     * The operation to create an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Create network mapping input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceGroupName,
         String resourceName, String fabricName, String networkName, String networkMappingName,
@@ -672,51 +568,20 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates network mapping.
-     * 
-     * The operation to create an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Create network mapping input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMappingInner create(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, CreateNetworkMappingInput input) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input)
-            .getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input,
+            Context.NONE);
     }
 
-    /**
-     * Creates network mapping.
-     * 
-     * The operation to create an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Create network mapping input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMappingInner create(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, CreateNetworkMappingInput input, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, context));
     }
 
     /**
@@ -796,46 +661,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, UpdateNetworkMappingInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (networkName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkName is required and cannot be null."));
-        }
-        if (networkMappingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkMappingName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, networkName,
-            networkMappingName, contentType, accept, input, Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input,
+            Context.NONE);
     }
 
     /**
@@ -926,49 +753,16 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             NetworkMappingInner.class, NetworkMappingInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates network mapping.
-     * 
-     * The operation to update an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Update network mapping input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceGroupName,
         String resourceName, String fabricName, String networkName, String networkMappingName,
         UpdateNetworkMappingInput input) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input);
-        return this.client.<NetworkMappingInner, NetworkMappingInner>getLroResult(response, NetworkMappingInner.class,
-            NetworkMappingInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input,
+            Context.NONE);
     }
 
-    /**
-     * Updates network mapping.
-     * 
-     * The operation to update an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Update network mapping input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceGroupName,
         String resourceName, String fabricName, String networkName, String networkMappingName,
@@ -1003,51 +797,20 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates network mapping.
-     * 
-     * The operation to update an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Update network mapping input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMappingInner update(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, UpdateNetworkMappingInput input) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input)
-            .getFinalResult();
+        return update(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input,
+            Context.NONE);
     }
 
-    /**
-     * Updates network mapping.
-     * 
-     * The operation to update an ASR network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param input Update network mapping input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Mapping model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMappingInner update(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, UpdateNetworkMappingInput input, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, input, context));
     }
 
     /**
@@ -1118,39 +881,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (networkName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkName is required and cannot be null."));
-        }
-        if (networkMappingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkMappingName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, networkName,
-            networkMappingName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName,
+            Context.NONE);
     }
 
     /**
@@ -1231,45 +963,14 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             this.client.getContext());
     }
 
-    /**
-     * Delete network mapping.
-     * 
-     * The operation to delete a network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String networkName, String networkMappingName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, Context.NONE);
     }
 
-    /**
-     * Delete network mapping.
-     * 
-     * The operation to delete a network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String networkName, String networkMappingName, Context context) {
@@ -1300,46 +1001,19 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete network mapping.
-     * 
-     * The operation to delete a network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String networkName,
         String networkMappingName) {
-        beginDelete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, Context.NONE);
     }
 
-    /**
-     * Delete network mapping.
-     * 
-     * The operation to delete a network mapping.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param networkMappingName Network mapping name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String networkName,
         String networkMappingName, Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, context));
     }
 
     /**
@@ -1436,38 +1110,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMappingInner> listByReplicationNetworksSinglePage(String resourceGroupName,
         String resourceName, String fabricName, String networkName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (networkName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter networkName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkMappingCollection> res = service.listByReplicationNetworksSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName,
-            networkName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationNetworksSinglePage(resourceGroupName, resourceName, fabricName, networkName,
+            Context.NONE);
     }
 
     /**
@@ -1524,47 +1168,14 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the network mappings under a network.
-     * 
-     * Lists all ASR network mappings for the specified network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network mappings under a network.
-     * 
-     * Lists all ASR network mappings for the specified network as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMappingInner> listByReplicationNetworks(String resourceGroupName, String resourceName,
         String fabricName, String networkName) {
-        return new PagedIterable<>(
-            () -> listByReplicationNetworksSinglePage(resourceGroupName, resourceName, fabricName, networkName),
-            nextLink -> listByReplicationNetworksNextSinglePage(nextLink));
+        return listByReplicationNetworks(resourceGroupName, resourceName, fabricName, networkName, Context.NONE);
     }
 
-    /**
-     * Gets all the network mappings under a network.
-     * 
-     * Lists all ASR network mappings for the specified network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network mappings under a network.
-     * 
-     * Lists all ASR network mappings for the specified network as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMappingInner> listByReplicationNetworks(String resourceGroupName, String resourceName,
         String fabricName, String networkName, Context context) {
@@ -1650,30 +1261,7 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMappingInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkMappingCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -1720,41 +1308,13 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the network mappings under a vault.
-     * 
-     * Lists all ASR network mappings in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network mappings under a vault.
-     * 
-     * Lists all ASR network mappings in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMappingInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets all the network mappings under a vault.
-     * 
-     * Lists all ASR network mappings in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network mappings under a vault.
-     * 
-     * Lists all ASR network mappings in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMappingInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -1808,20 +1368,7 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMappingInner> listByReplicationNetworksNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkMappingCollection> res
-            = service.listByReplicationNetworksNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationNetworksNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1902,20 +1449,7 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMappingInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkMappingCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

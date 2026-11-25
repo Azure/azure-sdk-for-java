@@ -234,18 +234,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, Context context) {
@@ -254,17 +243,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             resourceGroupName, connectedEnvironmentName, certificateName, accept, context);
     }
 
-    /**
-     * Get the specified Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner get(String resourceGroupName, String connectedEnvironmentName, String certificateName) {
         return getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE).getValue();
@@ -310,9 +289,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, CertificateInner certificateEnvelope) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, certificateName, accept,
+        return createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName,
             certificateEnvelope, Context.NONE);
     }
 
@@ -400,48 +377,20 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
         String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName,
-            certificateName, certificateEnvelope);
-        return this.client.<CertificateInner, CertificateInner>getLroResult(response, CertificateInner.class,
-            CertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Create or Update a Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
-     * Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
         String connectedEnvironmentName, String certificateName) {
         final CertificateInner certificateEnvelope = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName,
-            certificateName, certificateEnvelope);
-        return this.client.<CertificateInner, CertificateInner>getLroResult(response, CertificateInner.class,
-            CertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Create or Update a Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Certificate to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
-     * Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
         String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope,
@@ -492,43 +441,21 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             certificateEnvelope).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
         String certificateName) {
         final CertificateInner certificateEnvelope = null;
-        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Create or Update a Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Certificate to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, CertificateInner certificateEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName,
+            certificateName, certificateEnvelope, context));
     }
 
     /**
@@ -576,11 +503,8 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, CertificatePatch certificateEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, certificateName, contentType,
-            accept, certificateEnvelope, Context.NONE);
+        return updateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
+            Context.NONE);
     }
 
     /**
@@ -633,46 +557,15 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             CertificateInner.class, CertificateInner.class, this.client.getContext());
     }
 
-    /**
-     * Update properties of a certificate
-     * 
-     * Patches a certificate. Currently only patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
-     * Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateInner>, CertificateInner> beginUpdate(String resourceGroupName,
         String connectedEnvironmentName, String certificateName, CertificatePatch certificateEnvelope) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope);
-        return this.client.<CertificateInner, CertificateInner>getLroResult(response, CertificateInner.class,
-            CertificateInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Update properties of a certificate
-     * 
-     * Patches a certificate. Currently only patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
-     * Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CertificateInner>, CertificateInner> beginUpdate(String resourceGroupName,
         String connectedEnvironmentName, String certificateName, CertificatePatch certificateEnvelope,
@@ -706,47 +599,19 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of a certificate
-     * 
-     * Patches a certificate. Currently only patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner update(String resourceGroupName, String connectedEnvironmentName, String certificateName,
         CertificatePatch certificateEnvelope) {
-        return beginUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope)
-            .getFinalResult();
+        return update(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a certificate
-     * 
-     * Patches a certificate. Currently only patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner update(String resourceGroupName, String connectedEnvironmentName, String certificateName,
         CertificatePatch certificateEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, context));
     }
 
     /**
@@ -783,9 +648,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String certificateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, certificateName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
     }
 
     /**
@@ -827,37 +690,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
         String certificateName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, Context context) {
@@ -883,36 +723,18 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName) {
-        beginDelete(resourceGroupName, connectedEnvironmentName, certificateName).getFinalResult();
+        delete(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param certificateName Name of the Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName,
         Context context) {
-        beginDelete(resourceGroupName, connectedEnvironmentName, certificateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, connectedEnvironmentName, certificateName, context));
     }
 
     /**
@@ -966,11 +788,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateInner> listSinglePage(String resourceGroupName, String connectedEnvironmentName) {
-        final String accept = "application/json";
-        Response<CertificateCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
     /**
@@ -994,33 +812,13 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Certificates in a given connected environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> list(String resourceGroupName, String connectedEnvironmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, connectedEnvironmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
-    /**
-     * Get the Certificates in a given connected environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Connected Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> list(String resourceGroupName, String connectedEnvironmentName,
         Context context) {
@@ -1062,11 +860,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CertificateCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

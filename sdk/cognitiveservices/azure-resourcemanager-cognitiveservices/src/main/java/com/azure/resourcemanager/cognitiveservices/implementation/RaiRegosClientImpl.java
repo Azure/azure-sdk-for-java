@@ -193,18 +193,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets one reusable Rego artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiRegoName The name of the reusable Rego artifact.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one reusable Rego artifact.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiRegosGetResponse getWithResponse(String resourceGroupName, String accountName, String raiRegoName,
         Context context) {
@@ -213,17 +202,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             resourceGroupName, accountName, raiRegoName, accept, context);
     }
 
-    /**
-     * Gets one reusable Rego artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiRegoName The name of the reusable Rego artifact.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one reusable Rego artifact.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiRegoInner get(String resourceGroupName, String accountName, String raiRegoName) {
         return getWithResponse(resourceGroupName, accountName, raiRegoName, Context.NONE).getValue();
@@ -276,21 +255,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces one reusable Rego artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiRegoName The name of the reusable Rego artifact.
-     * @param raiRego The reusable Rego artifact.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account-scoped reusable Rego artifact.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiRegosCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiRegoName, RaiRegoInner raiRego, String ifMatch, String ifNoneMatch, Context context) {
@@ -301,18 +266,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             contentType, accept, raiRego, context);
     }
 
-    /**
-     * Creates or replaces one reusable Rego artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiRegoName The name of the reusable Rego artifact.
-     * @param raiRego The reusable Rego artifact.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account-scoped reusable Rego artifact.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiRegoInner createOrUpdate(String resourceGroupName, String accountName, String raiRegoName,
         RaiRegoInner raiRego) {
@@ -361,19 +315,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes one reusable Rego artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiRegoName The name of the reusable Rego artifact.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String raiRegoName,
         String ifMatch, Context context) {
@@ -381,16 +323,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, raiRegoName, ifMatch, context);
     }
 
-    /**
-     * Deletes one reusable Rego artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiRegoName The name of the reusable Rego artifact.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiRegoName) {
         final String ifMatch = null;
@@ -468,11 +401,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiRegoInner> listSinglePage(String resourceGroupName, String accountName, Integer top) {
-        final String accept = "application/json";
-        Response<RaiRegoListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, top, Context.NONE);
     }
 
     /**
@@ -497,35 +426,14 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists reusable Rego artifacts on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of account-scoped reusable Rego resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiRegoInner> list(String resourceGroupName, String accountName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, top, Context.NONE);
     }
 
-    /**
-     * Lists reusable Rego artifacts on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param top The maximum number of reusable Rego artifacts to return. Defaults to 10.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of account-scoped reusable Rego resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiRegoInner> list(String resourceGroupName, String accountName, Integer top,
         Context context) {
@@ -563,11 +471,7 @@ public final class RaiRegosClientImpl implements RaiRegosClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiRegoInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiRegoListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

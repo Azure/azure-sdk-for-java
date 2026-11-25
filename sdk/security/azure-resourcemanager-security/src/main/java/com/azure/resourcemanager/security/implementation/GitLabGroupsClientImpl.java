@@ -202,35 +202,14 @@ public final class GitLabGroupsClientImpl implements GitLabGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a monitored GitLab Group resource for a given fully-qualified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitLab Group resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitLabGroupInner> getWithResponse(String resourceGroupName, String securityConnectorName,
         String groupFQName, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, groupFQName, context).block();
     }
 
-    /**
-     * Returns a monitored GitLab Group resource for a given fully-qualified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitLab Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitLabGroupInner get(String resourceGroupName, String securityConnectorName, String groupFQName) {
         return getWithResponse(resourceGroupName, securityConnectorName, groupFQName, Context.NONE).getValue();
@@ -351,32 +330,13 @@ public final class GitLabGroupsClientImpl implements GitLabGroupsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns a list of GitLab groups onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitLabGroupInner> list(String resourceGroupName, String securityConnectorName) {
         return new PagedIterable<>(listAsync(resourceGroupName, securityConnectorName));
     }
 
-    /**
-     * Returns a list of GitLab groups onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitLabGroupInner> list(String resourceGroupName, String securityConnectorName,
         Context context) {
@@ -476,33 +436,14 @@ public final class GitLabGroupsClientImpl implements GitLabGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a list of all GitLab groups accessible by the user token consumed by the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitLabGroupListResponseInner> listAvailableWithResponse(String resourceGroupName,
         String securityConnectorName, Context context) {
         return listAvailableWithResponseAsync(resourceGroupName, securityConnectorName, context).block();
     }
 
-    /**
-     * Returns a list of all GitLab groups accessible by the user token consumed by the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitLabGroupListResponseInner listAvailable(String resourceGroupName, String securityConnectorName) {
         return listAvailableWithResponse(resourceGroupName, securityConnectorName, Context.NONE).getValue();

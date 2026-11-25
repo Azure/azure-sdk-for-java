@@ -19,6 +19,15 @@ public final class FabricAgentModelImpl implements FabricAgentModel, FabricAgent
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "resourceGroupName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "fabricName");
+        this.fabricAgentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "fabricAgentName");
     }
 
     public String id() {
@@ -62,10 +71,7 @@ public final class FabricAgentModelImpl implements FabricAgentModel, FabricAgent
     }
 
     public FabricAgentModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabricAgents()
-            .create(resourceGroupName, fabricName, fabricAgentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FabricAgentModel create(Context context) {
@@ -83,11 +89,7 @@ public final class FabricAgentModelImpl implements FabricAgentModel, FabricAgent
     }
 
     public FabricAgentModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabricAgents()
-            .getWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FabricAgentModel refresh(Context context) {

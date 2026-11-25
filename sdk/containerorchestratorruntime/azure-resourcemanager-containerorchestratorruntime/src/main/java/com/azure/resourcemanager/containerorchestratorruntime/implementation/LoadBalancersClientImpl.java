@@ -195,17 +195,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
         return getWithResponseAsync(resourceUri, loadBalancerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadBalancer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancerInner> getWithResponse(String resourceUri, String loadBalancerName, Context context) {
         final String accept = "application/json";
@@ -213,16 +203,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             accept, context);
     }
 
-    /**
-     * Get a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadBalancer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner get(String resourceUri, String loadBalancerName) {
         return getWithResponse(resourceUri, loadBalancerName, Context.NONE).getValue();
@@ -266,10 +247,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String loadBalancerName,
         LoadBalancerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            loadBalancerName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, loadBalancerName, resource, Context.NONE);
     }
 
     /**
@@ -315,39 +293,14 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             LoadBalancerInner.class, LoadBalancerInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LoadBalancer resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceUri,
         String loadBalancerName, LoadBalancerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, loadBalancerName, resource);
-        return this.client.<LoadBalancerInner, LoadBalancerInner>getLroResult(response, LoadBalancerInner.class,
-            LoadBalancerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, loadBalancerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LoadBalancer resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceUri,
         String loadBalancerName, LoadBalancerInner resource, Context context) {
@@ -375,38 +328,18 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceUri, String loadBalancerName, LoadBalancerInner resource) {
-        return beginCreateOrUpdate(resourceUri, loadBalancerName, resource).getFinalResult();
+        return createOrUpdate(resourceUri, loadBalancerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceUri, String loadBalancerName, LoadBalancerInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceUri, loadBalancerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, loadBalancerName, resource, context));
     }
 
     /**
@@ -442,32 +375,14 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
         return deleteWithResponseAsync(resourceUri, loadBalancerName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String loadBalancerName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, loadBalancerName,
             context);
     }
 
-    /**
-     * Delete a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String loadBalancerName) {
         deleteWithResponse(resourceUri, loadBalancerName, Context.NONE);
@@ -519,11 +434,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LoadBalancerInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<LoadBalancerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -545,30 +456,13 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List LoadBalancer resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List LoadBalancer resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -605,11 +499,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LoadBalancerInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LoadBalancerListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

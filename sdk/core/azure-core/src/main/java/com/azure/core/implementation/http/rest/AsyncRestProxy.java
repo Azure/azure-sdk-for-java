@@ -197,9 +197,8 @@ public class AsyncRestProxy extends RestProxyBase {
                 .isTextEventStreamContentType(sourceResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
             responseBodyOwner = new ResponseBodyOwner(sourceResponse);
         }
-        final Flux<ByteBuffer> responseBody
-            = responseBodyOwner == null ? sourceResponse.getBody() : responseBodyOwner.getBody();
 
+        // HttpResponse.getBody() is requested only by the branches that consume it, and at most once per response.
         final Mono<?> asyncResult;
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
@@ -217,13 +216,13 @@ public class AsyncRestProxy extends RestProxyBase {
             asyncResult = responseBodyBytesAsync;
         } else if (FluxUtil.isFluxByteBuffer(entityType)) {
             // Mono<Flux<ByteBuffer>>
-            asyncResult = Mono.just(responseBody);
+            asyncResult = Mono.just(responseBodyOwner == null ? sourceResponse.getBody() : responseBodyOwner.getBody());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // Mono<BinaryData>
             if (responseBodyOwner != null) {
                 // If the response content type identifies a stream, create a BinaryData instance with bufferContent
                 // set to false.
-                asyncResult = BinaryData.fromFlux(responseBody, null, false);
+                asyncResult = BinaryData.fromFlux(responseBodyOwner.getBody(), null, false);
             } else if (streamResponseBody) {
                 // The caller opted in to streaming (HttpUtils.AZURE_STREAM_RESPONSE_BODY), so the body is read as the
                 // BinaryData is consumed rather than buffered into memory, matching SyncRestProxy.
@@ -231,7 +230,7 @@ public class AsyncRestProxy extends RestProxyBase {
             } else {
                 // By default the body is buffered so the returned BinaryData is replayable and can be read with
                 // blocking methods on any thread.
-                asyncResult = BinaryData.fromFlux(responseBody);
+                asyncResult = BinaryData.fromFlux(sourceResponse.getBody());
             }
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Corresponds to the Open API 2.0 type "file" which is mapped to an InputStream.

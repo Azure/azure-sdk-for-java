@@ -117,19 +117,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the details of the private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
         String searchServiceName, String privateEndpointConnectionName) {
@@ -204,19 +192,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, searchServiceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets the details of the private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName) {
@@ -224,20 +200,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName, Context context) {
@@ -245,18 +208,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .block();
     }
 
-    /**
-     * Gets the details of the private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName) {
@@ -264,20 +216,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .getValue();
     }
 
-    /**
-     * Updates a private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @param privateEndpointConnection The definition of the private endpoint connection to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String resourceGroupName,
         String searchServiceName, String privateEndpointConnectionName,
@@ -370,20 +309,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection, context);
     }
 
-    /**
-     * Updates a private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @param privateEndpointConnection The definition of the private endpoint connection to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
@@ -391,21 +317,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @param privateEndpointConnection The definition of the private endpoint connection to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> updateWithResponse(String resourceGroupName,
         String searchServiceName, String privateEndpointConnectionName,
@@ -414,19 +326,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection, context).block();
     }
 
-    /**
-     * Updates a private endpoint connection to the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @param privateEndpointConnection The definition of the private endpoint connection to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
@@ -434,23 +334,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection, Context.NONE).getValue();
     }
 
-    /**
-     * Disconnects the private endpoint connection and deletes it from the search service.
-     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
-     * does not exist.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(String resourceGroupName,
         String searchServiceName, String privateEndpointConnectionName) {
@@ -529,23 +413,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, searchServiceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Disconnects the private endpoint connection and deletes it from the search service.
-     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
-     * does not exist.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName) {
@@ -553,24 +421,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Disconnects the private endpoint connection and deletes it from the search service.
-     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
-     * does not exist.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> deleteWithResponse(String resourceGroupName,
         String searchServiceName, String privateEndpointConnectionName, Context context) {
@@ -578,22 +429,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .block();
     }
 
-    /**
-     * Disconnects the private endpoint connection and deletes it from the search service.
-     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
-     * does not exist.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
-     * with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the Azure AI Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner delete(String resourceGroupName, String searchServiceName,
         String privateEndpointConnectionName) {
@@ -680,17 +516,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all private endpoint connections in the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(String resourceGroupName,
         String searchServiceName) {
@@ -717,35 +543,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all private endpoint connections in the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName,
         String searchServiceName) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, searchServiceName));
     }
 
-    /**
-     * Gets a list of all private endpoint connections in the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName,
         String searchServiceName, Context context) {

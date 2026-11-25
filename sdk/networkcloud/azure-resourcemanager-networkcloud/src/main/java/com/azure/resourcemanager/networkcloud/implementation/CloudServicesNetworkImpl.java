@@ -182,11 +182,7 @@ public final class CloudServicesNetworkImpl
     }
 
     public CloudServicesNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudServicesNetworks()
-            .createOrUpdate(resourceGroupName, cloudServicesNetworkName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudServicesNetwork create(Context context) {
@@ -213,11 +209,7 @@ public final class CloudServicesNetworkImpl
     }
 
     public CloudServicesNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudServicesNetworks()
-            .update(resourceGroupName, cloudServicesNetworkName, updateIfMatch, updateIfNoneMatch,
-                updateCloudServicesNetworkUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudServicesNetwork apply(Context context) {
@@ -241,11 +233,7 @@ public final class CloudServicesNetworkImpl
     }
 
     public CloudServicesNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudServicesNetworks()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudServicesNetwork refresh(Context context) {

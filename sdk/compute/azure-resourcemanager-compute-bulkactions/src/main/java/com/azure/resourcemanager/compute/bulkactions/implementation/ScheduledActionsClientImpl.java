@@ -437,18 +437,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified recurring bulk action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> getByResourceGroupWithResponse(String resourceGroupName,
         String scheduledActionName, Context context) {
@@ -457,17 +446,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
     }
 
-    /**
-     * Gets the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified recurring bulk action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner getByResourceGroup(String resourceGroupName, String scheduledActionName) {
         return getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, Context.NONE).getValue();
@@ -513,11 +492,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, scheduledActionName, resource, Context.NONE);
     }
 
     /**
@@ -565,41 +540,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             ScheduledActionInner.class, ScheduledActionInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param resource The recurring bulk action to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a recurring bulk action that operates on specified compute
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner>
         beginCreateOrUpdate(String resourceGroupName, String scheduledActionName, ScheduledActionInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, scheduledActionName, resource);
-        return this.client.<ScheduledActionInner, ScheduledActionInner>getLroResult(response,
-            ScheduledActionInner.class, ScheduledActionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param resource The recurring bulk action to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a recurring bulk action that operates on specified compute
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner> beginCreateOrUpdate(
         String resourceGroupName, String scheduledActionName, ScheduledActionInner resource, Context context) {
@@ -629,41 +577,19 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param resource The recurring bulk action to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recurring bulk action that operates on specified compute resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, scheduledActionName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param resource The recurring bulk action to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recurring bulk action that operates on specified compute resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, scheduledActionName, resource, context));
     }
 
     /**
@@ -706,11 +632,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, scheduledActionName, properties, Context.NONE);
     }
 
     /**
@@ -758,40 +680,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Updates the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param properties The recurring bulk action properties to update. Omitted properties keep their current values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a recurring bulk action that operates on specified compute
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, scheduledActionName, properties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(resourceGroupName, scheduledActionName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param properties The recurring bulk action properties to update. Omitted properties keep their current values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a recurring bulk action that operates on specified compute
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties, Context context) {
@@ -819,38 +715,17 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param properties The recurring bulk action properties to update. Omitted properties keep their current values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String scheduledActionName, ScheduledActionUpdate properties) {
-        beginUpdate(resourceGroupName, scheduledActionName, properties).getFinalResult();
+        update(resourceGroupName, scheduledActionName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param properties The recurring bulk action properties to update. Omitted properties keep their current values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String scheduledActionName, ScheduledActionUpdate properties,
         Context context) {
-        beginUpdate(resourceGroupName, scheduledActionName, properties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, scheduledActionName, properties, context));
     }
 
     /**
@@ -886,8 +761,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String scheduledActionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -927,35 +801,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, scheduledActionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName,
         Context context) {
@@ -980,35 +832,16 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scheduledActionName) {
-        beginDelete(resourceGroupName, scheduledActionName).getFinalResult();
+        delete(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String scheduledActionName, Context context) {
-        beginDelete(resourceGroupName, scheduledActionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, scheduledActionName, context));
     }
 
     /**
@@ -1058,11 +891,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1085,31 +914,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists recurring bulk actions in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists recurring bulk actions in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1157,11 +968,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1182,27 +989,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists recurring bulk actions in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists recurring bulk actions in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1267,12 +1060,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName) {
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesSinglePage(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -1299,38 +1087,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists resources associated with the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of compute resources associated with a recurring bulk action as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName,
         String scheduledActionName) {
-        return new PagedIterable<>(() -> listResourcesSinglePage(resourceGroupName, scheduledActionName),
-            nextLink -> listResourcesNextSinglePage(nextLink));
+        return listResources(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Lists resources associated with the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of compute resources associated with a recurring bulk action as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName,
         String scheduledActionName, Context context) {
@@ -1378,11 +1142,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> attachResourcesWithResponse(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.attachResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, contentType, accept, body,
-            Context.NONE);
+        return attachResourcesWithResponse(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
     /**
@@ -1431,41 +1191,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Adds resources to the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to add to the recurring bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginAttachResources(String resourceGroupName, String scheduledActionName, ResourceAttachRequest body) {
-        Response<BinaryData> response = attachResourcesWithResponse(resourceGroupName, scheduledActionName, body);
-        return this.client.<ResourceOperationResponseInner, ResourceOperationResponseInner>getLroResult(response,
-            ResourceOperationResponseInner.class, ResourceOperationResponseInner.class, Context.NONE);
+        return beginAttachResources(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
-    /**
-     * Adds resources to the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to add to the recurring bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginAttachResources(
         String resourceGroupName, String scheduledActionName, ResourceAttachRequest body, Context context) {
@@ -1495,41 +1228,19 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Adds resources to the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to add to the recurring bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner attachResources(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body) {
-        return beginAttachResources(resourceGroupName, scheduledActionName, body).getFinalResult();
+        return attachResources(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
-    /**
-     * Adds resources to the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to add to the recurring bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner attachResources(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body, Context context) {
-        return beginAttachResources(resourceGroupName, scheduledActionName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginAttachResources(resourceGroupName, scheduledActionName, body, context));
     }
 
     /**
@@ -1572,11 +1283,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> detachResourcesWithResponse(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.detachResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, contentType, accept, body,
-            Context.NONE);
+        return detachResourcesWithResponse(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
     /**
@@ -1625,41 +1332,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Removes resources from the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to remove from the recurring bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginDetachResources(String resourceGroupName, String scheduledActionName, ResourceDetachRequest body) {
-        Response<BinaryData> response = detachResourcesWithResponse(resourceGroupName, scheduledActionName, body);
-        return this.client.<ResourceOperationResponseInner, ResourceOperationResponseInner>getLroResult(response,
-            ResourceOperationResponseInner.class, ResourceOperationResponseInner.class, Context.NONE);
+        return beginDetachResources(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
-    /**
-     * Removes resources from the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to remove from the recurring bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginDetachResources(
         String resourceGroupName, String scheduledActionName, ResourceDetachRequest body, Context context) {
@@ -1689,41 +1369,19 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes resources from the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to remove from the recurring bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner detachResources(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body) {
-        return beginDetachResources(resourceGroupName, scheduledActionName, body).getFinalResult();
+        return detachResources(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
-    /**
-     * Removes resources from the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to remove from the recurring bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner detachResources(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body, Context context) {
-        return beginDetachResources(resourceGroupName, scheduledActionName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDetachResources(resourceGroupName, scheduledActionName, body, context));
     }
 
     /**
@@ -1771,19 +1429,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates resource-specific settings for the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resource-specific settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceOperationResponseInner> patchResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourcePatchRequest body, Context context) {
@@ -1794,18 +1440,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * Updates resource-specific settings for the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resource-specific settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner patchResources(String resourceGroupName, String scheduledActionName,
         ResourcePatchRequest body) {
@@ -1845,8 +1480,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableWithResponse(String resourceGroupName, String scheduledActionName) {
-        return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, Context.NONE);
+        return disableWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -1886,35 +1520,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Disables the specified recurring bulk action so future occurrences do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisable(String resourceGroupName, String scheduledActionName) {
-        Response<BinaryData> response = disableWithResponse(resourceGroupName, scheduledActionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDisable(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Disables the specified recurring bulk action so future occurrences do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisable(String resourceGroupName, String scheduledActionName,
         Context context) {
@@ -1939,35 +1551,16 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables the specified recurring bulk action so future occurrences do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disable(String resourceGroupName, String scheduledActionName) {
-        beginDisable(resourceGroupName, scheduledActionName).getFinalResult();
+        disable(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Disables the specified recurring bulk action so future occurrences do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disable(String resourceGroupName, String scheduledActionName, Context context) {
-        beginDisable(resourceGroupName, scheduledActionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDisable(resourceGroupName, scheduledActionName, context));
     }
 
     /**
@@ -2003,8 +1596,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableWithResponse(String resourceGroupName, String scheduledActionName) {
-        return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, Context.NONE);
+        return enableWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -2044,35 +1636,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Enables the specified recurring bulk action so new occurrences run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnable(String resourceGroupName, String scheduledActionName) {
-        Response<BinaryData> response = enableWithResponse(resourceGroupName, scheduledActionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginEnable(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Enables the specified recurring bulk action so new occurrences run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnable(String resourceGroupName, String scheduledActionName,
         Context context) {
@@ -2097,35 +1667,16 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables the specified recurring bulk action so new occurrences run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enable(String resourceGroupName, String scheduledActionName) {
-        beginEnable(resourceGroupName, scheduledActionName).getFinalResult();
+        enable(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Enables the specified recurring bulk action so new occurrences run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enable(String resourceGroupName, String scheduledActionName, Context context) {
-        beginEnable(resourceGroupName, scheduledActionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginEnable(resourceGroupName, scheduledActionName, context));
     }
 
     /**
@@ -2170,11 +1721,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelNextOccurrenceWithResponse(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.cancelNextOccurrenceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, contentType, accept, body,
-            Context.NONE);
+        return cancelNextOccurrenceWithResponse(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
     /**
@@ -2226,43 +1773,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Cancels the next occurrence of the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
-     * canceled for all resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginCancelNextOccurrence(String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body) {
-        Response<BinaryData> response = cancelNextOccurrenceWithResponse(resourceGroupName, scheduledActionName, body);
-        return this.client.<ResourceOperationResponseInner, ResourceOperationResponseInner>getLroResult(response,
-            ResourceOperationResponseInner.class, ResourceOperationResponseInner.class, Context.NONE);
+        return beginCancelNextOccurrence(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
-    /**
-     * Cancels the next occurrence of the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
-     * canceled for all resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of results of a recurring bulk action operation for targeted
-     * resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginCancelNextOccurrence(String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body,
@@ -2294,43 +1812,19 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancels the next occurrence of the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
-     * canceled for all resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner cancelNextOccurrence(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body) {
-        return beginCancelNextOccurrence(resourceGroupName, scheduledActionName, body).getFinalResult();
+        return cancelNextOccurrence(resourceGroupName, scheduledActionName, body, Context.NONE);
     }
 
-    /**
-     * Cancels the next occurrence of the specified recurring bulk action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
-     * canceled for all resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a recurring bulk action operation for targeted resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner cancelNextOccurrence(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body, Context context) {
-        return beginCancelNextOccurrence(resourceGroupName, scheduledActionName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCancelNextOccurrence(resourceGroupName, scheduledActionName, body, context));
     }
 
     /**
@@ -2370,9 +1864,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerManualOccurrenceWithResponse(String resourceGroupName,
         String scheduledActionName) {
-        final String accept = "application/json";
-        return service.triggerManualOccurrenceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, Context.NONE);
+        return triggerManualOccurrenceWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -2415,37 +1907,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             OccurrenceInner.class, OccurrenceInner.class, this.client.getContext());
     }
 
-    /**
-     * Runs the specified recurring bulk action immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of one scheduled execution of a recurring bulk action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OccurrenceInner>, OccurrenceInner>
         beginTriggerManualOccurrence(String resourceGroupName, String scheduledActionName) {
-        Response<BinaryData> response = triggerManualOccurrenceWithResponse(resourceGroupName, scheduledActionName);
-        return this.client.<OccurrenceInner, OccurrenceInner>getLroResult(response, OccurrenceInner.class,
-            OccurrenceInner.class, Context.NONE);
+        return beginTriggerManualOccurrence(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Runs the specified recurring bulk action immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of one scheduled execution of a recurring bulk action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OccurrenceInner>, OccurrenceInner>
         beginTriggerManualOccurrence(String resourceGroupName, String scheduledActionName, Context context) {
@@ -2472,38 +1941,18 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Runs the specified recurring bulk action immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one scheduled execution of a recurring bulk action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OccurrenceInner triggerManualOccurrence(String resourceGroupName, String scheduledActionName) {
-        return beginTriggerManualOccurrence(resourceGroupName, scheduledActionName).getFinalResult();
+        return triggerManualOccurrence(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * Runs the specified recurring bulk action immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
-     * only letters, numbers, and hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one scheduled execution of a recurring bulk action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OccurrenceInner triggerManualOccurrence(String resourceGroupName, String scheduledActionName,
         Context context) {
-        return beginTriggerManualOccurrence(resourceGroupName, scheduledActionName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginTriggerManualOccurrence(resourceGroupName, scheduledActionName, context));
     }
 
     /**
@@ -2538,11 +1987,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2596,11 +2041,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2654,11 +2095,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

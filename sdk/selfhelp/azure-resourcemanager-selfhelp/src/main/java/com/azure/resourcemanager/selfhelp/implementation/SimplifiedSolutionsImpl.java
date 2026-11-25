@@ -44,36 +44,16 @@ public final class SimplifiedSolutionsImpl implements SimplifiedSolutions {
     }
 
     public SimplifiedSolutionsResource getById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String simplifiedSolutionsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}",
-            "simplifiedSolutionsResourceName");
-        if (simplifiedSolutionsResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'simplifiedSolutions'.", id)));
-        }
-        return this.getWithResponse(scope, simplifiedSolutionsResourceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SimplifiedSolutionsResource> getByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String simplifiedSolutionsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}", "scope", "scope",
+            LOGGER);
+        String simplifiedSolutionsResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}",
-            "simplifiedSolutionsResourceName");
-        if (simplifiedSolutionsResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'simplifiedSolutions'.", id)));
-        }
+            "simplifiedSolutionsResourceName", "simplifiedSolutions", LOGGER);
         return this.getWithResponse(scope, simplifiedSolutionsResourceName, context);
     }
 

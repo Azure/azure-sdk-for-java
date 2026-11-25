@@ -146,17 +146,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SyncAgentInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String syncAgentName) {
@@ -224,69 +214,27 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             resourceGroupName, serverName, syncAgentName, accept, context);
     }
 
-    /**
-     * Gets a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SyncAgentInner> getAsync(String resourceGroupName, String serverName, String syncAgentName) {
         return getWithResponseAsync(resourceGroupName, serverName, syncAgentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SyncAgentInner> getWithResponse(String resourceGroupName, String serverName, String syncAgentName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, syncAgentName, context).block();
     }
 
-    /**
-     * Gets a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncAgentInner get(String resourceGroupName, String serverName, String syncAgentName) {
         return getWithResponse(resourceGroupName, serverName, syncAgentName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String syncAgentName, SyncAgentInner parameters) {
@@ -369,18 +317,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             parameters, context);
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL Database sync agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String serverName, String syncAgentName, SyncAgentInner parameters) {
@@ -413,37 +350,14 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             SyncAgentInner.class, SyncAgentInner.class, context);
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String syncAgentName, SyncAgentInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
@@ -451,18 +365,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SyncAgentInner> createOrUpdateAsync(String resourceGroupName, String serverName, String syncAgentName,
         SyncAgentInner parameters) {
@@ -490,54 +393,21 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncAgentInner createOrUpdate(String resourceGroupName, String serverName, String syncAgentName,
         SyncAgentInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).block();
     }
 
-    /**
-     * Creates or updates a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param parameters The requested sync agent resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncAgentInner createOrUpdate(String resourceGroupName, String serverName, String syncAgentName,
         SyncAgentInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context).block();
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String syncAgentName) {
@@ -603,17 +473,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             resourceGroupName, serverName, syncAgentName, context);
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String syncAgentName) {
@@ -644,52 +504,21 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             context);
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String syncAgentName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, syncAgentName).getSyncPoller();
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String syncAgentName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String syncAgentName) {
         return beginDeleteAsync(resourceGroupName, serverName, syncAgentName).last()
@@ -714,32 +543,13 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String syncAgentName) {
         deleteAsync(resourceGroupName, serverName, syncAgentName).block();
     }
 
-    /**
-     * Deletes a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String syncAgentName, Context context) {
         deleteAsync(resourceGroupName, serverName, syncAgentName, context).block();
@@ -822,16 +632,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists sync agents in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SyncAgent list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncAgentInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -855,49 +656,19 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists sync agents in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SyncAgent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Lists sync agents in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SyncAgent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
-    /**
-     * Generates a sync agent key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SyncAgentKeyPropertiesInner>> generateKeyWithResponseAsync(String resourceGroupName,
         String serverName, String syncAgentName) {
@@ -966,17 +737,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             this.client.getSubscriptionId(), resourceGroupName, serverName, syncAgentName, accept, context);
     }
 
-    /**
-     * Generates a sync agent key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SyncAgentKeyPropertiesInner> generateKeyAsync(String resourceGroupName, String serverName,
         String syncAgentName) {
@@ -984,35 +745,14 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates a sync agent key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SyncAgentKeyPropertiesInner> generateKeyWithResponse(String resourceGroupName, String serverName,
         String syncAgentName, Context context) {
         return generateKeyWithResponseAsync(resourceGroupName, serverName, syncAgentName, context).block();
     }
 
-    /**
-     * Generates a sync agent key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncAgentKeyPropertiesInner generateKey(String resourceGroupName, String serverName, String syncAgentName) {
         return generateKeyWithResponse(resourceGroupName, serverName, syncAgentName, Context.NONE).getValue();
@@ -1103,17 +843,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists databases linked to a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SyncAgentLinkedDatabase list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncAgentLinkedDatabaseInner> listLinkedDatabasesAsync(String resourceGroupName, String serverName,
         String syncAgentName) {
@@ -1141,37 +871,14 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             nextLink -> listLinkedDatabasesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists databases linked to a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SyncAgentLinkedDatabase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(String resourceGroupName, String serverName,
         String syncAgentName) {
         return new PagedIterable<>(listLinkedDatabasesAsync(resourceGroupName, serverName, syncAgentName));
     }
 
-    /**
-     * Lists databases linked to a sync agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param syncAgentName The name of the sync agent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SyncAgentLinkedDatabase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(String resourceGroupName, String serverName,
         String syncAgentName, Context context) {

@@ -51,9 +51,7 @@ public final class WorkflowsImpl implements Workflows {
     }
 
     public PagedIterable<Workflow> listByStorageSyncService(String resourceGroupName, String storageSyncServiceName) {
-        PagedIterable<WorkflowInner> inner
-            = this.serviceClient().listByStorageSyncService(resourceGroupName, storageSyncServiceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
+        return this.listByStorageSyncService(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
     public PagedIterable<Workflow> listByStorageSyncService(String resourceGroupName, String storageSyncServiceName,
@@ -69,7 +67,7 @@ public final class WorkflowsImpl implements Workflows {
     }
 
     public void abort(String resourceGroupName, String storageSyncServiceName, String workflowId) {
-        this.serviceClient().abort(resourceGroupName, storageSyncServiceName, workflowId);
+        this.abortWithResponse(resourceGroupName, storageSyncServiceName, workflowId, Context.NONE);
     }
 
     private WorkflowsClient serviceClient() {

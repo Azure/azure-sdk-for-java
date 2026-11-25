@@ -62,7 +62,7 @@ public final class TroubleshootersImpl implements Troubleshooters {
     }
 
     public void end(String scope, String troubleshooterName) {
-        this.serviceClient().end(scope, troubleshooterName);
+        this.endWithResponse(scope, troubleshooterName, Context.NONE);
     }
 
     public Response<RestartTroubleshooterResponse> restartWithResponse(String scope, String troubleshooterName,
@@ -87,34 +87,15 @@ public final class TroubleshootersImpl implements Troubleshooters {
     }
 
     public TroubleshooterResource getById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String troubleshooterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
-        if (troubleshooterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'troubleshooters'.", id)));
-        }
-        return this.getWithResponse(scope, troubleshooterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<TroubleshooterResource> getByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String troubleshooterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
-        if (troubleshooterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'troubleshooters'.", id)));
-        }
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope", "scope", LOGGER);
+        String troubleshooterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName",
+            "troubleshooters", LOGGER);
         return this.getWithResponse(scope, troubleshooterName, context);
     }
 

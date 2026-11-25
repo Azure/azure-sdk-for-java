@@ -153,11 +153,7 @@ public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkI
     }
 
     public NetworkToNetworkInterconnect create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkToNetworkInterconnects()
-            .create(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkToNetworkInterconnect create(Context context) {
@@ -180,10 +176,7 @@ public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkI
     }
 
     public NetworkToNetworkInterconnect apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkToNetworkInterconnects()
-            .update(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkToNetworkInterconnect apply(Context context) {
@@ -209,11 +202,7 @@ public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkI
     }
 
     public NetworkToNetworkInterconnect refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkToNetworkInterconnects()
-            .getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkToNetworkInterconnect refresh(Context context) {
