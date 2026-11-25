@@ -199,32 +199,13 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         return getWithResponseAsync(workspaceSettingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Settings about where we should store your security data and logs. If the result is empty, it means that no
-     * custom-workspace configuration was set.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceSettingInner> getWithResponse(String workspaceSettingName, Context context) {
         return getWithResponseAsync(workspaceSettingName, context).block();
     }
 
-    /**
-     * Settings about where we should store your security data and logs. If the result is empty, it means that no
-     * custom-workspace configuration was set.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceSettingInner get(String workspaceSettingName) {
         return getWithResponse(workspaceSettingName, Context.NONE).getValue();
@@ -330,33 +311,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * creating settings about where we should store your security data and logs.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @param workspaceSetting Security data setting object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceSettingInner> createWithResponse(String workspaceSettingName,
         WorkspaceSettingInner workspaceSetting, Context context) {
         return createWithResponseAsync(workspaceSettingName, workspaceSetting, context).block();
     }
 
-    /**
-     * creating settings about where we should store your security data and logs.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @param workspaceSetting Security data setting object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceSettingInner create(String workspaceSettingName, WorkspaceSettingInner workspaceSetting) {
         return createWithResponse(workspaceSettingName, workspaceSetting, Context.NONE).getValue();
@@ -462,33 +424,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Settings about where we should store your security data and logs.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @param workspaceSetting Security data setting object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceSettingInner> updateWithResponse(String workspaceSettingName,
         WorkspaceSettingInner workspaceSetting, Context context) {
         return updateWithResponseAsync(workspaceSettingName, workspaceSetting, context).block();
     }
 
-    /**
-     * Settings about where we should store your security data and logs.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @param workspaceSetting Security data setting object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceSettingInner update(String workspaceSettingName, WorkspaceSettingInner workspaceSetting) {
         return updateWithResponse(workspaceSettingName, workspaceSetting, Context.NONE).getValue();
@@ -568,29 +511,13 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         return deleteWithResponseAsync(workspaceSettingName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String workspaceSettingName, Context context) {
         return deleteWithResponseAsync(workspaceSettingName, context).block();
     }
 
-    /**
-     * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     * 
-     * @param workspaceSettingName Name of the security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String workspaceSettingName) {
         deleteWithResponse(workspaceSettingName, Context.NONE);
@@ -683,29 +610,13 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Settings about where we should store your security data and logs. If the result is empty, it means that no
-     * custom-workspace configuration was set.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceSettingInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Settings about where we should store your security data and logs. If the result is empty, it means that no
-     * custom-workspace configuration was set.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceSettingInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

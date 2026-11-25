@@ -326,21 +326,7 @@ public final class BucketsClientImpl implements BucketsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the details of the specified volume's bucket. A bucket allows additional services, such as AI services,
-     * connect to the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume's bucket along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BucketInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String bucketName, Context context) {
@@ -379,20 +365,7 @@ public final class BucketsClientImpl implements BucketsClient {
             resourceGroupName, accountName, poolName, volumeName, bucketName, accept, context);
     }
 
-    /**
-     * Get the details of the specified volume's bucket. A bucket allows additional services, such as AI services,
-     * connect to the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume's bucket.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BucketInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName) {
@@ -476,46 +449,8 @@ public final class BucketsClientImpl implements BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (bucketName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter bucketName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, bucketName,
-            contentType, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, body,
+            Context.NONE);
     }
 
     /**
@@ -605,48 +540,15 @@ public final class BucketsClientImpl implements BucketsClient {
             BucketInner.class, BucketInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a bucket for a volume. A bucket allows additional services, such as AI services, connect to
-     * the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BucketInner>, BucketInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String bucketName, BucketInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, body);
-        return this.client.<BucketInner, BucketInner>getLroResult(response, BucketInner.class, BucketInner.class,
+        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body,
             Context.NONE);
     }
 
-    /**
-     * Creates or updates a bucket for a volume. A bucket allows additional services, such as AI services, connect to
-     * the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BucketInner>, BucketInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String bucketName, BucketInner body, Context context) {
@@ -679,51 +581,19 @@ public final class BucketsClientImpl implements BucketsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a bucket for a volume. A bucket allows additional services, such as AI services, connect to
-     * the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BucketInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketInner body) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body, Context.NONE);
     }
 
-    /**
-     * Creates or updates a bucket for a volume. A bucket allows additional services, such as AI services, connect to
-     * the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BucketInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context));
     }
 
     /**
@@ -800,46 +670,7 @@ public final class BucketsClientImpl implements BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String bucketName, BucketPatch body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (bucketName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter bucketName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, bucketName,
-            contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, body, Context.NONE);
     }
 
     /**
@@ -927,46 +758,14 @@ public final class BucketsClientImpl implements BucketsClient {
             BucketInner.class, BucketInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the details of a volume bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BucketInner>, BucketInner> beginUpdate(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketPatch body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, body);
-        return this.client.<BucketInner, BucketInner>getLroResult(response, BucketInner.class, BucketInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body, Context.NONE);
     }
 
-    /**
-     * Updates the details of a volume bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BucketInner>, BucketInner> beginUpdate(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketPatch body, Context context) {
@@ -998,48 +797,19 @@ public final class BucketsClientImpl implements BucketsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the details of a volume bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BucketInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketPatch body) {
-        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body).getFinalResult();
+        return update(resourceGroupName, accountName, poolName, volumeName, bucketName, body, Context.NONE);
     }
 
-    /**
-     * Updates the details of a volume bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket details including user details, and the volume path that should be mounted inside the
-     * bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bucket resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BucketInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketPatch body, Context context) {
-        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context));
     }
 
     /**
@@ -1103,39 +873,7 @@ public final class BucketsClientImpl implements BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String bucketName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (bucketName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter bucketName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, bucketName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
     /**
@@ -1211,41 +949,14 @@ public final class BucketsClientImpl implements BucketsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a volume's bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String bucketName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
-    /**
-     * Delete a volume's bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String bucketName, Context context) {
@@ -1274,41 +985,19 @@ public final class BucketsClientImpl implements BucketsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a volume's bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName) {
-        beginDelete(resourceGroupName, accountName, poolName, volumeName, bucketName).getFinalResult();
+        delete(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
-    /**
-     * Delete a volume's bucket.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, Context context) {
-        beginDelete(resourceGroupName, accountName, poolName, volumeName, bucketName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, poolName, volumeName, bucketName, context));
     }
 
     /**
@@ -1394,38 +1083,7 @@ public final class BucketsClientImpl implements BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BucketInner> listSinglePage(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BucketList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
     /**
@@ -1478,40 +1136,14 @@ public final class BucketsClientImpl implements BucketsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Describes all buckets belonging to a volume. Buckets allow additional services, such as AI services, connect to
-     * the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume bucket resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BucketInner> list(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName, volumeName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
-    /**
-     * Describes all buckets belonging to a volume. Buckets allow additional services, such as AI services, connect to
-     * the volume data contained in those buckets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume bucket resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BucketInner> list(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
@@ -1600,22 +1232,7 @@ public final class BucketsClientImpl implements BucketsClient {
             body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate the access key and secret key used for accessing the specified volume bucket. Also return expiry date
-     * and time of key pair (in UTC).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket's Access and Secret key pair expiry time expressed as the number of days from now.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bucket Access Key, Secret Key, and Expiry date and time of the key pair along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BucketGenerateCredentialsInner> generateCredentialsWithResponse(String resourceGroupName,
         String accountName, String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body,
@@ -1662,21 +1279,7 @@ public final class BucketsClientImpl implements BucketsClient {
             contentType, accept, body, context);
     }
 
-    /**
-     * Generate the access key and secret key used for accessing the specified volume bucket. Also return expiry date
-     * and time of key pair (in UTC).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The bucket's Access and Secret key pair expiry time expressed as the number of days from now.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bucket Access Key, Secret Key, and Expiry date and time of the key pair.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BucketGenerateCredentialsInner generateCredentials(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body) {
@@ -1757,45 +1360,8 @@ public final class BucketsClientImpl implements BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateAkvCredentialsWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (bucketName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter bucketName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        return service.generateAkvCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, bucketName,
-            contentType, body, Context.NONE);
+        return generateAkvCredentialsWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName,
+            body, Context.NONE);
     }
 
     /**
@@ -1882,45 +1448,15 @@ public final class BucketsClientImpl implements BucketsClient {
             this.client.getContext());
     }
 
-    /**
-     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
-     * Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGenerateAkvCredentials(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body) {
-        Response<BinaryData> response = generateAkvCredentialsWithResponse(resourceGroupName, accountName, poolName,
-            volumeName, bucketName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginGenerateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body,
+            Context.NONE);
     }
 
-    /**
-     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
-     * Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGenerateAkvCredentials(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body, Context context) {
@@ -1952,47 +1488,19 @@ public final class BucketsClientImpl implements BucketsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
-     * Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketCredentialsExpiry body) {
-        beginGenerateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body)
-            .getFinalResult();
+        generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body, Context.NONE);
     }
 
-    /**
-     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
-     * Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, BucketCredentialsExpiry body, Context context) {
-        beginGenerateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginGenerateAkvCredentials(resourceGroupName, accountName, poolName,
+            volumeName, bucketName, body, context));
     }
 
     /**
@@ -2058,38 +1566,7 @@ public final class BucketsClientImpl implements BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshCertificateWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (bucketName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter bucketName is required and cannot be null."));
-        }
-        return service.refreshCertificateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, bucketName,
+        return refreshCertificateWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName,
             Context.NONE);
     }
 
@@ -2166,41 +1643,14 @@ public final class BucketsClientImpl implements BucketsClient {
             this.client.getContext());
     }
 
-    /**
-     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshCertificate(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName) {
-        Response<BinaryData> response
-            = refreshCertificateWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRefreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
-    /**
-     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshCertificate(String resourceGroupName, String accountName,
         String poolName, String volumeName, String bucketName, Context context) {
@@ -2229,42 +1679,19 @@ public final class BucketsClientImpl implements BucketsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName) {
-        beginRefreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName).getFinalResult();
+        refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE);
     }
 
-    /**
-     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param bucketName The name of the bucket.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
         String bucketName, Context context) {
-        beginRefreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginRefreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, context));
     }
 
     /**
@@ -2304,19 +1731,7 @@ public final class BucketsClientImpl implements BucketsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BucketInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BucketList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

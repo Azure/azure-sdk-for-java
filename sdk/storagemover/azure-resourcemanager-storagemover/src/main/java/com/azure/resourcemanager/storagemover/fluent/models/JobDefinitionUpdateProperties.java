@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,6 +14,8 @@ import com.azure.resourcemanager.storagemover.models.CopyMode;
 import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -49,6 +52,16 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
      * Schedule information for the Job Definition.
      */
     private ScheduleInfo schedule;
+
+    /*
+     * The synchronization mode for the Job Definition.
+     */
+    private String syncMode;
+
+    /*
+     * The last time the mover was synchronized.
+     */
+    private OffsetDateTime moverSyncedUntil;
 
     /**
      * Creates an instance of JobDefinitionUpdateProperties class.
@@ -177,6 +190,46 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
     }
 
     /**
+     * Get the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @return the syncMode value.
+     */
+    public String syncMode() {
+        return this.syncMode;
+    }
+
+    /**
+     * Set the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the JobDefinitionUpdateProperties object itself.
+     */
+    public JobDefinitionUpdateProperties withSyncMode(String syncMode) {
+        this.syncMode = syncMode;
+        return this;
+    }
+
+    /**
+     * Get the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @return the moverSyncedUntil value.
+     */
+    public OffsetDateTime moverSyncedUntil() {
+        return this.moverSyncedUntil;
+    }
+
+    /**
+     * Set the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @param moverSyncedUntil the moverSyncedUntil value to set.
+     * @return the JobDefinitionUpdateProperties object itself.
+     */
+    public JobDefinitionUpdateProperties withMoverSyncedUntil(OffsetDateTime moverSyncedUntil) {
+        this.moverSyncedUntil = moverSyncedUntil;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -189,6 +242,11 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
         jsonWriter.writeStringField("dataIntegrityValidation",
             this.dataIntegrityValidation == null ? null : this.dataIntegrityValidation.toString());
         jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeStringField("syncMode", this.syncMode);
+        jsonWriter.writeStringField("moverSyncedUntil",
+            this.moverSyncedUntil == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.moverSyncedUntil));
         return jsonWriter.writeEndObject();
     }
 
@@ -222,6 +280,11 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
                         = DataIntegrityValidation.fromString(reader.getString());
                 } else if ("schedule".equals(fieldName)) {
                     deserializedJobDefinitionUpdateProperties.schedule = ScheduleInfo.fromJson(reader);
+                } else if ("syncMode".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.syncMode = reader.getString();
+                } else if ("moverSyncedUntil".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.moverSyncedUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

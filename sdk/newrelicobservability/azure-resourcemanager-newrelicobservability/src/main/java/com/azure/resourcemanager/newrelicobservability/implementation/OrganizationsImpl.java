@@ -26,8 +26,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> list(String userEmail, String location) {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(userEmail, location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.list(userEmail, location, Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> list(String userEmail, String location, Context context) {

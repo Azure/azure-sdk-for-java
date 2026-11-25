@@ -204,19 +204,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a bookmark relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param relationName Relation Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark relation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelationInner> getWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
         String relationName, Context context) {
@@ -225,18 +213,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             resourceGroupName, workspaceName, bookmarkId, relationName, accept, context);
     }
 
-    /**
-     * Gets a bookmark relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param relationName Relation Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark relation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationInner get(String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
         return getWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, Context.NONE).getValue();
@@ -288,20 +265,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates the bookmark relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param relationName Relation Name.
-     * @param relation Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a relation between two resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelationInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String bookmarkId, String relationName, RelationInner relation, Context context) {
@@ -312,19 +276,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             accept, relation, context);
     }
 
-    /**
-     * Creates the bookmark relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param relationName Relation Name.
-     * @param relation Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a relation between two resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationInner createOrUpdate(String resourceGroupName, String workspaceName, String bookmarkId,
         String relationName, RelationInner relation) {
@@ -372,19 +324,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the bookmark relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param relationName Relation Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
         String relationName, Context context) {
@@ -392,17 +332,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, bookmarkId, relationName, context);
     }
 
-    /**
-     * Delete the bookmark relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param relationName Relation Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
         deleteWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, Context.NONE);
@@ -505,12 +435,8 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelationInner> listSinglePage(String resourceGroupName, String workspaceName,
         String bookmarkId, String filter, String orderby, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<RelationList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, bookmarkId, filter, orderby, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, bookmarkId, filter, orderby, top, skipToken,
+            Context.NONE);
     }
 
     /**
@@ -542,46 +468,17 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all bookmark relations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(String resourceGroupName, String workspaceName, String bookmarkId) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, bookmarkId, filter, orderby, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, bookmarkId, filter, orderby, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets all bookmark relations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(String resourceGroupName, String workspaceName, String bookmarkId,
         String filter, String orderby, Integer top, String skipToken, Context context) {
@@ -618,10 +515,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RelationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

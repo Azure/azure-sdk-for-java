@@ -48,14 +48,8 @@ public final class ContainerAppPrivateEndpointConnectionsImpl implements Contain
 
     public PrivateEndpointConnection createOrUpdate(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName,
-                privateEndpointConnectionEnvelope);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
     public PrivateEndpointConnection createOrUpdate(String resourceGroupName, String containerAppName,
@@ -72,7 +66,7 @@ public final class ContainerAppPrivateEndpointConnectionsImpl implements Contain
     }
 
     public void delete(String resourceGroupName, String containerAppName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, containerAppName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, containerAppName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String containerAppName, String privateEndpointConnectionName,
@@ -81,9 +75,7 @@ public final class ContainerAppPrivateEndpointConnectionsImpl implements Contain
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String containerAppName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().list(resourceGroupName, containerAppName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String containerAppName,

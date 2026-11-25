@@ -115,7 +115,7 @@ public class AgentDefinition implements JsonSerializable<AgentDefinition> {
                 } else if ("external".equals(discriminatorValue)) {
                     return ExternalAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("voice".equals(discriminatorValue)) {
-                    return VoiceAgentDefinition.fromJson(readerToUse.reset());
+                    return VoiceAgentBaseDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

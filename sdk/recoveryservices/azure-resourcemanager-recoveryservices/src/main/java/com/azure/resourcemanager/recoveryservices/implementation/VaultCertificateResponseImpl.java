@@ -21,6 +21,15 @@ public final class VaultCertificateResponseImpl
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}",
+            "vaultName");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}",
+            "certificateName");
     }
 
     public String name() {
@@ -62,11 +71,7 @@ public final class VaultCertificateResponseImpl
     }
 
     public VaultCertificateResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaultCertificates()
-            .createWithResponse(resourceGroupName, vaultName, certificateName, createCertificateRequest, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VaultCertificateResponse create(Context context) {

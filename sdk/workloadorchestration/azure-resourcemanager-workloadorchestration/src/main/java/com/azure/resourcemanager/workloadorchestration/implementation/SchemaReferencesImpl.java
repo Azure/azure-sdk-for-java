@@ -44,8 +44,7 @@ public final class SchemaReferencesImpl implements SchemaReferences {
     }
 
     public PagedIterable<SchemaReference> listByResourceGroup(String resourceUri) {
-        PagedIterable<SchemaReferenceInner> inner = this.serviceClient().listByResourceGroup(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaReferenceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceUri, Context.NONE);
     }
 
     public PagedIterable<SchemaReference> listByResourceGroup(String resourceUri, Context context) {

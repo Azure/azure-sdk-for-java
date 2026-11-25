@@ -111,7 +111,7 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -152,7 +152,7 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -162,16 +162,7 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets associated load balancer network interfaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return associated load balancer network interfaces as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listAsync(String resourceGroupName, String loadBalancerName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, loadBalancerName),
@@ -196,32 +187,13 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets associated load balancer network interfaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return associated load balancer network interfaces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> list(String resourceGroupName, String loadBalancerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName));
     }
 
-    /**
-     * Gets associated load balancer network interfaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return associated load balancer network interfaces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> list(String resourceGroupName, String loadBalancerName,
         Context context) {

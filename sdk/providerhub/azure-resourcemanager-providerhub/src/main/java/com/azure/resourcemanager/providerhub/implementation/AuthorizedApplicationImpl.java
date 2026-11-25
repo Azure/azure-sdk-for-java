@@ -55,10 +55,7 @@ public final class AuthorizedApplicationImpl
     }
 
     public AuthorizedApplication create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizedApplications()
-            .createOrUpdate(providerNamespace, applicationId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AuthorizedApplication create(Context context) {
@@ -79,10 +76,7 @@ public final class AuthorizedApplicationImpl
     }
 
     public AuthorizedApplication apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizedApplications()
-            .createOrUpdate(providerNamespace, applicationId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AuthorizedApplication apply(Context context) {
@@ -105,11 +99,7 @@ public final class AuthorizedApplicationImpl
     }
 
     public AuthorizedApplication refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizedApplications()
-            .getWithResponse(providerNamespace, applicationId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AuthorizedApplication refresh(Context context) {

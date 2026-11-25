@@ -26,6 +26,15 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
         com.azure.resourcemanager.artifactsigning.ArtifactSigningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "accountName");
+        this.profileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "profileName");
     }
 
     public String id() {
@@ -114,10 +123,7 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
     }
 
     public CertificateProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateProfiles()
-            .create(resourceGroupName, accountName, profileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateProfile create(Context context) {
@@ -135,11 +141,7 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
     }
 
     public CertificateProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateProfiles()
-            .getWithResponse(resourceGroupName, accountName, profileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateProfile refresh(Context context) {

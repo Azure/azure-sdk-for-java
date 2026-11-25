@@ -45,8 +45,7 @@ public final class AlertRuleTemplatesImpl implements AlertRuleTemplates {
     }
 
     public PagedIterable<AlertRuleTemplate> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<AlertRuleTemplateInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertRuleTemplateImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<AlertRuleTemplate> list(String resourceGroupName, String workspaceName, Context context) {

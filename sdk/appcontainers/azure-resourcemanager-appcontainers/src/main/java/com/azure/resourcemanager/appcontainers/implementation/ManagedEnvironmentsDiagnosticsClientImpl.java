@@ -123,21 +123,7 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedEnvironmentInner> getRootWithResponse(String resourceGroupName, String environmentName,
         Context context) {
@@ -146,20 +132,7 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
             this.client.getSubscriptionId(), resourceGroupName, environmentName, accept, context);
     }
 
-    /**
-     * Get the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner getRoot(String resourceGroupName, String environmentName) {
         return getRootWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();

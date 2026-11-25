@@ -67,10 +67,7 @@ public final class ProtectedItemModelImpl
     }
 
     public ProtectedItemModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .create(resourceGroupName, vaultName, protectedItemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectedItemModel create(Context context) {
@@ -93,10 +90,7 @@ public final class ProtectedItemModelImpl
     }
 
     public ProtectedItemModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .update(resourceGroupName, vaultName, protectedItemName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectedItemModel apply(Context context) {
@@ -122,11 +116,7 @@ public final class ProtectedItemModelImpl
     }
 
     public ProtectedItemModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .getWithResponse(resourceGroupName, vaultName, protectedItemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectedItemModel refresh(Context context) {

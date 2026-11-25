@@ -12,9 +12,9 @@ public final class AzureCacheForRedisMigrationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureCacheForRedisMigrationProperties model = BinaryData.fromString(
-            "{\"sourceType\":\"AzureCacheForRedis\",\"sourceResourceId\":\"x\",\"switchDns\":false,\"skipDataMigration\":true,\"forceMigrate\":false,\"targetResourceId\":\"kyfi\",\"provisioningState\":\"Succeeded\",\"statusDetails\":\"dfvzwdzuhty\",\"creationTime\":\"2021-11-17T17:09:54Z\",\"lastModifiedTime\":\"2021-04-25T02:46:04Z\"}")
+            "{\"sourceType\":\"AzureCacheForRedis\",\"sourceResourceId\":\"fizuckyf\",\"switchDns\":false,\"skipDataMigration\":true,\"forceMigrate\":false,\"targetResourceId\":\"fvzwdzuhty\",\"provisioningState\":\"Failed\",\"statusDetails\":\"dkfthwxmnt\",\"creationTime\":\"2021-09-03T22:18:56Z\",\"lastModifiedTime\":\"2021-02-01T09:39:18Z\",\"rollbackEligibleUntil\":\"2021-07-09T10:48:35Z\"}")
             .toObject(AzureCacheForRedisMigrationProperties.class);
-        Assertions.assertEquals("x", model.sourceResourceId());
+        Assertions.assertEquals("fizuckyf", model.sourceResourceId());
         Assertions.assertFalse(model.switchDns());
         Assertions.assertTrue(model.skipDataMigration());
         Assertions.assertFalse(model.forceMigrate());
@@ -23,12 +23,12 @@ public final class AzureCacheForRedisMigrationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureCacheForRedisMigrationProperties model
-            = new AzureCacheForRedisMigrationProperties().withSourceResourceId("x")
+            = new AzureCacheForRedisMigrationProperties().withSourceResourceId("fizuckyf")
                 .withSwitchDns(false)
                 .withSkipDataMigration(true)
                 .withForceMigrate(false);
         model = BinaryData.fromObject(model).toObject(AzureCacheForRedisMigrationProperties.class);
-        Assertions.assertEquals("x", model.sourceResourceId());
+        Assertions.assertEquals("fizuckyf", model.sourceResourceId());
         Assertions.assertFalse(model.switchDns());
         Assertions.assertTrue(model.skipDataMigration());
         Assertions.assertFalse(model.forceMigrate());

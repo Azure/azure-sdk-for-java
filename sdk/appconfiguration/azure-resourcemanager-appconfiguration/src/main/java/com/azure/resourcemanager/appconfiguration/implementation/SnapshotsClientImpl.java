@@ -149,20 +149,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified snapshot. NOTE: This operation is intended for use in ARM Template
-     * deployments. For all other scenarios involving App Configuration snapshots the data plane API should be used
-     * instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param snapshotName The name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified snapshot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotInner> getWithResponse(String resourceGroupName, String configStoreName,
         String snapshotName, Context context) {
@@ -171,19 +158,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             resourceGroupName, configStoreName, snapshotName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified snapshot. NOTE: This operation is intended for use in ARM Template
-     * deployments. For all other scenarios involving App Configuration snapshots the data plane API should be used
-     * instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param snapshotName The name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified snapshot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner get(String resourceGroupName, String configStoreName, String snapshotName) {
         return getWithResponse(resourceGroupName, configStoreName, snapshotName, Context.NONE).getValue();
@@ -230,11 +205,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String configStoreName,
         String snapshotName, SnapshotInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, snapshotName, contentType, accept,
-            body, Context.NONE);
+        return createWithResponse(resourceGroupName, configStoreName, snapshotName, body, Context.NONE);
     }
 
     /**
@@ -283,41 +254,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             SnapshotInner.class, SnapshotInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
-     * involving App Configuration snapshots the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param snapshotName The name of the snapshot.
-     * @param body The parameters for creating a snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the snapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName,
         String configStoreName, String snapshotName, SnapshotInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, configStoreName, snapshotName, body);
-        return this.client.<SnapshotInner, SnapshotInner>getLroResult(response, SnapshotInner.class,
-            SnapshotInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, configStoreName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
-     * involving App Configuration snapshots the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param snapshotName The name of the snapshot.
-     * @param body The parameters for creating a snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the snapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName,
         String configStoreName, String snapshotName, SnapshotInner body, Context context) {
@@ -347,42 +291,18 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
-     * involving App Configuration snapshots the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param snapshotName The name of the snapshot.
-     * @param body The parameters for creating a snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the snapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner create(String resourceGroupName, String configStoreName, String snapshotName,
         SnapshotInner body) {
-        return beginCreate(resourceGroupName, configStoreName, snapshotName, body).getFinalResult();
+        return create(resourceGroupName, configStoreName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
-     * involving App Configuration snapshots the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param snapshotName The name of the snapshot.
-     * @param body The parameters for creating a snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the snapshot resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner create(String resourceGroupName, String configStoreName, String snapshotName,
         SnapshotInner body, Context context) {
-        return beginCreate(resourceGroupName, configStoreName, snapshotName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, configStoreName, snapshotName, body, context));
     }
 }

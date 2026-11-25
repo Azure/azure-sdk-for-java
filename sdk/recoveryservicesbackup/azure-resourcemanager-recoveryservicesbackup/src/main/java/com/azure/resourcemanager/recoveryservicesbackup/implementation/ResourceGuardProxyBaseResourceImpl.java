@@ -92,11 +92,7 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuardProxyOperations()
-            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceGuardProxyBaseResource create(Context context) {
@@ -119,11 +115,7 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuardProxyOperations()
-            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceGuardProxyBaseResource apply(Context context) {
@@ -150,11 +142,7 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuardProxyOperations()
-            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceGuardProxyBaseResource refresh(Context context) {

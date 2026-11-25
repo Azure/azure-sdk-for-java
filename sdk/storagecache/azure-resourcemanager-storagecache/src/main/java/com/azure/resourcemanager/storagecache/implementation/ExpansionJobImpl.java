@@ -125,10 +125,7 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
     }
 
     public ExpansionJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExpansionJobs()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, expansionJobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExpansionJob create(Context context) {
@@ -150,10 +147,7 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
     }
 
     public ExpansionJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExpansionJobs()
-            .update(resourceGroupName, amlFilesystemName, expansionJobName, updateExpansionJob, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExpansionJob apply(Context context) {
@@ -179,11 +173,7 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
     }
 
     public ExpansionJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExpansionJobs()
-            .getWithResponse(resourceGroupName, amlFilesystemName, expansionJobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExpansionJob refresh(Context context) {

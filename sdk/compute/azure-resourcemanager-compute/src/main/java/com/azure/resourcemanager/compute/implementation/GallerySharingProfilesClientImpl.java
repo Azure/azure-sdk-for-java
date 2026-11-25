@@ -72,18 +72,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
             @BodyParam("application/json") SharingUpdateInner sharingUpdate, Context context);
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery sharing profile update along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
         SharingUpdateInner sharingUpdate) {
@@ -161,17 +150,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
             galleryName, contentType, accept, sharingUpdate, context);
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the gallery sharing profile update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdateAsync(String resourceGroupName,
         String galleryName, SharingUpdateInner sharingUpdate) {
@@ -202,52 +181,21 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
             SharingUpdateInner.class, SharingUpdateInner.class, context);
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery sharing profile update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(String resourceGroupName,
         String galleryName, SharingUpdateInner sharingUpdate) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).getSyncPoller();
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery sharing profile update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(String resourceGroupName,
         String galleryName, SharingUpdateInner sharingUpdate, Context context) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).getSyncPoller();
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery sharing profile update on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharingUpdateInner> updateAsync(String resourceGroupName, String galleryName,
         SharingUpdateInner sharingUpdate) {
@@ -274,34 +222,13 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery sharing profile update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharingUpdateInner update(String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
         return updateAsync(resourceGroupName, galleryName, sharingUpdate).block();
     }
 
-    /**
-     * Update sharing profile of a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery sharing profile update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharingUpdateInner update(String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate,
         Context context) {

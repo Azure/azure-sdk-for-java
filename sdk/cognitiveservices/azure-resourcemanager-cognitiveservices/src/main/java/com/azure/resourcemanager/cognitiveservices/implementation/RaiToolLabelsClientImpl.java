@@ -202,18 +202,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified RAI Tool Label associated with the Azure OpenAI account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiToolLabelInner> getWithResponse(String resourceGroupName, String accountName,
         String raiToolConnectionName, Context context) {
@@ -222,17 +211,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             resourceGroupName, accountName, raiToolConnectionName, accept, context);
     }
 
-    /**
-     * Gets the specified RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified RAI Tool Label associated with the Azure OpenAI account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiToolLabelInner get(String resourceGroupName, String accountName, String raiToolConnectionName) {
         return getWithResponse(resourceGroupName, accountName, raiToolConnectionName, Context.NONE).getValue();
@@ -282,19 +261,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates the RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @param raiToolLabel Properties describing the RAI Tool Label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RAI Tool Label resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiToolLabelInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiToolConnectionName, RaiToolLabelInner raiToolLabel, Context context) {
@@ -305,18 +272,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             raiToolLabel, context);
     }
 
-    /**
-     * Creates the RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @param raiToolLabel Properties describing the RAI Tool Label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RAI Tool Label resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiToolLabelInner createOrUpdate(String resourceGroupName, String accountName, String raiToolConnectionName,
         RaiToolLabelInner raiToolLabel) {
@@ -358,8 +314,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String raiToolConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiToolConnectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, raiToolConnectionName, Context.NONE);
     }
 
     /**
@@ -401,36 +356,14 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiToolConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiToolConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, raiToolConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiToolConnectionName, Context context) {
@@ -456,35 +389,17 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiToolConnectionName) {
-        beginDelete(resourceGroupName, accountName, raiToolConnectionName).getFinalResult();
+        delete(resourceGroupName, accountName, raiToolConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiToolConnectionName The name of the Rai Tool Label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiToolConnectionName, Context context) {
-        beginDelete(resourceGroupName, accountName, raiToolConnectionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, raiToolConnectionName, context));
     }
 
     /**
@@ -537,11 +452,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiToolLabelInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<RaiToolLabelResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -565,33 +476,13 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all RAI Tool Labels associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Cognitive Services RAI Tool Labels as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiToolLabelInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Lists all RAI Tool Labels associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Cognitive Services RAI Tool Labels as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiToolLabelInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -628,11 +519,7 @@ public final class RaiToolLabelsClientImpl implements RaiToolLabelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiToolLabelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiToolLabelResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

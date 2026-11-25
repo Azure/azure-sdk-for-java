@@ -121,18 +121,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Reachability Analysis Intent along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReachabilityAnalysisIntentInner>> getWithResponseAsync(String resourceGroupName,
         String networkManagerName, String workspaceName, String reachabilityAnalysisIntentName) {
@@ -159,7 +148,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             return Mono.error(new IllegalArgumentException(
                 "Parameter reachabilityAnalysisIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -206,25 +195,14 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             return Mono.error(new IllegalArgumentException(
                 "Parameter reachabilityAnalysisIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, workspaceName, reachabilityAnalysisIntentName, accept, context);
     }
 
-    /**
-     * Get the Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Reachability Analysis Intent on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReachabilityAnalysisIntentInner> getAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, String reachabilityAnalysisIntentName) {
@@ -232,19 +210,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             reachabilityAnalysisIntentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Reachability Analysis Intent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReachabilityAnalysisIntentInner> getWithResponse(String resourceGroupName,
         String networkManagerName, String workspaceName, String reachabilityAnalysisIntentName, Context context) {
@@ -252,18 +218,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             reachabilityAnalysisIntentName, context).block();
     }
 
-    /**
-     * Get the Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Reachability Analysis Intent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReachabilityAnalysisIntentInner get(String resourceGroupName, String networkManagerName,
         String workspaceName, String reachabilityAnalysisIntentName) {
@@ -271,20 +226,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @param body Reachability Analysis Intent object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration information or intent on which to do the analysis on along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReachabilityAnalysisIntentInner>> createWithResponseAsync(String resourceGroupName,
         String networkManagerName, String workspaceName, String reachabilityAnalysisIntentName,
@@ -317,7 +259,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
         } else {
             body.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -374,7 +316,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
         } else {
             body.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -382,20 +324,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             networkManagerName, workspaceName, reachabilityAnalysisIntentName, contentType, accept, body, context);
     }
 
-    /**
-     * Creates Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @param body Reachability Analysis Intent object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration information or intent on which to do the analysis on on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReachabilityAnalysisIntentInner> createAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, String reachabilityAnalysisIntentName, ReachabilityAnalysisIntentInner body) {
@@ -403,20 +332,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             reachabilityAnalysisIntentName, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @param body Reachability Analysis Intent object to create/update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration information or intent on which to do the analysis on along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReachabilityAnalysisIntentInner> createWithResponse(String resourceGroupName,
         String networkManagerName, String workspaceName, String reachabilityAnalysisIntentName,
@@ -425,19 +341,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             reachabilityAnalysisIntentName, body, context).block();
     }
 
-    /**
-     * Creates Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @param body Reachability Analysis Intent object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration information or intent on which to do the analysis on.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReachabilityAnalysisIntentInner create(String resourceGroupName, String networkManagerName,
         String workspaceName, String reachabilityAnalysisIntentName, ReachabilityAnalysisIntentInner body) {
@@ -445,18 +349,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             body, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, String reachabilityAnalysisIntentName) {
@@ -483,7 +376,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             return Mono.error(new IllegalArgumentException(
                 "Parameter reachabilityAnalysisIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -530,24 +423,13 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             return Mono.error(new IllegalArgumentException(
                 "Parameter reachabilityAnalysisIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, workspaceName, reachabilityAnalysisIntentName, context);
     }
 
-    /**
-     * Deletes Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String workspaceName,
         String reachabilityAnalysisIntentName) {
@@ -555,19 +437,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             reachabilityAnalysisIntentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String networkManagerName, String workspaceName,
         String reachabilityAnalysisIntentName, Context context) {
@@ -575,17 +445,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             reachabilityAnalysisIntentName, context).block();
     }
 
-    /**
-     * Deletes Reachability Analysis Intent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param reachabilityAnalysisIntentName Reachability Analysis Intent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String workspaceName,
         String reachabilityAnalysisIntentName) {
@@ -633,7 +493,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -685,7 +545,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -695,22 +555,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets list of Reachability Analysis Intents .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Reachability Analysis Intents as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReachabilityAnalysisIntentInner> listAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, String skipToken, Integer skip, Integer top, String sortKey, String sortValue) {
@@ -718,17 +563,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             skipToken, skip, top, sortKey, sortValue), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets list of Reachability Analysis Intents .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Reachability Analysis Intents as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReachabilityAnalysisIntentInner> listAsync(String resourceGroupName, String networkManagerName,
         String workspaceName) {
@@ -766,17 +601,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             skipToken, skip, top, sortKey, sortValue, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets list of Reachability Analysis Intents .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Reachability Analysis Intents as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReachabilityAnalysisIntentInner> list(String resourceGroupName, String networkManagerName,
         String workspaceName) {
@@ -789,23 +614,7 @@ public final class ReachabilityAnalysisIntentsClientImpl implements Reachability
             listAsync(resourceGroupName, networkManagerName, workspaceName, skipToken, skip, top, sortKey, sortValue));
     }
 
-    /**
-     * Gets list of Reachability Analysis Intents .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Reachability Analysis Intents as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReachabilityAnalysisIntentInner> list(String resourceGroupName, String networkManagerName,
         String workspaceName, String skipToken, Integer skip, Integer top, String sortKey, String sortValue,

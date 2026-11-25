@@ -45,9 +45,7 @@ public final class DeletedBackupVaultsImpl implements DeletedBackupVaults {
     }
 
     public PagedIterable<DeletedBackupVaultResource> listByLocation(String location) {
-        PagedIterable<DeletedBackupVaultResourceInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new DeletedBackupVaultResourceImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<DeletedBackupVaultResource> listByLocation(String location, Context context) {

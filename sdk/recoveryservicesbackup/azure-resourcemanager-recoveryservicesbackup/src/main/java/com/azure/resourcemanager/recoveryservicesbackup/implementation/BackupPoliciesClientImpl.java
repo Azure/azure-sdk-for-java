@@ -174,12 +174,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionPolicyResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String filter) {
-        final String accept = "application/json";
-        Response<ProtectionPolicyResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, filter, Context.NONE);
     }
 
     /**
@@ -206,37 +201,14 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to fetch
-     * scoped results.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionPolicy resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionPolicyResourceInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, filter, Context.NONE);
     }
 
-    /**
-     * Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to fetch
-     * scoped results.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionPolicy resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionPolicyResourceInner> list(String vaultName, String resourceGroupName, String filter,
         Context context) {
@@ -274,11 +246,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionPolicyResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectionPolicyResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

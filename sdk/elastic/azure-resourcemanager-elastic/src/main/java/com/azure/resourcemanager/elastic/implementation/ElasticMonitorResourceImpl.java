@@ -99,10 +99,7 @@ public final class ElasticMonitorResourceImpl
     }
 
     public ElasticMonitorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ElasticMonitorResource create(Context context) {
@@ -124,10 +121,7 @@ public final class ElasticMonitorResourceImpl
     }
 
     public ElasticMonitorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .update(resourceGroupName, monitorName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ElasticMonitorResource apply(Context context) {
@@ -149,11 +143,7 @@ public final class ElasticMonitorResourceImpl
     }
 
     public ElasticMonitorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ElasticMonitorResource refresh(Context context) {

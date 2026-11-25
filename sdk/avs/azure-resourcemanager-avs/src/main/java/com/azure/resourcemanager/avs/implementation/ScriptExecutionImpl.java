@@ -158,10 +158,7 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
     }
 
     public ScriptExecution create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScriptExecutions()
-            .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ScriptExecution create(Context context) {
@@ -182,10 +179,7 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
     }
 
     public ScriptExecution apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScriptExecutions()
-            .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ScriptExecution apply(Context context) {
@@ -210,11 +204,7 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
     }
 
     public ScriptExecution refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScriptExecutions()
-            .getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ScriptExecution refresh(Context context) {

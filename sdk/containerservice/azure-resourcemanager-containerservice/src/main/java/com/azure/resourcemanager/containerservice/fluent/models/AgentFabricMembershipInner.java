@@ -12,6 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentFabricMembershipProperties;
+import com.azure.resourcemanager.containerservice.models.AgentFabricMembershipSku;
 import java.io.IOException;
 
 /**
@@ -24,6 +25,11 @@ public final class AgentFabricMembershipInner extends ProxyResource {
      * The resource-specific properties for this resource.
      */
     private AgentFabricMembershipProperties properties;
+
+    /*
+     * The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed to the cluster.
+     */
+    private AgentFabricMembershipSku sku;
 
     /*
      * Resource ID of the AgentFabric that this cluster is a member of. The AgentFabric must be in the same tenant and
@@ -75,6 +81,28 @@ public final class AgentFabricMembershipInner extends ProxyResource {
      */
     public AgentFabricMembershipInner withProperties(AgentFabricMembershipProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed
+     * to the cluster.
+     * 
+     * @return the sku value.
+     */
+    public AgentFabricMembershipSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed
+     * to the cluster.
+     * 
+     * @param sku the sku value to set.
+     * @return the AgentFabricMembershipInner object itself.
+     */
+    public AgentFabricMembershipInner withSku(AgentFabricMembershipSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -150,6 +178,12 @@ public final class AgentFabricMembershipInner extends ProxyResource {
         if (properties() != null) {
             properties().validate();
         }
+        if (sku() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model AgentFabricMembershipInner"));
+        } else {
+            sku().validate();
+        }
         if (managedBy() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -165,6 +199,7 @@ public final class AgentFabricMembershipInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeStringField("managedBy", this.managedBy);
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
@@ -192,6 +227,8 @@ public final class AgentFabricMembershipInner extends ProxyResource {
                     deserializedAgentFabricMembershipInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedAgentFabricMembershipInner.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAgentFabricMembershipInner.sku = AgentFabricMembershipSku.fromJson(reader);
                 } else if ("managedBy".equals(fieldName)) {
                     deserializedAgentFabricMembershipInner.managedBy = reader.getString();
                 } else if ("properties".equals(fieldName)) {

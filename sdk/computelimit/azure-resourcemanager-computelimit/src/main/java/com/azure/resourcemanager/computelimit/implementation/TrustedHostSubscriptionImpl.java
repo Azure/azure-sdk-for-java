@@ -18,6 +18,12 @@ public final class TrustedHostSubscriptionImpl implements TrustedHostSubscriptio
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
+            "location");
+        this.hostSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
+            "hostSubscriptionId");
     }
 
     public String id() {
@@ -54,11 +60,7 @@ public final class TrustedHostSubscriptionImpl implements TrustedHostSubscriptio
     }
 
     public TrustedHostSubscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrustedHostSubscriptions()
-            .createWithResponse(location, hostSubscriptionId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TrustedHostSubscription create(Context context) {
@@ -77,11 +79,7 @@ public final class TrustedHostSubscriptionImpl implements TrustedHostSubscriptio
     }
 
     public TrustedHostSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrustedHostSubscriptions()
-            .getWithResponse(location, hostSubscriptionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TrustedHostSubscription refresh(Context context) {

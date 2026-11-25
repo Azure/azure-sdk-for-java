@@ -93,8 +93,7 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
     }
 
     public PagedIterable<ApplyUpdate> list() {
-        PagedIterable<ApplyUpdateInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ApplyUpdate> list(Context context) {

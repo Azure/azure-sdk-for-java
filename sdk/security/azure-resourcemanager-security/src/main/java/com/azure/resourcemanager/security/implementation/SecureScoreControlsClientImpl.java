@@ -228,36 +228,14 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
             nextLink -> listBySecureScoreNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all security controls for a specific initiative within a scope.
-     * 
-     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
-     * request below.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> listBySecureScore(String secureScoreName) {
         final ExpandControlsEnum expand = null;
         return new PagedIterable<>(listBySecureScoreAsync(secureScoreName, expand));
     }
 
-    /**
-     * Get all security controls for a specific initiative within a scope.
-     * 
-     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
-     * request below.
-     * @param expand OData expand. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> listBySecureScore(String secureScoreName,
         ExpandControlsEnum expand, Context context) {
@@ -368,29 +346,14 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all security controls within a scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> list() {
         final ExpandControlsEnum expand = null;
         return new PagedIterable<>(listAsync(expand));
     }
 
-    /**
-     * Get all security controls within a scope.
-     * 
-     * @param expand OData expand. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> list(ExpandControlsEnum expand, Context context) {
         return new PagedIterable<>(listAsync(expand, context));

@@ -26,8 +26,7 @@ public final class BackupInstancesExtensionRoutingsImpl implements BackupInstanc
     }
 
     public PagedIterable<BackupInstanceResource> list(String resourceId) {
-        PagedIterable<BackupInstanceResourceInner> inner = this.serviceClient().list(resourceId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupInstanceResourceImpl(inner1, this.manager()));
+        return this.list(resourceId, Context.NONE);
     }
 
     public PagedIterable<BackupInstanceResource> list(String resourceId, Context context) {

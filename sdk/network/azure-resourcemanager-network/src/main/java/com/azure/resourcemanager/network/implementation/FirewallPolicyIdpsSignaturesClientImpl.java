@@ -69,18 +69,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
             Context context);
     }
 
-    /**
-     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
-     * 1000.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query result along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResultsInner>> listWithResponseAsync(String resourceGroupName, String firewallPolicyName,
         IdpsQueryObject parameters) {
@@ -105,7 +94,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -151,7 +140,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -159,18 +148,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
             firewallPolicyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
-     * 1000.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query result on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResultsInner> listAsync(String resourceGroupName, String firewallPolicyName,
         IdpsQueryObject parameters) {
@@ -178,37 +156,14 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
-     * 1000.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResultsInner> listWithResponse(String resourceGroupName, String firewallPolicyName,
         IdpsQueryObject parameters, Context context) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
     }
 
-    /**
-     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
-     * 1000.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters) {
         return listWithResponse(resourceGroupName, firewallPolicyName, parameters, Context.NONE).getValue();

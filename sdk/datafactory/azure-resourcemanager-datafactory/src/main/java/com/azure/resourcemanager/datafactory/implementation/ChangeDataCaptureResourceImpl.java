@@ -119,12 +119,7 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptures()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ChangeDataCaptureResource create(Context context) {
@@ -150,12 +145,7 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptures()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ChangeDataCaptureResource apply(Context context) {
@@ -183,12 +173,7 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptures()
-            .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ChangeDataCaptureResource refresh(Context context) {

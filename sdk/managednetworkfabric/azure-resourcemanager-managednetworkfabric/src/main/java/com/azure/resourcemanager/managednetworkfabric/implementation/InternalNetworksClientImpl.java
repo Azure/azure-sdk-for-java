@@ -331,18 +331,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a InternalNetworks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a InternalNetworks along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InternalNetworkInner> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, Context context) {
@@ -351,17 +340,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             resourceGroupName, l3IsolationDomainName, internalNetworkName, accept, context);
     }
 
-    /**
-     * Gets a InternalNetworks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a InternalNetworks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkInner get(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName) {
@@ -408,11 +387,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, InternalNetworkInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, internalNetworkName, contentType,
-            accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, Context.NONE);
     }
 
     /**
@@ -459,40 +434,14 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             InternalNetworkInner.class, InternalNetworkInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates InternalNetwork PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginCreate(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, InternalNetworkInner body) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-        return this.client.<InternalNetworkInner, InternalNetworkInner>getLroResult(response,
-            InternalNetworkInner.class, InternalNetworkInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Creates InternalNetwork PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginCreate(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, InternalNetworkInner body, Context context) {
@@ -521,42 +470,19 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates InternalNetwork PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, InternalNetworkInner body) {
-        return beginCreate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body).getFinalResult();
+        return create(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Creates InternalNetwork PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, InternalNetworkInner body, Context context) {
-        return beginCreate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context));
     }
 
     /**
@@ -599,11 +525,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, InternalNetworkPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, internalNetworkName, contentType,
-            accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, Context.NONE);
     }
 
     /**
@@ -650,40 +572,14 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             InternalNetworkInner.class, InternalNetworkInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a InternalNetworks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body InternalNetwork properties to update. Only annotations are supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginUpdate(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, InternalNetworkPatch body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-        return this.client.<InternalNetworkInner, InternalNetworkInner>getLroResult(response,
-            InternalNetworkInner.class, InternalNetworkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Updates a InternalNetworks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body InternalNetwork properties to update. Only annotations are supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginUpdate(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, InternalNetworkPatch body, Context context) {
@@ -712,42 +608,19 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a InternalNetworks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body InternalNetwork properties to update. Only annotations are supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, InternalNetworkPatch body) {
-        return beginUpdate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body).getFinalResult();
+        return update(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Updates a InternalNetworks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body InternalNetwork properties to update. Only annotations are supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the Internal Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, InternalNetworkPatch body, Context context) {
-        return beginUpdate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context));
     }
 
     /**
@@ -783,9 +656,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, internalNetworkName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE);
     }
 
     /**
@@ -827,37 +698,14 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             this.client.getContext());
     }
 
-    /**
-     * Implements InternalNetworks DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE);
     }
 
-    /**
-     * Implements InternalNetworks DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
         String internalNetworkName, Context context) {
@@ -883,36 +731,18 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements InternalNetworks DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName) {
-        beginDelete(resourceGroupName, l3IsolationDomainName, internalNetworkName).getFinalResult();
+        delete(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE);
     }
 
-    /**
-     * Implements InternalNetworks DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
         Context context) {
-        beginDelete(resourceGroupName, l3IsolationDomainName, internalNetworkName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, l3IsolationDomainName, internalNetworkName, context));
     }
 
     /**
@@ -969,12 +799,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InternalNetworkInner> listByL3IsolationDomainSinglePage(String resourceGroupName,
         String l3IsolationDomainName) {
-        final String accept = "application/json";
-        Response<InternalNetworksList> res
-            = service.listByL3IsolationDomainSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByL3IsolationDomainSinglePage(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     /**
@@ -999,34 +824,14 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays InternalNetworks list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of InternalNetwork items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InternalNetworkInner> listByL3IsolationDomain(String resourceGroupName,
         String l3IsolationDomainName) {
-        return new PagedIterable<>(() -> listByL3IsolationDomainSinglePage(resourceGroupName, l3IsolationDomainName),
-            nextLink -> listByL3IsolationDomainNextSinglePage(nextLink));
+        return listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Displays InternalNetworks list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of InternalNetwork items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InternalNetworkInner> listByL3IsolationDomain(String resourceGroupName,
         String l3IsolationDomainName, Context context) {
@@ -1075,11 +880,8 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, internalNetworkName, contentType,
-            accept, body, Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName,
+            body, Context.NONE);
     }
 
     /**
@@ -1128,42 +930,16 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Executes update operation to enable or disable administrative State for InternalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
             String internalNetworkName, UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName,
-            internalNetworkName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
+        return beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
             Context.NONE);
     }
 
-    /**
-     * Executes update operation to enable or disable administrative State for InternalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
@@ -1195,43 +971,20 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Executes update operation to enable or disable administrative State for InternalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body)
-            .getFinalResult();
+        return updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
-    /**
-     * Executes update operation to enable or disable administrative State for InternalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateAdministrativeState(resourceGroupName,
+            l3IsolationDomainName, internalNetworkName, body, context));
     }
 
     /**
@@ -1276,11 +1029,8 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     private Response<BinaryData> updateBgpAdministrativeStateWithResponse(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBgpAdministrativeStateRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateBgpAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, internalNetworkName, contentType,
-            accept, body, Context.NONE);
+        return updateBgpAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName,
+            body, Context.NONE);
     }
 
     /**
@@ -1332,44 +1082,17 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
                 InternalNetworkUpdateBgpAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Update BGP state for internalNetwork. Allowed only on edge devices.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of internal Network Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<InternalNetworkUpdateBgpAdministrativeStateResponseInner>, InternalNetworkUpdateBgpAdministrativeStateResponseInner>
         beginUpdateBgpAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
             String internalNetworkName, InternalNetworkUpdateBgpAdministrativeStateRequest body) {
-        Response<BinaryData> response = updateBgpAdministrativeStateWithResponse(resourceGroupName,
-            l3IsolationDomainName, internalNetworkName, body);
-        return this.client
-            .<InternalNetworkUpdateBgpAdministrativeStateResponseInner, InternalNetworkUpdateBgpAdministrativeStateResponseInner>getLroResult(
-                response, InternalNetworkUpdateBgpAdministrativeStateResponseInner.class,
-                InternalNetworkUpdateBgpAdministrativeStateResponseInner.class, Context.NONE);
+        return beginUpdateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
-    /**
-     * Update BGP state for internalNetwork. Allowed only on edge devices.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of internal Network Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<InternalNetworkUpdateBgpAdministrativeStateResponseInner>, InternalNetworkUpdateBgpAdministrativeStateResponseInner>
@@ -1403,45 +1126,22 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update BGP state for internalNetwork. Allowed only on edge devices.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return internal Network Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkUpdateBgpAdministrativeStateResponseInner updateBgpAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBgpAdministrativeStateRequest body) {
-        return beginUpdateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body)
-            .getFinalResult();
+        return updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
-    /**
-     * Update BGP state for internalNetwork. Allowed only on edge devices.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return internal Network Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkUpdateBgpAdministrativeStateResponseInner updateBgpAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBgpAdministrativeStateRequest body, Context context) {
-        return beginUpdateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateBgpAdministrativeState(resourceGroupName,
+            l3IsolationDomainName, internalNetworkName, body, context));
     }
 
     /**
@@ -1485,11 +1185,8 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateStaticRouteBfdAdministrativeStateWithResponse(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateStaticRouteBfdAdministrativeStateSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName,
-            internalNetworkName, contentType, accept, body, Context.NONE);
+        return updateStaticRouteBfdAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName,
+            internalNetworkName, body, Context.NONE);
     }
 
     /**
@@ -1538,42 +1235,16 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Update Static Route BFD administrative state for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
             String internalNetworkName, UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateStaticRouteBfdAdministrativeStateWithResponse(resourceGroupName,
-            l3IsolationDomainName, internalNetworkName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
-            Context.NONE);
+        return beginUpdateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName,
+            internalNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Update Static Route BFD administrative state for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
@@ -1605,43 +1276,20 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             internalNetworkName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update Static Route BFD administrative state for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body) {
-        return beginUpdateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName,
-            internalNetworkName, body).getFinalResult();
+        return updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName,
+            body, Context.NONE);
     }
 
-    /**
-     * Update Static Route BFD administrative state for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName,
-            internalNetworkName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateStaticRouteBfdAdministrativeState(resourceGroupName,
+            l3IsolationDomainName, internalNetworkName, body, context));
     }
 
     /**
@@ -1686,11 +1334,8 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
     private Response<BinaryData> updateBfdAdministrativeStateWithResponse(String resourceGroupName,
         String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBfdAdministrativeStateRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateBfdAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, internalNetworkName, contentType,
-            accept, body, Context.NONE);
+        return updateBfdAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName,
+            body, Context.NONE);
     }
 
     /**
@@ -1742,44 +1387,17 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
                 InternalNetworkUpdateBfdAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * BFD administrative state for either static or bgp for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of internal Network BFD Administrative State response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<InternalNetworkUpdateBfdAdministrativeStateResponseInner>, InternalNetworkUpdateBfdAdministrativeStateResponseInner>
         beginUpdateBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
             String internalNetworkName, InternalNetworkUpdateBfdAdministrativeStateRequest body) {
-        Response<BinaryData> response = updateBfdAdministrativeStateWithResponse(resourceGroupName,
-            l3IsolationDomainName, internalNetworkName, body);
-        return this.client
-            .<InternalNetworkUpdateBfdAdministrativeStateResponseInner, InternalNetworkUpdateBfdAdministrativeStateResponseInner>getLroResult(
-                response, InternalNetworkUpdateBfdAdministrativeStateResponseInner.class,
-                InternalNetworkUpdateBfdAdministrativeStateResponseInner.class, Context.NONE);
+        return beginUpdateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
-    /**
-     * BFD administrative state for either static or bgp for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of internal Network BFD Administrative State response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<InternalNetworkUpdateBfdAdministrativeStateResponseInner>, InternalNetworkUpdateBfdAdministrativeStateResponseInner>
@@ -1813,45 +1431,22 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
             body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * BFD administrative state for either static or bgp for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return internal Network BFD Administrative State response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkUpdateBfdAdministrativeStateResponseInner updateBfdAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBfdAdministrativeStateRequest body) {
-        return beginUpdateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body)
-            .getFinalResult();
+        return updateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
+            Context.NONE);
     }
 
-    /**
-     * BFD administrative state for either static or bgp for internalNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return internal Network BFD Administrative State response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InternalNetworkUpdateBfdAdministrativeStateResponseInner updateBfdAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
         InternalNetworkUpdateBfdAdministrativeStateRequest body, Context context) {
-        return beginUpdateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateBfdAdministrativeState(resourceGroupName,
+            l3IsolationDomainName, internalNetworkName, body, context));
     }
 
     /**
@@ -1886,11 +1481,7 @@ public final class InternalNetworksClientImpl implements InternalNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InternalNetworkInner> listByL3IsolationDomainNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InternalNetworksList> res
-            = service.listByL3IsolationDomainNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByL3IsolationDomainNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

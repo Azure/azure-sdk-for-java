@@ -22,6 +22,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.ShareStats;
@@ -181,6 +182,27 @@ public class ShareClient {
     }
 
     /**
+     * Creates a directory client that addresses a directory by its file ID.
+     *
+     * <p>Call {@link ShareDirectoryClient#getProperties()} on the returned client to retrieve properties without
+     * knowing the directory path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties
+     * response. Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareDirectoryProperties properties = shareClient.getDirectoryClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the directory.
+     * @return A client for interacting with the directory by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareDirectoryClient getDirectoryClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        return new ShareDirectoryClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
      * Constructs a {@link ShareFileClient} that interacts with the specified file.
      *
      * <p>If the file doesn't exist in the share {@link ShareFileClient#create(long)} ) create} in the client will
@@ -194,6 +216,30 @@ public class ShareClient {
             new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName, serviceVersion,
                 sasToken),
             azureFileStorageClient, shareName, filePath, snapshot, accountName, serviceVersion, sasToken);
+    }
+
+    /**
+     * Creates a file client that addresses a file by its file ID.
+     *
+     * <p>Call {@link ShareFileClient#getProperties()} on the returned client to retrieve properties without knowing
+     * the file path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties response.
+     * The returned client supports property retrieval and {@link ShareFileClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareFileProperties properties = shareClient.getFileClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the file.
+     * @return A client for interacting with the file by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareFileClient getFileClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        ShareFileAsyncClient asyncClient = new ShareFileAsyncClient(azureFileStorageClient, shareName, "", fileId,
+            snapshot, accountName, serviceVersion, sasToken);
+        return new ShareFileClient(asyncClient, azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
     }
 
     /**
@@ -369,7 +415,7 @@ public class ShareClient {
                 finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
                 finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(),
                 finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(), null,
-                finalContext);
+                finalOptions.isChangeFeedEnabled(), finalOptions.getChangeFeedRetentionInDays(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -392,6 +438,9 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return {@link ShareInfo} that contains information about the created resource.
+     * @throws ShareStorageException If the share could not be created for any other reason than that it already exists,
+     * for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo createIfNotExists() {
@@ -427,6 +476,9 @@ public class ShareClient {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link ShareInfo} containing information about the share. If {@link Response}'s status code is 201, a new
      * share was successfully created. If status code is 409, a share already existed at this location.
+     * @throws ShareStorageException If the share could not be created for any other reason than that it already exists,
+     * for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout,
@@ -434,7 +486,7 @@ public class ShareClient {
         try {
             return createWithResponse(options, timeout, context);
         } catch (ShareStorageException e) {
-            if (e.getStatusCode() == 409 && e.getErrorCode().equals(ShareErrorCode.SHARE_ALREADY_EXISTS)) {
+            if (ModelHelper.isConflictWithErrorCode(e, ShareErrorCode.SHARE_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -899,7 +951,8 @@ public class ShareClient {
                 requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, finalContext);
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
+                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1404,6 +1457,9 @@ public class ShareClient {
      *
      * @param directoryName Name of the directory
      * @return The {@link ShareDirectoryClient} used to interact with the directory created.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createDirectoryIfNotExists(String directoryName) {
@@ -1448,6 +1504,9 @@ public class ShareClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareDirectoryClient}
      * used to interact with the directory created. If {@link Response}'s status code is 201, a new directory was
      * successfully created. If status code is 409, a directory with the same name already existed at this location.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,

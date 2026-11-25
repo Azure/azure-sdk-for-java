@@ -90,7 +90,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @PathParam("projectName") String projectName, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -99,7 +99,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ProjectInner project, Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -216,19 +216,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a Cognitive Services project specified by the parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services project is an Azure resource representing the provisioned account's project, it's
-     * type, location and SKU along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> getWithResponse(String resourceGroupName, String accountName, String projectName,
         Context context) {
@@ -237,18 +225,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             resourceGroupName, accountName, projectName, accept, context);
     }
 
-    /**
-     * Returns a Cognitive Services project specified by the parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services project is an Azure resource representing the provisioned account's project, it's
-     * type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner get(String resourceGroupName, String accountName, String projectName) {
         return getWithResponse(resourceGroupName, accountName, projectName, Context.NONE).getValue();
@@ -297,11 +274,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String projectName,
         ProjectInner project) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, contentType, accept, project,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, projectName, project, Context.NONE);
     }
 
     /**
@@ -352,43 +325,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             ProjectInner.class, ProjectInner.class, this.client.getContext());
     }
 
-    /**
-     * Create Cognitive Services Account's Project. Project is a sub-resource of an account which give AI developer it's
-     * individual container to work on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services project is an Azure resource representing the
-     * provisioned account's project, it's type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreate(String resourceGroupName, String accountName,
         String projectName, ProjectInner project) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, accountName, projectName, project);
-        return this.client.<ProjectInner, ProjectInner>getLroResult(response, ProjectInner.class, ProjectInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, accountName, projectName, project, Context.NONE);
     }
 
-    /**
-     * Create Cognitive Services Account's Project. Project is a sub-resource of an account which give AI developer it's
-     * individual container to work on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services project is an Azure resource representing the
-     * provisioned account's project, it's type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreate(String resourceGroupName, String accountName,
         String projectName, ProjectInner project, Context context) {
@@ -419,44 +363,18 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Cognitive Services Account's Project. Project is a sub-resource of an account which give AI developer it's
-     * individual container to work on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services project is an Azure resource representing the provisioned account's project, it's
-     * type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner create(String resourceGroupName, String accountName, String projectName, ProjectInner project) {
-        return beginCreate(resourceGroupName, accountName, projectName, project).getFinalResult();
+        return create(resourceGroupName, accountName, projectName, project, Context.NONE);
     }
 
-    /**
-     * Create Cognitive Services Account's Project. Project is a sub-resource of an account which give AI developer it's
-     * individual container to work on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services project is an Azure resource representing the provisioned account's project, it's
-     * type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner create(String resourceGroupName, String accountName, String projectName, ProjectInner project,
         Context context) {
-        return beginCreate(resourceGroupName, accountName, projectName, project, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, accountName, projectName, project, context));
     }
 
     /**
@@ -500,11 +418,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String projectName,
         ProjectInner project) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, contentType, accept, project,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, projectName, project, Context.NONE);
     }
 
     /**
@@ -553,41 +467,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             ProjectInner.class, ProjectInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a Cognitive Services Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services project is an Azure resource representing the
-     * provisioned account's project, it's type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(String resourceGroupName, String accountName,
         String projectName, ProjectInner project) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, projectName, project);
-        return this.client.<ProjectInner, ProjectInner>getLroResult(response, ProjectInner.class, ProjectInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, projectName, project, Context.NONE);
     }
 
-    /**
-     * Updates a Cognitive Services Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services project is an Azure resource representing the
-     * provisioned account's project, it's type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(String resourceGroupName, String accountName,
         String projectName, ProjectInner project, Context context) {
@@ -617,42 +504,18 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a Cognitive Services Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services project is an Azure resource representing the provisioned account's project, it's
-     * type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner update(String resourceGroupName, String accountName, String projectName, ProjectInner project) {
-        return beginUpdate(resourceGroupName, accountName, projectName, project).getFinalResult();
+        return update(resourceGroupName, accountName, projectName, project, Context.NONE);
     }
 
-    /**
-     * Updates a Cognitive Services Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param project The parameters to provide for the created project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services project is an Azure resource representing the provisioned account's project, it's
-     * type, location and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner update(String resourceGroupName, String accountName, String projectName, ProjectInner project,
         Context context) {
-        return beginUpdate(resourceGroupName, accountName, projectName, project, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, projectName, project, context));
     }
 
     /**
@@ -688,8 +551,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String projectName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
     /**
@@ -730,36 +592,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Cognitive Services project from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, projectName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
-    /**
-     * Deletes a Cognitive Services project from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, Context context) {
@@ -784,35 +624,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Cognitive Services project from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName) {
-        beginDelete(resourceGroupName, accountName, projectName).getFinalResult();
+        delete(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
-    /**
-     * Deletes a Cognitive Services project from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, Context context) {
-        beginDelete(resourceGroupName, accountName, projectName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, projectName, context));
     }
 
     /**
@@ -865,11 +686,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<ProjectListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -892,35 +709,13 @@ public final class ProjectsClientImpl implements ProjectsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the projects in a Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services projects operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Returns all the projects in a Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services projects operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -957,11 +752,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProjectListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

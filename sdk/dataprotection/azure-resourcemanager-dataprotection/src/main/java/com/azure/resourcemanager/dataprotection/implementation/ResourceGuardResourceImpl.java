@@ -89,11 +89,7 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuards()
-            .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceGuardResource create(Context context) {
@@ -117,11 +113,7 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuards()
-            .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceGuardResource apply(Context context) {
@@ -145,11 +137,7 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuards()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceGuardResource refresh(Context context) {

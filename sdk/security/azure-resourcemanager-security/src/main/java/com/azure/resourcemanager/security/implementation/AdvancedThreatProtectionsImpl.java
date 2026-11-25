@@ -43,22 +43,13 @@ public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtec
     }
 
     public AdvancedThreatProtectionSetting getById(String id) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        return this.getWithResponse(resourceId, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AdvancedThreatProtectionSetting> getByIdWithResponse(String id, Context context) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
+        String resourceId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}", "resourceId",
+            "resourceId", LOGGER);
         return this.getWithResponse(resourceId, context);
     }
 

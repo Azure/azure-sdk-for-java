@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ScenarioRunsCancelSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioRuns_Cancel.json
+     * x-ms-original-file: 2026-11-01/ScenarioRuns_Cancel.json
      */
     /**
      * Sample code: Cancel a running scenario run.

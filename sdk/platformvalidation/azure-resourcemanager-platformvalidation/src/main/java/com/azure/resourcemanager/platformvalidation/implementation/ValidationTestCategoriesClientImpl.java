@@ -146,16 +146,7 @@ public final class ValidationTestCategoriesClientImpl implements ValidationTestC
         return getWithResponseAsync(validationTestCategoryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a validation test category catalog entry.
-     * 
-     * @param validationTestCategoryName The name of the ValidationTestCategory.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test category catalog entry along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidationTestCategoryInner> getWithResponse(String validationTestCategoryName, Context context) {
         final String accept = "application/json";
@@ -163,15 +154,7 @@ public final class ValidationTestCategoriesClientImpl implements ValidationTestC
             validationTestCategoryName, accept, context);
     }
 
-    /**
-     * Get a validation test category catalog entry.
-     * 
-     * @param validationTestCategoryName The name of the ValidationTestCategory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test category catalog entry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationTestCategoryInner get(String validationTestCategoryName) {
         return getWithResponse(validationTestCategoryName, Context.NONE).getValue();
@@ -238,11 +221,7 @@ public final class ValidationTestCategoriesClientImpl implements ValidationTestC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestCategoryInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<ValidationTestCategoryListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -264,30 +243,14 @@ public final class ValidationTestCategoriesClientImpl implements ValidationTestC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List validation test category catalog entries for a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTestCategory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestCategoryInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * List validation test category catalog entries for a subscription.
-     * 
-     * @param filter Filter expression used to constrain the returned items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTestCategory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestCategoryInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -326,11 +289,7 @@ public final class ValidationTestCategoriesClientImpl implements ValidationTestC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestCategoryInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ValidationTestCategoryListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

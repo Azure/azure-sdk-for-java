@@ -47,7 +47,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String deidServiceName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, deidServiceName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String deidServiceName, String privateEndpointConnectionName,
@@ -57,10 +57,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PagedIterable<PrivateEndpointConnectionResource> listByDeidService(String resourceGroupName,
         String deidServiceName) {
-        PagedIterable<PrivateEndpointConnectionResourceInner> inner
-            = this.serviceClient().listByDeidService(resourceGroupName, deidServiceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
+        return this.listByDeidService(resourceGroupName, deidServiceName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnectionResource> listByDeidService(String resourceGroupName,
@@ -72,103 +69,36 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PrivateEndpointConnectionResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deidServiceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "deidServiceName");
-        if (deidServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deidServices'.", id)));
-        }
-        String privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "privateEndpointConnectionName");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PrivateEndpointConnectionResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deidServiceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deidServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "deidServiceName");
-        if (deidServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deidServices'.", id)));
-        }
-        String privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "deidServiceName", "deidServices", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "privateEndpointConnectionName");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         return this.getWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deidServiceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "deidServiceName");
-        if (deidServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deidServices'.", id)));
-        }
-        String privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "privateEndpointConnectionName");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        this.delete(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deidServiceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deidServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "deidServiceName");
-        if (deidServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deidServices'.", id)));
-        }
-        String privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "deidServiceName", "deidServices", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}",
-            "privateEndpointConnectionName");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         this.delete(resourceGroupName, deidServiceName, privateEndpointConnectionName, context);
     }
 

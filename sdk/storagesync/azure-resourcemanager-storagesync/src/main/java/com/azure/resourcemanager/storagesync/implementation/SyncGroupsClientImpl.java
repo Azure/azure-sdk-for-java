@@ -206,18 +206,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a given SyncGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given SyncGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncGroupsGetResponse getWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, Context context) {
@@ -226,17 +215,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             resourceGroupName, storageSyncServiceName, syncGroupName, accept, context);
     }
 
-    /**
-     * Get a given SyncGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given SyncGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncGroupInner get(String resourceGroupName, String storageSyncServiceName, String syncGroupName) {
         return getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, Context.NONE).getValue();
@@ -285,19 +264,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new SyncGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param parameters Sync Group Body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sync Group object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncGroupsCreateResponse createWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, SyncGroupCreateParameters parameters, Context context) {
@@ -308,18 +275,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             accept, parameters, context);
     }
 
-    /**
-     * Create a new SyncGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param parameters Sync Group Body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sync Group object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncGroupInner create(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         SyncGroupCreateParameters parameters) {
@@ -364,18 +320,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a given SyncGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncGroupsDeleteResponse deleteWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, Context context) {
@@ -383,16 +328,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName, context);
     }
 
-    /**
-     * Delete a given SyncGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String syncGroupName) {
         deleteWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, Context.NONE);
@@ -451,12 +387,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SyncGroupInner> listByStorageSyncServiceSinglePage(String resourceGroupName,
         String storageSyncServiceName) {
-        final String accept = "application/json";
-        Response<SyncGroupArray> res
-            = service.listByStorageSyncServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
     /**
@@ -481,34 +412,14 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a SyncGroup List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SyncGroup List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncGroupInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName) {
-        return new PagedIterable<>(() -> listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName),
-            nextLink -> listByStorageSyncServiceNextSinglePage(nextLink));
+        return listByStorageSyncService(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
-    /**
-     * Get a SyncGroup List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SyncGroup List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncGroupInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName, Context context) {
@@ -548,11 +459,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SyncGroupInner> listByStorageSyncServiceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SyncGroupArray> res
-            = service.listByStorageSyncServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -47,8 +47,7 @@ public final class RecoveryJobsImpl implements RecoveryJobs {
     }
 
     public PagedIterable<RecoveryJob> list(String serviceGroupName, String recoveryPlanName) {
-        PagedIterable<RecoveryJobInner> inner = this.serviceClient().list(serviceGroupName, recoveryPlanName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryJobImpl(inner1, this.manager()));
+        return this.list(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     public PagedIterable<RecoveryJob> list(String serviceGroupName, String recoveryPlanName, Context context) {
@@ -58,7 +57,7 @@ public final class RecoveryJobsImpl implements RecoveryJobs {
 
     public ArmResponseErrorResponse cancel(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, RecoveryActionRequest body) {
-        return this.serviceClient().cancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body);
+        return this.cancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
     public ArmResponseErrorResponse cancel(String serviceGroupName, String operationId, String recoveryPlanName,
@@ -69,7 +68,7 @@ public final class RecoveryJobsImpl implements RecoveryJobs {
 
     public ArmResponseErrorResponse resume(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, RecoveryActionRequest body) {
-        return this.serviceClient().resume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body);
+        return this.resume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
     public ArmResponseErrorResponse resume(String serviceGroupName, String operationId, String recoveryPlanName,
@@ -80,7 +79,7 @@ public final class RecoveryJobsImpl implements RecoveryJobs {
 
     public ArmResponseErrorResponse retry(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName) {
-        return this.serviceClient().retry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName);
+        return this.retry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
     public ArmResponseErrorResponse retry(String serviceGroupName, String operationId, String recoveryPlanName,

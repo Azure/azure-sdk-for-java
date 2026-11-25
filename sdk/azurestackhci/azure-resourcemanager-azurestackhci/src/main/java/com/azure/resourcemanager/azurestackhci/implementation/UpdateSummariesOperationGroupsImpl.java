@@ -24,7 +24,7 @@ public final class UpdateSummariesOperationGroupsImpl implements UpdateSummaries
     }
 
     public void checkUpdates(String resourceGroupName, String clusterName, CheckUpdatesRequest body) {
-        this.serviceClient().checkUpdates(resourceGroupName, clusterName, body);
+        this.checkUpdates(resourceGroupName, clusterName, body, Context.NONE);
     }
 
     public void checkUpdates(String resourceGroupName, String clusterName, CheckUpdatesRequest body, Context context) {
@@ -32,7 +32,7 @@ public final class UpdateSummariesOperationGroupsImpl implements UpdateSummaries
     }
 
     public void checkHealth(String resourceGroupName, String clusterName) {
-        this.serviceClient().checkHealth(resourceGroupName, clusterName);
+        this.checkHealth(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void checkHealth(String resourceGroupName, String clusterName, Context context) {

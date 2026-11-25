@@ -200,19 +200,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an incident task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param incidentTaskId Incident task ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident task along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IncidentTaskInner> getWithResponse(String resourceGroupName, String workspaceName,
         String incidentId, String incidentTaskId, Context context) {
@@ -221,18 +209,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             resourceGroupName, workspaceName, incidentId, incidentTaskId, accept, context);
     }
 
-    /**
-     * Gets an incident task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param incidentTaskId Incident task ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncidentTaskInner get(String resourceGroupName, String workspaceName, String incidentId,
         String incidentTaskId) {
@@ -284,20 +261,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             incidentTask).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the incident task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param incidentTaskId Incident task ID.
-     * @param incidentTask The incident task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes incident task properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IncidentTaskInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String incidentId, String incidentTaskId, IncidentTaskInner incidentTask, Context context) {
@@ -308,19 +272,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             accept, incidentTask, context);
     }
 
-    /**
-     * Creates or updates the incident task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param incidentTaskId Incident task ID.
-     * @param incidentTask The incident task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes incident task properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncidentTaskInner createOrUpdate(String resourceGroupName, String workspaceName, String incidentId,
         String incidentTaskId, IncidentTaskInner incidentTask) {
@@ -368,19 +320,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the incident task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param incidentTaskId Incident task ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String incidentId,
         String incidentTaskId, Context context) {
@@ -388,17 +328,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, incidentId, incidentTaskId, context);
     }
 
-    /**
-     * Delete the incident task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param incidentTaskId Incident task ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String incidentId, String incidentTaskId) {
         deleteWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, Context.NONE);
@@ -458,11 +388,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IncidentTaskInner> listSinglePage(String resourceGroupName, String workspaceName,
         String incidentId) {
-        final String accept = "application/json";
-        Response<IncidentTaskList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, incidentId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, incidentId, Context.NONE);
     }
 
     /**
@@ -487,35 +413,13 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all incident tasks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident tasks as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentTaskInner> list(String resourceGroupName, String workspaceName, String incidentId) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, incidentId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, incidentId, Context.NONE);
     }
 
-    /**
-     * Gets all incident tasks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param incidentId Incident ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident tasks as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentTaskInner> list(String resourceGroupName, String workspaceName, String incidentId,
         Context context) {
@@ -552,11 +456,7 @@ public final class IncidentTasksClientImpl implements IncidentTasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IncidentTaskInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IncidentTaskList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

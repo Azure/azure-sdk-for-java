@@ -94,10 +94,7 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
     }
 
     public Schema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .createOrUpdate(resourceGroupName, schemaName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Schema create(Context context) {
@@ -120,11 +117,7 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
     }
 
     public Schema apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .updateWithResponse(resourceGroupName, schemaName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Schema apply(Context context) {
@@ -148,11 +141,7 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
     }
 
     public Schema refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .getByResourceGroupWithResponse(resourceGroupName, schemaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Schema refresh(Context context) {

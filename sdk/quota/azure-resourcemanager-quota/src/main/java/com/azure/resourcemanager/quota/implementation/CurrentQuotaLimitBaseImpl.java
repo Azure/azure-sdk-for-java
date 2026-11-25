@@ -54,10 +54,7 @@ public final class CurrentQuotaLimitBaseImpl
     }
 
     public CurrentQuotaLimitBase create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotas()
-            .createOrUpdate(resourceName, scope, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CurrentQuotaLimitBase create(Context context) {
@@ -78,9 +75,7 @@ public final class CurrentQuotaLimitBaseImpl
     }
 
     public CurrentQuotaLimitBase apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getQuotas().update(resourceName, scope, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CurrentQuotaLimitBase apply(Context context) {
@@ -100,9 +95,7 @@ public final class CurrentQuotaLimitBaseImpl
     }
 
     public CurrentQuotaLimitBase refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getQuotas().getWithResponse(resourceName, scope, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CurrentQuotaLimitBase refresh(Context context) {

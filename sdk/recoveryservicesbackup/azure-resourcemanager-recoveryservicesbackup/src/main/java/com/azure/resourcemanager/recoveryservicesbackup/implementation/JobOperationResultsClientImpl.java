@@ -113,19 +113,7 @@ public final class JobOperationResultsClientImpl implements JobOperationResultsC
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Fetches the result of any operation.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the JobResource.
-     * @param operationId The name of the JobResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String vaultName, String resourceGroupName, String jobName,
         String operationId, Context context) {
@@ -133,17 +121,7 @@ public final class JobOperationResultsClientImpl implements JobOperationResultsC
             resourceGroupName, vaultName, jobName, operationId, context);
     }
 
-    /**
-     * Fetches the result of any operation.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the JobResource.
-     * @param operationId The name of the JobResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
         getWithResponse(vaultName, resourceGroupName, jobName, operationId, Context.NONE);

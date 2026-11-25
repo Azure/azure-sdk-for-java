@@ -165,33 +165,14 @@ public final class ComplianceResultsClientImpl implements ComplianceResultsClien
         return getWithResponseAsync(resourceId, complianceResultName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Security Compliance Result.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param complianceResultName The compliance result key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a compliance result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComplianceResultInner> getWithResponse(String resourceId, String complianceResultName,
         Context context) {
         return getWithResponseAsync(resourceId, complianceResultName, context).block();
     }
 
-    /**
-     * Security Compliance Result.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param complianceResultName The compliance result key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a compliance result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComplianceResultInner get(String resourceId, String complianceResultName) {
         return getWithResponse(resourceId, complianceResultName, Context.NONE).getValue();
@@ -283,30 +264,13 @@ public final class ComplianceResultsClientImpl implements ComplianceResultsClien
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Security compliance results in the subscription.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of compliance results response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComplianceResultInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Security compliance results in the subscription.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of compliance results response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComplianceResultInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

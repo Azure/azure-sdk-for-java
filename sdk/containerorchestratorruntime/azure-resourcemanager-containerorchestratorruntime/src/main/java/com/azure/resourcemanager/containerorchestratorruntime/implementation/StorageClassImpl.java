@@ -45,7 +45,7 @@ public final class StorageClassImpl implements StorageClass {
     }
 
     public void deleteByResourceGroup(String resourceUri, String storageClassName) {
-        this.serviceClient().delete(resourceUri, storageClassName);
+        this.delete(resourceUri, storageClassName, Context.NONE);
     }
 
     public void delete(String resourceUri, String storageClassName, Context context) {
@@ -53,8 +53,7 @@ public final class StorageClassImpl implements StorageClass {
     }
 
     public PagedIterable<StorageClassResource> list(String resourceUri) {
-        PagedIterable<StorageClassResourceInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassResourceImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<StorageClassResource> list(String resourceUri, Context context) {
@@ -63,70 +62,30 @@ public final class StorageClassImpl implements StorageClass {
     }
 
     public StorageClassResource getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String storageClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}",
-            "storageClassName");
-        if (storageClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageClasses'.", id)));
-        }
-        return this.getWithResponse(resourceUri, storageClassName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StorageClassResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String storageClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}", "resourceUri",
+            "resourceUri", LOGGER);
+        String storageClassName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}",
-            "storageClassName");
-        if (storageClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageClasses'.", id)));
-        }
+            "storageClassName", "storageClasses", LOGGER);
         return this.getWithResponse(resourceUri, storageClassName, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String storageClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}",
-            "storageClassName");
-        if (storageClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageClasses'.", id)));
-        }
-        this.delete(resourceUri, storageClassName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String storageClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}", "resourceUri",
+            "resourceUri", LOGGER);
+        String storageClassName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}",
-            "storageClassName");
-        if (storageClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageClasses'.", id)));
-        }
+            "storageClassName", "storageClasses", LOGGER);
         this.delete(resourceUri, storageClassName, context);
     }
 

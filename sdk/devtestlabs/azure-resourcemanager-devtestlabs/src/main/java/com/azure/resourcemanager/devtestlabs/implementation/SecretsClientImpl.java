@@ -229,20 +229,7 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get secret.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param expand Specify the $expand query. Example: 'properties($select=value)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secret along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretInner> getWithResponse(String resourceGroupName, String labName, String userName, String name,
         String expand, Context context) {
@@ -251,18 +238,7 @@ public final class SecretsClientImpl implements SecretsClient {
             resourceGroupName, labName, userName, name, expand, accept, context);
     }
 
-    /**
-     * Get secret.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner get(String resourceGroupName, String labName, String userName, String name) {
         final String expand = null;
@@ -310,11 +286,7 @@ public final class SecretsClientImpl implements SecretsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String labName, String userName,
         String name, SecretInner secret) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, contentType, accept, secret,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, labName, userName, name, secret, Context.NONE);
     }
 
     /**
@@ -363,41 +335,14 @@ public final class SecretsClientImpl implements SecretsClient {
             SecretInner.class, SecretInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing secret. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreateOrUpdate(String resourceGroupName,
         String labName, String userName, String name, SecretInner secret) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, labName, userName, name, secret);
-        return this.client.<SecretInner, SecretInner>getLroResult(response, SecretInner.class, SecretInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, secret, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing secret. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreateOrUpdate(String resourceGroupName,
         String labName, String userName, String name, SecretInner secret, Context context) {
@@ -427,43 +372,19 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing secret. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         SecretInner secret) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, secret).getFinalResult();
+        return createOrUpdate(resourceGroupName, labName, userName, name, secret, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing secret. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         SecretInner secret, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, secret, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, labName, userName, name, secret, context));
     }
 
     /**
@@ -511,20 +432,7 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of secrets. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretInner> updateWithResponse(String resourceGroupName, String labName, String userName,
         String name, SecretFragment secret, Context context) {
@@ -535,19 +443,7 @@ public final class SecretsClientImpl implements SecretsClient {
             context);
     }
 
-    /**
-     * Allows modifying tags of secrets. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner update(String resourceGroupName, String labName, String userName, String name,
         SecretFragment secret) {
@@ -592,19 +488,7 @@ public final class SecretsClientImpl implements SecretsClient {
         return deleteWithResponseAsync(resourceGroupName, labName, userName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete secret.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String userName, String name,
         Context context) {
@@ -612,17 +496,7 @@ public final class SecretsClientImpl implements SecretsClient {
             this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, context);
     }
 
-    /**
-     * Delete secret.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name) {
         deleteWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
@@ -720,12 +594,7 @@ public final class SecretsClientImpl implements SecretsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecretInner> listSinglePage(String resourceGroupName, String labName, String userName,
         String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<SecretList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, userName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -755,44 +624,17 @@ public final class SecretsClientImpl implements SecretsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List secrets in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretInner> list(String resourceGroupName, String labName, String userName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List secrets in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param expand Specify the $expand query. Example: 'properties($select=value)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretInner> list(String resourceGroupName, String labName, String userName, String expand,
         String filter, Integer top, String orderby, Context context) {
@@ -831,10 +673,7 @@ public final class SecretsClientImpl implements SecretsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecretInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecretList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

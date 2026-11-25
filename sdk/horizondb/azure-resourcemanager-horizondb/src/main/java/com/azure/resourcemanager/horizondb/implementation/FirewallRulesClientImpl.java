@@ -164,19 +164,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool firewall rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String firewallRuleName) {
@@ -188,18 +176,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool firewall rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallRuleInner> getAsync(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName) {
@@ -207,19 +184,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool firewall rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, Context context) {
@@ -228,18 +193,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             resourceGroupName, clusterName, poolName, firewallRuleName, accept, context);
     }
 
-    /**
-     * Gets information about a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner get(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName) {
@@ -270,17 +224,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all HorizonDB firewall rules in a pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FirewallRuleInner> listAsync(String resourceGroupName, String clusterName, String poolName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, poolName),
@@ -301,11 +245,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallRuleInner> listSinglePage(String resourceGroupName, String clusterName,
         String poolName) {
-        final String accept = "application/json";
-        Response<FirewallRuleListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     /**
@@ -330,35 +270,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all HorizonDB firewall rules in a pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> list(String resourceGroupName, String clusterName, String poolName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, poolName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Lists all HorizonDB firewall rules in a pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> list(String resourceGroupName, String clusterName, String poolName,
         Context context) {
@@ -366,20 +284,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             nextLink -> listNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a customer-managed firewall rule for a HorizonDB pool along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, String poolName, String firewallRuleName, FirewallRuleInner resource) {
@@ -398,7 +303,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -408,11 +315,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         String poolName, String firewallRuleName, FirewallRuleInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, firewallRuleName, contentType,
-            accept, resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, poolName, firewallRuleName, resource,
+            Context.NONE);
     }
 
     /**
@@ -421,7 +325,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -439,19 +345,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             accept, resource, context);
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a customer-managed firewall rule for a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrReplaceAsync(
         String resourceGroupName, String clusterName, String poolName, String firewallRuleName,
@@ -462,42 +356,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             FirewallRuleInner.class, FirewallRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a customer-managed firewall rule for a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, String poolName, String firewallRuleName, FirewallRuleInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, clusterName, poolName, firewallRuleName, resource);
-        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(response, FirewallRuleInner.class,
-            FirewallRuleInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, poolName, firewallRuleName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a customer-managed firewall rule for a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, String poolName, String firewallRuleName, FirewallRuleInner resource, Context context) {
@@ -507,20 +373,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             FirewallRuleInner.class, context);
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a customer-managed firewall rule for a HorizonDB pool on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallRuleInner> createOrReplaceAsync(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, FirewallRuleInner resource) {
@@ -528,59 +381,22 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a customer-managed firewall rule for a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrReplace(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, FirewallRuleInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, poolName, firewallRuleName, resource)
-            .getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, poolName, firewallRuleName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a customer-managed firewall rule for a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrReplace(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, FirewallRuleInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, poolName, firewallRuleName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, clusterName, poolName, firewallRuleName, resource, context));
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String firewallRuleName) {
@@ -596,7 +412,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -605,8 +423,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, firewallRuleName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, poolName, firewallRuleName, Context.NONE);
     }
 
     /**
@@ -615,7 +432,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -629,18 +448,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, firewallRuleName, context);
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
         String poolName, String firewallRuleName) {
@@ -650,38 +458,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, poolName, firewallRuleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, poolName, firewallRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, Context context) {
@@ -690,18 +474,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName) {
@@ -709,38 +482,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String poolName, String firewallRuleName) {
-        beginDelete(resourceGroupName, clusterName, poolName, firewallRuleName).getFinalResult();
+        delete(resourceGroupName, clusterName, poolName, firewallRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB pool firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String poolName, String firewallRuleName,
         Context context) {
-        beginDelete(resourceGroupName, clusterName, poolName, firewallRuleName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, poolName, firewallRuleName, context));
     }
 
     /**
@@ -773,11 +526,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallRuleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirewallRuleListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

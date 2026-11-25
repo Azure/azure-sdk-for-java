@@ -193,24 +193,7 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is
-     * only for PBS and Replication Latency data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and
-     * each word capitalized.
-     * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each
-     * word capitalized.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PercentileMetricInner> listMetricsAsync(String resourceGroupName, String accountName,
         String sourceRegion, String targetRegion, String filter) {
@@ -245,24 +228,7 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
             targetRegion, filter, context), nextLink -> listMetricsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is
-     * only for PBS and Replication Latency data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and
-     * each word capitalized.
-     * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each
-     * word capitalized.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PercentileMetricInner> listMetrics(String resourceGroupName, String accountName,
         String sourceRegion, String targetRegion, String filter) {
@@ -270,25 +236,7 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
             listMetricsAsync(resourceGroupName, accountName, sourceRegion, targetRegion, filter));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is
-     * only for PBS and Replication Latency data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and
-     * each word capitalized.
-     * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each
-     * word capitalized.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PercentileMetricInner> listMetrics(String resourceGroupName, String accountName,
         String sourceRegion, String targetRegion, String filter, Context context) {

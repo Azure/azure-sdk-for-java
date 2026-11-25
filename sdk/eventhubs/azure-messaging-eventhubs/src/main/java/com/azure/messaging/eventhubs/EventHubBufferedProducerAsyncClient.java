@@ -41,8 +41,12 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>
  * The {@link EventHubBufferedProducerAsyncClient} does not publish immediately, instead using a deferred model where
  * events are collected into a buffer so that they may be efficiently batched and published when the batch is full or
- * the {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration) maxWaitTime} has elapsed with no new events
- * enqueued.
+ * the {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration) maxWaitTime} has elapsed since the first event
+ * was added to the batch. Later events in the same batch do not restart this wait.
+ * </p>
+ * <p>
+ * This interval applies to building a batch. Events can wait in the buffer before they enter a batch. Scheduling
+ * delays, queued sends, and retries can delay publication and service acknowledgement beyond this interval.
  * </p>
  * <p>
  * This model is intended to shift the burden of batch management from callers, at the cost of non-deterministic timing,
@@ -69,7 +73,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>The following code sample demonstrates the creation of the asynchronous client
  * {@link EventHubBufferedProducerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host
  * name. It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.
- * The producer is set to publish events every 60 seconds with a buffer size of 1500 events for each partition.  The
+ * The producer waits up to 60 seconds to build each batch and buffers up to 1500 events for each partition. The
  * examples shown in this document use a credential object named DefaultAzureCredential for
  * authentication, which is appropriate for most scenarios, including local development and production
  * environments. Additionally, we recommend using

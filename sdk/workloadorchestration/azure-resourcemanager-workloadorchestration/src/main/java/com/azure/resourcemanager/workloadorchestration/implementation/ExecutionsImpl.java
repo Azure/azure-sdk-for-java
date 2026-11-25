@@ -48,7 +48,7 @@ public final class ExecutionsImpl implements Executions {
 
     public void delete(String resourceGroupName, String contextName, String workflowName, String versionName,
         String executionName) {
-        this.serviceClient().delete(resourceGroupName, contextName, workflowName, versionName, executionName);
+        this.delete(resourceGroupName, contextName, workflowName, versionName, executionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String contextName, String workflowName, String versionName,
@@ -58,9 +58,7 @@ public final class ExecutionsImpl implements Executions {
 
     public PagedIterable<Execution> listByWorkflowVersion(String resourceGroupName, String contextName,
         String workflowName, String versionName) {
-        PagedIterable<ExecutionInner> inner
-            = this.serviceClient().listByWorkflowVersion(resourceGroupName, contextName, workflowName, versionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExecutionImpl(inner1, this.manager()));
+        return this.listByWorkflowVersion(resourceGroupName, contextName, workflowName, versionName, Context.NONE);
     }
 
     public PagedIterable<Execution> listByWorkflowVersion(String resourceGroupName, String contextName,
@@ -71,160 +69,48 @@ public final class ExecutionsImpl implements Executions {
     }
 
     public Execution getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "contextName");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "workflowName");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "versionName");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        String executionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "executionName");
-        if (executionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executions'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Execution> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String contextName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "contextName");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "contextName", "contexts", LOGGER);
+        String workflowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "workflowName");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "workflowName", "workflows", LOGGER);
+        String versionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "versionName");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        String executionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "versionName", "versions", LOGGER);
+        String executionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "executionName");
-        if (executionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executions'.", id)));
-        }
+            "executionName", "executions", LOGGER);
         return this.getWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "contextName");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "workflowName");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "versionName");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        String executionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "executionName");
-        if (executionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executions'.", id)));
-        }
-        this.delete(resourceGroupName, contextName, workflowName, versionName, executionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String contextName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "contextName");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        String workflowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "contextName", "contexts", LOGGER);
+        String workflowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "workflowName");
-        if (workflowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
-        }
-        String versionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "workflowName", "workflows", LOGGER);
+        String versionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "versionName");
-        if (versionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        String executionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "versionName", "versions", LOGGER);
+        String executionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
-            "executionName");
-        if (executionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executions'.", id)));
-        }
+            "executionName", "executions", LOGGER);
         this.delete(resourceGroupName, contextName, workflowName, versionName, executionName, context);
     }
 

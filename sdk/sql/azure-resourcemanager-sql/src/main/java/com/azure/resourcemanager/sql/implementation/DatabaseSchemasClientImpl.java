@@ -91,18 +91,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get database schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database schema along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseSchemaInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName) {
@@ -176,18 +165,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
             resourceGroupName, serverName, databaseName, schemaName, accept, context);
     }
 
-    /**
-     * Get database schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database schema on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseSchemaInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String schemaName) {
@@ -195,37 +173,14 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get database schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database schema along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseSchemaInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String schemaName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, schemaName, context).block();
     }
 
-    /**
-     * Get database schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database schema.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseSchemaInner get(String resourceGroupName, String serverName, String databaseName,
         String schemaName) {
@@ -319,18 +274,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List database schemas.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseSchema list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseSchemaInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName, String filter) {
@@ -338,17 +282,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List database schemas.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseSchema list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseSchemaInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -378,17 +312,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List database schemas.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseSchemaInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
@@ -396,19 +320,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, filter));
     }
 
-    /**
-     * List database schemas.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseSchemaInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, String filter, Context context) {

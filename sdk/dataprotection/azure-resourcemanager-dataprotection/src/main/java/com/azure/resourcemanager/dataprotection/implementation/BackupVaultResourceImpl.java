@@ -97,10 +97,7 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), createXMsDeletedVaultId, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupVaultResource create(Context context) {
@@ -124,10 +121,7 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .update(resourceGroupName, vaultName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupVaultResource apply(Context context) {
@@ -150,11 +144,7 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupVaultResource refresh(Context context) {

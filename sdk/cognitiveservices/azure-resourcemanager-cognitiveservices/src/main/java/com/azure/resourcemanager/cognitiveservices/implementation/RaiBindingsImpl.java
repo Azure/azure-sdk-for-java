@@ -70,103 +70,37 @@ public final class RaiBindingsImpl implements RaiBindings {
     }
 
     public RaiBinding getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "accountName");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBindingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "raiBindingName");
-        if (raiBindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBindings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, raiBindingName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RaiBinding> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "accountName");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBindingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "accountName", "accounts", LOGGER);
+        String raiBindingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "raiBindingName");
-        if (raiBindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBindings'.", id)));
-        }
+            "raiBindingName", "raiBindings", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, raiBindingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "accountName");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBindingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "raiBindingName");
-        if (raiBindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBindings'.", id)));
-        }
         String localIfMatch = null;
-        this.deleteWithResponse(resourceGroupName, accountName, raiBindingName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "accountName");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBindingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "accountName", "accounts", LOGGER);
+        String raiBindingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBindings/{raiBindingName}",
-            "raiBindingName");
-        if (raiBindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBindings'.", id)));
-        }
+            "raiBindingName", "raiBindings", LOGGER);
         return this.deleteWithResponse(resourceGroupName, accountName, raiBindingName, ifMatch, context);
     }
 

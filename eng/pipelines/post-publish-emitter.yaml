@@ -31,7 +31,7 @@ parameters:
 jobs:
 - job: Generate_SDK
 
-  timeoutInMinutes: 120
+  timeoutInMinutes: 240
 
   variables:
   - template: /eng/pipelines/templates/variables/globals.yml

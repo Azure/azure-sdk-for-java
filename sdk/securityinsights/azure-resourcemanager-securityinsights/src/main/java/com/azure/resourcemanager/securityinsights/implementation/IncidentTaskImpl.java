@@ -93,12 +93,7 @@ public final class IncidentTaskImpl implements IncidentTask, IncidentTask.Defini
     }
 
     public IncidentTask create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentTasks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IncidentTask create(Context context) {
@@ -121,12 +116,7 @@ public final class IncidentTaskImpl implements IncidentTask, IncidentTask.Defini
     }
 
     public IncidentTask apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentTasks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IncidentTask apply(Context context) {
@@ -157,11 +147,7 @@ public final class IncidentTaskImpl implements IncidentTask, IncidentTask.Defini
     }
 
     public IncidentTask refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentTasks()
-            .getWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IncidentTask refresh(Context context) {

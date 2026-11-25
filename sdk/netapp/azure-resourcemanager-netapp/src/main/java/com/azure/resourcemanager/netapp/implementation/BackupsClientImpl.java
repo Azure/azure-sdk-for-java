@@ -295,19 +295,7 @@ public final class BackupsClientImpl implements BackupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified Backup under Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Backup under Backup Vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupInner> getWithResponse(String resourceGroupName, String accountName, String backupVaultName,
         String backupName, Context context) {
@@ -342,18 +330,7 @@ public final class BackupsClientImpl implements BackupsClient {
             resourceGroupName, accountName, backupVaultName, backupName, accept, context);
     }
 
-    /**
-     * Get the specified Backup under Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Backup under Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner get(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
         return getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE).getValue();
@@ -427,42 +404,7 @@ public final class BackupsClientImpl implements BackupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupVaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupVaultName, backupName, contentType,
-            accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
     /**
@@ -542,42 +484,14 @@ public final class BackupsClientImpl implements BackupsClient {
             BackupInner.class, BackupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInner>, BackupInner> beginCreate(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupInner body) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body);
-        return this.client.<BackupInner, BackupInner>getLroResult(response, BackupInner.class, BackupInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
-    /**
-     * Create a backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInner>, BackupInner> beginCreate(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupInner body, Context context) {
@@ -607,43 +521,19 @@ public final class BackupsClientImpl implements BackupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner create(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         BackupInner body) {
-        return beginCreate(resourceGroupName, accountName, backupVaultName, backupName, body).getFinalResult();
+        return create(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
-    /**
-     * Create a backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner create(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         BackupInner body, Context context) {
-        return beginCreate(resourceGroupName, accountName, backupVaultName, backupName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, accountName, backupVaultName, backupName, body, context));
     }
 
     /**
@@ -711,39 +601,7 @@ public final class BackupsClientImpl implements BackupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupPatch body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupVaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupVaultName, backupName, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
     /**
@@ -856,50 +714,20 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupPatch body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body);
-        return this.client.<BackupInner, BackupInner>getLroResult(response, BackupInner.class, BackupInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
-    /**
-     * Patch a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
         String backupVaultName, String backupName) {
         final BackupPatch body = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body);
-        return this.client.<BackupInner, BackupInner>getLroResult(response, BackupInner.class, BackupInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
-    /**
-     * Patch a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupPatch body, Context context) {
@@ -949,42 +777,19 @@ public final class BackupsClientImpl implements BackupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner update(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
         final BackupPatch body = null;
-        return beginUpdate(resourceGroupName, accountName, backupVaultName, backupName, body).getFinalResult();
+        return update(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
-    /**
-     * Patch a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup under a Backup Vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner update(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         BackupPatch body, Context context) {
-        return beginUpdate(resourceGroupName, accountName, backupVaultName, backupName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, accountName, backupVaultName, backupName, body, context));
     }
 
     /**
@@ -1045,34 +850,7 @@ public final class BackupsClientImpl implements BackupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, String backupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupVaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupVaultName, backupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE);
     }
 
     /**
@@ -1142,38 +920,14 @@ public final class BackupsClientImpl implements BackupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String backupVaultName, String backupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, backupVaultName, backupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE);
     }
 
-    /**
-     * Delete a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, Context context) {
@@ -1201,38 +955,18 @@ public final class BackupsClientImpl implements BackupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
-        beginDelete(resourceGroupName, accountName, backupVaultName, backupName).getFinalResult();
+        delete(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE);
     }
 
-    /**
-     * Delete a Backup under the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         Context context) {
-        beginDelete(resourceGroupName, accountName, backupVaultName, backupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, backupVaultName, backupName, context));
     }
 
     /**
@@ -1337,34 +1071,7 @@ public final class BackupsClientImpl implements BackupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupInner> listByVaultSinglePage(String resourceGroupName, String accountName,
         String backupVaultName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupVaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BackupsList> res = service.listByVaultSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, backupVaultName, filter, accept,
-            Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVaultSinglePage(resourceGroupName, accountName, backupVaultName, filter, Context.NONE);
     }
 
     /**
@@ -1413,39 +1120,15 @@ public final class BackupsClientImpl implements BackupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all backups Under a Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInner> listByVault(String resourceGroupName, String accountName,
         String backupVaultName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByVaultSinglePage(resourceGroupName, accountName, backupVaultName, filter),
-            nextLink -> listByVaultNextSinglePage(nextLink));
+        return listByVault(resourceGroupName, accountName, backupVaultName, filter, Context.NONE);
     }
 
-    /**
-     * List all backups Under a Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
-     * specified volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInner> listByVault(String resourceGroupName, String accountName, String backupVaultName,
         String filter, Context context) {
@@ -1517,19 +1200,7 @@ public final class BackupsClientImpl implements BackupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the latest status of the backup for a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest status of the backup for a volume along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupStatusInner> getLatestStatusWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
@@ -1564,18 +1235,7 @@ public final class BackupsClientImpl implements BackupsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, context);
     }
 
-    /**
-     * Get the latest status of the backup for a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest status of the backup for a volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupStatusInner getLatestStatus(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
@@ -1647,19 +1307,7 @@ public final class BackupsClientImpl implements BackupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the latest status of the restore for a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest status of the restore for a volume along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestoreStatusInner> getVolumeLatestRestoreStatusWithResponse(String resourceGroupName,
         String accountName, String poolName, String volumeName, Context context) {
@@ -1694,18 +1342,7 @@ public final class BackupsClientImpl implements BackupsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, context);
     }
 
-    /**
-     * Get the latest status of the restore for a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest status of the restore for a volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreStatusInner getVolumeLatestRestoreStatus(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
@@ -1750,20 +1387,7 @@ public final class BackupsClientImpl implements BackupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupInner> listByVaultNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<BackupsList> res
-            = service.listByVaultNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVaultNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

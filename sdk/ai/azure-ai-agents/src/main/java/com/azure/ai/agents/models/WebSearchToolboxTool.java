@@ -30,7 +30,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     private WebSearchToolFilters filters;
 
     /*
-     * The user_location property.
+     * The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      */
     @Generated
     private WebSearchApproximateLocation userLocation;
@@ -90,7 +92,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Get the userLocation property: The user_location property.
+     * Get the userLocation property: The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      *
      * @return the userLocation value.
      */
@@ -100,7 +104,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Set the userLocation property: The user_location property.
+     * Set the userLocation property: The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      *
      * @param userLocation the userLocation value to set.
      * @return the WebSearchToolboxTool object itself.

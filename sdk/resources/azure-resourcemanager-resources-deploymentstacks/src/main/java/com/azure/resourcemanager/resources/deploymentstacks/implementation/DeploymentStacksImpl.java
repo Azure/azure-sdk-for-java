@@ -53,8 +53,7 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     }
 
     public PagedIterable<DeploymentStack> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DeploymentStackInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentStackImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<DeploymentStack> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,13 +64,7 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
 
     public DeploymentStackValidateResult validateStackAtResourceGroup(String resourceGroupName,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        DeploymentStackValidateResultInner inner = this.serviceClient()
-            .validateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack);
-        if (inner != null) {
-            return new DeploymentStackValidateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateStackAtResourceGroup(resourceGroupName, deploymentStackName, deploymentStack, Context.NONE);
     }
 
     public DeploymentStackValidateResult validateStackAtResourceGroup(String resourceGroupName,
@@ -137,8 +130,7 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     }
 
     public PagedIterable<DeploymentStack> list() {
-        PagedIterable<DeploymentStackInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentStackImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DeploymentStack> list(Context context) {
@@ -148,13 +140,7 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
 
     public DeploymentStackValidateResult validateStackAtSubscription(String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        DeploymentStackValidateResultInner inner
-            = this.serviceClient().validateStackAtSubscription(deploymentStackName, deploymentStack);
-        if (inner != null) {
-            return new DeploymentStackValidateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateStackAtSubscription(deploymentStackName, deploymentStack, Context.NONE);
     }
 
     public DeploymentStackValidateResult validateStackAtSubscription(String deploymentStackName,
@@ -170,13 +156,7 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
 
     public DeploymentStack createOrUpdateAtSubscription(String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        DeploymentStackInner inner
-            = this.serviceClient().createOrUpdateAtSubscription(deploymentStackName, deploymentStack);
-        if (inner != null) {
-            return new DeploymentStackImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdateAtSubscription(deploymentStackName, deploymentStack, Context.NONE);
     }
 
     public DeploymentStack createOrUpdateAtSubscription(String deploymentStackName,
@@ -241,8 +221,7 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     }
 
     public PagedIterable<DeploymentStack> listAtManagementGroup(String managementGroupId) {
-        PagedIterable<DeploymentStackInner> inner = this.serviceClient().listAtManagementGroup(managementGroupId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentStackImpl(inner1, this.manager()));
+        return this.listAtManagementGroup(managementGroupId, Context.NONE);
     }
 
     public PagedIterable<DeploymentStack> listAtManagementGroup(String managementGroupId, Context context) {
@@ -253,13 +232,8 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
 
     public DeploymentStackValidateResult validateStackAtManagementGroup(String managementGroupId,
         String deploymentStackName, DeploymentStackInner deploymentStack) {
-        DeploymentStackValidateResultInner inner = this.serviceClient()
-            .validateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack);
-        if (inner != null) {
-            return new DeploymentStackValidateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateStackAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
     public DeploymentStackValidateResult validateStackAtManagementGroup(String managementGroupId,
@@ -275,13 +249,8 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
 
     public DeploymentStack createOrUpdateAtManagementGroup(String managementGroupId, String deploymentStackName,
         DeploymentStackInner deploymentStack) {
-        DeploymentStackInner inner = this.serviceClient()
-            .createOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack);
-        if (inner != null) {
-            return new DeploymentStackImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdateAtManagementGroup(managementGroupId, deploymentStackName, deploymentStack,
+            Context.NONE);
     }
 
     public DeploymentStack createOrUpdateAtManagementGroup(String managementGroupId, String deploymentStackName,
@@ -331,64 +300,28 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     }
 
     public DeploymentStack getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "deploymentStackName");
-        if (deploymentStackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deploymentStacks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, deploymentStackName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DeploymentStack> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentStackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "deploymentStackName");
-        if (deploymentStackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deploymentStacks'.", id)));
-        }
+            "deploymentStackName", "deploymentStacks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, deploymentStackName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "deploymentStackName");
-        if (deploymentStackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deploymentStacks'.", id)));
-        }
         UnmanageActionResourceMode localUnmanageActionResources = null;
         UnmanageActionResourceGroupMode localUnmanageActionResourceGroups = null;
         UnmanageActionManagementGroupMode localUnmanageActionManagementGroups = null;
         ResourcesWithoutDeleteSupportAction localUnmanageActionResourcesWithoutDeleteSupport = null;
         Boolean localBypassStackOutOfSyncError = null;
-        this.delete(resourceGroupName, deploymentStackName, localUnmanageActionResources,
-            localUnmanageActionResourceGroups, localUnmanageActionManagementGroups,
-            localUnmanageActionResourcesWithoutDeleteSupport, localBypassStackOutOfSyncError, Context.NONE);
+        this.deleteByIdWithResponse(id, localUnmanageActionResources, localUnmanageActionResourceGroups,
+            localUnmanageActionManagementGroups, localUnmanageActionResourcesWithoutDeleteSupport,
+            localBypassStackOutOfSyncError, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, UnmanageActionResourceMode unmanageActionResources,
@@ -396,20 +329,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentStackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
-            "deploymentStackName");
-        if (deploymentStackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'deploymentStacks'.", id)));
-        }
+            "deploymentStackName", "deploymentStacks", LOGGER);
         this.delete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
             unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
             context);

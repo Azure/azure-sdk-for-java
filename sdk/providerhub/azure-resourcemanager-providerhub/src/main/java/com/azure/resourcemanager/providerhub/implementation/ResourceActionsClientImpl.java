@@ -143,34 +143,7 @@ public final class ResourceActionsClientImpl implements ResourceActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteResourcesWithResponse(String providerNamespace, String resourceActionName,
         ResourceManagementAction properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceActionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        return service.deleteResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, resourceActionName, contentType, properties,
-            Context.NONE);
+        return deleteResourcesWithResponse(providerNamespace, resourceActionName, properties, Context.NONE);
     }
 
     /**
@@ -237,36 +210,14 @@ public final class ResourceActionsClientImpl implements ResourceActionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes resources.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceActionName The resource action name.
-     * @param properties The properties supplied to the DeleteResources operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteResources(String providerNamespace, String resourceActionName,
         ResourceManagementAction properties) {
-        Response<BinaryData> response = deleteResourcesWithResponse(providerNamespace, resourceActionName, properties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteResources(providerNamespace, resourceActionName, properties, Context.NONE);
     }
 
-    /**
-     * Deletes resources.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceActionName The resource action name.
-     * @param properties The properties supplied to the DeleteResources operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteResources(String providerNamespace, String resourceActionName,
         ResourceManagementAction properties, Context context) {
@@ -293,37 +244,19 @@ public final class ResourceActionsClientImpl implements ResourceActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes resources.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceActionName The resource action name.
-     * @param properties The properties supplied to the DeleteResources operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteResources(String providerNamespace, String resourceActionName,
         ResourceManagementAction properties) {
-        beginDeleteResources(providerNamespace, resourceActionName, properties).getFinalResult();
+        deleteResources(providerNamespace, resourceActionName, properties, Context.NONE);
     }
 
-    /**
-     * Deletes resources.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceActionName The resource action name.
-     * @param properties The properties supplied to the DeleteResources operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteResources(String providerNamespace, String resourceActionName,
         ResourceManagementAction properties, Context context) {
-        beginDeleteResources(providerNamespace, resourceActionName, properties, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDeleteResources(providerNamespace, resourceActionName, properties, context));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceActionsClientImpl.class);

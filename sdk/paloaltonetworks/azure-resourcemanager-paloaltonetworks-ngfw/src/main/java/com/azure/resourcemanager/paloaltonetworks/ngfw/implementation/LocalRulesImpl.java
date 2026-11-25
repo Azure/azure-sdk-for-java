@@ -49,7 +49,7 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public void delete(String resourceGroupName, String localRulestackName, String priority) {
-        this.serviceClient().delete(resourceGroupName, localRulestackName, priority);
+        this.delete(resourceGroupName, localRulestackName, priority, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String localRulestackName, String priority, Context context) {
@@ -58,9 +58,7 @@ public final class LocalRulesImpl implements LocalRules {
 
     public PagedIterable<LocalRulesResource> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName) {
-        PagedIterable<LocalRulesResourceInner> inner
-            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
+        return this.listByLocalRulestacks(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     public PagedIterable<LocalRulesResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
@@ -116,102 +114,36 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public LocalRulesResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "localRulestackName");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String priority = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "priority");
-        if (priority == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<LocalRulesResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String localRulestackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "localRulestackName");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String priority = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "localRulestackName", "localRulestacks", LOGGER);
+        String priority = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "priority");
-        if (priority == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
-        }
+            "priority", "localRules", LOGGER);
         return this.getWithResponse(resourceGroupName, localRulestackName, priority, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "localRulestackName");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String priority = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "priority");
-        if (priority == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
-        }
-        this.delete(resourceGroupName, localRulestackName, priority, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String localRulestackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "localRulestackName");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String priority = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "localRulestackName", "localRulestacks", LOGGER);
+        String priority = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}",
-            "priority");
-        if (priority == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
-        }
+            "priority", "localRules", LOGGER);
         this.delete(resourceGroupName, localRulestackName, priority, context);
     }
 

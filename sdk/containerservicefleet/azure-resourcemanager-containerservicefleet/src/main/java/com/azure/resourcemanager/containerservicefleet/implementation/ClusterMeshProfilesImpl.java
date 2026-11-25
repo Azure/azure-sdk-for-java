@@ -54,8 +54,7 @@ public final class ClusterMeshProfilesImpl implements ClusterMeshProfiles {
     }
 
     public PagedIterable<ClusterMeshProfile> listByFleet(String resourceGroupName, String fleetName) {
-        PagedIterable<ClusterMeshProfileInner> inner = this.serviceClient().listByFleet(resourceGroupName, fleetName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterMeshProfileImpl(inner1, this.manager()));
+        return this.listByFleet(resourceGroupName, fleetName, Context.NONE);
     }
 
     public PagedIterable<ClusterMeshProfile> listByFleet(String resourceGroupName, String fleetName, Context context) {
@@ -86,103 +85,37 @@ public final class ClusterMeshProfilesImpl implements ClusterMeshProfiles {
     }
 
     public ClusterMeshProfile getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "fleetName");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String clusterMeshProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "clusterMeshProfileName");
-        if (clusterMeshProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterMeshProfiles'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ClusterMeshProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "fleetName");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String clusterMeshProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "fleetName", "fleets", LOGGER);
+        String clusterMeshProfileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "clusterMeshProfileName");
-        if (clusterMeshProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterMeshProfiles'.", id)));
-        }
+            "clusterMeshProfileName", "clusterMeshProfiles", LOGGER);
         return this.getWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "fleetName");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String clusterMeshProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "clusterMeshProfileName");
-        if (clusterMeshProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterMeshProfiles'.", id)));
-        }
         String localIfMatch = null;
-        this.delete(resourceGroupName, fleetName, clusterMeshProfileName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "fleetName");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        String clusterMeshProfileName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "fleetName", "fleets", LOGGER);
+        String clusterMeshProfileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
-            "clusterMeshProfileName");
-        if (clusterMeshProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterMeshProfiles'.", id)));
-        }
+            "clusterMeshProfileName", "clusterMeshProfiles", LOGGER);
         this.delete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, context);
     }
 

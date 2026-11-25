@@ -158,20 +158,7 @@ public final class GroupQuotaSubscriptionRequestsClientImpl implements GroupQuot
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get API to check the status of a subscriptionIds request by requestId. Use the polling API - OperationsStatus URI
-     * specified in Azure-AsyncOperation header field, with retry-after duration in seconds to check the intermediate
-     * status. This API provides the finals status with the request details and status.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param requestId Request Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI to check the status of a subscriptionIds request by requestId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupQuotaSubscriptionRequestStatusInner> getWithResponse(String managementGroupId,
         String groupQuotaName, String requestId, Context context) {
@@ -180,19 +167,7 @@ public final class GroupQuotaSubscriptionRequestsClientImpl implements GroupQuot
             groupQuotaName, requestId, accept, context);
     }
 
-    /**
-     * Get API to check the status of a subscriptionIds request by requestId. Use the polling API - OperationsStatus URI
-     * specified in Azure-AsyncOperation header field, with retry-after duration in seconds to check the intermediate
-     * status. This API provides the finals status with the request details and status.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param requestId Request Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI to check the status of a subscriptionIds request by requestId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotaSubscriptionRequestStatusInner get(String managementGroupId, String groupQuotaName,
         String requestId) {
@@ -253,11 +228,7 @@ public final class GroupQuotaSubscriptionRequestsClientImpl implements GroupQuot
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GroupQuotaSubscriptionRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName) {
-        final String accept = "application/json";
-        Response<GroupQuotaSubscriptionRequestStatusList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), managementGroupId, groupQuotaName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     /**
@@ -281,34 +252,14 @@ public final class GroupQuotaSubscriptionRequestsClientImpl implements GroupQuot
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List API to check the status of a subscriptionId requests by requestId. Request history is maintained for 1 year.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of GroupQuotaSubscriptionRequests Status as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GroupQuotaSubscriptionRequestStatusInner> list(String managementGroupId,
         String groupQuotaName) {
-        return new PagedIterable<>(() -> listSinglePage(managementGroupId, groupQuotaName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(managementGroupId, groupQuotaName, Context.NONE);
     }
 
-    /**
-     * List API to check the status of a subscriptionId requests by requestId. Request history is maintained for 1 year.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of GroupQuotaSubscriptionRequests Status as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GroupQuotaSubscriptionRequestStatusInner> list(String managementGroupId, String groupQuotaName,
         Context context) {
@@ -347,11 +298,7 @@ public final class GroupQuotaSubscriptionRequestsClientImpl implements GroupQuot
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GroupQuotaSubscriptionRequestStatusInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GroupQuotaSubscriptionRequestStatusList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -361,17 +361,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the resource and its properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebPubSubResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -380,16 +370,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Get the resource and its properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubResourceInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -432,11 +413,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         WebPubSubResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     /**
@@ -481,37 +458,14 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, parameters);
-        return this.client.<WebPubSubResourceInner, WebPubSubResourceInner>getLroResult(response,
-            WebPubSubResourceInner.class, WebPubSubResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
@@ -539,39 +493,19 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubResourceInner createOrUpdate(String resourceGroupName, String resourceName,
         WebPubSubResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubResourceInner createOrUpdate(String resourceGroupName, String resourceName,
         WebPubSubResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, parameters, context));
     }
 
     /**
@@ -609,11 +543,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName,
         WebPubSubResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     /**
@@ -657,37 +587,14 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Operation to update an exiting resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(String resourceGroupName,
         String resourceName, WebPubSubResourceInner parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, parameters);
-        return this.client.<WebPubSubResourceInner, WebPubSubResourceInner>getLroResult(response,
-            WebPubSubResourceInner.class, WebPubSubResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Operation to update an exiting resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(String resourceGroupName,
         String resourceName, WebPubSubResourceInner parameters, Context context) {
@@ -714,39 +621,18 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Operation to update an exiting resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubResourceInner update(String resourceGroupName, String resourceName,
         WebPubSubResourceInner parameters) {
-        return beginUpdate(resourceGroupName, resourceName, parameters).getFinalResult();
+        return update(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Operation to update an exiting resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubResourceInner update(String resourceGroupName, String resourceName,
         WebPubSubResourceInner parameters, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, parameters, context));
     }
 
     /**
@@ -779,8 +665,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -817,33 +702,13 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Operation to delete a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Operation to delete a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         Context context) {
@@ -866,33 +731,16 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
         return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Operation to delete a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        beginDelete(resourceGroupName, resourceName).getFinalResult();
+        delete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Operation to delete a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, Context context) {
-        beginDelete(resourceGroupName, resourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -944,11 +792,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebPubSubResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<WebPubSubResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -972,33 +816,13 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Handles requests to list all resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebPubSubResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Handles requests to list all resources in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebPubSubResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1048,11 +872,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebPubSubResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<WebPubSubResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1074,29 +894,13 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Handles requests to list all resources in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebPubSubResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Handles requests to list all resources in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebPubSubResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1139,17 +943,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the access keys of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebPubSubKeysInner> listKeysWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -1158,16 +952,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Get the access keys of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubKeysInner listKeys(String resourceGroupName, String resourceName) {
         return listKeysWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -1211,11 +996,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> regenerateKeyWithResponse(String resourceGroupName, String resourceName,
         RegenerateKeyParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.regenerateKeySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters,
-            Context.NONE);
+        return regenerateKeyWithResponse(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     /**
@@ -1259,37 +1040,14 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             WebPubSubKeysInner.class, WebPubSubKeysInner.class, this.client.getContext());
     }
 
-    /**
-     * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(String resourceGroupName,
         String resourceName, RegenerateKeyParameters parameters) {
-        Response<BinaryData> response = regenerateKeyWithResponse(resourceGroupName, resourceName, parameters);
-        return this.client.<WebPubSubKeysInner, WebPubSubKeysInner>getLroResult(response, WebPubSubKeysInner.class,
-            WebPubSubKeysInner.class, Context.NONE);
+        return beginRegenerateKey(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(String resourceGroupName,
         String resourceName, RegenerateKeyParameters parameters, Context context) {
@@ -1316,39 +1074,19 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represents the access keys of the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubKeysInner regenerateKey(String resourceGroupName, String resourceName,
         RegenerateKeyParameters parameters) {
-        return beginRegenerateKey(resourceGroupName, resourceName, parameters).getFinalResult();
+        return regenerateKey(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represents the access keys of the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubKeysInner regenerateKey(String resourceGroupName, String resourceName,
         RegenerateKeyParameters parameters, Context context) {
-        return beginRegenerateKey(resourceGroupName, resourceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRegenerateKey(resourceGroupName, resourceName, parameters, context));
     }
 
     /**
@@ -1381,8 +1119,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String resourceName) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, Context.NONE);
+        return restartWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -1419,33 +1156,13 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Operation to restart a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Operation to restart a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName,
         Context context) {
@@ -1468,33 +1185,16 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
         return beginRestartAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Operation to restart a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String resourceName) {
-        beginRestart(resourceGroupName, resourceName).getFinalResult();
+        restart(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Operation to restart a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String resourceName, Context context) {
-        beginRestart(resourceGroupName, resourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -1532,17 +1232,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all available skus of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuListInner> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
         final String accept = "application/json";
@@ -1550,16 +1240,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * List all available skus of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuListInner listSkus(String resourceGroupName, String resourceName) {
         return listSkusWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -1603,18 +1284,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all available skus of the replica resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuListInner> listReplicaSkusWithResponse(String resourceGroupName, String resourceName,
         String replicaName, Context context) {
@@ -1623,17 +1293,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, replicaName, accept, context);
     }
 
-    /**
-     * List all available skus of the replica resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuListInner listReplicaSkus(String resourceGroupName, String resourceName, String replicaName) {
         return listReplicaSkusWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE).getValue();
@@ -1679,17 +1339,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks that the resource name is valid and is not already in use.
-     * 
-     * @param location The location name.
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(String location,
         NameAvailabilityParameters parameters, Context context) {
@@ -1699,16 +1349,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
             this.client.getSubscriptionId(), location, contentType, accept, parameters, context);
     }
 
-    /**
-     * Checks that the resource name is valid and is not already in use.
-     * 
-     * @param location The location name.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityInner checkNameAvailability(String location, NameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
@@ -1747,11 +1388,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebPubSubResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WebPubSubResourceList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1807,11 +1444,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebPubSubResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WebPubSubResourceList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

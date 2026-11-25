@@ -19,6 +19,11 @@ import java.util.Map;
 @Fluent
 public final class VaultCreateOrUpdateParameters implements JsonSerializable<VaultCreateOrUpdateParameters> {
     /*
+     * Managed service identity assigned to the vault.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * The supported Azure location where the key vault should be created.
      */
     private String location;
@@ -37,6 +42,26 @@ public final class VaultCreateOrUpdateParameters implements JsonSerializable<Vau
      * Creates an instance of VaultCreateOrUpdateParameters class.
      */
     public VaultCreateOrUpdateParameters() {
+    }
+
+    /**
+     * Get the identity property: Managed service identity assigned to the vault.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity assigned to the vault.
+     * 
+     * @param identity the identity value to set.
+     * @return the VaultCreateOrUpdateParameters object itself.
+     */
+    public VaultCreateOrUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -105,6 +130,9 @@ public final class VaultCreateOrUpdateParameters implements JsonSerializable<Vau
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (location() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -129,6 +157,7 @@ public final class VaultCreateOrUpdateParameters implements JsonSerializable<Vau
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -154,6 +183,8 @@ public final class VaultCreateOrUpdateParameters implements JsonSerializable<Vau
                     deserializedVaultCreateOrUpdateParameters.location = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedVaultCreateOrUpdateParameters.properties = VaultProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVaultCreateOrUpdateParameters.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVaultCreateOrUpdateParameters.tags = tags;

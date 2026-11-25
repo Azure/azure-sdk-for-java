@@ -312,19 +312,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Deallocate one or more virtual machines. Bulk Actions begins processing the request immediately and returns a
-     * Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to deallocate and the execution settings for the bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk deallocate action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> bulkDeallocateOperationWithResponse(
         String resourceGroupName, String location, ExecuteDeallocateContent requestBody, Context context) {
@@ -334,18 +322,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * Deallocate one or more virtual machines. Bulk Actions begins processing the request immediately and returns a
-     * Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to deallocate and the execution settings for the bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk deallocate action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeallocateResourceOperationResponseInner bulkDeallocateOperation(String resourceGroupName, String location,
         ExecuteDeallocateContent requestBody) {
@@ -398,20 +375,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Hibernate one or more virtual machines that support hibernation. Bulk Actions begins processing the request
-     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
-     * operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to hibernate and the execution settings for the bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk hibernate action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> bulkHibernateOperationWithResponse(
         String resourceGroupName, String location, ExecuteHibernateContent requestBody, Context context) {
@@ -421,19 +385,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * Hibernate one or more virtual machines that support hibernation. Bulk Actions begins processing the request
-     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
-     * operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to hibernate and the execution settings for the bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk hibernate action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HibernateResourceOperationResponseInner bulkHibernateOperation(String resourceGroupName, String location,
         ExecuteHibernateContent requestBody) {
@@ -483,19 +435,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns a Bulk
-     * Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to start and the execution settings for the bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk start action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> bulkStartOperationWithResponse(String resourceGroupName,
         String location, ExecuteStartContent requestBody, Context context) {
@@ -505,18 +445,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns a Bulk
-     * Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to start and the execution settings for the bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk start action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartResourceOperationResponseInner bulkStartOperation(String resourceGroupName, String location,
         ExecuteStartContent requestBody) {
@@ -568,20 +497,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Delete one or more virtual machines. This operation is destructive. Bulk Actions begins processing the request
-     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
-     * operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to delete and the execution settings for the bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk delete action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteResourceOperationResponseInner> bulkDeleteOperationWithResponse(String resourceGroupName,
         String location, ExecuteDeleteContent requestBody, Context context) {
@@ -591,19 +507,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * Delete one or more virtual machines. This operation is destructive. Bulk Actions begins processing the request
-     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
-     * operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to delete and the execution settings for the bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk delete action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteResourceOperationResponseInner bulkDeleteOperation(String resourceGroupName, String location,
         ExecuteDeleteContent requestBody) {
@@ -655,20 +559,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the current status of one or more operations identified by their Bulk Action Operation Ids.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The Bulk Action Operation Ids that identify the operations for which current status should be
-     * returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of one or more operations identified by their Bulk Action Operation Ids along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationStatusResponseInner> bulkGetOperationsStatusWithResponse(String resourceGroupName,
         String location, GetOperationStatusContent requestBody, Context context) {
@@ -678,18 +569,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * Get the current status of one or more operations identified by their Bulk Action Operation Ids.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The Bulk Action Operation Ids that identify the operations for which current status should be
-     * returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of one or more operations identified by their Bulk Action Operation Ids.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOperationStatusResponseInner bulkGetOperationsStatus(String resourceGroupName, String location,
         GetOperationStatusContent requestBody) {
@@ -740,19 +620,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Cancel one or more Bulk Actions operations by Bulk Action Operation Ids. Cancellation is best effort and work
-     * that has already completed is not reversed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The Bulk Action Operation Ids that identify the operations to cancel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of the cancellation requests along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelOperationsResponseInner> bulkCancelOperationsWithResponse(String resourceGroupName,
         String location, CancelOperationsContent requestBody, Context context) {
@@ -762,18 +630,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * Cancel one or more Bulk Actions operations by Bulk Action Operation Ids. Cancellation is best effort and work
-     * that has already completed is not reversed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The Bulk Action Operation Ids that identify the operations to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of the cancellation requests.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelOperationsResponseInner bulkCancelOperations(String resourceGroupName, String location,
         CancelOperationsContent requestBody) {
@@ -829,22 +686,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This feature is currently in preview.
-     * 
-     * Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents.
-     * Bulk Actions begins processing the request immediately and returns a Bulk Action Operation Id for each virtual
-     * machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to reimage and the execution settings for the bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk reimage action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReimageResourceOperationResponseInner> bulkReimageOperationWithResponse(String resourceGroupName,
         String location, ExecuteReimageRequest requestBody, Context context) {
@@ -854,21 +696,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
     }
 
-    /**
-     * This feature is currently in preview.
-     * 
-     * Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents.
-     * Bulk Actions begins processing the request immediately and returns a Bulk Action Operation Id for each virtual
-     * machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to reimage and the execution settings for the bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk reimage action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReimageResourceOperationResponseInner bulkReimageOperation(String resourceGroupName, String location,
         ExecuteReimageRequest requestBody) {
@@ -954,12 +782,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceOperationInner> bulkListOperationErrorsSinglePage(String resourceGroupName,
         String location, Integer lookbackInMinutes) {
-        final String accept = "application/json";
-        Response<ListBulkOperationErrorsResponse> res
-            = service.bulkListOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, lookbackInMinutes, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return bulkListOperationErrorsSinglePage(resourceGroupName, location, lookbackInMinutes, Context.NONE);
     }
 
     /**
@@ -986,37 +809,14 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List recent errors for operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceOperationInner> bulkListOperationErrors(String resourceGroupName, String location) {
         final Integer lookbackInMinutes = null;
-        return new PagedIterable<>(
-            () -> bulkListOperationErrorsSinglePage(resourceGroupName, location, lookbackInMinutes),
-            nextLink -> bulkListOperationErrorsNextSinglePage(nextLink));
+        return bulkListOperationErrors(resourceGroupName, location, lookbackInMinutes, Context.NONE);
     }
 
-    /**
-     * List recent errors for operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
-     * errors.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceOperationInner> bulkListOperationErrors(String resourceGroupName, String location,
         Integer lookbackInMinutes, Context context) {
@@ -1067,18 +867,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Acknowledge errors for specified operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of acknowledging errors for specified operations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcknowledgeBulkOperationErrorsResponseInner> bulkAcknowledgeOperationErrorsWithResponse(
         String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context) {
@@ -1088,17 +877,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, body, context);
     }
 
-    /**
-     * Acknowledge errors for specified operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of acknowledging errors for specified operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AcknowledgeBulkOperationErrorsResponseInner bulkAcknowledgeOperationErrors(String resourceGroupName,
         String location, AcknowledgeBulkOperationErrorsRequest body) {
@@ -1137,11 +916,7 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceOperationInner> bulkListOperationErrorsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListBulkOperationErrorsResponse> res
-            = service.bulkListOperationErrorsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return bulkListOperationErrorsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

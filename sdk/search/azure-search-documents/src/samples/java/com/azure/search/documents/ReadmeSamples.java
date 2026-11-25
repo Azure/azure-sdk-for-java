@@ -21,6 +21,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
@@ -29,6 +30,7 @@ import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +202,18 @@ public class ReadmeSamples {
         Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperties();
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
         // END: readme-sample-retrieveDocuments
+    }
+
+    public void retrieveDocumentWithOptions(String querySourceToken) {
+        // BEGIN: readme-sample-retrieveDocumentWithOptions
+        GetDocumentOptions options = new GetDocumentOptions()
+            .setQuerySourceAuthorization(querySourceToken)
+            .setEnableElevatedRead(false)
+            .setSelectedFields(Arrays.asList("Id", "Name"));
+        Map<String, Object> hotel = SEARCH_CLIENT.getDocumentWithResponse("1", options, null)
+            .getValue().getAdditionalProperties();
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+        // END: readme-sample-retrieveDocumentWithOptions
     }
 
     public void batchDocumentsOperations() {

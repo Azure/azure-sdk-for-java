@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/PrivateEndPointConnectionList.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/PrivateEndPointConnectionList.json
      */
     /**
      * Sample code: PrivateEndPointConnectionList.

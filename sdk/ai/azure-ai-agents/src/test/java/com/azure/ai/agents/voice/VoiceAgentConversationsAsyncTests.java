@@ -6,8 +6,8 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsConversationsAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
 import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
@@ -85,12 +85,10 @@ public class VoiceAgentConversationsAsyncTests {
         assertNotNull(endpoint, "FOUNDRY_PROJECT_ENDPOINT is required for live parity testing.");
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live parity testing.");
         String agentName = "test-voice-read-" + UUID.randomUUID();
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
         AgentsAsyncClient agents = builder.buildAgentsAsyncClient();
-        BetaVoiceAgentsConversationsAsyncClient conversations
-            = builder.beta().buildBetaVoiceAgentsConversationsAsyncClient();
+        VoiceAgentsConversationsAsyncClient conversations = builder.buildVoiceAgentsConversationsAsyncClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -105,7 +103,7 @@ public class VoiceAgentConversationsAsyncTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition)).block(TIMEOUT);
             created = true;
-            Mono.usingWhen(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().openWebSocketSession(agentName),
+            Mono.usingWhen(builder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession(agentName),
                 session -> session.receiveEvents().index().concatMap(indexed -> {
                     if (indexed.getT1() == 0) {
                         assertTrue(indexed.getT2() instanceof RealtimeSessionCreatedEvent,
@@ -123,8 +121,8 @@ public class VoiceAgentConversationsAsyncTests {
                     .switchIfEmpty(Mono.error(new AssertionError("Session ended without response.done.")))
                     .timeout(Duration.ofSeconds(45))
                     .then(),
-                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
-                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
             Mono.delay(Duration.ofSeconds(30)).block(Duration.ofSeconds(35));
             reading = true;
             assertPersistedConversation(conversations, agentName, conversationId.get());
@@ -201,16 +199,14 @@ public class VoiceAgentConversationsAsyncTests {
         transport.get(PATH + "/items/user-1", 200, USER_ITEM);
     }
 
-    private static BetaVoiceAgentsConversationsAsyncClient client(HttpClient transport) {
+    private static VoiceAgentsConversationsAsyncClient client(HttpClient transport) {
         return new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
             .httpClient(transport)
-            .allowPreview(true)
-            .beta()
-            .buildBetaVoiceAgentsConversationsAsyncClient();
+            .buildVoiceAgentsConversationsAsyncClient();
     }
 
-    private static void assertPersistedConversation(BetaVoiceAgentsConversationsAsyncClient client, String agentName,
+    private static void assertPersistedConversation(VoiceAgentsConversationsAsyncClient client, String agentName,
         String conversationId) {
         try {
             assertEquals(Boolean.TRUE,
@@ -259,7 +255,7 @@ public class VoiceAgentConversationsAsyncTests {
             VoiceRecording recording = client.getAgentConversationAudio(agentName, conversationId).block(TIMEOUT);
             assertNotNull(recording);
             assertNotNull(recording.getFormat());
-            if (recording.getBlobUri() == null || recording.getBlobUri().isEmpty()) {
+            if (recording.getBlobUrl() == null || recording.getBlobUrl().isEmpty()) {
                 assertAudio(client.downloadAgentConversationAudio(agentName, conversationId));
             }
             for (BinaryData item : items) {
@@ -278,7 +274,7 @@ public class VoiceAgentConversationsAsyncTests {
                 }
                 assertNotNull(audio);
                 assertNotNull(audio.getRole());
-                if (audio.getBlobUri() == null || audio.getBlobUri().isEmpty()) {
+                if (audio.getBlobUrl() == null || audio.getBlobUrl().isEmpty()) {
                     assertAudio(client.downloadAgentConversationAudioItem(agentName, conversationId, id));
                 }
                 break;
