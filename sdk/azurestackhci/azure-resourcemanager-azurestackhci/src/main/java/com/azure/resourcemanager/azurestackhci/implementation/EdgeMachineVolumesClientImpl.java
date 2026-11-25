@@ -207,18 +207,7 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific volume on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific volume on an Edge Machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineVolumeInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String volumeName, Context context) {
@@ -227,17 +216,7 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             resourceGroupName, edgeMachineName, volumeName, accept, context);
     }
 
-    /**
-     * Get a specific volume on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific volume on an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineVolumeInner get(String resourceGroupName, String edgeMachineName, String volumeName) {
         return getWithResponse(resourceGroupName, edgeMachineName, volumeName, Context.NONE).getValue();
@@ -294,12 +273,7 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineVolumeInner> listSinglePage(String resourceGroupName, String edgeMachineName) {
-        final String accept = "application/json";
-        Response<EdgeMachineVolumeListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, edgeMachineName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -324,33 +298,13 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all volumes on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineVolume list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineVolumeInner> list(String resourceGroupName, String edgeMachineName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, edgeMachineName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * List all volumes on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineVolume list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineVolumeInner> list(String resourceGroupName, String edgeMachineName,
         Context context) {
@@ -398,11 +352,7 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         String volumeName, EdgeMachineVolumeInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, volumeName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, volumeName, resource, Context.NONE);
     }
 
     /**
@@ -450,40 +400,14 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             this.client.getContext());
     }
 
-    /**
-     * Create or update a volume on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of volume resource representing a storage volume on an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineVolumeInner>, EdgeMachineVolumeInner> beginCreateOrUpdate(
         String resourceGroupName, String edgeMachineName, String volumeName, EdgeMachineVolumeInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, volumeName, resource);
-        return this.client.<EdgeMachineVolumeInner, EdgeMachineVolumeInner>getLroResult(response,
-            EdgeMachineVolumeInner.class, EdgeMachineVolumeInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, volumeName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a volume on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of volume resource representing a storage volume on an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineVolumeInner>, EdgeMachineVolumeInner> beginCreateOrUpdate(
         String resourceGroupName, String edgeMachineName, String volumeName, EdgeMachineVolumeInner resource,
@@ -514,41 +438,19 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a volume on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource representing a storage volume on an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineVolumeInner createOrUpdate(String resourceGroupName, String edgeMachineName, String volumeName,
         EdgeMachineVolumeInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, volumeName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, volumeName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a volume on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource representing a storage volume on an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineVolumeInner createOrUpdate(String resourceGroupName, String edgeMachineName, String volumeName,
         EdgeMachineVolumeInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, volumeName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, edgeMachineName, volumeName, resource, context));
     }
 
     /**
@@ -585,8 +487,7 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName,
         String volumeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, volumeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, volumeName, Context.NONE);
     }
 
     /**
@@ -627,36 +528,14 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a volume from an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String volumeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeMachineName, volumeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, volumeName, Context.NONE);
     }
 
-    /**
-     * Delete a volume from an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String volumeName, Context context) {
@@ -681,35 +560,16 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a volume from an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String volumeName) {
-        beginDelete(resourceGroupName, edgeMachineName, volumeName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, volumeName, Context.NONE);
     }
 
-    /**
-     * Delete a volume from an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param volumeName The name of the EdgeMachineVolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String volumeName, Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, volumeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, edgeMachineName, volumeName, context));
     }
 
     /**
@@ -742,11 +602,7 @@ public final class EdgeMachineVolumesClientImpl implements EdgeMachineVolumesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineVolumeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineVolumeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

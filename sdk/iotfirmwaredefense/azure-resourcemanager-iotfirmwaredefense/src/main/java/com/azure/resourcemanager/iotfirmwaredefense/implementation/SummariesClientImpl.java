@@ -161,19 +161,7 @@ public final class SummariesClientImpl implements SummariesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an analysis result summary of a firmware by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param summaryType The Firmware analysis summary name describing the type of summary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an analysis result summary of a firmware by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummaryResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String firmwareId, SummaryType summaryType, Context context) {
@@ -182,18 +170,7 @@ public final class SummariesClientImpl implements SummariesClient {
             resourceGroupName, workspaceName, firmwareId, summaryType, accept, context);
     }
 
-    /**
-     * Get an analysis result summary of a firmware by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param summaryType The Firmware analysis summary name describing the type of summary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an analysis result summary of a firmware by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SummaryResourceInner get(String resourceGroupName, String workspaceName, String firmwareId,
         SummaryType summaryType) {
@@ -256,12 +233,7 @@ public final class SummariesClientImpl implements SummariesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SummaryResourceInner> listByFirmwareSinglePage(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        final String accept = "application/json";
-        Response<SummaryResourceListResult> res
-            = service.listByFirmwareSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirmwareSinglePage(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     /**
@@ -287,36 +259,14 @@ public final class SummariesClientImpl implements SummariesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists analysis result summary names of a firmware. To fetch the full summary data, get that summary by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SummaryResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SummaryResourceInner> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        return new PagedIterable<>(() -> listByFirmwareSinglePage(resourceGroupName, workspaceName, firmwareId),
-            nextLink -> listByFirmwareNextSinglePage(nextLink));
+        return listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
-    /**
-     * Lists analysis result summary names of a firmware. To fetch the full summary data, get that summary by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SummaryResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SummaryResourceInner> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId, Context context) {
@@ -356,11 +306,7 @@ public final class SummariesClientImpl implements SummariesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SummaryResourceInner> listByFirmwareNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SummaryResourceListResult> res
-            = service.listByFirmwareNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirmwareNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

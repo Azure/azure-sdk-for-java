@@ -58,10 +58,7 @@ public final class StorageClassResourceImpl
     }
 
     public StorageClassResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageClass()
-            .createOrUpdate(resourceUri, storageClassName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageClassResource create(Context context) {
@@ -84,10 +81,7 @@ public final class StorageClassResourceImpl
     }
 
     public StorageClassResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageClass()
-            .update(resourceUri, storageClassName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageClassResource apply(Context context) {
@@ -109,11 +103,7 @@ public final class StorageClassResourceImpl
     }
 
     public StorageClassResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageClass()
-            .getWithResponse(resourceUri, storageClassName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageClassResource refresh(Context context) {

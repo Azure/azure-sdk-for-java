@@ -210,19 +210,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an AKS attachment and its current provisioning and health status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param attachedAksClusterName The name of the account-level AKS attachment. It must contain 1-63 letters, digits,
-     * periods, underscores, or hyphens, and start and end with a letter or digit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AKS attachment and its current provisioning and health status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttachedAksClusterInner> getWithResponse(String resourceGroupName, String accountName,
         String attachedAksClusterName, Context context) {
@@ -231,18 +219,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             resourceGroupName, accountName, attachedAksClusterName, accept, context);
     }
 
-    /**
-     * Gets an AKS attachment and its current provisioning and health status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param attachedAksClusterName The name of the account-level AKS attachment. It must contain 1-63 letters, digits,
-     * periods, underscores, or hyphens, and start and end with a letter or digit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AKS attachment and its current provisioning and health status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttachedAksClusterInner get(String resourceGroupName, String accountName, String attachedAksClusterName) {
         return getWithResponse(resourceGroupName, accountName, attachedAksClusterName, Context.NONE).getValue();
@@ -301,24 +278,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Attaches an existing AKS cluster to the account, or updates its attachment.
-     * A 202 response contains the current attachment; poll GET and inspect
-     * properties.status.stage for progress. A 200 response also contains the
-     * current attachment state and does not by itself guarantee workload readiness.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param attachedAksClusterName The name of the account-level AKS attachment. It must contain 1-63 letters, digits,
-     * periods, underscores, or hyphens, and start and end with a letter or digit.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Azure Kubernetes Service cluster attached to a Cognitive Services account along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttachedAksClusterInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String attachedAksClusterName, AttachedAksClusterInner resource, Context context) {
@@ -329,22 +289,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             accept, resource, context);
     }
 
-    /**
-     * Attaches an existing AKS cluster to the account, or updates its attachment.
-     * A 202 response contains the current attachment; poll GET and inspect
-     * properties.status.stage for progress. A 200 response also contains the
-     * current attachment state and does not by itself guarantee workload readiness.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param attachedAksClusterName The name of the account-level AKS attachment. It must contain 1-63 letters, digits,
-     * periods, underscores, or hyphens, and start and end with a letter or digit.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttachedAksClusterInner createOrUpdate(String resourceGroupName, String accountName,
         String attachedAksClusterName, AttachedAksClusterInner resource) {
@@ -402,23 +347,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Detaches an AKS cluster while retaining the physical AKS and AI Manager
-     * resources. A 202 response contains the current attachment; poll GET until
-     * the attachment is no longer found. A 204 response indicates that the
-     * attachment has been removed or did not exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param attachedAksClusterName The name of the account-level AKS attachment. It must contain 1-63 letters, digits,
-     * periods, underscores, or hyphens, and start and end with a letter or digit.
-     * @param clusterDisposition Retains the physical AKS and AI Manager resources. Only Keep is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttachedAksClusterInner> deleteWithResponse(String resourceGroupName, String accountName,
         String attachedAksClusterName, DeleteRequestClusterDisposition clusterDisposition, Context context) {
@@ -428,21 +357,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             accept, context);
     }
 
-    /**
-     * Detaches an AKS cluster while retaining the physical AKS and AI Manager
-     * resources. A 202 response contains the current attachment; poll GET until
-     * the attachment is no longer found. A 204 response indicates that the
-     * attachment has been removed or did not exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param attachedAksClusterName The name of the account-level AKS attachment. It must contain 1-63 letters, digits,
-     * periods, underscores, or hyphens, and start and end with a letter or digit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttachedAksClusterInner delete(String resourceGroupName, String accountName, String attachedAksClusterName) {
         final DeleteRequestClusterDisposition clusterDisposition = null;
@@ -540,12 +455,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AttachedAksClusterListItemInner> listSinglePage(String resourceGroupName, String accountName,
         String filter, String orderby, Integer top, Integer skip) {
-        final String accept = "application/json";
-        Response<AttachedAksClusterListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, filter, orderby, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, filter, orderby, top, skip, Context.NONE);
     }
 
     /**
@@ -575,43 +485,17 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists lightweight AKS attachment summaries for the account.
-     * Use GET on an individual attachment to retrieve its full status and bindings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of lightweight attachment summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttachedAksClusterListItemInner> list(String resourceGroupName, String accountName) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, filter, orderby, top, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, filter, orderby, top, skip, Context.NONE);
     }
 
-    /**
-     * Lists lightweight AKS attachment summaries for the account.
-     * Use GET on an individual attachment to retrieve its full status and bindings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param filter OData filter expression for attachment summaries.
-     * @param orderby OData ordering expression for attachment summaries.
-     * @param top Maximum number of attachments per page, from 1 to 100. Defaults to 50.
-     * @param skip Number of attachments to skip. Defaults to zero.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of lightweight attachment summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttachedAksClusterListItemInner> list(String resourceGroupName, String accountName,
         String filter, String orderby, Integer top, Integer skip, Context context) {
@@ -650,11 +534,7 @@ public final class AttachedAksClustersClientImpl implements AttachedAksClustersC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AttachedAksClusterListItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AttachedAksClusterListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -102,18 +102,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get my single access review instance decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my single access review instance decision along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewDecisionInner>> getByIdWithResponseAsync(String scheduleDefinitionId, String id,
         String decisionId) {
@@ -176,69 +165,27 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
             context);
     }
 
-    /**
-     * Get my single access review instance decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my single access review instance decision on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewDecisionInner> getByIdAsync(String scheduleDefinitionId, String id, String decisionId) {
         return getByIdWithResponseAsync(scheduleDefinitionId, id, decisionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get my single access review instance decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my single access review instance decision along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewDecisionInner> getByIdWithResponse(String scheduleDefinitionId, String id,
         String decisionId, Context context) {
         return getByIdWithResponseAsync(scheduleDefinitionId, id, decisionId, context).block();
     }
 
-    /**
-     * Get my single access review instance decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my single access review instance decision.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewDecisionInner getById(String scheduleDefinitionId, String id, String decisionId) {
         return getByIdWithResponse(scheduleDefinitionId, id, decisionId, Context.NONE).getValue();
     }
 
-    /**
-     * Record a decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @param properties Access review decision properties to patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewDecisionInner>> patchWithResponseAsync(String scheduleDefinitionId, String id,
         String decisionId, AccessReviewDecisionProperties properties) {
@@ -313,18 +260,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
             accept, properties, context);
     }
 
-    /**
-     * Record a decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @param properties Access review decision properties to patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewDecisionInner> patchAsync(String scheduleDefinitionId, String id, String decisionId,
         AccessReviewDecisionProperties properties) {
@@ -332,37 +268,14 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Record a decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @param properties Access review decision properties to patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewDecisionInner> patchWithResponse(String scheduleDefinitionId, String id,
         String decisionId, AccessReviewDecisionProperties properties, Context context) {
         return patchWithResponseAsync(scheduleDefinitionId, id, decisionId, properties, context).block();
     }
 
-    /**
-     * Record a decision.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param decisionId The id of the decision record.
-     * @param properties Access review decision properties to patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewDecisionInner patch(String scheduleDefinitionId, String id, String decisionId,
         AccessReviewDecisionProperties properties) {
@@ -444,35 +357,14 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get my access review instance decisions.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my access review instance decisions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewDecisionInner> listAsync(String scheduleDefinitionId, String id, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(scheduleDefinitionId, id, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get my access review instance decisions.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my access review instance decisions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewDecisionInner> listAsync(String scheduleDefinitionId, String id) {
         final String filter = null;
@@ -501,36 +393,14 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get my access review instance decisions.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my access review instance decisions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewDecisionInner> list(String scheduleDefinitionId, String id) {
         final String filter = null;
         return new PagedIterable<>(listAsync(scheduleDefinitionId, id, filter));
     }
 
-    /**
-     * Get my access review instance decisions.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return my access review instance decisions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewDecisionInner> list(String scheduleDefinitionId, String id, String filter,
         Context context) {

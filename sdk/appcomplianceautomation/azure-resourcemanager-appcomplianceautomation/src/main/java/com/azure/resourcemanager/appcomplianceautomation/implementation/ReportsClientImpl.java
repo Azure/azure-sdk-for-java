@@ -294,31 +294,14 @@ public final class ReportsClientImpl implements ReportsClient {
         return getWithResponseAsync(reportName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the AppComplianceAutomation report and its properties.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation report and its properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReportResourceInner> getWithResponse(String reportName, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, accept, context);
     }
 
-    /**
-     * Get the AppComplianceAutomation report and its properties.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation report and its properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportResourceInner get(String reportName) {
         return getWithResponse(reportName, Context.NONE).getValue();
@@ -358,10 +341,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String reportName, ReportResourceInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName,
-            contentType, accept, properties, Context.NONE);
+        return createOrUpdateWithResponse(reportName, properties, Context.NONE);
     }
 
     /**
@@ -402,35 +382,14 @@ public final class ReportsClientImpl implements ReportsClient {
             ReportResourceInner.class, ReportResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginCreateOrUpdate(String reportName,
         ReportResourceInner properties) {
-        Response<BinaryData> response = createOrUpdateWithResponse(reportName, properties);
-        return this.client.<ReportResourceInner, ReportResourceInner>getLroResult(response, ReportResourceInner.class,
-            ReportResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(reportName, properties, Context.NONE);
     }
 
-    /**
-     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginCreateOrUpdate(String reportName,
         ReportResourceInner properties, Context context) {
@@ -454,35 +413,16 @@ public final class ReportsClientImpl implements ReportsClient {
         return beginCreateOrUpdateAsync(reportName, properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportResourceInner createOrUpdate(String reportName, ReportResourceInner properties) {
-        return beginCreateOrUpdate(reportName, properties).getFinalResult();
+        return createOrUpdate(reportName, properties, Context.NONE);
     }
 
-    /**
-     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportResourceInner createOrUpdate(String reportName, ReportResourceInner properties, Context context) {
-        return beginCreateOrUpdate(reportName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(reportName, properties, context));
     }
 
     /**
@@ -519,10 +459,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String reportName, ReportResourcePatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(reportName, properties, Context.NONE);
     }
 
     /**
@@ -563,35 +500,14 @@ public final class ReportsClientImpl implements ReportsClient {
             ReportResourceInner.class, ReportResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginUpdate(String reportName,
         ReportResourcePatch properties) {
-        Response<BinaryData> response = updateWithResponse(reportName, properties);
-        return this.client.<ReportResourceInner, ReportResourceInner>getLroResult(response, ReportResourceInner.class,
-            ReportResourceInner.class, Context.NONE);
+        return beginUpdate(reportName, properties, Context.NONE);
     }
 
-    /**
-     * Update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginUpdate(String reportName,
         ReportResourcePatch properties, Context context) {
@@ -615,35 +531,16 @@ public final class ReportsClientImpl implements ReportsClient {
         return beginUpdateAsync(reportName, properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportResourceInner update(String reportName, ReportResourcePatch properties) {
-        return beginUpdate(reportName, properties).getFinalResult();
+        return update(reportName, properties, Context.NONE);
     }
 
-    /**
-     * Update an exiting AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param properties Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent an AppComplianceAutomation report resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportResourceInner update(String reportName, ReportResourcePatch properties, Context context) {
-        return beginUpdate(reportName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(reportName, properties, context));
     }
 
     /**
@@ -674,7 +571,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String reportName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, Context.NONE);
+        return deleteWithResponse(reportName, Context.NONE);
     }
 
     /**
@@ -708,31 +605,13 @@ public final class ReportsClientImpl implements ReportsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String reportName) {
-        Response<BinaryData> response = deleteWithResponse(reportName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(reportName, Context.NONE);
     }
 
-    /**
-     * Delete an AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String reportName, Context context) {
         Response<BinaryData> response = deleteWithResponse(reportName, context);
@@ -753,31 +632,16 @@ public final class ReportsClientImpl implements ReportsClient {
         return beginDeleteAsync(reportName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String reportName) {
-        beginDelete(reportName).getFinalResult();
+        delete(reportName, Context.NONE);
     }
 
-    /**
-     * Delete an AppComplianceAutomation report.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String reportName, Context context) {
-        beginDelete(reportName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(reportName, context));
     }
 
     /**
@@ -873,12 +737,7 @@ public final class ReportsClientImpl implements ReportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReportResourceInner> listSinglePage(String skipToken, Integer top, String select,
         String filter, String orderby, String offerGuid, String reportCreatorTenantId) {
-        final String accept = "application/json";
-        Response<ReportResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), skipToken, top, select, filter,
-                orderby, offerGuid, reportCreatorTenantId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId, Context.NONE);
     }
 
     /**
@@ -909,13 +768,7 @@ public final class ReportsClientImpl implements ReportsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the AppComplianceAutomation report list for the tenant.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation report list for the tenant as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReportResourceInner> list() {
         final String skipToken = null;
@@ -925,28 +778,10 @@ public final class ReportsClientImpl implements ReportsClient {
         final String orderby = null;
         final String offerGuid = null;
         final String reportCreatorTenantId = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId, Context.NONE);
     }
 
-    /**
-     * Get the AppComplianceAutomation report list for the tenant.
-     * 
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     * ?$select=reportName,id.
-     * @param filter The filter to apply on the operation.
-     * @param orderby OData order by query option.
-     * @param offerGuid The offerGuid which mapping to the reports.
-     * @param reportCreatorTenantId The tenant id of the report creator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation report list for the tenant as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReportResourceInner> list(String skipToken, Integer top, String select, String filter,
         String orderby, String offerGuid, String reportCreatorTenantId, Context context) {
@@ -989,10 +824,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> syncCertRecordWithResponse(String reportName, SyncCertRecordRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.syncCertRecordSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName,
-            contentType, accept, body, Context.NONE);
+        return syncCertRecordWithResponse(reportName, body, Context.NONE);
     }
 
     /**
@@ -1034,35 +866,14 @@ public final class ReportsClientImpl implements ReportsClient {
             this.client.getContext());
     }
 
-    /**
-     * Synchronize attestation record from app compliance.
-     * 
-     * @param reportName Report Name.
-     * @param body Parameters for synchronize certification record operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of synchronize certification record response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncCertRecordResponseInner>, SyncCertRecordResponseInner>
         beginSyncCertRecord(String reportName, SyncCertRecordRequest body) {
-        Response<BinaryData> response = syncCertRecordWithResponse(reportName, body);
-        return this.client.<SyncCertRecordResponseInner, SyncCertRecordResponseInner>getLroResult(response,
-            SyncCertRecordResponseInner.class, SyncCertRecordResponseInner.class, Context.NONE);
+        return beginSyncCertRecord(reportName, body, Context.NONE);
     }
 
-    /**
-     * Synchronize attestation record from app compliance.
-     * 
-     * @param reportName Report Name.
-     * @param body Parameters for synchronize certification record operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of synchronize certification record response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncCertRecordResponseInner>, SyncCertRecordResponseInner>
         beginSyncCertRecord(String reportName, SyncCertRecordRequest body, Context context) {
@@ -1086,35 +897,16 @@ public final class ReportsClientImpl implements ReportsClient {
         return beginSyncCertRecordAsync(reportName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Synchronize attestation record from app compliance.
-     * 
-     * @param reportName Report Name.
-     * @param body Parameters for synchronize certification record operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return synchronize certification record response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncCertRecordResponseInner syncCertRecord(String reportName, SyncCertRecordRequest body) {
-        return beginSyncCertRecord(reportName, body).getFinalResult();
+        return syncCertRecord(reportName, body, Context.NONE);
     }
 
-    /**
-     * Synchronize attestation record from app compliance.
-     * 
-     * @param reportName Report Name.
-     * @param body Parameters for synchronize certification record operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return synchronize certification record response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncCertRecordResponseInner syncCertRecord(String reportName, SyncCertRecordRequest body, Context context) {
-        return beginSyncCertRecord(reportName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSyncCertRecord(reportName, body, context));
     }
 
     /**
@@ -1155,17 +947,7 @@ public final class ReportsClientImpl implements ReportsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks the report's nested resource name availability, e.g: Webhooks, Evidences, Snapshots.
-     * 
-     * @param reportName Report Name.
-     * @param body NameAvailabilityRequest object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> nestedResourceCheckNameAvailabilityWithResponse(
         String reportName, CheckNameAvailabilityRequest body, Context context) {
@@ -1175,16 +957,7 @@ public final class ReportsClientImpl implements ReportsClient {
             reportName, contentType, accept, body, context);
     }
 
-    /**
-     * Checks the report's nested resource name availability, e.g: Webhooks, Evidences, Snapshots.
-     * 
-     * @param reportName Report Name.
-     * @param body NameAvailabilityRequest object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner nestedResourceCheckNameAvailability(String reportName,
         CheckNameAvailabilityRequest body) {
@@ -1221,9 +994,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> fixWithResponse(String reportName) {
-        final String accept = "application/json";
-        return service.fixSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, accept,
-            Context.NONE);
+        return fixWithResponse(reportName, Context.NONE);
     }
 
     /**
@@ -1260,34 +1031,13 @@ public final class ReportsClientImpl implements ReportsClient {
             ReportFixResultInner.class, ReportFixResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
-     * automation removed.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of report fix result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportFixResultInner>, ReportFixResultInner> beginFix(String reportName) {
-        Response<BinaryData> response = fixWithResponse(reportName);
-        return this.client.<ReportFixResultInner, ReportFixResultInner>getLroResult(response,
-            ReportFixResultInner.class, ReportFixResultInner.class, Context.NONE);
+        return beginFix(reportName, Context.NONE);
     }
 
-    /**
-     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
-     * automation removed.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of report fix result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportFixResultInner>, ReportFixResultInner> beginFix(String reportName,
         Context context) {
@@ -1311,35 +1061,16 @@ public final class ReportsClientImpl implements ReportsClient {
         return beginFixAsync(reportName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
-     * automation removed.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return report fix result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportFixResultInner fix(String reportName) {
-        return beginFix(reportName).getFinalResult();
+        return fix(reportName, Context.NONE);
     }
 
-    /**
-     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
-     * automation removed.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return report fix result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportFixResultInner fix(String reportName, Context context) {
-        return beginFix(reportName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFix(reportName, context));
     }
 
     /**
@@ -1376,17 +1107,7 @@ public final class ReportsClientImpl implements ReportsClient {
         return getScopingQuestionsWithResponseAsync(reportName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
-     * automation removed.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scoping question list along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopingQuestionsInner> getScopingQuestionsWithResponse(String reportName, Context context) {
         final String accept = "application/json";
@@ -1394,16 +1115,7 @@ public final class ReportsClientImpl implements ReportsClient {
             accept, context);
     }
 
-    /**
-     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
-     * automation removed.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scoping question list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopingQuestionsInner getScopingQuestions(String reportName) {
         return getScopingQuestionsWithResponse(reportName, Context.NONE).getValue();
@@ -1439,9 +1151,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> verifyWithResponse(String reportName) {
-        final String accept = "application/json";
-        return service.verifySync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, accept,
-            Context.NONE);
+        return verifyWithResponse(reportName, Context.NONE);
     }
 
     /**
@@ -1478,33 +1188,14 @@ public final class ReportsClientImpl implements ReportsClient {
             this.client.getContext());
     }
 
-    /**
-     * Verify the AppComplianceAutomation report health status.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of report health status verification result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportVerificationResultInner>, ReportVerificationResultInner>
         beginVerify(String reportName) {
-        Response<BinaryData> response = verifyWithResponse(reportName);
-        return this.client.<ReportVerificationResultInner, ReportVerificationResultInner>getLroResult(response,
-            ReportVerificationResultInner.class, ReportVerificationResultInner.class, Context.NONE);
+        return beginVerify(reportName, Context.NONE);
     }
 
-    /**
-     * Verify the AppComplianceAutomation report health status.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of report health status verification result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReportVerificationResultInner>, ReportVerificationResultInner>
         beginVerify(String reportName, Context context) {
@@ -1527,33 +1218,16 @@ public final class ReportsClientImpl implements ReportsClient {
         return beginVerifyAsync(reportName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Verify the AppComplianceAutomation report health status.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return report health status verification result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportVerificationResultInner verify(String reportName) {
-        return beginVerify(reportName).getFinalResult();
+        return verify(reportName, Context.NONE);
     }
 
-    /**
-     * Verify the AppComplianceAutomation report health status.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return report health status verification result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportVerificationResultInner verify(String reportName, Context context) {
-        return beginVerify(reportName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginVerify(reportName, context));
     }
 
     /**
@@ -1586,11 +1260,7 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReportResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReportResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

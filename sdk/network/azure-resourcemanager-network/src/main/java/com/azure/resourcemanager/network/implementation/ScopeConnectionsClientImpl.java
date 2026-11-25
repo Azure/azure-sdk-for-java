@@ -116,18 +116,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get specified scope connection created by this Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified scope connection created by this Network Manager along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScopeConnectionInner>> getWithResponseAsync(String resourceGroupName,
         String networkManagerName, String scopeConnectionName) {
@@ -202,17 +191,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             networkManagerName, scopeConnectionName, accept, context);
     }
 
-    /**
-     * Get specified scope connection created by this Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified scope connection created by this Network Manager on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopeConnectionInner> getAsync(String resourceGroupName, String networkManagerName,
         String scopeConnectionName) {
@@ -220,52 +199,20 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get specified scope connection created by this Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified scope connection created by this Network Manager along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopeConnectionInner> getWithResponse(String resourceGroupName, String networkManagerName,
         String scopeConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, scopeConnectionName, context).block();
     }
 
-    /**
-     * Get specified scope connection created by this Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified scope connection created by this Network Manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeConnectionInner get(String resourceGroupName, String networkManagerName, String scopeConnectionName) {
         return getWithResponse(resourceGroupName, networkManagerName, scopeConnectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates scope connection from Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param parameters Scope connection to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Scope Connections resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScopeConnectionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String scopeConnectionName, ScopeConnectionInner parameters) {
@@ -353,18 +300,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             resourceGroupName, networkManagerName, scopeConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates scope connection from Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param parameters Scope connection to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Scope Connections resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopeConnectionInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
         String scopeConnectionName, ScopeConnectionInner parameters) {
@@ -372,19 +308,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates scope connection from Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param parameters Scope connection to be created/updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Scope Connections resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopeConnectionInner> createOrUpdateWithResponse(String resourceGroupName,
         String networkManagerName, String scopeConnectionName, ScopeConnectionInner parameters, Context context) {
@@ -392,18 +316,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             context).block();
     }
 
-    /**
-     * Creates or updates scope connection from Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param parameters Scope connection to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Scope Connections resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopeConnectionInner createOrUpdate(String resourceGroupName, String networkManagerName,
         String scopeConnectionName, ScopeConnectionInner parameters) {
@@ -411,17 +324,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             Context.NONE).getValue();
     }
 
-    /**
-     * Delete the pending scope connection created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String scopeConnectionName) {
@@ -493,51 +396,21 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             networkManagerName, scopeConnectionName, context);
     }
 
-    /**
-     * Delete the pending scope connection created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String scopeConnectionName) {
         return deleteWithResponseAsync(resourceGroupName, networkManagerName, scopeConnectionName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the pending scope connection created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String networkManagerName,
         String scopeConnectionName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, networkManagerName, scopeConnectionName, context).block();
     }
 
-    /**
-     * Delete the pending scope connection created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String scopeConnectionName) {
         deleteWithResponse(resourceGroupName, networkManagerName, scopeConnectionName, Context.NONE);
@@ -634,21 +507,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all scope connections created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScopeConnection list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScopeConnectionInner> listAsync(String resourceGroupName, String networkManagerName, Integer top,
         String skipToken) {
@@ -656,16 +515,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List all scope connections created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScopeConnection list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScopeConnectionInner> listAsync(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
@@ -698,16 +548,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all scope connections created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScopeConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopeConnectionInner> list(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
@@ -715,22 +556,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, top, skipToken));
     }
 
-    /**
-     * List all scope connections created by this network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScopeConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopeConnectionInner> list(String resourceGroupName, String networkManagerName, Integer top,
         String skipToken, Context context) {

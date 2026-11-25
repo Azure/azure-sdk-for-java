@@ -93,10 +93,7 @@ public final class AutonomousDatabaseImpl
     }
 
     public AutonomousDatabase create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabases()
-            .createOrUpdate(resourceGroupName, autonomousdatabasename, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutonomousDatabase create(Context context) {
@@ -118,10 +115,7 @@ public final class AutonomousDatabaseImpl
     }
 
     public AutonomousDatabase apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabases()
-            .update(resourceGroupName, autonomousdatabasename, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutonomousDatabase apply(Context context) {
@@ -144,11 +138,7 @@ public final class AutonomousDatabaseImpl
     }
 
     public AutonomousDatabase refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabases()
-            .getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutonomousDatabase refresh(Context context) {

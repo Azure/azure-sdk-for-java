@@ -89,17 +89,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the diagnostic settings category for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticSettingsCategoryResourceInner>> getWithResponseAsync(String resourceUri,
         String name) {
@@ -152,48 +142,20 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
         return service.get(this.client.getEndpoint(), apiVersion, resourceUri, name, accept, context);
     }
 
-    /**
-     * Gets the diagnostic settings category for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticSettingsCategoryResourceInner> getAsync(String resourceUri, String name) {
         return getWithResponseAsync(resourceUri, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the diagnostic settings category for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticSettingsCategoryResourceInner> getWithResponse(String resourceUri, String name,
         Context context) {
         return getWithResponseAsync(resourceUri, name, context).block();
     }
 
-    /**
-     * Gets the diagnostic settings category for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticSettingsCategoryResourceInner get(String resourceUri, String name) {
         return getWithResponse(resourceUri, name, Context.NONE).getValue();
@@ -257,16 +219,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the diagnostic settings categories for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiagnosticSettingsCategoryResourceInner> listAsync(String resourceUri) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri), nextLink -> listNextSinglePageAsync(nextLink));
@@ -289,32 +242,13 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the diagnostic settings categories for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticSettingsCategoryResourceInner> list(String resourceUri) {
         return new PagedIterable<>(listAsync(resourceUri));
     }
 
-    /**
-     * Lists the diagnostic settings categories for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticSettingsCategoryResourceInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, context));

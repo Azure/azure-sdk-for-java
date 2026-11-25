@@ -76,11 +76,7 @@ public final class ModelDeploymentImpl implements ModelDeployment, ModelDeployme
     }
 
     public ModelDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelDeployments()
-            .createOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ModelDeployment create(Context context) {
@@ -107,11 +103,7 @@ public final class ModelDeploymentImpl implements ModelDeployment, ModelDeployme
     }
 
     public ModelDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelDeployments()
-            .createOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, this.innerModel(),
-                updateIfMatch, updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ModelDeployment apply(Context context) {
@@ -141,11 +133,7 @@ public final class ModelDeploymentImpl implements ModelDeployment, ModelDeployme
     }
 
     public ModelDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelDeployments()
-            .getWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ModelDeployment refresh(Context context) {

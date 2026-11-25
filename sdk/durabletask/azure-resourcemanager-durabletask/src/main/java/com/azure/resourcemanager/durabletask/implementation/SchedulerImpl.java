@@ -91,10 +91,7 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     }
 
     public Scheduler create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedulers()
-            .createOrUpdate(resourceGroupName, schedulerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Scheduler create(Context context) {
@@ -116,10 +113,7 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     }
 
     public Scheduler apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedulers()
-            .update(resourceGroupName, schedulerName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Scheduler apply(Context context) {
@@ -141,11 +135,7 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     }
 
     public Scheduler refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedulers()
-            .getByResourceGroupWithResponse(resourceGroupName, schedulerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Scheduler refresh(Context context) {

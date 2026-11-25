@@ -146,31 +146,13 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         return getWithResponseAsync(location, operationId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Returns operation results for long running operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResultsGetResponse getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
     }
 
-    /**
-     * Returns operation results for long running operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void get(String location, String operationId) {
         getWithResponse(location, operationId, Context.NONE);

@@ -72,11 +72,7 @@ public final class ModelSourceImpl implements ModelSource, ModelSource.Definitio
     }
 
     public ModelSource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelSources()
-            .createOrUpdate(resourceGroupName, aiManagerName, modelSourceName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ModelSource create(Context context) {
@@ -103,11 +99,7 @@ public final class ModelSourceImpl implements ModelSource, ModelSource.Definitio
     }
 
     public ModelSource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelSources()
-            .createOrUpdate(resourceGroupName, aiManagerName, modelSourceName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ModelSource apply(Context context) {
@@ -134,11 +126,7 @@ public final class ModelSourceImpl implements ModelSource, ModelSource.Definitio
     }
 
     public ModelSource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelSources()
-            .getWithResponse(resourceGroupName, aiManagerName, modelSourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ModelSource refresh(Context context) {

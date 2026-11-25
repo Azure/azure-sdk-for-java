@@ -222,18 +222,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a runtime link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime link along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuntimeLinkInner> getWithResponse(String resourceGroupName, String spaceName, String linkName,
         Context context) {
@@ -242,17 +231,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             resourceGroupName, spaceName, linkName, accept, context);
     }
 
-    /**
-     * Gets a runtime link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a runtime link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeLinkInner get(String resourceGroupName, String spaceName, String linkName) {
         return getWithResponse(resourceGroupName, spaceName, linkName, Context.NONE).getValue();
@@ -299,11 +278,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String spaceName, String linkName,
         RuntimeLinkInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, linkName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, spaceName, linkName, resource, Context.NONE);
     }
 
     /**
@@ -352,41 +327,14 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             RuntimeLinkInner.class, RuntimeLinkInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a runtime link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a relationship between an orchestrator runtime and an optional
-     * execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeLinkInner>, RuntimeLinkInner> beginCreateOrUpdate(String resourceGroupName,
         String spaceName, String linkName, RuntimeLinkInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, spaceName, linkName, resource);
-        return this.client.<RuntimeLinkInner, RuntimeLinkInner>getLroResult(response, RuntimeLinkInner.class,
-            RuntimeLinkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, spaceName, linkName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a runtime link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a relationship between an orchestrator runtime and an optional
-     * execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeLinkInner>, RuntimeLinkInner> beginCreateOrUpdate(String resourceGroupName,
         String spaceName, String linkName, RuntimeLinkInner resource, Context context) {
@@ -416,41 +364,19 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a runtime link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship between an orchestrator runtime and an optional execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeLinkInner createOrUpdate(String resourceGroupName, String spaceName, String linkName,
         RuntimeLinkInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, linkName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, spaceName, linkName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a runtime link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship between an orchestrator runtime and an optional execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeLinkInner createOrUpdate(String resourceGroupName, String spaceName, String linkName,
         RuntimeLinkInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, linkName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, spaceName, linkName, resource, context));
     }
 
     /**
@@ -494,11 +420,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String spaceName, String linkName,
         RuntimeLinkUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, linkName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, spaceName, linkName, properties, Context.NONE);
     }
 
     /**
@@ -547,41 +469,14 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             RuntimeLinkInner.class, RuntimeLinkInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable runtime link properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a relationship between an orchestrator runtime and an optional
-     * execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeLinkInner>, RuntimeLinkInner> beginUpdate(String resourceGroupName,
         String spaceName, String linkName, RuntimeLinkUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, spaceName, linkName, properties);
-        return this.client.<RuntimeLinkInner, RuntimeLinkInner>getLroResult(response, RuntimeLinkInner.class,
-            RuntimeLinkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, spaceName, linkName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable runtime link properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a relationship between an orchestrator runtime and an optional
-     * execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuntimeLinkInner>, RuntimeLinkInner> beginUpdate(String resourceGroupName,
         String spaceName, String linkName, RuntimeLinkUpdate properties, Context context) {
@@ -610,41 +505,19 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable runtime link properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship between an orchestrator runtime and an optional execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeLinkInner update(String resourceGroupName, String spaceName, String linkName,
         RuntimeLinkUpdate properties) {
-        return beginUpdate(resourceGroupName, spaceName, linkName, properties).getFinalResult();
+        return update(resourceGroupName, spaceName, linkName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable runtime link properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship between an orchestrator runtime and an optional execution runtime.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuntimeLinkInner update(String resourceGroupName, String spaceName, String linkName,
         RuntimeLinkUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, spaceName, linkName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, spaceName, linkName, properties, context));
     }
 
     /**
@@ -680,8 +553,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String spaceName, String linkName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, linkName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, spaceName, linkName, Context.NONE);
     }
 
     /**
@@ -722,35 +594,13 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a runtime link without deleting its runtime bindings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName, String linkName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, spaceName, linkName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, spaceName, linkName, Context.NONE);
     }
 
-    /**
-     * Deletes a runtime link without deleting its runtime bindings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName, String linkName,
         Context context) {
@@ -775,35 +625,16 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a runtime link without deleting its runtime bindings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, String linkName) {
-        beginDelete(resourceGroupName, spaceName, linkName).getFinalResult();
+        delete(resourceGroupName, spaceName, linkName, Context.NONE);
     }
 
-    /**
-     * Deletes a runtime link without deleting its runtime bindings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param linkName The name of the RuntimeLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, String linkName, Context context) {
-        beginDelete(resourceGroupName, spaceName, linkName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, spaceName, linkName, context));
     }
 
     /**
@@ -857,12 +688,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RuntimeLinkInner> listByWorkloadSpaceSinglePage(String resourceGroupName, String spaceName) {
-        final String accept = "application/json";
-        Response<RuntimeLinkListResult> res
-            = service.listByWorkloadSpaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, spaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkloadSpaceSinglePage(resourceGroupName, spaceName, Context.NONE);
     }
 
     /**
@@ -887,33 +713,13 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists runtime links in a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RuntimeLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuntimeLinkInner> listByWorkloadSpace(String resourceGroupName, String spaceName) {
-        return new PagedIterable<>(() -> listByWorkloadSpaceSinglePage(resourceGroupName, spaceName),
-            nextLink -> listByWorkloadSpaceNextSinglePage(nextLink));
+        return listByWorkloadSpace(resourceGroupName, spaceName, Context.NONE);
     }
 
-    /**
-     * Lists runtime links in a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RuntimeLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuntimeLinkInner> listByWorkloadSpace(String resourceGroupName, String spaceName,
         Context context) {
@@ -953,11 +759,7 @@ public final class RuntimeLinksClientImpl implements RuntimeLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RuntimeLinkInner> listByWorkloadSpaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RuntimeLinkListResult> res
-            = service.listByWorkloadSpaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkloadSpaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

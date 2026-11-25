@@ -59,7 +59,7 @@ public final class SubscriptionRaiPoliciesImpl implements SubscriptionRaiPolicie
     }
 
     public void delete(String raiPolicyName) {
-        this.serviceClient().delete(raiPolicyName);
+        this.delete(raiPolicyName, Context.NONE);
     }
 
     public void delete(String raiPolicyName, Context context) {

@@ -27,6 +27,15 @@ public final class LocationBasedBulkCreateImpl implements LocationBasedBulkCreat
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
+            "resourceGroupName");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
+            "name");
     }
 
     public String id() {
@@ -95,10 +104,7 @@ public final class LocationBasedBulkCreateImpl implements LocationBasedBulkCreat
     }
 
     public LocationBasedBulkCreate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .create(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocationBasedBulkCreate create(Context context) {
@@ -116,11 +122,7 @@ public final class LocationBasedBulkCreateImpl implements LocationBasedBulkCreat
     }
 
     public LocationBasedBulkCreate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .getWithResponse(resourceGroupName, location, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocationBasedBulkCreate refresh(Context context) {

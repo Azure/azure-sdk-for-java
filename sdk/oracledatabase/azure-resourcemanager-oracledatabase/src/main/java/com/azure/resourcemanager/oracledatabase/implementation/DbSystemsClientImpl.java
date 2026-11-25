@@ -253,11 +253,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbSystemInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DbSystemListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -278,27 +274,13 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DbSystem resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbSystem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbSystemInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List DbSystem resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbSystem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbSystemInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -342,11 +324,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dbSystemName,
         DbSystemInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dbSystemName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dbSystemName, resource, Context.NONE);
     }
 
     /**
@@ -390,37 +368,14 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             DbSystemInner.class, DbSystemInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbSystemInner>, DbSystemInner> beginCreateOrUpdate(String resourceGroupName,
         String dbSystemName, DbSystemInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dbSystemName, resource);
-        return this.client.<DbSystemInner, DbSystemInner>getLroResult(response, DbSystemInner.class,
-            DbSystemInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dbSystemName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbSystemInner>, DbSystemInner> beginCreateOrUpdate(String resourceGroupName,
         String dbSystemName, DbSystemInner resource, Context context) {
@@ -447,38 +402,18 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbSystemInner createOrUpdate(String resourceGroupName, String dbSystemName, DbSystemInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, dbSystemName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, dbSystemName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbSystemInner createOrUpdate(String resourceGroupName, String dbSystemName, DbSystemInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dbSystemName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dbSystemName, resource, context));
     }
 
     /**
@@ -517,17 +452,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbSystem along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DbSystemInner> getByResourceGroupWithResponse(String resourceGroupName, String dbSystemName,
         Context context) {
@@ -536,16 +461,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             this.client.getSubscriptionId(), resourceGroupName, dbSystemName, accept, context);
     }
 
-    /**
-     * Get a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbSystem.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbSystemInner getByResourceGroup(String resourceGroupName, String dbSystemName) {
         return getByResourceGroupWithResponse(resourceGroupName, dbSystemName, Context.NONE).getValue();
@@ -586,11 +502,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dbSystemName,
         DbSystemUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dbSystemName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, dbSystemName, properties, Context.NONE);
     }
 
     /**
@@ -633,37 +545,14 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             DbSystemInner.class, DbSystemInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbSystemInner>, DbSystemInner> beginUpdate(String resourceGroupName,
         String dbSystemName, DbSystemUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, dbSystemName, properties);
-        return this.client.<DbSystemInner, DbSystemInner>getLroResult(response, DbSystemInner.class,
-            DbSystemInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dbSystemName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbSystemInner>, DbSystemInner> beginUpdate(String resourceGroupName,
         String dbSystemName, DbSystemUpdate properties, Context context) {
@@ -689,38 +578,17 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbSystemInner update(String resourceGroupName, String dbSystemName, DbSystemUpdate properties) {
-        return beginUpdate(resourceGroupName, dbSystemName, properties).getFinalResult();
+        return update(resourceGroupName, dbSystemName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dbSystem resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbSystemInner update(String resourceGroupName, String dbSystemName, DbSystemUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, dbSystemName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, dbSystemName, properties, context));
     }
 
     /**
@@ -753,8 +621,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dbSystemName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dbSystemName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, dbSystemName, Context.NONE);
     }
 
     /**
@@ -791,33 +658,13 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dbSystemName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dbSystemName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dbSystemName, Context.NONE);
     }
 
-    /**
-     * Delete a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dbSystemName,
         Context context) {
@@ -840,33 +687,16 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
         return beginDeleteAsync(resourceGroupName, dbSystemName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dbSystemName) {
-        beginDelete(resourceGroupName, dbSystemName).getFinalResult();
+        delete(resourceGroupName, dbSystemName, Context.NONE);
     }
 
-    /**
-     * Delete a DbSystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dbSystemName The name of the DbSystem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dbSystemName, Context context) {
-        beginDelete(resourceGroupName, dbSystemName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, dbSystemName, context));
     }
 
     /**
@@ -916,11 +746,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbSystemInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DbSystemListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -942,31 +768,13 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DbSystem resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbSystem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbSystemInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List DbSystem resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbSystem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbSystemInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1005,11 +813,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbSystemInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DbSystemListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1063,11 +867,7 @@ public final class DbSystemsClientImpl implements DbSystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbSystemInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DbSystemListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

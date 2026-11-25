@@ -63,12 +63,7 @@ public final class OpenAIIntegrationRPModelImpl
     }
 
     public OpenAIIntegrationRPModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenAIs()
-            .createOrUpdateWithResponse(resourceGroupName, monitorName, integrationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OpenAIIntegrationRPModel create(Context context) {
@@ -90,12 +85,7 @@ public final class OpenAIIntegrationRPModelImpl
     }
 
     public OpenAIIntegrationRPModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenAIs()
-            .createOrUpdateWithResponse(resourceGroupName, monitorName, integrationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OpenAIIntegrationRPModel apply(Context context) {
@@ -122,11 +112,7 @@ public final class OpenAIIntegrationRPModelImpl
     }
 
     public OpenAIIntegrationRPModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenAIs()
-            .getWithResponse(resourceGroupName, monitorName, integrationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OpenAIIntegrationRPModel refresh(Context context) {

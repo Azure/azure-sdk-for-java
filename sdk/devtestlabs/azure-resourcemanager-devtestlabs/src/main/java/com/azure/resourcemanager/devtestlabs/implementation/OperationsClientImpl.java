@@ -110,17 +110,7 @@ public final class OperationsClientImpl implements OperationsClient {
         return getWithResponseAsync(locationName, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get operation.
-     * 
-     * @param locationName The name of the location.
-     * @param name The name of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResultInner> getWithResponse(String locationName, String name, Context context) {
         final String accept = "application/json";
@@ -128,16 +118,7 @@ public final class OperationsClientImpl implements OperationsClient {
             locationName, name, accept, context);
     }
 
-    /**
-     * Get operation.
-     * 
-     * @param locationName The name of the location.
-     * @param name The name of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResultInner get(String locationName, String name) {
         return getWithResponse(locationName, name, Context.NONE).getValue();

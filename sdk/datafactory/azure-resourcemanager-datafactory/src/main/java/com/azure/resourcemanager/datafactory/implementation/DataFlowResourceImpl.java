@@ -69,12 +69,7 @@ public final class DataFlowResourceImpl
     }
 
     public DataFlowResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataFlows()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, dataFlowName, this.innerModel(), createIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataFlowResource create(Context context) {
@@ -99,12 +94,7 @@ public final class DataFlowResourceImpl
     }
 
     public DataFlowResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataFlows()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, dataFlowName, this.innerModel(), updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataFlowResource apply(Context context) {
@@ -132,12 +122,7 @@ public final class DataFlowResourceImpl
     }
 
     public DataFlowResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getDataFlows()
-            .getWithResponse(resourceGroupName, factoryName, dataFlowName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataFlowResource refresh(Context context) {

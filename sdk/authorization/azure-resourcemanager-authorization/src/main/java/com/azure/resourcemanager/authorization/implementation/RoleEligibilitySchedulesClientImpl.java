@@ -88,17 +88,7 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified role eligibility schedule for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule for a resource scope along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleEligibilityScheduleInner>> getWithResponseAsync(String scope,
         String roleEligibilityScheduleName) {
@@ -153,49 +143,21 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
         return service.get(this.client.getEndpoint(), apiVersion, scope, roleEligibilityScheduleName, accept, context);
     }
 
-    /**
-     * Get the specified role eligibility schedule for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule for a resource scope on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleEligibilityScheduleInner> getAsync(String scope, String roleEligibilityScheduleName) {
         return getWithResponseAsync(scope, roleEligibilityScheduleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified role eligibility schedule for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule for a resource scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleEligibilityScheduleInner> getWithResponse(String scope, String roleEligibilityScheduleName,
         Context context) {
         return getWithResponseAsync(scope, roleEligibilityScheduleName, context).block();
     }
 
-    /**
-     * Get the specified role eligibility schedule for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule for a resource scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleEligibilityScheduleInner get(String scope, String roleEligibilityScheduleName) {
         return getWithResponse(scope, roleEligibilityScheduleName, Context.NONE).getValue();
@@ -269,35 +231,14 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets role eligibility schedules for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
-     * the current user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role eligibility schedules for a resource scope as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleEligibilityScheduleInner> listForScopeAsync(String scope, String filter) {
         return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter),
             nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets role eligibility schedules for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role eligibility schedules for a resource scope as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleEligibilityScheduleInner> listForScopeAsync(String scope) {
         final String filter = null;
@@ -326,36 +267,14 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets role eligibility schedules for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role eligibility schedules for a resource scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleEligibilityScheduleInner> listForScope(String scope) {
         final String filter = null;
         return new PagedIterable<>(listForScopeAsync(scope, filter));
     }
 
-    /**
-     * Gets role eligibility schedules for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
-     * the current user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role eligibility schedules for a resource scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleEligibilityScheduleInner> listForScope(String scope, String filter, Context context) {
         return new PagedIterable<>(listForScopeAsync(scope, filter, context));

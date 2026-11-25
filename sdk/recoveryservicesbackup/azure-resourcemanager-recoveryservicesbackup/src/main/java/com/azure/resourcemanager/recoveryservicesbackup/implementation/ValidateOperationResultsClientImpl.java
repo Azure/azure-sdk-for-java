@@ -117,18 +117,7 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the result of a triggered validate operation.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId OperationID which represents the operation whose result needs to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateOperationsResponseInner> getWithResponse(String vaultName, String resourceGroupName,
         String operationId, Context context) {
@@ -137,17 +126,7 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
             this.client.getSubscriptionId(), operationId, accept, context);
     }
 
-    /**
-     * Fetches the result of a triggered validate operation.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId OperationID which represents the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateOperationsResponseInner get(String vaultName, String resourceGroupName, String operationId) {
         return getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();

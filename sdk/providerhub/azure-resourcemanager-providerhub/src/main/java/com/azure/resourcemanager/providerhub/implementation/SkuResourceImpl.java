@@ -56,11 +56,7 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
     }
 
     public SkuResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSkus()
-            .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SkuResource create(Context context) {
@@ -82,11 +78,7 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
     }
 
     public SkuResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSkus()
-            .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SkuResource apply(Context context) {
@@ -158,11 +150,7 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
     }
 
     public SkuResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSkus()
-            .getWithResponse(providerNamespace, resourceType, sku, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SkuResource refresh(Context context) {

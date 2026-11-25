@@ -147,16 +147,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualWanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualWANName) {
@@ -219,65 +210,27 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             resourceGroupName, virtualWANName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualWanInner> getByResourceGroupAsync(String resourceGroupName, String virtualWANName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualWANName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualWanInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualWANName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualWANName, context).block();
     }
 
-    /**
-     * Retrieves the details of a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualWanInner getByResourceGroup(String resourceGroupName, String virtualWANName) {
         return getByResourceGroupWithResponse(resourceGroupName, virtualWANName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualWANName, VirtualWanInner wANParameters) {
@@ -354,17 +307,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             resourceGroupName, virtualWANName, contentType, accept, wANParameters, context);
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String virtualWANName, VirtualWanInner wANParameters) {
@@ -396,52 +339,21 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             VirtualWanInner.class, VirtualWanInner.class, context);
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualWANName, VirtualWanInner wANParameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters).getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualWANName, VirtualWanInner wANParameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualWanInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
         VirtualWanInner wANParameters) {
@@ -468,52 +380,21 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualWanInner createOrUpdate(String resourceGroupName, String virtualWANName,
         VirtualWanInner wANParameters) {
         return createOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters).block();
     }
 
-    /**
-     * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to create or update VirtualWAN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualWanInner createOrUpdate(String resourceGroupName, String virtualWANName,
         VirtualWanInner wANParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters, context).block();
     }
 
-    /**
-     * Updates a VirtualWAN tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to Update VirtualWAN tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualWanInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters) {
@@ -590,17 +471,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             resourceGroupName, virtualWANName, contentType, accept, wANParameters, context);
     }
 
-    /**
-     * Updates a VirtualWAN tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to Update VirtualWAN tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualWanInner> updateTagsAsync(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters) {
@@ -608,50 +479,20 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a VirtualWAN tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to Update VirtualWAN tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualWanInner> updateTagsWithResponse(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, virtualWANName, wANParameters, context).block();
     }
 
-    /**
-     * Updates a VirtualWAN tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param wANParameters Parameters supplied to Update VirtualWAN tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualWanInner updateTags(String resourceGroupName, String virtualWANName, TagsObject wANParameters) {
         return updateTagsWithResponse(resourceGroupName, virtualWANName, wANParameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualWANName) {
         if (this.client.getEndpoint() == null) {
@@ -711,16 +552,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             virtualWANName, context);
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualWANName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualWANName);
@@ -748,48 +580,20 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             context);
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWANName) {
         return this.beginDeleteAsync(resourceGroupName, virtualWANName).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWANName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualWANName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualWANName) {
         return beginDeleteAsync(resourceGroupName, virtualWANName).last()
@@ -813,30 +617,13 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualWANName) {
         deleteAsync(resourceGroupName, virtualWANName).block();
     }
 
-    /**
-     * Deletes a VirtualWAN.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN being retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualWANName, Context context) {
         deleteAsync(resourceGroupName, virtualWANName, context).block();
@@ -912,15 +699,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VirtualWANs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualWanInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -943,30 +722,13 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VirtualWANs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualWanInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the VirtualWANs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualWanInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1028,13 +790,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VirtualWANs in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualWanInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1055,27 +811,13 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VirtualWANs in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualWanInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the VirtualWANs in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualWanInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

@@ -28,8 +28,7 @@ public final class ProvisionedNetworksImpl implements ProvisionedNetworks {
     }
 
     public PagedIterable<ProvisionedNetwork> list(String resourceGroupName, String privateCloudName) {
-        PagedIterable<ProvisionedNetworkInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProvisionedNetworkImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public PagedIterable<ProvisionedNetwork> list(String resourceGroupName, String privateCloudName, Context context) {

@@ -123,10 +123,7 @@ public final class ManagedPrivateEndpointModelImpl
     }
 
     public ManagedPrivateEndpointModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .create(resourceGroupName, workspaceName, managedPrivateEndpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedPrivateEndpointModel create(Context context) {
@@ -148,11 +145,7 @@ public final class ManagedPrivateEndpointModelImpl
     }
 
     public ManagedPrivateEndpointModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .update(resourceGroupName, workspaceName, managedPrivateEndpointName, updateRequestBodyParameters,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedPrivateEndpointModel apply(Context context) {
@@ -178,11 +171,7 @@ public final class ManagedPrivateEndpointModelImpl
     }
 
     public ManagedPrivateEndpointModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .getWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedPrivateEndpointModel refresh(Context context) {

@@ -225,10 +225,7 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
     }
 
     public PrivateCloud create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateClouds()
-            .createOrUpdate(resourceGroupName, privateCloudName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateCloud create(Context context) {
@@ -250,10 +247,7 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
     }
 
     public PrivateCloud apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateClouds()
-            .update(resourceGroupName, privateCloudName, updatePrivateCloudUpdate, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateCloud apply(Context context) {
@@ -275,11 +269,7 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
     }
 
     public PrivateCloud refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateClouds()
-            .getByResourceGroupWithResponse(resourceGroupName, privateCloudName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateCloud refresh(Context context) {

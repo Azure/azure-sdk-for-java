@@ -153,18 +153,7 @@ public final class ActionVersionsClientImpl implements ActionVersionsClient {
         return getWithResponseAsync(location, actionName, versionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Action Version resource for a given location and action.
-     * 
-     * @param location The name of the Azure region.
-     * @param actionName String that represents an Action resource name.
-     * @param versionName String that represents an Action Version resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Action Version resource for a given location and action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActionVersionInner> getWithResponse(String location, String actionName, String versionName,
         Context context) {
@@ -173,17 +162,7 @@ public final class ActionVersionsClientImpl implements ActionVersionsClient {
             location, actionName, versionName, accept, context);
     }
 
-    /**
-     * Get an Action Version resource for a given location and action.
-     * 
-     * @param location The name of the Azure region.
-     * @param actionName String that represents an Action resource name.
-     * @param versionName String that represents an Action Version resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Action Version resource for a given location and action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActionVersionInner get(String location, String actionName, String versionName) {
         return getWithResponse(location, actionName, versionName, Context.NONE).getValue();
@@ -263,11 +242,7 @@ public final class ActionVersionsClientImpl implements ActionVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActionVersionInner> listSinglePage(String location, String actionName,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<ActionVersionListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, actionName, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, actionName, continuationToken, Context.NONE);
     }
 
     /**
@@ -292,37 +267,14 @@ public final class ActionVersionsClientImpl implements ActionVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Action Version resources for a given location and action.
-     * 
-     * @param location The name of the Azure region.
-     * @param actionName String that represents an Action resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Action Version resources for a given location and action as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionVersionInner> list(String location, String actionName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(location, actionName, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(location, actionName, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Action Version resources for a given location and action.
-     * 
-     * @param location The name of the Azure region.
-     * @param actionName String that represents an Action resource name.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Action Version resources for a given location and action as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionVersionInner> list(String location, String actionName, String continuationToken,
         Context context) {
@@ -360,11 +312,7 @@ public final class ActionVersionsClientImpl implements ActionVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ActionVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ActionVersionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

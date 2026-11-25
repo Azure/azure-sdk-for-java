@@ -31,8 +31,7 @@ public final class DeletedVaultsImpl implements DeletedVaults {
     }
 
     public PagedIterable<DeletedVault> listBySubscriptionId(String location) {
-        PagedIterable<DeletedVaultInner> inner = this.serviceClient().listBySubscriptionId(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedVaultImpl(inner1, this.manager()));
+        return this.listBySubscriptionId(location, Context.NONE);
     }
 
     public PagedIterable<DeletedVault> listBySubscriptionId(String location, Context context) {
@@ -56,7 +55,7 @@ public final class DeletedVaultsImpl implements DeletedVaults {
     }
 
     public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
-        this.serviceClient().undelete(location, deletedVaultName, body);
+        this.undelete(location, deletedVaultName, body, Context.NONE);
     }
 
     public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context) {

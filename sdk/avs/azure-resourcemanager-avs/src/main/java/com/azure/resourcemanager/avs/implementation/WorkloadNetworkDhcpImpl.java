@@ -61,10 +61,7 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcp create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createDhcp(resourceGroupName, privateCloudName, dhcpId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkDhcp create(Context context) {
@@ -85,10 +82,7 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcp apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateDhcp(resourceGroupName, privateCloudName, dhcpId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkDhcp apply(Context context) {
@@ -114,11 +108,7 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcp refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkDhcp refresh(Context context) {

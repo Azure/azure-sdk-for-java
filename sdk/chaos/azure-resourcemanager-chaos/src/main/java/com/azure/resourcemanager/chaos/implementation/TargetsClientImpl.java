@@ -222,20 +222,7 @@ public final class TargetsClientImpl implements TargetsClient {
             targetName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Target resource that extends a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target resource that extends a tracked regional resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetInner> getWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, Context context) {
@@ -245,19 +232,7 @@ public final class TargetsClientImpl implements TargetsClient {
             context);
     }
 
-    /**
-     * Get a Target resource that extends a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target resource that extends a tracked regional resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
         String parentResourceName, String targetName) {
@@ -314,21 +289,7 @@ public final class TargetsClientImpl implements TargetsClient {
             parentResourceName, targetName, resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a Target resource that extends a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param resource Target resource to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Target resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetInner> createOrUpdateWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, TargetInner resource,
@@ -340,20 +301,7 @@ public final class TargetsClientImpl implements TargetsClient {
             parentResourceName, targetName, contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update a Target resource that extends a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param resource Target resource to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Target resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner createOrUpdate(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, TargetInner resource) {
@@ -404,20 +352,7 @@ public final class TargetsClientImpl implements TargetsClient {
             parentResourceName, targetName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Target resource that extends a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, Context context) {
@@ -426,18 +361,7 @@ public final class TargetsClientImpl implements TargetsClient {
             parentResourceName, targetName, context);
     }
 
-    /**
-     * Delete a Target resource that extends a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
         String parentResourceName, String targetName) {
@@ -531,12 +455,8 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listSinglePage(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String continuationToken) {
-        final String accept = "application/json";
-        Response<TargetListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            continuationToken, Context.NONE);
     }
 
     /**
@@ -564,42 +484,16 @@ public final class TargetsClientImpl implements TargetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Target resources that extend a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> list(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, continuationToken), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Target resources that extend a tracked regional resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> list(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String continuationToken, Context context) {
@@ -637,11 +531,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TargetListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

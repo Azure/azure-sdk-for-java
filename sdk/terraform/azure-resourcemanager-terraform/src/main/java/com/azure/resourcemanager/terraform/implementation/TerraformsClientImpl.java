@@ -111,10 +111,7 @@ public final class TerraformsClientImpl implements TerraformsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> exportTerraformWithResponse(BaseExportModel body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.exportTerraformSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, body, Context.NONE);
+        return exportTerraformWithResponse(body, Context.NONE);
     }
 
     /**
@@ -153,33 +150,14 @@ public final class TerraformsClientImpl implements TerraformsClient {
             this.client.getContext());
     }
 
-    /**
-     * Exports the Terraform configuration of the specified resource(s).
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TerraformOperationStatusInner>, TerraformOperationStatusInner>
         beginExportTerraform(BaseExportModel body) {
-        Response<BinaryData> response = exportTerraformWithResponse(body);
-        return this.client.<TerraformOperationStatusInner, TerraformOperationStatusInner>getLroResult(response,
-            TerraformOperationStatusInner.class, TerraformOperationStatusInner.class, Context.NONE);
+        return beginExportTerraform(body, Context.NONE);
     }
 
-    /**
-     * Exports the Terraform configuration of the specified resource(s).
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TerraformOperationStatusInner>, TerraformOperationStatusInner>
         beginExportTerraform(BaseExportModel body, Context context) {
@@ -202,32 +180,15 @@ public final class TerraformsClientImpl implements TerraformsClient {
         return beginExportTerraformAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Exports the Terraform configuration of the specified resource(s).
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TerraformOperationStatusInner exportTerraform(BaseExportModel body) {
-        return beginExportTerraform(body).getFinalResult();
+        return exportTerraform(body, Context.NONE);
     }
 
-    /**
-     * Exports the Terraform configuration of the specified resource(s).
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TerraformOperationStatusInner exportTerraform(BaseExportModel body, Context context) {
-        return beginExportTerraform(body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginExportTerraform(body, context));
     }
 }

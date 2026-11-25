@@ -258,20 +258,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     * the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangeDataCaptureResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String changeDataCaptureName, String ifNoneMatch, Context context) {
@@ -280,17 +267,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureResourceInner get(String resourceGroupName, String factoryName,
         String changeDataCaptureName) {
@@ -346,21 +323,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a change data capture resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param changeDataCapture Change data capture resource definition.
-     * @param ifMatch ETag of the change data capture entity. Should only be specified for update, for which it should
-     * match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return change data capture resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangeDataCaptureResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String factoryName, String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture,
@@ -372,18 +335,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             contentType, accept, changeDataCapture, context);
     }
 
-    /**
-     * Creates or updates a change data capture resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param changeDataCapture Change data capture resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return change data capture resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureResourceInner createOrUpdate(String resourceGroupName, String factoryName,
         String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture) {
@@ -429,18 +381,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
         Context context) {
@@ -448,16 +389,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             this.client.getSubscriptionId(), resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
-    /**
-     * Deletes a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String changeDataCaptureName) {
         deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
@@ -515,12 +447,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureResourceInner> listByFactorySinglePage(String resourceGroupName,
         String factoryName) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -545,33 +472,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all resources of type change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of change data capture resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists all resources of type change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of change data capture resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -616,18 +523,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Starts a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
         Context context) {
@@ -635,16 +531,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             this.client.getSubscriptionId(), resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
-    /**
-     * Starts a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String factoryName, String changeDataCaptureName) {
         startWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
@@ -687,18 +574,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Stops a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
         Context context) {
@@ -706,16 +582,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
-    /**
-     * Stops a change data capture.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String factoryName, String changeDataCaptureName) {
         stopWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
@@ -759,18 +626,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the current status for the change data capture resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status for the change data capture resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> statusWithResponse(String resourceGroupName, String factoryName,
         String changeDataCaptureName, Context context) {
@@ -779,17 +635,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             this.client.getSubscriptionId(), resourceGroupName, factoryName, changeDataCaptureName, accept, context);
     }
 
-    /**
-     * Gets the current status for the change data capture resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param changeDataCaptureName The change data capture name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status for the change data capture resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String status(String resourceGroupName, String factoryName, String changeDataCaptureName) {
         return statusWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE).getValue();
@@ -826,11 +672,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

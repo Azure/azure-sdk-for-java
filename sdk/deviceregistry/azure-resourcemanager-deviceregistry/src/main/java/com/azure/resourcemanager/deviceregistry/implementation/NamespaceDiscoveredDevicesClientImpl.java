@@ -224,18 +224,7 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceDiscoveredDevice along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceDiscoveredDeviceInner> getWithResponse(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, Context context) {
@@ -244,17 +233,7 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             resourceGroupName, namespaceName, discoveredDeviceName, accept, context);
     }
 
-    /**
-     * Get a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceDiscoveredDevice.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredDeviceInner get(String resourceGroupName, String namespaceName,
         String discoveredDeviceName) {
@@ -300,11 +279,8 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, NamespaceDiscoveredDeviceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, discoveredDeviceName, contentType,
-            accept, resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, namespaceName, discoveredDeviceName, resource,
+            Context.NONE);
     }
 
     /**
@@ -353,41 +329,15 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             this.client.getContext());
     }
 
-    /**
-     * Create a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredDeviceInner>, NamespaceDiscoveredDeviceInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String discoveredDeviceName,
         NamespaceDiscoveredDeviceInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, namespaceName, discoveredDeviceName, resource);
-        return this.client.<NamespaceDiscoveredDeviceInner, NamespaceDiscoveredDeviceInner>getLroResult(response,
-            NamespaceDiscoveredDeviceInner.class, NamespaceDiscoveredDeviceInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, namespaceName, discoveredDeviceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredDeviceInner>, NamespaceDiscoveredDeviceInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String discoveredDeviceName,
@@ -417,42 +367,19 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredDeviceInner createOrReplace(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, NamespaceDiscoveredDeviceInner resource) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, discoveredDeviceName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, namespaceName, discoveredDeviceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredDeviceInner createOrReplace(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, NamespaceDiscoveredDeviceInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, discoveredDeviceName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, namespaceName, discoveredDeviceName, resource, context));
     }
 
     /**
@@ -494,11 +421,7 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, NamespaceDiscoveredDeviceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, discoveredDeviceName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, discoveredDeviceName, properties, Context.NONE);
     }
 
     /**
@@ -547,41 +470,15 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             this.client.getContext());
     }
 
-    /**
-     * Update a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredDeviceInner>, NamespaceDiscoveredDeviceInner> beginUpdate(
         String resourceGroupName, String namespaceName, String discoveredDeviceName,
         NamespaceDiscoveredDeviceUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, namespaceName, discoveredDeviceName, properties);
-        return this.client.<NamespaceDiscoveredDeviceInner, NamespaceDiscoveredDeviceInner>getLroResult(response,
-            NamespaceDiscoveredDeviceInner.class, NamespaceDiscoveredDeviceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, discoveredDeviceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredDeviceInner>, NamespaceDiscoveredDeviceInner> beginUpdate(
         String resourceGroupName, String namespaceName, String discoveredDeviceName,
@@ -611,42 +508,19 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredDeviceInner update(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, NamespaceDiscoveredDeviceUpdate properties) {
-        return beginUpdate(resourceGroupName, namespaceName, discoveredDeviceName, properties).getFinalResult();
+        return update(resourceGroupName, namespaceName, discoveredDeviceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredDeviceInner update(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, NamespaceDiscoveredDeviceUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, discoveredDeviceName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, namespaceName, discoveredDeviceName, properties, context));
     }
 
     /**
@@ -683,8 +557,7 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String discoveredDeviceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, discoveredDeviceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, discoveredDeviceName, Context.NONE);
     }
 
     /**
@@ -726,36 +599,14 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             this.client.getContext());
     }
 
-    /**
-     * Delete a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String discoveredDeviceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, discoveredDeviceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, discoveredDeviceName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String discoveredDeviceName, Context context) {
@@ -781,35 +632,17 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String discoveredDeviceName) {
-        beginDelete(resourceGroupName, namespaceName, discoveredDeviceName).getFinalResult();
+        delete(resourceGroupName, namespaceName, discoveredDeviceName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceDiscoveredDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredDeviceName The name of the discovered device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String discoveredDeviceName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, discoveredDeviceName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, discoveredDeviceName, context));
     }
 
     /**
@@ -865,12 +698,7 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceDiscoveredDeviceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<NamespaceDiscoveredDeviceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -895,36 +723,14 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NamespaceDiscoveredDevice resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceDiscoveredDevice list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceDiscoveredDeviceInner> listByResourceGroup(String resourceGroupName,
         String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List NamespaceDiscoveredDevice resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceDiscoveredDevice list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceDiscoveredDeviceInner> listByResourceGroup(String resourceGroupName,
         String namespaceName, Context context) {
@@ -965,11 +771,7 @@ public final class NamespaceDiscoveredDevicesClientImpl implements NamespaceDisc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceDiscoveredDeviceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NamespaceDiscoveredDeviceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

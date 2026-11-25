@@ -131,17 +131,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a elastic San along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> listByElasticSanWithResponse(String resourceGroupName,
         String elasticSanName, Context context) {
@@ -168,16 +158,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             this.client.getSubscriptionId(), resourceGroupName, elasticSanName, accept, context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a elastic San.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceListResultInner listByElasticSan(String resourceGroupName, String elasticSanName) {
         return listByElasticSanWithResponse(resourceGroupName, elasticSanName, Context.NONE).getValue();

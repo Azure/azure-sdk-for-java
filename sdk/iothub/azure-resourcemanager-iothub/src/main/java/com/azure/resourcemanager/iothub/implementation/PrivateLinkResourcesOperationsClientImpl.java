@@ -142,22 +142,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified private link resource
-     * 
-     * Get the specified private link resource for the given IotHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param groupId The name of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource
-     * 
-     * Get the specified private link resource for the given IotHub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupIdInformationInner> getWithResponse(String resourceGroupName, String resourceName,
         String groupId, Context context) {
@@ -166,21 +151,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
             resourceGroupName, resourceName, groupId, accept, context);
     }
 
-    /**
-     * Get the specified private link resource
-     * 
-     * Get the specified private link resource for the given IotHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param groupId The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource
-     * 
-     * Get the specified private link resource for the given IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupIdInformationInner get(String resourceGroupName, String resourceName, String groupId) {
         return getWithResponse(resourceGroupName, resourceName, groupId, Context.NONE).getValue();
@@ -226,19 +197,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
         return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List private link resources
-     * 
-     * List private link resources for the given IotHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesInner> listWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -247,18 +206,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * List private link resources
-     * 
-     * List private link resources for the given IotHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourcesInner list(String resourceGroupName, String resourceName) {
         return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();

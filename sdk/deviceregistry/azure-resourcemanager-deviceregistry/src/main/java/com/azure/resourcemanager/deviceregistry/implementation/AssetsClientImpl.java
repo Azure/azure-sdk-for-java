@@ -246,17 +246,7 @@ public final class AssetsClientImpl implements AssetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Asset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssetInner> getByResourceGroupWithResponse(String resourceGroupName, String assetName,
         Context context) {
@@ -265,16 +255,7 @@ public final class AssetsClientImpl implements AssetsClient {
             this.client.getSubscriptionId(), resourceGroupName, assetName, accept, context);
     }
 
-    /**
-     * Get a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Asset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetInner getByResourceGroup(String resourceGroupName, String assetName) {
         return getByResourceGroupWithResponse(resourceGroupName, assetName, Context.NONE).getValue();
@@ -316,10 +297,7 @@ public final class AssetsClientImpl implements AssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String assetName,
         AssetInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetName, contentType, accept, resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, assetName, resource, Context.NONE);
     }
 
     /**
@@ -363,37 +341,14 @@ public final class AssetsClientImpl implements AssetsClient {
             AssetInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetInner>, AssetInner> beginCreateOrReplace(String resourceGroupName,
         String assetName, AssetInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, assetName, resource);
-        return this.client.<AssetInner, AssetInner>getLroResult(response, AssetInner.class, AssetInner.class,
-            Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, assetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetInner>, AssetInner> beginCreateOrReplace(String resourceGroupName,
         String assetName, AssetInner resource, Context context) {
@@ -418,38 +373,18 @@ public final class AssetsClientImpl implements AssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetInner createOrReplace(String resourceGroupName, String assetName, AssetInner resource) {
-        return beginCreateOrReplace(resourceGroupName, assetName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, assetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetInner createOrReplace(String resourceGroupName, String assetName, AssetInner resource,
         Context context) {
-        return beginCreateOrReplace(resourceGroupName, assetName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, assetName, resource, context));
     }
 
     /**
@@ -487,11 +422,7 @@ public final class AssetsClientImpl implements AssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String assetName,
         AssetUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, assetName, properties, Context.NONE);
     }
 
     /**
@@ -534,37 +465,14 @@ public final class AssetsClientImpl implements AssetsClient {
             AssetInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetInner>, AssetInner> beginUpdate(String resourceGroupName, String assetName,
         AssetUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, assetName, properties);
-        return this.client.<AssetInner, AssetInner>getLroResult(response, AssetInner.class, AssetInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, assetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetInner>, AssetInner> beginUpdate(String resourceGroupName, String assetName,
         AssetUpdate properties, Context context) {
@@ -589,37 +497,16 @@ public final class AssetsClientImpl implements AssetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetInner update(String resourceGroupName, String assetName, AssetUpdate properties) {
-        return beginUpdate(resourceGroupName, assetName, properties).getFinalResult();
+        return update(resourceGroupName, assetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetInner update(String resourceGroupName, String assetName, AssetUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, assetName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, assetName, properties, context));
     }
 
     /**
@@ -652,8 +539,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String assetName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, assetName, Context.NONE);
     }
 
     /**
@@ -690,33 +576,13 @@ public final class AssetsClientImpl implements AssetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String assetName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, assetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, assetName, Context.NONE);
     }
 
-    /**
-     * Delete a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String assetName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, assetName, context);
@@ -738,33 +604,16 @@ public final class AssetsClientImpl implements AssetsClient {
         return beginDeleteAsync(resourceGroupName, assetName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String assetName) {
-        beginDelete(resourceGroupName, assetName).getFinalResult();
+        delete(resourceGroupName, assetName, Context.NONE);
     }
 
-    /**
-     * Delete a Asset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetName Asset name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String assetName, Context context) {
-        beginDelete(resourceGroupName, assetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, assetName, context));
     }
 
     /**
@@ -814,11 +663,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AssetListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -840,31 +685,13 @@ public final class AssetsClientImpl implements AssetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Asset resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Asset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Asset resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Asset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -912,11 +739,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AssetListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -937,27 +760,13 @@ public final class AssetsClientImpl implements AssetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Asset resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Asset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Asset resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Asset list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -996,11 +805,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1054,11 +859,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssetInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssetListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

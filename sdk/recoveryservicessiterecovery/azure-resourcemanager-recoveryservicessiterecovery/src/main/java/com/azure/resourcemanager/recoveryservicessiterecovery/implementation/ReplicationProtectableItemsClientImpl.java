@@ -209,24 +209,7 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
             protectableItemName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a protectable item.
-     * 
-     * The operation to get the details of a protectable item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param protectableItemName Protectable item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a protectable item.
-     * 
-     * The operation to get the details of a protectable item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectableItemInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String protectableItemName, Context context) {
@@ -265,23 +248,7 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
             resourceGroupName, resourceName, fabricName, protectionContainerName, protectableItemName, accept, context);
     }
 
-    /**
-     * Gets the details of a protectable item.
-     * 
-     * The operation to get the details of a protectable item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param protectableItemName Protectable item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a protectable item.
-     * 
-     * The operation to get the details of a protectable item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectableItemInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName) {
@@ -425,38 +392,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
     private PagedResponse<ProtectableItemInner> listByReplicationProtectionContainersSinglePage(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName, String filter,
         String take, String skipToken) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProtectableItemCollection> res = service.listByReplicationProtectionContainersSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, protectionContainerName, filter, take, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, filter, take, skipToken, Context.NONE);
     }
 
     /**
@@ -517,54 +454,18 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of protectable items.
-     * 
-     * Lists the protectable items in a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of protectable items.
-     * 
-     * Lists the protectable items in a protection container as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName) {
         final String filter = null;
         final String take = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listByReplicationProtectionContainersSinglePage(resourceGroupName, resourceName, fabricName,
-                protectionContainerName, filter, take, skipToken),
-            nextLink -> listByReplicationProtectionContainersNextSinglePage(nextLink));
+        return listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, filter, take, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets the list of protectable items.
-     * 
-     * Lists the protectable items in a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param filter OData filter options.
-     * @param take take OData query parameter.
-     * @param skipToken skipToken OData query parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of protectable items.
-     * 
-     * Lists the protectable items in a protection container as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String filter, String take,
@@ -623,20 +524,7 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectableItemInner> listByReplicationProtectionContainersNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProtectableItemCollection> res = service.listByReplicationProtectionContainersNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

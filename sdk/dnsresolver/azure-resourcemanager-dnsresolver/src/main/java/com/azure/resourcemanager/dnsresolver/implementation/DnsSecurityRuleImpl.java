@@ -132,11 +132,7 @@ public final class DnsSecurityRuleImpl implements DnsSecurityRule, DnsSecurityRu
     }
 
     public DnsSecurityRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsSecurityRules()
-            .createOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsSecurityRule create(Context context) {
@@ -162,11 +158,7 @@ public final class DnsSecurityRuleImpl implements DnsSecurityRule, DnsSecurityRu
     }
 
     public DnsSecurityRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsSecurityRules()
-            .update(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, updateParameters, updateIfMatch,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsSecurityRule apply(Context context) {
@@ -193,11 +185,7 @@ public final class DnsSecurityRuleImpl implements DnsSecurityRule, DnsSecurityRu
     }
 
     public DnsSecurityRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsSecurityRules()
-            .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsSecurityRule refresh(Context context) {

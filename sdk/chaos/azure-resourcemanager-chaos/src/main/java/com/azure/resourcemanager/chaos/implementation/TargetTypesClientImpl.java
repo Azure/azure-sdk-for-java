@@ -148,17 +148,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
         return getWithResponseAsync(location, targetTypeName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Target Type resources for given location.
-     * 
-     * @param location The name of the Azure region.
-     * @param targetTypeName String that represents a Target Type resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target Type resources for given location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetTypeInner> getWithResponse(String location, String targetTypeName, Context context) {
         final String accept = "application/json";
@@ -166,16 +156,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
             location, targetTypeName, accept, context);
     }
 
-    /**
-     * Get a Target Type resources for given location.
-     * 
-     * @param location The name of the Azure region.
-     * @param targetTypeName String that represents a Target Type resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target Type resources for given location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetTypeInner get(String location, String targetTypeName) {
         return getWithResponse(location, targetTypeName, Context.NONE).getValue();
@@ -247,11 +228,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetTypeInner> listSinglePage(String location, String continuationToken) {
-        final String accept = "application/json";
-        Response<TargetTypeListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, continuationToken, Context.NONE);
     }
 
     /**
@@ -274,33 +251,14 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Target Type resources for given location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target Type resources for given location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetTypeInner> list(String location) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(location, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(location, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Target Type resources for given location.
-     * 
-     * @param location The name of the Azure region.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target Type resources for given location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetTypeInner> list(String location, String continuationToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, continuationToken, context),
@@ -337,11 +295,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetTypeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TargetTypeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

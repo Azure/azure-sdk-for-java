@@ -76,16 +76,14 @@ public final class SkusImpl implements Skus {
 
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String sku) {
-        this.serviceClient()
-            .deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, sku);
+        this.deleteNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst, sku,
+            Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeFirst(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst) {
-        PagedIterable<SkuResourceInner> inner = this.serviceClient()
-            .listByResourceTypeRegistrationsNestedResourceTypeFirst(providerNamespace, resourceType,
-                nestedResourceTypeFirst);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrationsNestedResourceTypeFirst(providerNamespace, resourceType,
+            nestedResourceTypeFirst, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeFirst(String providerNamespace,
@@ -119,13 +117,11 @@ public final class SkusImpl implements Skus {
     }
 
     public void delete(String providerNamespace, String resourceType, String sku) {
-        this.serviceClient().delete(providerNamespace, resourceType, sku);
+        this.deleteWithResponse(providerNamespace, resourceType, sku, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrations(String providerNamespace, String resourceType) {
-        PagedIterable<SkuResourceInner> inner
-            = this.serviceClient().listByResourceTypeRegistrations(providerNamespace, resourceType);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrations(providerNamespace, resourceType, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrations(String providerNamespace, String resourceType,
@@ -187,17 +183,14 @@ public final class SkusImpl implements Skus {
 
     public void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
-        this.serviceClient()
-            .deleteNestedResourceTypeSecond(providerNamespace, resourceType, nestedResourceTypeFirst,
-                nestedResourceTypeSecond, sku);
+        this.deleteNestedResourceTypeSecondWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeSecond(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond) {
-        PagedIterable<SkuResourceInner> inner = this.serviceClient()
-            .listByResourceTypeRegistrationsNestedResourceTypeSecond(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrationsNestedResourceTypeSecond(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeSecond(String providerNamespace,
@@ -263,18 +256,15 @@ public final class SkusImpl implements Skus {
 
     public void deleteNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
-        this.serviceClient()
-            .deleteNestedResourceTypeThird(providerNamespace, resourceType, nestedResourceTypeFirst,
-                nestedResourceTypeSecond, nestedResourceTypeThird, sku);
+        this.deleteNestedResourceTypeThirdWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeThird(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        PagedIterable<SkuResourceInner> inner = this.serviceClient()
-            .listByResourceTypeRegistrationsNestedResourceTypeThird(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrationsNestedResourceTypeThird(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, Context.NONE);
     }
 
     public PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeThird(String providerNamespace,
@@ -287,102 +277,36 @@ public final class SkusImpl implements Skus {
     }
 
     public SkuResource getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String sku = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "sku");
-        if (sku == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'skus'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, resourceType, sku, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SkuResource> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String resourceType = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String sku = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceType", "resourcetypeRegistrations", LOGGER);
+        String sku = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "sku");
-        if (sku == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'skus'.", id)));
-        }
+            "sku", "skus", LOGGER);
         return this.getWithResponse(providerNamespace, resourceType, sku, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String sku = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "sku");
-        if (sku == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'skus'.", id)));
-        }
-        this.deleteWithResponse(providerNamespace, resourceType, sku, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String resourceType = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String sku = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceType", "resourcetypeRegistrations", LOGGER);
+        String sku = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}",
-            "sku");
-        if (sku == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'skus'.", id)));
-        }
+            "sku", "skus", LOGGER);
         return this.deleteWithResponse(providerNamespace, resourceType, sku, context);
     }
 

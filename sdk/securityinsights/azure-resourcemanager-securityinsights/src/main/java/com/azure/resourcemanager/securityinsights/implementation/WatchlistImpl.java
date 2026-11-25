@@ -159,10 +159,7 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchlists()
-            .createOrUpdate(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Watchlist create(Context context) {
@@ -183,10 +180,7 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchlists()
-            .createOrUpdate(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Watchlist apply(Context context) {
@@ -212,11 +206,7 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchlists()
-            .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Watchlist refresh(Context context) {

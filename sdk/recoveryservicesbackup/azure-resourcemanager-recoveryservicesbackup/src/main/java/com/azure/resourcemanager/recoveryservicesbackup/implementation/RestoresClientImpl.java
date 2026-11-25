@@ -137,10 +137,8 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
-        final String contentType = "application/json";
-        return service.triggerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            recoveryPointId, contentType, parameters, Context.NONE);
+        return triggerWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, Context.NONE);
     }
 
     /**
@@ -198,50 +196,16 @@ public final class RestoresClientImpl implements RestoresClient {
             this.client.getContext());
     }
 
-    /**
-     * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use
-     * GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters resource restore request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
-        Response<BinaryData> response = triggerWithResponse(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTrigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+            parameters, Context.NONE);
     }
 
-    /**
-     * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use
-     * GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters resource restore request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
@@ -275,50 +239,19 @@ public final class RestoresClientImpl implements RestoresClient {
             recoveryPointId, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use
-     * GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters resource restore request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
-        beginTrigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
-            parameters).getFinalResult();
+        trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use
-     * GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters resource restore request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
-        beginTrigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
-            parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginTrigger(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, parameters, context));
     }
 }

@@ -301,30 +301,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceInner> listSinglePage(String resourceGroupName, String privateCloudName,
         MaintenanceStateName stateName, MaintenanceStatusFilter status, OffsetDateTime from, OffsetDateTime to) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MaintenanceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, privateCloudName, stateName, status, from, to, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, stateName, status, from, to, Context.NONE);
     }
 
     /**
@@ -372,42 +349,17 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Maintenance resources by subscription ID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Maintenance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceInner> list(String resourceGroupName, String privateCloudName) {
         final MaintenanceStateName stateName = null;
         final MaintenanceStatusFilter status = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, privateCloudName, stateName, status, from, to),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, stateName, status, from, to, Context.NONE);
     }
 
-    /**
-     * List Maintenance resources by subscription ID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param stateName Filter maintenances based on state.
-     * @param status Filter active or inactive maintenances.
-     * @param from date from which result should be returned. ie. scheduledStartTime &gt;= from.
-     * @param to date till which result should be returned. i.e. scheduledStartTime &lt;= to.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Maintenance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceInner> list(String resourceGroupName, String privateCloudName,
         MaintenanceStateName stateName, MaintenanceStatusFilter status, OffsetDateTime from, OffsetDateTime to,
@@ -475,18 +427,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Maintenance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maintenance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String maintenanceName, Context context) {
@@ -517,17 +458,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             resourceGroupName, privateCloudName, maintenanceName, accept, context);
     }
 
-    /**
-     * Get a Maintenance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maintenance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceInner get(String resourceGroupName, String privateCloudName, String maintenanceName) {
         return getWithResponse(resourceGroupName, privateCloudName, maintenanceName, Context.NONE).getValue();
@@ -601,19 +532,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Reschedule a maintenance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceInner> rescheduleWithResponse(String resourceGroupName, String privateCloudName,
         String maintenanceName, MaintenanceReschedule body, Context context) {
@@ -651,18 +570,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             body, context);
     }
 
-    /**
-     * Reschedule a maintenance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceInner reschedule(String resourceGroupName, String privateCloudName, String maintenanceName,
         MaintenanceReschedule body) {
@@ -738,19 +646,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Schedule a maintenance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceInner> scheduleWithResponse(String resourceGroupName, String privateCloudName,
         String maintenanceName, MaintenanceSchedule body, Context context) {
@@ -788,18 +684,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             body, context);
     }
 
-    /**
-     * Schedule a maintenance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceInner schedule(String resourceGroupName, String privateCloudName, String maintenanceName,
         MaintenanceSchedule body) {
@@ -866,18 +751,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Initiate maintenance readiness checks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceInner> initiateChecksWithResponse(String resourceGroupName, String privateCloudName,
         String maintenanceName, Context context) {
@@ -908,17 +782,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, maintenanceName, accept, context);
     }
 
-    /**
-     * Initiate maintenance readiness checks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param maintenanceName Name of the maintenance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceInner initiateChecks(String resourceGroupName, String privateCloudName, String maintenanceName) {
         return initiateChecksWithResponse(resourceGroupName, privateCloudName, maintenanceName, Context.NONE)
@@ -962,20 +826,7 @@ public final class MaintenancesClientImpl implements MaintenancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MaintenanceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -256,17 +256,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a HorizonDB parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB parameter group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ParameterGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String parameterGroupName) {
@@ -277,33 +267,14 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a HorizonDB parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB parameter group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ParameterGroupInner> getByResourceGroupAsync(String resourceGroupName, String parameterGroupName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, parameterGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a HorizonDB parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB parameter group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ParameterGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String parameterGroupName, Context context) {
@@ -312,33 +283,13 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, parameterGroupName, accept, context);
     }
 
-    /**
-     * Gets information about a HorizonDB parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ParameterGroupInner getByResourceGroup(String resourceGroupName, String parameterGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, parameterGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String parameterGroupName, ParameterGroupInner resource) {
@@ -365,11 +316,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String parameterGroupName,
         ParameterGroupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, parameterGroupName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, parameterGroupName, resource, Context.NONE);
     }
 
     /**
@@ -394,17 +341,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             context);
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ParameterGroupInner>, ParameterGroupInner>
         beginCreateOrReplaceAsync(String resourceGroupName, String parameterGroupName, ParameterGroupInner resource) {
@@ -414,37 +351,14 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             ParameterGroupInner.class, ParameterGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ParameterGroupInner>, ParameterGroupInner>
         beginCreateOrReplace(String resourceGroupName, String parameterGroupName, ParameterGroupInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, parameterGroupName, resource);
-        return this.client.<ParameterGroupInner, ParameterGroupInner>getLroResult(response, ParameterGroupInner.class,
-            ParameterGroupInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, parameterGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ParameterGroupInner>, ParameterGroupInner> beginCreateOrReplace(
         String resourceGroupName, String parameterGroupName, ParameterGroupInner resource, Context context) {
@@ -454,17 +368,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             ParameterGroupInner.class, context);
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ParameterGroupInner> createOrReplaceAsync(String resourceGroupName, String parameterGroupName,
         ParameterGroupInner resource) {
@@ -472,57 +376,22 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ParameterGroupInner createOrReplace(String resourceGroupName, String parameterGroupName,
         ParameterGroupInner resource) {
-        return beginCreateOrReplace(resourceGroupName, parameterGroupName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, parameterGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new HorizonDB parameter group or replaces an existing parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ParameterGroupInner createOrReplace(String resourceGroupName, String parameterGroupName,
         ParameterGroupInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, parameterGroupName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, parameterGroupName, resource, context));
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String parameterGroupName,
         ParameterGroupForPatchUpdate properties) {
@@ -553,11 +422,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String parameterGroupName,
         ParameterGroupForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, parameterGroupName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, parameterGroupName, properties, Context.NONE);
     }
 
     /**
@@ -586,21 +451,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             context);
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ParameterGroupInner>, ParameterGroupInner> beginUpdateAsync(String resourceGroupName,
         String parameterGroupName, ParameterGroupForPatchUpdate properties) {
@@ -610,45 +461,14 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             ParameterGroupInner.class, ParameterGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ParameterGroupInner>, ParameterGroupInner> beginUpdate(String resourceGroupName,
         String parameterGroupName, ParameterGroupForPatchUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, parameterGroupName, properties);
-        return this.client.<ParameterGroupInner, ParameterGroupInner>getLroResult(response, ParameterGroupInner.class,
-            ParameterGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, parameterGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ParameterGroupInner>, ParameterGroupInner> beginUpdate(String resourceGroupName,
         String parameterGroupName, ParameterGroupForPatchUpdate properties, Context context) {
@@ -657,21 +477,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             ParameterGroupInner.class, context);
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ParameterGroupInner> updateAsync(String resourceGroupName, String parameterGroupName,
         ParameterGroupForPatchUpdate properties) {
@@ -679,60 +485,22 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ParameterGroupInner update(String resourceGroupName, String parameterGroupName,
         ParameterGroupForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, parameterGroupName, properties).getFinalResult();
+        return update(resourceGroupName, parameterGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing HorizonDB parameter group. Each connected pool's applyMethod setting controls whether dynamic
-     * parameter changes become effective immediately or remain pending until a customer-initiated pool Restart. Static
-     * parameter changes always remain pending until a customer-initiated pool Restart. Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. The operation fails with a conflict while a previous update
-     * to this parameter group is still being processed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB parameter group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ParameterGroupInner update(String resourceGroupName, String parameterGroupName,
         ParameterGroupForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, parameterGroupName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, parameterGroupName, properties, context));
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String parameterGroupName) {
@@ -755,8 +523,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String parameterGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, parameterGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
     /**
@@ -778,17 +545,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, parameterGroupName, context);
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String parameterGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, parameterGroupName);
@@ -796,35 +553,13 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String parameterGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, parameterGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String parameterGroupName,
         Context context) {
@@ -832,52 +567,23 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String parameterGroupName) {
         return beginDeleteAsync(resourceGroupName, parameterGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String parameterGroupName) {
-        beginDelete(resourceGroupName, parameterGroupName).getFinalResult();
+        delete(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB parameter group. Deletion fails with a conflict when the parameter group is associated with
-     * one or more pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String parameterGroupName, Context context) {
-        beginDelete(resourceGroupName, parameterGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, parameterGroupName, context));
     }
 
     /**
@@ -901,15 +607,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all HorizonDB parameter groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ParameterGroup list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ParameterGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -927,11 +625,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ParameterGroupInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ParameterGroupListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -954,31 +648,13 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all HorizonDB parameter groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ParameterGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ParameterGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all HorizonDB parameter groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ParameterGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ParameterGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1004,13 +680,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all HorizonDB parameter groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ParameterGroup list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ParameterGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1026,11 +696,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ParameterGroupInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ParameterGroupListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1051,27 +717,13 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all HorizonDB parameter groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ParameterGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ParameterGroupInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all HorizonDB parameter groups in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ParameterGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ParameterGroupInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1102,16 +754,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets all connections to a parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connections to a parameter group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ParameterGroupConnectionPropertiesInner> listConnectionsAsync(String resourceGroupName,
         String parameterGroupName) {
@@ -1132,12 +775,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ParameterGroupConnectionPropertiesInner> listConnectionsSinglePage(String resourceGroupName,
         String parameterGroupName) {
-        final String accept = "application/json";
-        Response<PagedParameterGroupConnectionProperties> res
-            = service.listConnectionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, parameterGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listConnectionsSinglePage(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
     /**
@@ -1162,34 +800,14 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all connections to a parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connections to a parameter group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ParameterGroupConnectionPropertiesInner> listConnections(String resourceGroupName,
         String parameterGroupName) {
-        return new PagedIterable<>(() -> listConnectionsSinglePage(resourceGroupName, parameterGroupName),
-            nextLink -> listConnectionsNextSinglePage(nextLink));
+        return listConnections(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all connections to a parameter group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDB parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connections to a parameter group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ParameterGroupConnectionPropertiesInner> listConnections(String resourceGroupName,
         String parameterGroupName, Context context) {
@@ -1229,11 +847,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ParameterGroupInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ParameterGroupListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1287,11 +901,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ParameterGroupInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ParameterGroupListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1346,11 +956,7 @@ public final class ParameterGroupsClientImpl implements ParameterGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ParameterGroupConnectionPropertiesInner> listConnectionsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PagedParameterGroupConnectionProperties> res
-            = service.listConnectionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listConnectionsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

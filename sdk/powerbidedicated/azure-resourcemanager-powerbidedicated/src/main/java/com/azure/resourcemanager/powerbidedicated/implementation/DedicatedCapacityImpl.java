@@ -113,10 +113,7 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapacities()
-            .create(resourceGroupName, dedicatedCapacityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DedicatedCapacity create(Context context) {
@@ -139,10 +136,7 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapacities()
-            .update(resourceGroupName, dedicatedCapacityName, updateCapacityUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DedicatedCapacity apply(Context context) {
@@ -165,11 +159,7 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapacities()
-            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DedicatedCapacity refresh(Context context) {

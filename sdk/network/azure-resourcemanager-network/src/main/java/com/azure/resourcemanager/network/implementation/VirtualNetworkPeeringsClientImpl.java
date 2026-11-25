@@ -123,18 +123,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(String resourceGroupName,
         String virtualNetworkName, String virtualNetworkPeeringName) {
@@ -209,17 +198,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             virtualNetworkName, virtualNetworkPeeringName, accept, context);
     }
 
-    /**
-     * Gets the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName) {
@@ -227,35 +206,14 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkPeeringInner> getWithResponse(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context).block();
     }
 
-    /**
-     * Gets the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName) {
@@ -263,22 +221,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             .getValue();
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     * space on the remote vNet after it's updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualNetworkName, String virtualNetworkPeeringName,
@@ -376,21 +319,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             accept, virtualNetworkPeeringParameters, context);
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     * space on the remote vNet after it's updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of peerings in a virtual network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
@@ -402,19 +331,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of peerings in a virtual network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
@@ -455,19 +372,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             this.client.getHttpPipeline(), VirtualNetworkPeeringInner.class, VirtualNetworkPeeringInner.class, context);
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of peerings in a virtual network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
@@ -479,22 +384,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     * space on the remote vNet after it's updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of peerings in a virtual network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
@@ -506,21 +396,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     * space on the remote vNet after it's updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
@@ -530,19 +406,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
@@ -577,19 +441,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
@@ -598,22 +450,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             virtualNetworkPeeringParameters, syncRemoteAddressSpace).block();
     }
 
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     * operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     * space on the remote vNet after it's updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
@@ -622,17 +459,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             virtualNetworkPeeringParameters, syncRemoteAddressSpace, context).block();
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName) {
@@ -705,17 +532,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             virtualNetworkName, virtualNetworkPeeringName, context);
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName) {
@@ -747,35 +564,14 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             context);
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName, Context context) {
@@ -783,17 +579,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName,
         String virtualNetworkPeeringName) {
@@ -820,32 +606,13 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         deleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).block();
     }
 
-    /**
-     * Deletes the specified virtual network peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
         Context context) {
@@ -933,16 +700,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all virtual network peerings in a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network peerings in a virtual network as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkPeeringInner> listAsync(String resourceGroupName, String virtualNetworkName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualNetworkName),
@@ -967,32 +725,13 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all virtual network peerings in a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network peerings in a virtual network as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkPeeringInner> list(String resourceGroupName, String virtualNetworkName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualNetworkName));
     }
 
-    /**
-     * Gets all virtual network peerings in a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network peerings in a virtual network as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkPeeringInner> list(String resourceGroupName, String virtualNetworkName,
         Context context) {

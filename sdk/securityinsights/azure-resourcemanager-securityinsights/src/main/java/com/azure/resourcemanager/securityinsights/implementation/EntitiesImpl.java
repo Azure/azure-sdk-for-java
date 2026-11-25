@@ -42,11 +42,11 @@ public final class EntitiesImpl implements Entities {
     }
 
     public Entity get(String resourceGroupName, String workspaceName, String entityId) {
-        return this.serviceClient().get(resourceGroupName, workspaceName, entityId);
+        return this.getWithResponse(resourceGroupName, workspaceName, entityId, Context.NONE).getValue();
     }
 
     public PagedIterable<Entity> list(String resourceGroupName, String workspaceName) {
-        return this.serviceClient().list(resourceGroupName, workspaceName);
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<Entity> list(String resourceGroupName, String workspaceName, Context context) {
@@ -84,9 +84,7 @@ public final class EntitiesImpl implements Entities {
 
     public PagedIterable<EntityQueryItem> queries(String resourceGroupName, String workspaceName, String entityId,
         EntityItemQueryKind kind) {
-        PagedIterable<EntityQueryItemInner> inner
-            = this.serviceClient().queries(resourceGroupName, workspaceName, entityId, kind);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityQueryItemImpl(inner1, this.manager()));
+        return this.queries(resourceGroupName, workspaceName, entityId, kind, Context.NONE);
     }
 
     public PagedIterable<EntityQueryItem> queries(String resourceGroupName, String workspaceName, String entityId,

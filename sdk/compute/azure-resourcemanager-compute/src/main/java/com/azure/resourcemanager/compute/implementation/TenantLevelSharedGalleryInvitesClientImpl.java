@@ -79,17 +79,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             @PathParam("sharedGalleryName") String sharedGalleryName, Context context);
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> tenantLevelGallerySharingAcceptWithResponseAsync(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName) {
@@ -151,17 +141,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             sharedGallerySubscriptionId, sharedGalleryName, context);
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginTenantLevelGallerySharingAcceptAsync(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName) {
@@ -193,17 +173,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             context);
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTenantLevelGallerySharingAccept(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName) {
@@ -211,18 +181,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             .getSyncPoller();
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTenantLevelGallerySharingAccept(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName, Context context) {
@@ -232,17 +191,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             .getSyncPoller();
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> tenantLevelGallerySharingAcceptAsync(String location, String sharedGallerySubscriptionId,
         String sharedGalleryName) {
@@ -270,50 +219,21 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void tenantLevelGallerySharingAccept(String location, String sharedGallerySubscriptionId,
         String sharedGalleryName) {
         tenantLevelGallerySharingAcceptAsync(location, sharedGallerySubscriptionId, sharedGalleryName).block();
     }
 
-    /**
-     * Accept sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void tenantLevelGallerySharingAccept(String location, String sharedGallerySubscriptionId,
         String sharedGalleryName, Context context) {
         tenantLevelGallerySharingAcceptAsync(location, sharedGallerySubscriptionId, sharedGalleryName, context).block();
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> tenantLevelGallerySharingRejectWithResponseAsync(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName) {
@@ -375,17 +295,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             sharedGallerySubscriptionId, sharedGalleryName, context);
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginTenantLevelGallerySharingRejectAsync(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName) {
@@ -417,17 +327,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             context);
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTenantLevelGallerySharingReject(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName) {
@@ -435,18 +335,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             .getSyncPoller();
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTenantLevelGallerySharingReject(String location,
         String sharedGallerySubscriptionId, String sharedGalleryName, Context context) {
@@ -456,17 +345,7 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             .getSyncPoller();
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> tenantLevelGallerySharingRejectAsync(String location, String sharedGallerySubscriptionId,
         String sharedGalleryName) {
@@ -494,33 +373,14 @@ public final class TenantLevelSharedGalleryInvitesClientImpl implements TenantLe
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void tenantLevelGallerySharingReject(String location, String sharedGallerySubscriptionId,
         String sharedGalleryName) {
         tenantLevelGallerySharingRejectAsync(location, sharedGallerySubscriptionId, sharedGalleryName).block();
     }
 
-    /**
-     * Reject sharing of a tenant-level shared gallery.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedGallerySubscriptionId The name of the SharedGallerySubscription.
-     * @param sharedGalleryName The name of the TenantLevelSharedGallerySubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void tenantLevelGallerySharingReject(String location, String sharedGallerySubscriptionId,
         String sharedGalleryName, Context context) {

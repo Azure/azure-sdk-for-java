@@ -48,10 +48,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewsImpl implements StandbyV
 
     public PagedIterable<StandbyVirtualMachinePoolRuntimeViewResource> listByStandbyPool(String resourceGroupName,
         String standbyVirtualMachinePoolName) {
-        PagedIterable<StandbyVirtualMachinePoolRuntimeViewResourceInner> inner
-            = this.serviceClient().listByStandbyPool(resourceGroupName, standbyVirtualMachinePoolName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StandbyVirtualMachinePoolRuntimeViewResourceImpl(inner1, this.manager()));
+        return this.listByStandbyPool(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
     public PagedIterable<StandbyVirtualMachinePoolRuntimeViewResource> listByStandbyPool(String resourceGroupName,

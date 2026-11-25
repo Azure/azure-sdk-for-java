@@ -76,11 +76,7 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
     }
 
     public Workbench create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbenches()
-            .createOrUpdate(resourceGroupName, accountName, projectName, workbenchName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Workbench create(Context context) {
@@ -102,12 +98,7 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
     }
 
     public Workbench apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbenches()
-            .updateWithResponse(resourceGroupName, accountName, projectName, workbenchName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Workbench apply(Context context) {
@@ -137,11 +128,7 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
     }
 
     public Workbench refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbenches()
-            .getWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Workbench refresh(Context context) {

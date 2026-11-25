@@ -28,8 +28,7 @@ public final class ConfigurationAssignmentsWithinSubscriptionsImpl
     }
 
     public PagedIterable<ConfigurationAssignment> list() {
-        PagedIterable<ConfigurationAssignmentInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationAssignmentImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ConfigurationAssignment> list(Context context) {

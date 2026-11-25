@@ -28,6 +28,15 @@ public final class LocationBasedBulkCreateCustomImpl
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "resourceGroupName");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "name");
     }
 
     public String id() {
@@ -96,10 +105,7 @@ public final class LocationBasedBulkCreateCustomImpl
     }
 
     public LocationBasedBulkCreateCustom create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .create(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom create(Context context) {
@@ -117,11 +123,7 @@ public final class LocationBasedBulkCreateCustomImpl
     }
 
     public LocationBasedBulkCreateCustom refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .getWithResponse(resourceGroupName, location, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom refresh(Context context) {

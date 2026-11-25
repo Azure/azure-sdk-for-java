@@ -54,8 +54,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     }
 
     public PagedIterable<StorageTarget> listByCache(String resourceGroupName, String cacheName) {
-        PagedIterable<StorageTargetInner> inner = this.serviceClient().listByCache(resourceGroupName, cacheName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTargetImpl(inner1, this.manager()));
+        return this.listByCache(resourceGroupName, cacheName, Context.NONE);
     }
 
     public PagedIterable<StorageTarget> listByCache(String resourceGroupName, String cacheName, Context context) {
@@ -65,7 +64,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     }
 
     public void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName) {
-        this.serviceClient().dnsRefresh(resourceGroupName, cacheName, storageTargetName);
+        this.dnsRefresh(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     public void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
@@ -73,7 +72,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     }
 
     public void restoreDefaults(String resourceGroupName, String cacheName, String storageTargetName) {
-        this.serviceClient().restoreDefaults(resourceGroupName, cacheName, storageTargetName);
+        this.restoreDefaults(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     public void restoreDefaults(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
@@ -81,103 +80,37 @@ public final class StorageTargetsImpl implements StorageTargets {
     }
 
     public StorageTarget getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "cacheName");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
-        String storageTargetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "storageTargetName");
-        if (storageTargetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTargets'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, cacheName, storageTargetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StorageTarget> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cacheName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "cacheName");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
-        String storageTargetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "cacheName", "caches", LOGGER);
+        String storageTargetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "storageTargetName");
-        if (storageTargetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTargets'.", id)));
-        }
+            "storageTargetName", "storageTargets", LOGGER);
         return this.getWithResponse(resourceGroupName, cacheName, storageTargetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "cacheName");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
-        String storageTargetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "storageTargetName");
-        if (storageTargetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTargets'.", id)));
-        }
         String localForce = null;
-        this.delete(resourceGroupName, cacheName, storageTargetName, localForce, Context.NONE);
+        this.deleteByIdWithResponse(id, localForce, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String force, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cacheName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "cacheName");
-        if (cacheName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
-        }
-        String storageTargetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "cacheName", "caches", LOGGER);
+        String storageTargetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}",
-            "storageTargetName");
-        if (storageTargetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTargets'.", id)));
-        }
+            "storageTargetName", "storageTargets", LOGGER);
         this.delete(resourceGroupName, cacheName, storageTargetName, force, context);
     }
 

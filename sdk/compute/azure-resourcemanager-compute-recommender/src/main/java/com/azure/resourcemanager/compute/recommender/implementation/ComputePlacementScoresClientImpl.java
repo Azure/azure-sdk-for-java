@@ -128,16 +128,7 @@ public final class ComputePlacementScoresClientImpl implements ComputePlacementS
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Compute Placement Scores metadata.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute Placement Scores metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComputePlacementScoresBaseInner> getWithResponse(String location, Context context) {
         final String accept = "application/json";
@@ -145,15 +136,7 @@ public final class ComputePlacementScoresClientImpl implements ComputePlacementS
             location, accept, context);
     }
 
-    /**
-     * Gets Compute Placement Scores metadata.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute Placement Scores metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputePlacementScoresBaseInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();
@@ -199,18 +182,7 @@ public final class ComputePlacementScoresClientImpl implements ComputePlacementS
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates placement scores for Compute VM skus.
-     * 
-     * @param location The name of the Azure region.
-     * @param computePlacementScoresInput ComputePlacementScores object supplied in the body of the Post compute
-     * placement scores operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return computePlacementScores API response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComputePlacementScoresResponseInner> postWithResponse(String location,
         ComputePlacementScoresInput computePlacementScoresInput, Context context) {
@@ -220,17 +192,7 @@ public final class ComputePlacementScoresClientImpl implements ComputePlacementS
             location, contentType, accept, computePlacementScoresInput, context);
     }
 
-    /**
-     * Generates placement scores for Compute VM skus.
-     * 
-     * @param location The name of the Azure region.
-     * @param computePlacementScoresInput ComputePlacementScores object supplied in the body of the Post compute
-     * placement scores operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return computePlacementScores API response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputePlacementScoresResponseInner post(String location,
         ComputePlacementScoresInput computePlacementScoresInput) {

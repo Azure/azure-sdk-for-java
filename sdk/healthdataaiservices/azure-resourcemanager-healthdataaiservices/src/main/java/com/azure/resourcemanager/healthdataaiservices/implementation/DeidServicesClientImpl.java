@@ -254,17 +254,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeidService along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeidServiceInner> getByResourceGroupWithResponse(String resourceGroupName, String deidServiceName,
         Context context) {
@@ -273,16 +263,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, context);
     }
 
-    /**
-     * Get a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeidService.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeidServiceInner getByResourceGroup(String resourceGroupName, String deidServiceName) {
         return getByResourceGroupWithResponse(resourceGroupName, deidServiceName, Context.NONE).getValue();
@@ -335,11 +316,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeidServiceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DeidServiceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -361,31 +338,13 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DeidService resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeidService list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeidServiceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List DeidService resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeidService list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeidServiceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -433,11 +392,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeidServiceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DeidServiceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -458,27 +413,13 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DeidService resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeidService list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeidServiceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List DeidService resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeidService list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeidServiceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -523,11 +464,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String deidServiceName,
         DeidServiceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, deidServiceName, resource, Context.NONE);
     }
 
     /**
@@ -571,37 +508,14 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             DeidServiceInner.class, DeidServiceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeidServiceInner>, DeidServiceInner> beginCreate(String resourceGroupName,
         String deidServiceName, DeidServiceInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, deidServiceName, resource);
-        return this.client.<DeidServiceInner, DeidServiceInner>getLroResult(response, DeidServiceInner.class,
-            DeidServiceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, deidServiceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeidServiceInner>, DeidServiceInner> beginCreate(String resourceGroupName,
         String deidServiceName, DeidServiceInner resource, Context context) {
@@ -628,38 +542,17 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeidServiceInner create(String resourceGroupName, String deidServiceName, DeidServiceInner resource) {
-        return beginCreate(resourceGroupName, deidServiceName, resource).getFinalResult();
+        return create(resourceGroupName, deidServiceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeidServiceInner create(String resourceGroupName, String deidServiceName, DeidServiceInner resource,
         Context context) {
-        return beginCreate(resourceGroupName, deidServiceName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, deidServiceName, resource, context));
     }
 
     /**
@@ -700,11 +593,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String deidServiceName,
         DeidUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, deidServiceName, properties, Context.NONE);
     }
 
     /**
@@ -748,37 +637,14 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             DeidServiceInner.class, DeidServiceInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeidServiceInner>, DeidServiceInner> beginUpdate(String resourceGroupName,
         String deidServiceName, DeidUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, deidServiceName, properties);
-        return this.client.<DeidServiceInner, DeidServiceInner>getLroResult(response, DeidServiceInner.class,
-            DeidServiceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, deidServiceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeidServiceInner>, DeidServiceInner> beginUpdate(String resourceGroupName,
         String deidServiceName, DeidUpdate properties, Context context) {
@@ -805,38 +671,18 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeidServiceInner update(String resourceGroupName, String deidServiceName, DeidUpdate properties) {
-        return beginUpdate(resourceGroupName, deidServiceName, properties).getFinalResult();
+        return update(resourceGroupName, deidServiceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthDataAIServicesProviderHub resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeidServiceInner update(String resourceGroupName, String deidServiceName, DeidUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, deidServiceName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, deidServiceName, properties, context));
     }
 
     /**
@@ -869,8 +715,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deidServiceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, deidServiceName, Context.NONE);
     }
 
     /**
@@ -907,33 +752,13 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deidServiceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deidServiceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deidServiceName, Context.NONE);
     }
 
-    /**
-     * Delete a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deidServiceName,
         Context context) {
@@ -957,33 +782,16 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deidServiceName) {
-        beginDelete(resourceGroupName, deidServiceName).getFinalResult();
+        delete(resourceGroupName, deidServiceName, Context.NONE);
     }
 
-    /**
-     * Delete a DeidService.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deidServiceName, Context context) {
-        beginDelete(resourceGroupName, deidServiceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, deidServiceName, context));
     }
 
     /**
@@ -1018,11 +826,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeidServiceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeidServiceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1076,11 +880,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeidServiceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeidServiceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

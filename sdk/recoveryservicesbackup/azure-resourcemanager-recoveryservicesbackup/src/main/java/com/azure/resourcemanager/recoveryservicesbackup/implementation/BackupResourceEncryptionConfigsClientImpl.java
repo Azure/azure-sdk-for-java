@@ -135,17 +135,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches Vault Encryption config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceEncryptionConfigExtendedResourceInner> getWithResponse(String vaultName,
         String resourceGroupName, Context context) {
@@ -154,16 +144,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
             resourceGroupName, vaultName, accept, context);
     }
 
-    /**
-     * Fetches Vault Encryption config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceEncryptionConfigExtendedResourceInner get(String vaultName, String resourceGroupName) {
         return getWithResponse(vaultName, resourceGroupName, Context.NONE).getValue();
@@ -207,18 +188,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Updates Vault encryption config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Vault encryption input config request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String vaultName, String resourceGroupName,
         BackupResourceEncryptionConfigResource parameters, Context context) {
@@ -227,16 +197,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
             this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, parameters, context);
     }
 
-    /**
-     * Updates Vault encryption config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Vault encryption input config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
         updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);

@@ -216,31 +216,14 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get metadata information on an assessment type in a specific subscription.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAssessmentMetadataResponseInner>
         getInSubscriptionWithResponse(String assessmentMetadataName, Context context) {
         return getInSubscriptionWithResponseAsync(assessmentMetadataName, context).block();
     }
 
-    /**
-     * Get metadata information on an assessment type in a specific subscription.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAssessmentMetadataResponseInner getInSubscription(String assessmentMetadataName) {
         return getInSubscriptionWithResponse(assessmentMetadataName, Context.NONE).getValue();
@@ -344,33 +327,14 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create metadata information on an assessment type in a specific subscription.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param assessmentMetadata AssessmentMetadata object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment metadata response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAssessmentMetadataResponseInner> createInSubscriptionWithResponse(
         String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata, Context context) {
         return createInSubscriptionWithResponseAsync(assessmentMetadataName, assessmentMetadata, context).block();
     }
 
-    /**
-     * Create metadata information on an assessment type in a specific subscription.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param assessmentMetadata AssessmentMetadata object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment metadata response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAssessmentMetadataResponseInner createInSubscription(String assessmentMetadataName,
         SecurityAssessmentMetadataResponseInner assessmentMetadata) {
@@ -454,31 +418,13 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
         return deleteInSubscriptionWithResponseAsync(assessmentMetadataName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
-     * assessments of that type in that subscription.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteInSubscriptionWithResponse(String assessmentMetadataName, Context context) {
         return deleteInSubscriptionWithResponseAsync(assessmentMetadataName, context).block();
     }
 
-    /**
-     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
-     * assessments of that type in that subscription.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteInSubscription(String assessmentMetadataName) {
         deleteInSubscriptionWithResponse(assessmentMetadataName, Context.NONE);
@@ -573,29 +519,13 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get metadata information on all assessment types in a specific subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types in a specific subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentMetadataResponseInner> listBySubscription() {
         return new PagedIterable<>(listBySubscriptionAsync());
     }
 
-    /**
-     * Get metadata information on all assessment types in a specific subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types in a specific subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentMetadataResponseInner> listBySubscription(Context context) {
         return new PagedIterable<>(listBySubscriptionAsync(context));
@@ -672,31 +602,14 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
         return getWithResponseAsync(assessmentMetadataName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get metadata information on an assessment type.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAssessmentMetadataResponseInner> getWithResponse(String assessmentMetadataName,
         Context context) {
         return getWithResponseAsync(assessmentMetadataName, context).block();
     }
 
-    /**
-     * Get metadata information on an assessment type.
-     * 
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAssessmentMetadataResponseInner get(String assessmentMetadataName) {
         return getWithResponse(assessmentMetadataName, Context.NONE).getValue();
@@ -776,27 +689,13 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get metadata information on all assessment types.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentMetadataResponseInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Get metadata information on all assessment types.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentMetadataResponseInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

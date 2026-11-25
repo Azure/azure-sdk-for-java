@@ -292,18 +292,7 @@ public final class MachinesClientImpl implements MachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the model view or the instance view of a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a hybrid machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineInner> getByResourceGroupWithResponse(String resourceGroupName, String machineName,
         InstanceViewTypes expand, Context context) {
@@ -312,16 +301,7 @@ public final class MachinesClientImpl implements MachinesClient {
             this.client.getSubscriptionId(), resourceGroupName, machineName, expand, accept, context);
     }
 
-    /**
-     * Retrieves information about the model view or the instance view of a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner getByResourceGroup(String resourceGroupName, String machineName) {
         final InstanceViewTypes expand = null;
@@ -373,20 +353,7 @@ public final class MachinesClientImpl implements MachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to create or update a hybrid machine. Please note some properties can be set only during machine
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create hybrid machine operation.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a hybrid machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineInner> createOrUpdateWithResponse(String resourceGroupName, String machineName,
         MachineInner parameters, String expand, Context context) {
@@ -397,18 +364,7 @@ public final class MachinesClientImpl implements MachinesClient {
             context);
     }
 
-    /**
-     * The operation to create or update a hybrid machine. Please note some properties can be set only during machine
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner createOrUpdate(String resourceGroupName, String machineName, MachineInner parameters) {
         final String expand = null;
@@ -453,18 +409,7 @@ public final class MachinesClientImpl implements MachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to update a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update hybrid machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a hybrid machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineInner> updateWithResponse(String resourceGroupName, String machineName,
         MachineUpdate parameters, Context context) {
@@ -474,17 +419,7 @@ public final class MachinesClientImpl implements MachinesClient {
             this.client.getSubscriptionId(), resourceGroupName, machineName, contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to update a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner update(String resourceGroupName, String machineName, MachineUpdate parameters) {
         return updateWithResponse(resourceGroupName, machineName, parameters, Context.NONE).getValue();
@@ -520,8 +455,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String machineName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, machineName, Context.NONE);
     }
 
     /**
@@ -558,33 +492,13 @@ public final class MachinesClientImpl implements MachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, machineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, machineName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         Context context) {
@@ -607,33 +521,16 @@ public final class MachinesClientImpl implements MachinesClient {
         return beginDeleteAsync(resourceGroupName, machineName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName) {
-        beginDelete(resourceGroupName, machineName).getFinalResult();
+        delete(resourceGroupName, machineName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, Context context) {
-        beginDelete(resourceGroupName, machineName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, machineName, context));
     }
 
     /**
@@ -707,12 +604,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineInner> listByResourceGroupSinglePage(String resourceGroupName, String expand) {
-        final String accept = "application/json";
-        Response<MachineListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, expand, Context.NONE);
     }
 
     /**
@@ -737,35 +629,14 @@ public final class MachinesClientImpl implements MachinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get
-     * the next page of hybrid machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Machine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineInner> listByResourceGroup(String resourceGroupName) {
         final String expand = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, expand),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, expand, Context.NONE);
     }
 
-    /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get
-     * the next page of hybrid machines.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Machine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineInner> listByResourceGroup(String resourceGroupName, String expand, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, expand, context),
@@ -816,11 +687,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<MachineListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -842,29 +709,13 @@ public final class MachinesClientImpl implements MachinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the
-     * next page of hybrid machines.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Machine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the
-     * next page of hybrid machines.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Machine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -903,9 +754,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> assessPatchesWithResponse(String resourceGroupName, String name) {
-        final String accept = "application/json";
-        return service.assessPatchesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, accept, Context.NONE);
+        return assessPatchesWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -945,35 +794,14 @@ public final class MachinesClientImpl implements MachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to assess patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineAssessPatchesResultInner>, MachineAssessPatchesResultInner>
         beginAssessPatches(String resourceGroupName, String name) {
-        Response<BinaryData> response = assessPatchesWithResponse(resourceGroupName, name);
-        return this.client.<MachineAssessPatchesResultInner, MachineAssessPatchesResultInner>getLroResult(response,
-            MachineAssessPatchesResultInner.class, MachineAssessPatchesResultInner.class, Context.NONE);
+        return beginAssessPatches(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * The operation to assess patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineAssessPatchesResultInner>, MachineAssessPatchesResultInner>
         beginAssessPatches(String resourceGroupName, String name, Context context) {
@@ -997,35 +825,16 @@ public final class MachinesClientImpl implements MachinesClient {
         return beginAssessPatchesAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to assess patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineAssessPatchesResultInner assessPatches(String resourceGroupName, String name) {
-        return beginAssessPatches(resourceGroupName, name).getFinalResult();
+        return assessPatches(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * The operation to assess patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the properties of an AssessPatches result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineAssessPatchesResultInner assessPatches(String resourceGroupName, String name, Context context) {
-        return beginAssessPatches(resourceGroupName, name, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginAssessPatches(resourceGroupName, name, context));
     }
 
     /**
@@ -1066,11 +875,7 @@ public final class MachinesClientImpl implements MachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> installPatchesWithResponse(String resourceGroupName, String name,
         MachineInstallPatchesParameters installPatchesInput) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.installPatchesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, installPatchesInput,
-            Context.NONE);
+        return installPatchesWithResponse(resourceGroupName, name, installPatchesInput, Context.NONE);
     }
 
     /**
@@ -1117,38 +922,15 @@ public final class MachinesClientImpl implements MachinesClient {
             MachineInstallPatchesResultInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to install patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineInstallPatchesResultInner>, MachineInstallPatchesResultInner>
         beginInstallPatches(String resourceGroupName, String name,
             MachineInstallPatchesParameters installPatchesInput) {
-        Response<BinaryData> response = installPatchesWithResponse(resourceGroupName, name, installPatchesInput);
-        return this.client.<MachineInstallPatchesResultInner, MachineInstallPatchesResultInner>getLroResult(response,
-            MachineInstallPatchesResultInner.class, MachineInstallPatchesResultInner.class, Context.NONE);
+        return beginInstallPatches(resourceGroupName, name, installPatchesInput, Context.NONE);
     }
 
-    /**
-     * The operation to install patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineInstallPatchesResultInner>, MachineInstallPatchesResultInner>
         beginInstallPatches(String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput,
@@ -1177,39 +959,19 @@ public final class MachinesClientImpl implements MachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to install patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInstallPatchesResultInner installPatches(String resourceGroupName, String name,
         MachineInstallPatchesParameters installPatchesInput) {
-        return beginInstallPatches(resourceGroupName, name, installPatchesInput).getFinalResult();
+        return installPatches(resourceGroupName, name, installPatchesInput, Context.NONE);
     }
 
-    /**
-     * The operation to install patches on a hybrid machine identity in Azure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the hybrid machine.
-     * @param installPatchesInput Input for InstallPatches as directly received by the API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result summary of an installation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInstallPatchesResultInner installPatches(String resourceGroupName, String name,
         MachineInstallPatchesParameters installPatchesInput, Context context) {
-        return beginInstallPatches(resourceGroupName, name, installPatchesInput, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginInstallPatches(resourceGroupName, name, installPatchesInput, context));
     }
 
     /**
@@ -1244,11 +1006,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MachineListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1302,11 +1060,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MachineListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

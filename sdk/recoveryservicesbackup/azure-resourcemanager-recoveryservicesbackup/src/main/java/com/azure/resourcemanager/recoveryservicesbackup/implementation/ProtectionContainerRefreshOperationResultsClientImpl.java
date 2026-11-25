@@ -116,19 +116,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName Fabric name associated with the container.
-     * @param operationId Operation ID associated with the operation whose result needs to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String operationId, Context context) {
@@ -136,17 +124,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
             this.client.getSubscriptionId(), fabricName, operationId, context);
     }
 
-    /**
-     * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName Fabric name associated with the container.
-     * @param operationId Operation ID associated with the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void get(String vaultName, String resourceGroupName, String fabricName, String operationId) {
         getWithResponse(vaultName, resourceGroupName, fabricName, operationId, Context.NONE);

@@ -89,10 +89,7 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessConnectors()
-            .createOrUpdate(resourceGroupName, connectorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessConnector create(Context context) {
@@ -114,10 +111,7 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessConnectors()
-            .update(resourceGroupName, connectorName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessConnector apply(Context context) {
@@ -140,11 +134,7 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessConnectors()
-            .getByResourceGroupWithResponse(resourceGroupName, connectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessConnector refresh(Context context) {

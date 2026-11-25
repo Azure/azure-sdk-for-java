@@ -75,11 +75,7 @@ public final class RaiTopicImpl implements RaiTopic, RaiTopic.Definition, RaiTop
     }
 
     public RaiTopic create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiTopics()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiTopicName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiTopic create(Context context) {
@@ -101,11 +97,7 @@ public final class RaiTopicImpl implements RaiTopic, RaiTopic.Definition, RaiTop
     }
 
     public RaiTopic apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiTopics()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiTopicName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiTopic apply(Context context) {
@@ -132,11 +124,7 @@ public final class RaiTopicImpl implements RaiTopic, RaiTopic.Definition, RaiTop
     }
 
     public RaiTopic refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiTopics()
-            .getWithResponse(resourceGroupName, accountName, raiTopicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiTopic refresh(Context context) {
