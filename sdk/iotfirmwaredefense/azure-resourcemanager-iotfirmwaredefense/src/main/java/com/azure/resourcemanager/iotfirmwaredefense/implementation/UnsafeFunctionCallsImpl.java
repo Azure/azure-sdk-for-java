@@ -27,10 +27,7 @@ public final class UnsafeFunctionCallsImpl implements UnsafeFunctionCalls {
 
     public PagedIterable<UnsafeFunctionCallsResource> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        PagedIterable<UnsafeFunctionCallsResourceInner> inner
-            = this.serviceClient().listByFirmware(resourceGroupName, workspaceName, firmwareId);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new UnsafeFunctionCallsResourceImpl(inner1, this.manager()));
+        return this.listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<UnsafeFunctionCallsResource> listByFirmware(String resourceGroupName, String workspaceName,
