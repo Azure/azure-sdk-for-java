@@ -45,7 +45,7 @@ public final class RuntimeLinksImpl implements RuntimeLinks {
     }
 
     public void delete(String resourceGroupName, String spaceName, String linkName) {
-        this.serviceClient().delete(resourceGroupName, spaceName, linkName);
+        this.delete(resourceGroupName, spaceName, linkName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String spaceName, String linkName, Context context) {
@@ -53,8 +53,7 @@ public final class RuntimeLinksImpl implements RuntimeLinks {
     }
 
     public PagedIterable<RuntimeLink> listByWorkloadSpace(String resourceGroupName, String spaceName) {
-        PagedIterable<RuntimeLinkInner> inner = this.serviceClient().listByWorkloadSpace(resourceGroupName, spaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuntimeLinkImpl(inner1, this.manager()));
+        return this.listByWorkloadSpace(resourceGroupName, spaceName, Context.NONE);
     }
 
     public PagedIterable<RuntimeLink> listByWorkloadSpace(String resourceGroupName, String spaceName, Context context) {
@@ -64,78 +63,36 @@ public final class RuntimeLinksImpl implements RuntimeLinks {
     }
 
     public RuntimeLink getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String linkName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeLinks");
-        if (linkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeLinks'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, spaceName, linkName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RuntimeLink> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String linkName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeLinks");
-        if (linkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeLinks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String spaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "spaceName", "workloadSpaces", LOGGER);
+        String linkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "linkName", "runtimeLinks", LOGGER);
         return this.getWithResponse(resourceGroupName, spaceName, linkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String linkName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeLinks");
-        if (linkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeLinks'.", id)));
-        }
-        this.delete(resourceGroupName, spaceName, linkName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String linkName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeLinks");
-        if (linkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeLinks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String spaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "spaceName", "workloadSpaces", LOGGER);
+        String linkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeLinks/{linkName}",
+            "linkName", "runtimeLinks", LOGGER);
         this.delete(resourceGroupName, spaceName, linkName, context);
     }
 

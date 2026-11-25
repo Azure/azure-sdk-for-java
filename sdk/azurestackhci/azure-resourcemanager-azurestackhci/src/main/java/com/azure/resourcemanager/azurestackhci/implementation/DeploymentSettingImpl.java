@@ -92,10 +92,7 @@ public final class DeploymentSettingImpl
     }
 
     public DeploymentSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentSettings()
-            .createOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeploymentSetting create(Context context) {
@@ -116,10 +113,7 @@ public final class DeploymentSettingImpl
     }
 
     public DeploymentSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentSettings()
-            .createOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeploymentSetting apply(Context context) {
@@ -133,17 +127,19 @@ public final class DeploymentSettingImpl
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.deploymentSettingsName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deploymentSettings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/deploymentSettings/{deploymentSettingsName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/deploymentSettings/{deploymentSettingsName}",
+            "clusterName");
+        this.deploymentSettingsName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/deploymentSettings/{deploymentSettingsName}",
+            "deploymentSettingsName");
     }
 
     public DeploymentSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentSettings()
-            .getWithResponse(resourceGroupName, clusterName, deploymentSettingsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeploymentSetting refresh(Context context) {

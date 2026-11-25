@@ -46,7 +46,7 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String trafficControllerName) {
-        this.serviceClient().delete(resourceGroupName, trafficControllerName);
+        this.delete(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String trafficControllerName, Context context) {
@@ -54,8 +54,7 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     }
 
     public PagedIterable<TrafficController> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<TrafficControllerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TrafficControllerImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<TrafficController> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     }
 
     public PagedIterable<TrafficController> list() {
-        PagedIterable<TrafficControllerInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TrafficControllerImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<TrafficController> list(Context context) {
@@ -75,58 +73,30 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     }
 
     public TrafficController getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<TrafficController> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String trafficControllerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}",
+            "trafficControllerName", "trafficControllers", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
-        this.delete(resourceGroupName, trafficControllerName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String trafficControllerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}",
+            "trafficControllerName", "trafficControllers", LOGGER);
         this.delete(resourceGroupName, trafficControllerName, context);
     }
 

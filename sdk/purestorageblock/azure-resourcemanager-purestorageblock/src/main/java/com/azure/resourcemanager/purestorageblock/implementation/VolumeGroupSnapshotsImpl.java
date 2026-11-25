@@ -50,7 +50,7 @@ public final class VolumeGroupSnapshotsImpl implements VolumeGroupSnapshots {
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, String snapshotName) {
-        this.serviceClient().delete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName);
+        this.delete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, String snapshotName,
@@ -93,99 +93,42 @@ public final class VolumeGroupSnapshotsImpl implements VolumeGroupSnapshots {
     }
 
     public VolumeGroupSnapshot getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
-        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumeGroups");
-        if (volumeGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
-        }
-        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
-        if (snapshotName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VolumeGroupSnapshot> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
-        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumeGroups");
-        if (volumeGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
-        }
-        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
-        if (snapshotName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storagePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "storagePoolName", "storagePools", LOGGER);
+        String volumeGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "volumeGroupName", "volumeGroups", LOGGER);
+        String snapshotName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "snapshotName", "snapshots", LOGGER);
         return this.getWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
-        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumeGroups");
-        if (volumeGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
-        }
-        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
-        if (snapshotName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
-        }
-        this.delete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storagePoolName = ResourceManagerUtils.getValueFromIdByName(id, "storagePools");
-        if (storagePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storagePools'.", id)));
-        }
-        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumeGroups");
-        if (volumeGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
-        }
-        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
-        if (snapshotName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storagePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "storagePoolName", "storagePools", LOGGER);
+        String volumeGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "volumeGroupName", "volumeGroups", LOGGER);
+        String snapshotName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}",
+            "snapshotName", "snapshots", LOGGER);
         this.delete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, context);
     }
 

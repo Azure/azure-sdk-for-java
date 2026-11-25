@@ -17,32 +17,34 @@ public final class ArcDeploymentUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentUpdateProperties model = BinaryData.fromString(
-            "{\"replicas\":308344292,\"resources\":{\"requests\":{\"cpu\":\"mtggmu\",\"memory\":\"ch\"},\"limits\":{\"cpu\":\"nkf\",\"memory\":\"lv\",\"gpu\":133463775}},\"nodeSelector\":{\"uyxlykwphvxzcw\":\"izvoaiknaqlnuwi\",\"vkcqhr\":\"hmpejtlkexaonw\"}}")
+            "{\"replicas\":1670264718,\"resources\":{\"requests\":{\"cpu\":\"zw\",\"memory\":\"nxkeed\"},\"limits\":{\"cpu\":\"m\",\"memory\":\"xfqzkvemyzd\",\"gpu\":1394831416}},\"nodeSelector\":{\"trwtxzuisam\":\"pqifdbm\",\"rmthsplwst\":\"natnizexroqsqjg\",\"ceov\":\"xsrgxfqpan\",\"s\":\"gzwhsxyrujmtik\"}}")
             .toObject(ArcDeploymentUpdateProperties.class);
-        Assertions.assertEquals(308344292, model.replicas());
-        Assertions.assertEquals("mtggmu", model.resources().requests().cpu());
-        Assertions.assertEquals("ch", model.resources().requests().memory());
-        Assertions.assertEquals("nkf", model.resources().limits().cpu());
-        Assertions.assertEquals("lv", model.resources().limits().memory());
-        Assertions.assertEquals(133463775, model.resources().limits().gpu());
-        Assertions.assertEquals("izvoaiknaqlnuwi", model.nodeSelector().get("uyxlykwphvxzcw"));
+        Assertions.assertEquals(1670264718, model.replicas());
+        Assertions.assertEquals("zw", model.resources().requests().cpu());
+        Assertions.assertEquals("nxkeed", model.resources().requests().memory());
+        Assertions.assertEquals("m", model.resources().limits().cpu());
+        Assertions.assertEquals("xfqzkvemyzd", model.resources().limits().memory());
+        Assertions.assertEquals(1394831416, model.resources().limits().gpu());
+        Assertions.assertEquals("pqifdbm", model.nodeSelector().get("trwtxzuisam"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcDeploymentUpdateProperties model = new ArcDeploymentUpdateProperties().withReplicas(308344292)
+        ArcDeploymentUpdateProperties model = new ArcDeploymentUpdateProperties().withReplicas(1670264718)
             .withResources(new ArcDeploymentPatchKubernetesResources()
-                .withRequests(new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("mtggmu").withMemory("ch"))
-                .withLimits(new ArcDeploymentResourceRequirements().withCpu("nkf").withMemory("lv").withGpu(133463775)))
-            .withNodeSelector(mapOf("uyxlykwphvxzcw", "izvoaiknaqlnuwi", "vkcqhr", "hmpejtlkexaonw"));
+                .withRequests(new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("zw").withMemory("nxkeed"))
+                .withLimits(
+                    new ArcDeploymentResourceRequirements().withCpu("m").withMemory("xfqzkvemyzd").withGpu(1394831416)))
+            .withNodeSelector(mapOf("trwtxzuisam", "pqifdbm", "rmthsplwst", "natnizexroqsqjg", "ceov", "xsrgxfqpan",
+                "s", "gzwhsxyrujmtik"));
         model = BinaryData.fromObject(model).toObject(ArcDeploymentUpdateProperties.class);
-        Assertions.assertEquals(308344292, model.replicas());
-        Assertions.assertEquals("mtggmu", model.resources().requests().cpu());
-        Assertions.assertEquals("ch", model.resources().requests().memory());
-        Assertions.assertEquals("nkf", model.resources().limits().cpu());
-        Assertions.assertEquals("lv", model.resources().limits().memory());
-        Assertions.assertEquals(133463775, model.resources().limits().gpu());
-        Assertions.assertEquals("izvoaiknaqlnuwi", model.nodeSelector().get("uyxlykwphvxzcw"));
+        Assertions.assertEquals(1670264718, model.replicas());
+        Assertions.assertEquals("zw", model.resources().requests().cpu());
+        Assertions.assertEquals("nxkeed", model.resources().requests().memory());
+        Assertions.assertEquals("m", model.resources().limits().cpu());
+        Assertions.assertEquals("xfqzkvemyzd", model.resources().limits().memory());
+        Assertions.assertEquals(1394831416, model.resources().limits().gpu());
+        Assertions.assertEquals("pqifdbm", model.nodeSelector().get("trwtxzuisam"));
     }
 
     // Use "Map.of" if available

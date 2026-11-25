@@ -197,18 +197,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Global parameter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Global parameter along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GlobalParameterResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String globalParameterName, Context context) {
@@ -217,17 +206,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             resourceGroupName, factoryName, globalParameterName, accept, context);
     }
 
-    /**
-     * Gets a Global parameter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Global parameter.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalParameterResourceInner get(String resourceGroupName, String factoryName, String globalParameterName) {
         return getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE).getValue();
@@ -276,19 +255,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Global parameter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @param defaultParameter Global parameter resource definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return global parameters resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GlobalParameterResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String factoryName, String globalParameterName, GlobalParameterResourceInner defaultParameter,
@@ -300,18 +267,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             defaultParameter, context);
     }
 
-    /**
-     * Creates or updates a Global parameter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @param defaultParameter Global parameter resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return global parameters resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalParameterResourceInner createOrUpdate(String resourceGroupName, String factoryName,
         String globalParameterName, GlobalParameterResourceInner defaultParameter) {
@@ -356,18 +312,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a Global parameter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String globalParameterName,
         Context context) {
@@ -375,16 +320,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             this.client.getSubscriptionId(), resourceGroupName, factoryName, globalParameterName, context);
     }
 
-    /**
-     * Deletes a Global parameter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String globalParameterName) {
         deleteWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE);
@@ -441,12 +377,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GlobalParameterResourceInner> listByFactorySinglePage(String resourceGroupName,
         String factoryName) {
-        final String accept = "application/json";
-        Response<GlobalParameterListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -471,33 +402,13 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Global parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Global parameters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalParameterResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists Global parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Global parameters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalParameterResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -535,11 +446,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GlobalParameterResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GlobalParameterListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

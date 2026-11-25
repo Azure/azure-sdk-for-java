@@ -61,11 +61,7 @@ public final class AuthenticationSettingImpl
     }
 
     public AuthenticationSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthenticationSettings()
-            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AuthenticationSetting create(Context context) {
@@ -86,11 +82,7 @@ public final class AuthenticationSettingImpl
     }
 
     public AuthenticationSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthenticationSettings()
-            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AuthenticationSetting apply(Context context) {
@@ -104,18 +96,19 @@ public final class AuthenticationSettingImpl
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.authenticationSettingName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authenticationsettings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
+            "healthModelName");
+        this.authenticationSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
+            "authenticationSettingName");
     }
 
     public AuthenticationSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthenticationSettings()
-            .getWithResponse(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AuthenticationSetting refresh(Context context) {

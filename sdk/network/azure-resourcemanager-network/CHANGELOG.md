@@ -1,5 +1,40 @@
 # Release History
 
+## 2.65.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.64.0 (2026-11-18)
+
+- Package api-version Microsoft.Network: 2026-05-01, Microsoft.Compute: 2018-10-01.
+
+### Features Added
+
+* `models.ApplicationGatewayDeploymentTier` was added
+
+* `models.NetworkVirtualApplianceLoadDistribution` was added
+
+* `models.NetworkVirtualApplianceLoadBalancerConfiguration` was added
+
+#### `models.InboundSecurityRules` was modified
+
+* `withLoadBalancerConfiguration(models.NetworkVirtualApplianceLoadBalancerConfiguration)` was added
+* `loadBalancerConfiguration()` was added
+
+## 2.63.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+
 ## 2.62.0 (2026-10-09)
 
 - Package api-version Microsoft.Network: 2026-03-01, Microsoft.Compute: 2018-10-01.

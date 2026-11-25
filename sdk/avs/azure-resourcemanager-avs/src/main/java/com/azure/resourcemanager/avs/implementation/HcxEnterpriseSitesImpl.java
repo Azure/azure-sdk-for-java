@@ -28,8 +28,7 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
     }
 
     public PagedIterable<HcxEnterpriseSite> list(String resourceGroupName, String privateCloudName) {
-        PagedIterable<HcxEnterpriseSiteInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HcxEnterpriseSiteImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public PagedIterable<HcxEnterpriseSite> list(String resourceGroupName, String privateCloudName, Context context) {
@@ -63,83 +62,40 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
     }
 
     public void delete(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName, hcxEnterpriseSiteName);
+        this.deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE);
     }
 
     public HcxEnterpriseSite getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String hcxEnterpriseSiteName = ResourceManagerUtils.getValueFromIdByName(id, "hcxEnterpriseSites");
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcxEnterpriseSites'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<HcxEnterpriseSite> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String hcxEnterpriseSiteName = ResourceManagerUtils.getValueFromIdByName(id, "hcxEnterpriseSites");
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcxEnterpriseSites'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String privateCloudName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "privateCloudName", "privateClouds", LOGGER);
+        String hcxEnterpriseSiteName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "hcxEnterpriseSiteName", "hcxEnterpriseSites", LOGGER);
         return this.getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String hcxEnterpriseSiteName = ResourceManagerUtils.getValueFromIdByName(id, "hcxEnterpriseSites");
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcxEnterpriseSites'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String hcxEnterpriseSiteName = ResourceManagerUtils.getValueFromIdByName(id, "hcxEnterpriseSites");
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcxEnterpriseSites'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String privateCloudName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "privateCloudName", "privateClouds", LOGGER);
+        String hcxEnterpriseSiteName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "hcxEnterpriseSiteName", "hcxEnterpriseSites", LOGGER);
         return this.deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
     }
 

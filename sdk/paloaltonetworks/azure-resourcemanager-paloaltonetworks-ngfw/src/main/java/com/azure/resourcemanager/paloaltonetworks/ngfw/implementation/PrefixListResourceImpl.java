@@ -84,10 +84,7 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrefixListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrefixListResource create(Context context) {
@@ -109,10 +106,7 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrefixListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrefixListResource apply(Context context) {
@@ -126,17 +120,19 @@ public final class PrefixListResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "prefixlists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "resourceGroupName");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "localRulestackName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "name");
     }
 
     public PrefixListResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrefixListLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrefixListResource refresh(Context context) {

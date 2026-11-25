@@ -235,18 +235,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details about the service to the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the service to the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceConfigurationResourceInner> getWithResponse(String resourceUri, String endpointName,
         String serviceConfigurationName, Context context) {
@@ -255,17 +244,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             serviceConfigurationName, accept, context);
     }
 
-    /**
-     * Gets the details about the service to the resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the service to the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceConfigurationResourceInner get(String resourceUri, String endpointName,
         String serviceConfigurationName) {
@@ -318,19 +297,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             serviceConfigurationResource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a service in serviceConfiguration for the endpoint resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @param serviceConfigurationResource Service details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service configuration details associated with the target resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceConfigurationResourceInner> createOrupdateWithResponse(String resourceUri,
         String endpointName, String serviceConfigurationName,
@@ -341,18 +308,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             endpointName, serviceConfigurationName, contentType, accept, serviceConfigurationResource, context);
     }
 
-    /**
-     * Create or update a service in serviceConfiguration for the endpoint resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @param serviceConfigurationResource Service details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service configuration details associated with the target resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceConfigurationResourceInner createOrupdate(String resourceUri, String endpointName,
         String serviceConfigurationName, ServiceConfigurationResourceInner serviceConfigurationResource) {
@@ -405,19 +361,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             serviceConfigurationResource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the service details in the service configurations of the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @param serviceConfigurationResource Service details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service configuration details associated with the target resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceConfigurationResourceInner> updateWithResponse(String resourceUri, String endpointName,
         String serviceConfigurationName, ServiceConfigurationResourcePatch serviceConfigurationResource,
@@ -428,18 +372,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             serviceConfigurationName, contentType, accept, serviceConfigurationResource, context);
     }
 
-    /**
-     * Update the service details in the service configurations of the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @param serviceConfigurationResource Service details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service configuration details associated with the target resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceConfigurationResourceInner update(String resourceUri, String endpointName,
         String serviceConfigurationName, ServiceConfigurationResourcePatch serviceConfigurationResource) {
@@ -484,18 +417,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the service details to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String endpointName, String serviceConfigurationName,
         Context context) {
@@ -503,16 +425,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             serviceConfigurationName, context);
     }
 
-    /**
-     * Deletes the service details to the target resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param serviceConfigurationName The service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String endpointName, String serviceConfigurationName) {
         deleteWithResponse(resourceUri, endpointName, serviceConfigurationName, Context.NONE);
@@ -577,11 +490,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceConfigurationResourceInner> listByEndpointResourceSinglePage(String resourceUri,
         String endpointName) {
-        final String accept = "application/json";
-        Response<ServiceConfigurationList> res = service.listByEndpointResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, endpointName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEndpointResourceSinglePage(resourceUri, endpointName, Context.NONE);
     }
 
     /**
@@ -607,38 +516,14 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists of all the services associated with endpoint resource.
-     * 
-     * API to enumerate registered services in service configurations under a Endpoint Resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of serviceConfigurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceConfigurationResourceInner> listByEndpointResource(String resourceUri,
         String endpointName) {
-        return new PagedIterable<>(() -> listByEndpointResourceSinglePage(resourceUri, endpointName),
-            nextLink -> listByEndpointResourceNextSinglePage(nextLink));
+        return listByEndpointResource(resourceUri, endpointName, Context.NONE);
     }
 
-    /**
-     * Lists of all the services associated with endpoint resource.
-     * 
-     * API to enumerate registered services in service configurations under a Endpoint Resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param endpointName The endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of serviceConfigurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceConfigurationResourceInner> listByEndpointResource(String resourceUri,
         String endpointName, Context context) {
@@ -683,11 +568,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceConfigurationResourceInner> listByEndpointResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ServiceConfigurationList> res
-            = service.listByEndpointResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEndpointResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -88,10 +88,7 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
     }
 
     public AppLinkMember create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinkMembers()
-            .createOrUpdate(resourceGroupName, appLinkName, appLinkMemberName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AppLinkMember create(Context context) {
@@ -113,10 +110,7 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
     }
 
     public AppLinkMember apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinkMembers()
-            .update(resourceGroupName, appLinkName, appLinkMemberName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AppLinkMember apply(Context context) {
@@ -130,17 +124,19 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
         com.azure.resourcemanager.appnetwork.AppnetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.appLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinks");
-        this.appLinkMemberName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinkMembers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
+            "resourceGroupName");
+        this.appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
+            "appLinkName");
+        this.appLinkMemberName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
+            "appLinkMemberName");
     }
 
     public AppLinkMember refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinkMembers()
-            .getWithResponse(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AppLinkMember refresh(Context context) {

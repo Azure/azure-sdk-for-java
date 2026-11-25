@@ -143,11 +143,7 @@ public final class ExtensionTypesClientImpl implements ExtensionTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtensionTypeInner> listSinglePage(String location, String publisher) {
-        final String accept = "application/json";
-        Response<ExtensionTypeListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            location, publisher, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, publisher, Context.NONE);
     }
 
     /**
@@ -170,32 +166,13 @@ public final class ExtensionTypesClientImpl implements ExtensionTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Extension types based on location and publisher.
-     * 
-     * @param location The location name.
-     * @param publisher The publisher of the Extension being received.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Extension types based on location and publisher as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionTypeInner> list(String location, String publisher) {
-        return new PagedIterable<>(() -> listSinglePage(location, publisher), nextLink -> listNextSinglePage(nextLink));
+        return list(location, publisher, Context.NONE);
     }
 
-    /**
-     * Gets all Extension types based on location and publisher.
-     * 
-     * @param location The location name.
-     * @param publisher The publisher of the Extension being received.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Extension types based on location and publisher as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionTypeInner> list(String location, String publisher, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, publisher, context),
@@ -232,11 +209,7 @@ public final class ExtensionTypesClientImpl implements ExtensionTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtensionTypeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExtensionTypeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

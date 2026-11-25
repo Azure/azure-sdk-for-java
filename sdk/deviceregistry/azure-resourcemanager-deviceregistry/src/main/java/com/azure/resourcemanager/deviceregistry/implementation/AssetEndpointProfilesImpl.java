@@ -46,7 +46,7 @@ public final class AssetEndpointProfilesImpl implements AssetEndpointProfiles {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String assetEndpointProfileName) {
-        this.serviceClient().delete(resourceGroupName, assetEndpointProfileName);
+        this.delete(resourceGroupName, assetEndpointProfileName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String assetEndpointProfileName, Context context) {
@@ -54,8 +54,7 @@ public final class AssetEndpointProfilesImpl implements AssetEndpointProfiles {
     }
 
     public PagedIterable<AssetEndpointProfile> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<AssetEndpointProfileInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssetEndpointProfileImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<AssetEndpointProfile> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class AssetEndpointProfilesImpl implements AssetEndpointProfiles {
     }
 
     public PagedIterable<AssetEndpointProfile> list() {
-        PagedIterable<AssetEndpointProfileInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssetEndpointProfileImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AssetEndpointProfile> list(Context context) {
@@ -75,59 +73,30 @@ public final class AssetEndpointProfilesImpl implements AssetEndpointProfiles {
     }
 
     public AssetEndpointProfile getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String assetEndpointProfileName = ResourceManagerUtils.getValueFromIdByName(id, "assetEndpointProfiles");
-        if (assetEndpointProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assetEndpointProfiles'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, assetEndpointProfileName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AssetEndpointProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String assetEndpointProfileName = ResourceManagerUtils.getValueFromIdByName(id, "assetEndpointProfiles");
-        if (assetEndpointProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assetEndpointProfiles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String assetEndpointProfileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}",
+            "assetEndpointProfileName", "assetEndpointProfiles", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, assetEndpointProfileName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String assetEndpointProfileName = ResourceManagerUtils.getValueFromIdByName(id, "assetEndpointProfiles");
-        if (assetEndpointProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assetEndpointProfiles'.", id)));
-        }
-        this.delete(resourceGroupName, assetEndpointProfileName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String assetEndpointProfileName = ResourceManagerUtils.getValueFromIdByName(id, "assetEndpointProfiles");
-        if (assetEndpointProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assetEndpointProfiles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String assetEndpointProfileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}",
+            "assetEndpointProfileName", "assetEndpointProfiles", LOGGER);
         this.delete(resourceGroupName, assetEndpointProfileName, context);
     }
 

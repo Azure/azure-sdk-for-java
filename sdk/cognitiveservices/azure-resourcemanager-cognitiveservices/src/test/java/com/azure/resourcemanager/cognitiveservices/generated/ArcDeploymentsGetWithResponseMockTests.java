@@ -11,8 +11,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeployment;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentComputeType;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentRuntime;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentSkuName;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentState;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +23,7 @@ public final class ArcDeploymentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"model\":{\"format\":\"swxvjelei\",\"name\":\"qhdxtwwulkryb\"},\"extensionId\":\"aevyk\",\"runtime\":\"onnx-genai\",\"compute\":\"gpu\",\"deploymentTemplate\":\"crqkwakkc\",\"vllmParameters\":{\"tensorParallelSize\":1885531635,\"maxModelLen\":296640333,\"gpuMemoryUtilization\":2.098912,\"enforceEager\":false},\"replicas\":1622415709,\"resources\":{\"requests\":{\"cpu\":\"ibsdqbdyblpe\",\"memory\":\"t\"},\"limits\":{\"cpu\":\"pgweoqhbjqlqf\",\"memory\":\"erufollcshjuc\",\"gpu\":467385506}},\"nodeSelector\":{\"jeazrahelhbimyii\":\"jjvtpnerx\",\"osizk\":\"qamcthtpqgfz\",\"xofgrutvnpccxz\":\"iuvflgzhcwjgwahc\",\"mhzghhhkvnnjdtu\":\"vx\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"hnjvpmxnhtmzstql\",\"provisioningState\":\"Failed\",\"provisioningDetails\":{\"message\":\"wvtlgxy\",\"lastOperationTimestamp\":\"2021-10-19T13:07:53Z\"},\"inferenceEndpoint\":\"equ\",\"capabilities\":{\"ubotbvufrkw\":\"yyopoaytwwgw\",\"owewjskr\":\"iemimdtn\",\"p\":\"eedddrftfquu\",\"igeeuwbr\":\"lhs\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"xfedqnetdqw\",\"id\":\"xoqgvbzpggpw\",\"name\":\"eyobqaj\",\"type\":\"jirvavrvkgpo\"}";
+            = "{\"properties\":{\"model\":{\"format\":\"tfrdlfewexbrvb\",\"name\":\"yriyraybi\",\"version\":\"ksnijclfdprez\",\"assetId\":\"xzxeigy\"},\"extensionId\":\"d\",\"runtime\":\"onnx-genai\",\"compute\":\"gpu\",\"deploymentTemplate\":\"bxerzypcralwvc\",\"vllmParameters\":{\"tensorParallelSize\":1176021219,\"maxModelLen\":1283658497,\"gpuMemoryUtilization\":26.384794,\"enforceEager\":true},\"replicas\":1763439762,\"resources\":{\"requests\":{\"cpu\":\"zbcujdz\",\"memory\":\"gye\"},\"limits\":{\"cpu\":\"emny\",\"memory\":\"oqpbfjf\",\"gpu\":75537907}},\"nodeSelector\":{\"mkuquvcgvn\":\"bpt\",\"cldoyohuafuclop\":\"m\",\"oowfrg\":\"emsylwsm\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"bh\",\"provisioningState\":\"Creating\",\"provisioningDetails\":{\"message\":\"ustkqywabhlgrrsk\",\"lastOperationTimestamp\":\"2021-11-10T11:26:07Z\"},\"inferenceEndpoint\":\"keeohpfedxg\",\"capabilities\":{\"k\":\"d\",\"zmehcdfdxthqnz\":\"xh\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"ir\",\"id\":\"dijdhzkwvuewei\",\"name\":\"ajelswlxdknxctg\",\"type\":\"zbcxdfsgwigyiwbw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,24 +33,21 @@ public final class ArcDeploymentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ArcDeployment response = manager.arcDeployments()
-            .getWithResponse("vyvuoikdlpsx", "tug", "wimqnryclocfm", com.azure.core.util.Context.NONE)
+            .getWithResponse("kiwpadnh", "lxnnit", "ug", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("swxvjelei", response.properties().model().format());
-        Assertions.assertEquals("qhdxtwwulkryb", response.properties().model().name());
-        Assertions.assertEquals("aevyk", response.properties().extensionId());
-        Assertions.assertEquals(ArcDeploymentRuntime.ONNX, response.properties().runtime());
-        Assertions.assertEquals(ArcDeploymentComputeType.GPU, response.properties().compute());
-        Assertions.assertEquals("crqkwakkc", response.properties().deploymentTemplate());
-        Assertions.assertEquals(1622415709, response.properties().replicas());
-        Assertions.assertEquals("ibsdqbdyblpe", response.properties().resources().requests().cpu());
-        Assertions.assertEquals("t", response.properties().resources().requests().memory());
-        Assertions.assertEquals("pgweoqhbjqlqf", response.properties().resources().limits().cpu());
-        Assertions.assertEquals("erufollcshjuc", response.properties().resources().limits().memory());
-        Assertions.assertEquals(467385506, response.properties().resources().limits().gpu());
-        Assertions.assertEquals("jjvtpnerx", response.properties().nodeSelector().get("jeazrahelhbimyii"));
+        Assertions.assertEquals("xzxeigy", response.properties().model().assetId());
+        Assertions.assertEquals("d", response.properties().extensionId());
+        Assertions.assertEquals("bxerzypcralwvc", response.properties().deploymentTemplate());
+        Assertions.assertEquals(1763439762, response.properties().replicas());
+        Assertions.assertEquals("zbcujdz", response.properties().resources().requests().cpu());
+        Assertions.assertEquals("gye", response.properties().resources().requests().memory());
+        Assertions.assertEquals("emny", response.properties().resources().limits().cpu());
+        Assertions.assertEquals("oqpbfjf", response.properties().resources().limits().memory());
+        Assertions.assertEquals(75537907, response.properties().resources().limits().gpu());
+        Assertions.assertEquals("bpt", response.properties().nodeSelector().get("mkuquvcgvn"));
         Assertions.assertEquals(DeploymentState.RUNNING, response.properties().deploymentState());
-        Assertions.assertEquals("hnjvpmxnhtmzstql", response.properties().raiPolicyName());
+        Assertions.assertEquals("bh", response.properties().raiPolicyName());
         Assertions.assertEquals(ArcDeploymentSkuName.ARC, response.sku().name());
     }
 }

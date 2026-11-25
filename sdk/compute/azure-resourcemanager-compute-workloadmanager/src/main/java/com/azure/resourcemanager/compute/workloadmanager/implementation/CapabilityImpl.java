@@ -93,10 +93,7 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
     }
 
     public Capability create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapabilities()
-            .createOrUpdate(resourceGroupName, spaceName, capabilityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Capability create(Context context) {
@@ -119,10 +116,7 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
     }
 
     public Capability apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapabilities()
-            .update(resourceGroupName, spaceName, capabilityName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Capability apply(Context context) {
@@ -136,17 +130,19 @@ public final class CapabilityImpl implements Capability, Capability.Definition, 
         com.azure.resourcemanager.compute.workloadmanager.ComputeWorkloadManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadSpaces");
-        this.capabilityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capabilities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}",
+            "resourceGroupName");
+        this.spaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}",
+            "spaceName");
+        this.capabilityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/capabilities/{capabilityName}",
+            "capabilityName");
     }
 
     public Capability refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCapabilities()
-            .getWithResponse(resourceGroupName, spaceName, capabilityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Capability refresh(Context context) {

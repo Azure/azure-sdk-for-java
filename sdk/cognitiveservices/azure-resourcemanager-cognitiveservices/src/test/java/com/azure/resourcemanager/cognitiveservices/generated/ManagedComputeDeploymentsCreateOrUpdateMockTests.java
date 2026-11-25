@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModelVersionUpgradeOption;
+import com.azure.resourcemanager.cognitiveservices.models.GatedModelAccessProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeployment;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
@@ -25,7 +26,7 @@ public final class ManagedComputeDeploymentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"model\":\"hh\",\"deploymentTemplate\":\"fndcbsyhlud\",\"acceleratorType\":\"kkovohwv\",\"versionUpgradeOption\":\"OnceNewDefaultVersionAvailable\",\"capabilities\":{\"mdtacntjn\":\"vtdu\"},\"computeId\":\"fhvqiias\",\"priority\":\"ws\",\"acceleratorsPerInstance\":801756456,\"totalAccelerators\":741814913,\"provisioningState\":\"Succeeded\",\"provisioningDetails\":{\"message\":\"xhhqsxjbj\",\"lastOperationTimestamp\":\"2021-05-11T23:26:14Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"gl\",\"swagger\":\"trefeclfl\",\"messagesApiScoringPath\":\"jffzwncvdefxonzt\"}},\"sku\":{\"name\":\"jptnnt\",\"tier\":\"Free\",\"size\":\"qpzjvnpjrrh\",\"family\":\"sjbi\",\"capacity\":345612933},\"etag\":\"viqehmdqvaol\",\"id\":\"xdfsfvkjc\",\"name\":\"m\",\"type\":\"rsvxphtjnhptj\"}";
+            = "{\"properties\":{\"model\":\"btegoachoj\",\"deploymentTemplate\":\"laqqfrgiplxr\",\"acceleratorType\":\"bsbkvfk\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"gatedModelAccess\":{\"connectionId\":\"poijsxvrutjituu\"},\"capabilities\":{\"jinzosxrsmvnnjwn\":\"arscxnkt\",\"wqc\":\"oxvez\"},\"computeId\":\"owppvu\",\"priority\":\"actoqqehn\",\"acceleratorsPerInstance\":867941509,\"totalAccelerators\":1657831587,\"provisioningState\":\"Succeeded\",\"provisioningDetails\":{\"message\":\"lvpt\",\"lastOperationTimestamp\":\"2021-11-29T13:46:37Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"izebbrwlpeq\",\"swagger\":\"soiqge\",\"messagesApiScoringPath\":\"g\"}},\"sku\":{\"name\":\"wyxbwuamoaopqq\",\"tier\":\"Basic\",\"size\":\"ehedchengmxpjkuq\",\"family\":\"gro\",\"capacity\":617196422},\"etag\":\"qdzyyalrxtgqpq\",\"id\":\"uplfjkbaxvu\",\"name\":\"eimuipggt\",\"type\":\"hxbfhbip\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,32 +36,34 @@ public final class ManagedComputeDeploymentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedComputeDeployment response = manager.managedComputeDeployments()
-            .define("itlynkwfsa")
-            .withExistingAccount("guxcmmhip", "vsk")
-            .withProperties(new ManagedComputeDeploymentProperties().withModel("gfgbmcvmhidyliu")
-                .withDeploymentTemplate("klna")
-                .withAcceleratorType("dnxqeonm")
-                .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED)
-                .withComputeId("cndjzwhajo")
-                .withPriority("pqokhdyncra"))
-            .withSku(new Sku().withName("tjizwhpnbmajvvy")
-                .withTier(SkuTier.STANDARD)
-                .withSize("x")
-                .withFamily("kzixbk")
-                .withCapacity(2007505628))
+            .define("wmn")
+            .withExistingAccount("exnpoaeruywfh", "twlzlmpiprlcgq")
+            .withProperties(new ManagedComputeDeploymentProperties().withModel("hqlybmkmxusm")
+                .withDeploymentTemplate("apepwpbnjckowtu")
+                .withAcceleratorType("umy")
+                .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE)
+                .withGatedModelAccess(new GatedModelAccessProperties().withConnectionId("dllbw"))
+                .withComputeId("gqztakov")
+                .withPriority("v"))
+            .withSku(new Sku().withName("ijqgcvqewxrq")
+                .withTier(SkuTier.ENTERPRISE)
+                .withSize("ppuhk")
+                .withFamily("oakzvjyvobevfbmx")
+                .withCapacity(2056143756))
             .create();
 
-        Assertions.assertEquals("hh", response.properties().model());
-        Assertions.assertEquals("fndcbsyhlud", response.properties().deploymentTemplate());
-        Assertions.assertEquals("kkovohwv", response.properties().acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_NEW_DEFAULT_VERSION_AVAILABLE,
+        Assertions.assertEquals("btegoachoj", response.properties().model());
+        Assertions.assertEquals("laqqfrgiplxr", response.properties().deploymentTemplate());
+        Assertions.assertEquals("bsbkvfk", response.properties().acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
             response.properties().versionUpgradeOption());
-        Assertions.assertEquals("fhvqiias", response.properties().computeId());
-        Assertions.assertEquals("ws", response.properties().priority());
-        Assertions.assertEquals("jptnnt", response.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.sku().tier());
-        Assertions.assertEquals("qpzjvnpjrrh", response.sku().size());
-        Assertions.assertEquals("sjbi", response.sku().family());
-        Assertions.assertEquals(345612933, response.sku().capacity());
+        Assertions.assertEquals("poijsxvrutjituu", response.properties().gatedModelAccess().connectionId());
+        Assertions.assertEquals("owppvu", response.properties().computeId());
+        Assertions.assertEquals("actoqqehn", response.properties().priority());
+        Assertions.assertEquals("wyxbwuamoaopqq", response.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
+        Assertions.assertEquals("ehedchengmxpjkuq", response.sku().size());
+        Assertions.assertEquals("gro", response.sku().family());
+        Assertions.assertEquals(617196422, response.sku().capacity());
     }
 }

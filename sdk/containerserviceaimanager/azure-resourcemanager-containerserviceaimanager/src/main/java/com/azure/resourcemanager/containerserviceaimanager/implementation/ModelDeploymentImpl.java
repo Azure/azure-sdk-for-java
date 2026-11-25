@@ -76,11 +76,7 @@ public final class ModelDeploymentImpl implements ModelDeployment, ModelDeployme
     }
 
     public ModelDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelDeployments()
-            .createOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ModelDeployment create(Context context) {
@@ -107,11 +103,7 @@ public final class ModelDeploymentImpl implements ModelDeployment, ModelDeployme
     }
 
     public ModelDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelDeployments()
-            .createOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, this.innerModel(),
-                updateIfMatch, updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ModelDeployment apply(Context context) {
@@ -126,18 +118,22 @@ public final class ModelDeploymentImpl implements ModelDeployment, ModelDeployme
         com.azure.resourcemanager.containerserviceaimanager.ContainerServiceAIManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.aiManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "aiManagers");
-        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.modelDeploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "modelDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments/{modelDeploymentName}",
+            "resourceGroupName");
+        this.aiManagerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments/{modelDeploymentName}",
+            "aiManagerName");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments/{modelDeploymentName}",
+            "namespaceName");
+        this.modelDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments/{modelDeploymentName}",
+            "modelDeploymentName");
     }
 
     public ModelDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelDeployments()
-            .getWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ModelDeployment refresh(Context context) {

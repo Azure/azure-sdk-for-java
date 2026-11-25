@@ -65,11 +65,7 @@ public final class ProjectCapabilityHostImpl
     }
 
     public ProjectCapabilityHost create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjectCapabilityHosts()
-            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProjectCapabilityHost create(Context context) {
@@ -92,11 +88,7 @@ public final class ProjectCapabilityHostImpl
     }
 
     public ProjectCapabilityHost apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjectCapabilityHosts()
-            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProjectCapabilityHost apply(Context context) {
@@ -111,18 +103,22 @@ public final class ProjectCapabilityHostImpl
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.capabilityHostName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capabilityHosts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}",
+            "accountName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}",
+            "projectName");
+        this.capabilityHostName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}",
+            "capabilityHostName");
     }
 
     public ProjectCapabilityHost refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjectCapabilityHosts()
-            .getWithResponse(resourceGroupName, accountName, projectName, capabilityHostName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProjectCapabilityHost refresh(Context context) {

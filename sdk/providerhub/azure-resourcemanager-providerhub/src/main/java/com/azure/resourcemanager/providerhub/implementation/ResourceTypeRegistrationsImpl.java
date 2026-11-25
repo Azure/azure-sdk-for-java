@@ -45,7 +45,7 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     }
 
     public void deleteByResourceGroup(String providerNamespace, String resourceType) {
-        this.serviceClient().delete(providerNamespace, resourceType);
+        this.delete(providerNamespace, resourceType, Context.NONE);
     }
 
     public void delete(String providerNamespace, String resourceType, Context context) {
@@ -53,9 +53,7 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     }
 
     public PagedIterable<ResourceTypeRegistration> listByProviderRegistration(String providerNamespace) {
-        PagedIterable<ResourceTypeRegistrationInner> inner
-            = this.serviceClient().listByProviderRegistration(providerNamespace);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceTypeRegistrationImpl(inner1, this.manager()));
+        return this.listByProviderRegistration(providerNamespace, Context.NONE);
     }
 
     public PagedIterable<ResourceTypeRegistration> listByProviderRegistration(String providerNamespace,
@@ -66,58 +64,30 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     }
 
     public ResourceTypeRegistration getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, resourceType, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ResourceTypeRegistration> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String resourceType = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}",
+            "resourceType", "resourcetypeRegistrations", LOGGER);
         return this.getWithResponse(providerNamespace, resourceType, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        this.delete(providerNamespace, resourceType, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String resourceType = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}",
+            "resourceType", "resourcetypeRegistrations", LOGGER);
         this.delete(providerNamespace, resourceType, context);
     }
 

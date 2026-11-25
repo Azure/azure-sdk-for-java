@@ -184,20 +184,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     * matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedVirtualNetworkResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String ifNoneMatch, Context context) {
@@ -206,17 +193,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
             resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a managed Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedVirtualNetworkResourceInner get(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName) {
@@ -273,21 +250,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
             managedVirtualNetwork, ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a managed Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     * should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedVirtualNetworkResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String factoryName, String managedVirtualNetworkName, ManagedVirtualNetworkResourceInner managedVirtualNetwork,
@@ -299,18 +262,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
             contentType, accept, managedVirtualNetwork, context);
     }
 
-    /**
-     * Creates or updates a managed Virtual Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedVirtualNetworkResourceInner createOrUpdate(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, ManagedVirtualNetworkResourceInner managedVirtualNetwork) {
@@ -372,12 +324,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedVirtualNetworkResourceInner> listByFactorySinglePage(String resourceGroupName,
         String factoryName) {
-        final String accept = "application/json";
-        Response<ManagedVirtualNetworkListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -402,34 +349,14 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists managed Virtual Networks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(String resourceGroupName,
         String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists managed Virtual Networks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -468,11 +395,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedVirtualNetworkResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedVirtualNetworkListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

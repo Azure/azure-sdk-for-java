@@ -104,10 +104,7 @@ public final class LocationBasedBulkCreateImpl
     }
 
     public LocationBasedBulkCreate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocationBasedBulkCreate create(Context context) {
@@ -129,10 +126,7 @@ public final class LocationBasedBulkCreateImpl
     }
 
     public LocationBasedBulkCreate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocationBasedBulkCreate apply(Context context) {
@@ -146,17 +140,19 @@ public final class LocationBasedBulkCreateImpl
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bulkCreate");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
+            "resourceGroupName");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
+            "name");
     }
 
     public LocationBasedBulkCreate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .getWithResponse(resourceGroupName, location, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocationBasedBulkCreate refresh(Context context) {

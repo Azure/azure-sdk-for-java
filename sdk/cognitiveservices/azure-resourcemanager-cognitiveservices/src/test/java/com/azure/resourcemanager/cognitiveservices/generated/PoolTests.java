@@ -13,24 +13,24 @@ public final class PoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Pool model = BinaryData.fromString(
-            "{\"name\":\"l\",\"vmPriority\":\"Regular\",\"instanceType\":\"qkfrbzgowoxqmj\",\"nodeCount\":642254793}")
+            "{\"name\":\"nvovbooqbmdqrxy\",\"vmPriority\":\"Regular\",\"instanceType\":\"et\",\"nodeCount\":474730373}")
             .toObject(Pool.class);
-        Assertions.assertEquals("l", model.name());
+        Assertions.assertEquals("nvovbooqbmdqrxy", model.name());
         Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
-        Assertions.assertEquals("qkfrbzgowoxqmj", model.instanceType());
-        Assertions.assertEquals(642254793, model.nodeCount());
+        Assertions.assertEquals("et", model.instanceType());
+        Assertions.assertEquals(474730373, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Pool model = new Pool().withName("l")
+        Pool model = new Pool().withName("nvovbooqbmdqrxy")
             .withVmPriority(VmPriority.REGULAR)
-            .withInstanceType("qkfrbzgowoxqmj")
-            .withNodeCount(642254793);
+            .withInstanceType("et")
+            .withNodeCount(474730373);
         model = BinaryData.fromObject(model).toObject(Pool.class);
-        Assertions.assertEquals("l", model.name());
+        Assertions.assertEquals("nvovbooqbmdqrxy", model.name());
         Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
-        Assertions.assertEquals("qkfrbzgowoxqmj", model.instanceType());
-        Assertions.assertEquals(642254793, model.nodeCount());
+        Assertions.assertEquals("et", model.instanceType());
+        Assertions.assertEquals(474730373, model.nodeCount());
     }
 }

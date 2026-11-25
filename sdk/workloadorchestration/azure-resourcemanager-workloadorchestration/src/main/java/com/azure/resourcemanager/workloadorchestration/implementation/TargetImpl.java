@@ -102,10 +102,7 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     }
 
     public Target create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTargets()
-            .createOrUpdate(resourceGroupName, targetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Target create(Context context) {
@@ -128,10 +125,7 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     }
 
     public Target apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTargets()
-            .update(resourceGroupName, targetName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Target apply(Context context) {
@@ -145,16 +139,16 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.targetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "targets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
+            "resourceGroupName");
+        this.targetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}",
+            "targetName");
     }
 
     public Target refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTargets()
-            .getByResourceGroupWithResponse(resourceGroupName, targetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Target refresh(Context context) {

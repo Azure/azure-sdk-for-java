@@ -45,7 +45,7 @@ public final class SandboxGroupsImpl implements SandboxGroups {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String sandboxGroupName) {
-        this.serviceClient().delete(resourceGroupName, sandboxGroupName);
+        this.delete(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String sandboxGroupName, Context context) {
@@ -53,8 +53,7 @@ public final class SandboxGroupsImpl implements SandboxGroups {
     }
 
     public PagedIterable<SandboxGroup> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SandboxGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SandboxGroupImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SandboxGroup> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class SandboxGroupsImpl implements SandboxGroups {
     }
 
     public PagedIterable<SandboxGroup> list() {
-        PagedIterable<SandboxGroupInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SandboxGroupImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SandboxGroup> list(Context context) {
@@ -73,58 +71,30 @@ public final class SandboxGroupsImpl implements SandboxGroups {
     }
 
     public SandboxGroup getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxGroups");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, sandboxGroupName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SandboxGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxGroups");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sandboxGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}",
+            "sandboxGroupName", "sandboxGroups", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, sandboxGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxGroups");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
-        this.delete(resourceGroupName, sandboxGroupName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sandboxGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxGroups");
-        if (sandboxGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxGroups'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sandboxGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}",
+            "sandboxGroupName", "sandboxGroups", LOGGER);
         this.delete(resourceGroupName, sandboxGroupName, context);
     }
 

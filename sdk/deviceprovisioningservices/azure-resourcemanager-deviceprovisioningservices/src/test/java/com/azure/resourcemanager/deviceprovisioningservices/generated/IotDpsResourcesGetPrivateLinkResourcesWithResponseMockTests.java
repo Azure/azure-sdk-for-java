@@ -21,7 +21,7 @@ public final class IotDpsResourcesGetPrivateLinkResourcesWithResponseMockTests {
     @Test
     public void testGetPrivateLinkResourcesWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"qgitxmed\",\"requiredMembers\":[\"slynqwwnc\"],\"requiredZoneNames\":[\"hxg\",\"trmgucnapkte\",\"ellwptfdy\"]},\"id\":\"fqbuaceopzf\",\"name\":\"rhhuaopppcqeqx\",\"type\":\"lzdahzxctobgbkdm\"}";
+            = "{\"properties\":{\"groupId\":\"dtbnnha\",\"requiredMembers\":[\"crkvcikhnv\",\"amqgxqquezikyw\",\"gxk\"],\"requiredZoneNames\":[\"atmelwui\"]},\"id\":\"ccjzkzivgvv\",\"name\":\"nayrhyrnxxmueedn\",\"type\":\"rdvstkwqqtch\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class IotDpsResourcesGetPrivateLinkResourcesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupIdInformation response = manager.iotDpsResources()
-            .getPrivateLinkResourcesWithResponse("bnxknalaulppg", "dtpnapnyiropuhp", "gvpgy",
-                com.azure.core.util.Context.NONE)
+            .getPrivateLinkResourcesWithResponse("dmtnc", "ok", "tllxdyhgsyocogj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qgitxmed", response.properties().groupId());
-        Assertions.assertEquals("slynqwwnc", response.properties().requiredMembers().get(0));
-        Assertions.assertEquals("hxg", response.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("dtbnnha", response.properties().groupId());
+        Assertions.assertEquals("crkvcikhnv", response.properties().requiredMembers().get(0));
+        Assertions.assertEquals("atmelwui", response.properties().requiredZoneNames().get(0));
     }
 }

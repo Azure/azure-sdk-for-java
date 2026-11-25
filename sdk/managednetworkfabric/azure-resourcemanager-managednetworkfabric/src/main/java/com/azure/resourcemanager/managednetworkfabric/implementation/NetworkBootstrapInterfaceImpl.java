@@ -114,11 +114,7 @@ public final class NetworkBootstrapInterfaceImpl
     }
 
     public NetworkBootstrapInterface create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkBootstrapInterfaces()
-            .create(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkBootstrapInterface create(Context context) {
@@ -142,11 +138,7 @@ public final class NetworkBootstrapInterfaceImpl
     }
 
     public NetworkBootstrapInterface apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkBootstrapInterfaces()
-            .update(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, updateBody,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkBootstrapInterface apply(Context context) {
@@ -160,19 +152,19 @@ public final class NetworkBootstrapInterfaceImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkBootstrapDeviceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkBootstrapDevices");
-        this.networkBootstrapInterfaceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkBootstrapInterfaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/networkBootstrapInterfaces/{networkBootstrapInterfaceName}",
+            "resourceGroupName");
+        this.networkBootstrapDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/networkBootstrapInterfaces/{networkBootstrapInterfaceName}",
+            "networkBootstrapDeviceName");
+        this.networkBootstrapInterfaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/networkBootstrapInterfaces/{networkBootstrapInterfaceName}",
+            "networkBootstrapInterfaceName");
     }
 
     public NetworkBootstrapInterface refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkBootstrapInterfaces()
-            .getWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkBootstrapInterface refresh(Context context) {

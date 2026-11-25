@@ -93,10 +93,7 @@ public final class RuntimeBindingImpl implements RuntimeBinding, RuntimeBinding.
     }
 
     public RuntimeBinding create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRuntimeBindings()
-            .createOrUpdate(resourceGroupName, spaceName, bindingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RuntimeBinding create(Context context) {
@@ -119,10 +116,7 @@ public final class RuntimeBindingImpl implements RuntimeBinding, RuntimeBinding.
     }
 
     public RuntimeBinding apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRuntimeBindings()
-            .update(resourceGroupName, spaceName, bindingName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RuntimeBinding apply(Context context) {
@@ -136,17 +130,19 @@ public final class RuntimeBindingImpl implements RuntimeBinding, RuntimeBinding.
         com.azure.resourcemanager.compute.workloadmanager.ComputeWorkloadManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadSpaces");
-        this.bindingName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "runtimeBindings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "resourceGroupName");
+        this.spaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "spaceName");
+        this.bindingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "bindingName");
     }
 
     public RuntimeBinding refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRuntimeBindings()
-            .getWithResponse(resourceGroupName, spaceName, bindingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RuntimeBinding refresh(Context context) {

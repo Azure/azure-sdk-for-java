@@ -116,10 +116,7 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
     }
 
     public Gateway create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGateways()
-            .createOrUpdate(resourceGroupName, gatewayName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Gateway create(Context context) {
@@ -141,11 +138,7 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
     }
 
     public Gateway apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGateways()
-            .updateWithResponse(resourceGroupName, gatewayName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Gateway apply(Context context) {
@@ -159,16 +152,16 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
     GatewayImpl(GatewayInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.gatewayName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "gateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/gateways/{gatewayName}",
+            "resourceGroupName");
+        this.gatewayName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/gateways/{gatewayName}",
+            "gatewayName");
     }
 
     public Gateway refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGateways()
-            .getByResourceGroupWithResponse(resourceGroupName, gatewayName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Gateway refresh(Context context) {

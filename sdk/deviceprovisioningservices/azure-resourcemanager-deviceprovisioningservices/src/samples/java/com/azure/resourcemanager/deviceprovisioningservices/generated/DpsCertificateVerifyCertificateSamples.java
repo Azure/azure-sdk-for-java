@@ -11,7 +11,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationC
  */
 public final class DpsCertificateVerifyCertificateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSVerifyCertificate.json
+     * x-ms-original-file: 2026-11-01/DPSVerifyCertificate.json
      */
     /**
      * Sample code: DPSVerifyCertificate.

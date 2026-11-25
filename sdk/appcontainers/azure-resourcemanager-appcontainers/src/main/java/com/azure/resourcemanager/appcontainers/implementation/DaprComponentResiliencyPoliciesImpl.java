@@ -53,15 +53,12 @@ public final class DaprComponentResiliencyPoliciesImpl implements DaprComponentR
     }
 
     public void delete(String resourceGroupName, String environmentName, String componentName, String name) {
-        this.serviceClient().delete(resourceGroupName, environmentName, componentName, name);
+        this.deleteWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE);
     }
 
     public PagedIterable<DaprComponentResiliencyPolicy> list(String resourceGroupName, String environmentName,
         String componentName) {
-        PagedIterable<DaprComponentResiliencyPolicyInner> inner
-            = this.serviceClient().list(resourceGroupName, environmentName, componentName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new DaprComponentResiliencyPolicyImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, environmentName, componentName, Context.NONE);
     }
 
     public PagedIterable<DaprComponentResiliencyPolicy> list(String resourceGroupName, String environmentName,
@@ -73,98 +70,42 @@ public final class DaprComponentResiliencyPoliciesImpl implements DaprComponentR
     }
 
     public DaprComponentResiliencyPolicy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "resiliencyPolicies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resiliencyPolicies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DaprComponentResiliencyPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "resiliencyPolicies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resiliencyPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "environmentName", "managedEnvironments", LOGGER);
+        String componentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "componentName", "daprComponents", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "name", "resiliencyPolicies", LOGGER);
         return this.getWithResponse(resourceGroupName, environmentName, componentName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "resiliencyPolicies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resiliencyPolicies'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "resiliencyPolicies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resiliencyPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "environmentName", "managedEnvironments", LOGGER);
+        String componentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "componentName", "daprComponents", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "name", "resiliencyPolicies", LOGGER);
         return this.deleteWithResponse(resourceGroupName, environmentName, componentName, name, context);
     }
 

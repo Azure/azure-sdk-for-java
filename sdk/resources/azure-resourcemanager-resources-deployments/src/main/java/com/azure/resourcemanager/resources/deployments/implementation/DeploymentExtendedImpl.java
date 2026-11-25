@@ -94,10 +94,7 @@ public final class DeploymentExtendedImpl
     }
 
     public DeploymentExtended create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, deploymentName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeploymentExtended create(Context context) {
@@ -120,10 +117,7 @@ public final class DeploymentExtendedImpl
     }
 
     public DeploymentExtended apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, deploymentName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeploymentExtended apply(Context context) {
@@ -137,16 +131,34 @@ public final class DeploymentExtendedImpl
         com.azure.resourcemanager.resources.deployments.DeploymentsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}",
+            "resourceGroupName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}",
+            "deploymentName");
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}", "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Resources/deployments/{deploymentName}", "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}",
+                "deploymentName");
+        }
+        if (this.deploymentName == null) {
+            this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}",
+                "deploymentName");
+        }
     }
 
     public DeploymentExtended refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeploymentExtended refresh(Context context) {

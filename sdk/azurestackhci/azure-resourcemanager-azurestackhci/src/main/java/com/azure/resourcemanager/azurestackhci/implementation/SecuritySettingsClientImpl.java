@@ -203,18 +203,7 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SecuritySetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SecuritySetting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySettingInner> getWithResponse(String resourceGroupName, String clusterName,
         String securitySettingsName, Context context) {
@@ -223,17 +212,7 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             resourceGroupName, clusterName, securitySettingsName, accept, context);
     }
 
-    /**
-     * Get a SecuritySetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SecuritySetting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySettingInner get(String resourceGroupName, String clusterName, String securitySettingsName) {
         return getWithResponse(resourceGroupName, clusterName, securitySettingsName, Context.NONE).getValue();
@@ -278,11 +257,7 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String securitySettingsName, SecuritySettingInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, securitySettingsName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, securitySettingsName, resource, Context.NONE);
     }
 
     /**
@@ -329,40 +304,14 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             SecuritySettingInner.class, SecuritySettingInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a security setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of security settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecuritySettingInner>, SecuritySettingInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String securitySettingsName, SecuritySettingInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, clusterName, securitySettingsName, resource);
-        return this.client.<SecuritySettingInner, SecuritySettingInner>getLroResult(response,
-            SecuritySettingInner.class, SecuritySettingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, securitySettingsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a security setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of security settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecuritySettingInner>, SecuritySettingInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String securitySettingsName, SecuritySettingInner resource,
@@ -392,42 +341,19 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a security setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySettingInner createOrUpdate(String resourceGroupName, String clusterName,
         String securitySettingsName, SecuritySettingInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, securitySettingsName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, securitySettingsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a security setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySettingInner createOrUpdate(String resourceGroupName, String clusterName,
         String securitySettingsName, SecuritySettingInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, securitySettingsName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, clusterName, securitySettingsName, resource, context));
     }
 
     /**
@@ -464,8 +390,7 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String securitySettingsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, securitySettingsName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, securitySettingsName, Context.NONE);
     }
 
     /**
@@ -507,36 +432,14 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a SecuritySetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String securitySettingsName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, securitySettingsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, securitySettingsName, Context.NONE);
     }
 
-    /**
-     * Delete a SecuritySetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String securitySettingsName, Context context) {
@@ -562,35 +465,17 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SecuritySetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String securitySettingsName) {
-        beginDelete(resourceGroupName, clusterName, securitySettingsName).getFinalResult();
+        delete(resourceGroupName, clusterName, securitySettingsName, Context.NONE);
     }
 
-    /**
-     * Delete a SecuritySetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param securitySettingsName Name of security setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String securitySettingsName, Context context) {
-        beginDelete(resourceGroupName, clusterName, securitySettingsName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, securitySettingsName, context));
     }
 
     /**
@@ -644,12 +529,7 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecuritySettingInner> listByClustersSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<SecuritySettingListResult> res
-            = service.listByClustersSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClustersSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -674,33 +554,13 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SecuritySetting resources by Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecuritySetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySettingInner> listByClusters(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClustersSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByClustersNextSinglePage(nextLink));
+        return listByClusters(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List SecuritySetting resources by Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecuritySetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySettingInner> listByClusters(String resourceGroupName, String clusterName,
         Context context) {
@@ -739,11 +599,7 @@ public final class SecuritySettingsClientImpl implements SecuritySettingsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecuritySettingInner> listByClustersNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecuritySettingListResult> res
-            = service.listByClustersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClustersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

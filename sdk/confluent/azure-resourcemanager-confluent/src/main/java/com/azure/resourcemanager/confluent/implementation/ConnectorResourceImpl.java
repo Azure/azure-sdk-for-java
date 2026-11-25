@@ -78,12 +78,7 @@ public final class ConnectorResourceImpl
     }
 
     public ConnectorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConnectorResource create(Context context) {
@@ -106,12 +101,7 @@ public final class ConnectorResourceImpl
     }
 
     public ConnectorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConnectorResource apply(Context context) {
@@ -127,19 +117,25 @@ public final class ConnectorResourceImpl
         com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.environmentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
-        this.clusterId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/connectors/{connectorName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/connectors/{connectorName}",
+            "organizationName");
+        this.environmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/connectors/{connectorName}",
+            "environmentId");
+        this.clusterId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/connectors/{connectorName}",
+            "clusterId");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/connectors/{connectorName}",
+            "connectorName");
     }
 
     public ConnectorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .getWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConnectorResource refresh(Context context) {

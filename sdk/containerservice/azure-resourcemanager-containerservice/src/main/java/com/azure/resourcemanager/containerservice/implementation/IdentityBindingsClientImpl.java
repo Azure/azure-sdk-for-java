@@ -117,17 +117,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified Identity Binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Identity Binding along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IdentityBindingInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String identityBindingName) {
@@ -197,17 +187,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             resourceGroupName, resourceName, identityBindingName, accept, context);
     }
 
-    /**
-     * Gets the specified Identity Binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Identity Binding on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityBindingInner> getAsync(String resourceGroupName, String resourceName,
         String identityBindingName) {
@@ -215,52 +195,20 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Identity Binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Identity Binding along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IdentityBindingInner> getWithResponse(String resourceGroupName, String resourceName,
         String identityBindingName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, identityBindingName, context).block();
     }
 
-    /**
-     * Gets the specified Identity Binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Identity Binding.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IdentityBindingInner get(String resourceGroupName, String resourceName, String identityBindingName) {
         return getWithResponse(resourceGroupName, resourceName, identityBindingName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IdentityBinding resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String resourceName, String identityBindingName, IdentityBindingInner parameters) {
@@ -345,18 +293,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             parameters, context);
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IdentityBinding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IdentityBindingInner>, IdentityBindingInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String identityBindingName, IdentityBindingInner parameters) {
@@ -390,18 +327,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             IdentityBindingInner.class, IdentityBindingInner.class, context);
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IdentityBinding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IdentityBindingInner>, IdentityBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String identityBindingName, IdentityBindingInner parameters) {
@@ -409,19 +335,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IdentityBinding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IdentityBindingInner>, IdentityBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String identityBindingName, IdentityBindingInner parameters,
@@ -430,18 +344,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IdentityBinding resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityBindingInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
         String identityBindingName, IdentityBindingInner parameters) {
@@ -470,54 +373,21 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IdentityBinding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IdentityBindingInner createOrUpdate(String resourceGroupName, String resourceName,
         String identityBindingName, IdentityBindingInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, identityBindingName, parameters).block();
     }
 
-    /**
-     * Creates or updates an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param parameters The identity binding to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IdentityBinding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IdentityBindingInner createOrUpdate(String resourceGroupName, String resourceName,
         String identityBindingName, IdentityBindingInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, identityBindingName, parameters, context).block();
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String identityBindingName) {
@@ -585,17 +455,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             resourceGroupName, resourceName, identityBindingName, context);
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String identityBindingName) {
@@ -627,52 +487,21 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             context);
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String identityBindingName) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, identityBindingName).getSyncPoller();
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String identityBindingName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, identityBindingName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String identityBindingName) {
         return beginDeleteAsync(resourceGroupName, resourceName, identityBindingName).last()
@@ -698,32 +527,13 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String identityBindingName) {
         deleteAsync(resourceGroupName, resourceName, identityBindingName).block();
     }
 
-    /**
-     * Deletes an identity binding in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param identityBindingName The name of the identity binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String identityBindingName, Context context) {
         deleteAsync(resourceGroupName, resourceName, identityBindingName, context).block();
@@ -806,17 +616,7 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of identity bindings in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of identity bindings in the specified managed cluster as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IdentityBindingInner> listByManagedClusterAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(() -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName),
@@ -842,34 +642,13 @@ public final class IdentityBindingsClientImpl implements IdentityBindingsClient 
             nextLink -> listByManagedClusterNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of identity bindings in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of identity bindings in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityBindingInner> listByManagedCluster(String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Gets a list of identity bindings in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of identity bindings in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityBindingInner> listByManagedCluster(String resourceGroupName, String resourceName,
         Context context) {

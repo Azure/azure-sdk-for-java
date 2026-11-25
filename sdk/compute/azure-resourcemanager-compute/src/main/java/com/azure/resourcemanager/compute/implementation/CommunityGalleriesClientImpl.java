@@ -67,17 +67,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a community gallery by gallery public name.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunityGalleryInner>> getWithResponseAsync(String location, String publicGalleryName) {
         if (this.client.getEndpoint() == null) {
@@ -140,47 +130,19 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             publicGalleryName, accept, context);
     }
 
-    /**
-     * Get a community gallery by gallery public name.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunityGalleryInner> getAsync(String location, String publicGalleryName) {
         return getWithResponseAsync(location, publicGalleryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a community gallery by gallery public name.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityGalleryInner> getWithResponse(String location, String publicGalleryName, Context context) {
         return getWithResponseAsync(location, publicGalleryName, context).block();
     }
 
-    /**
-     * Get a community gallery by gallery public name.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityGalleryInner get(String location, String publicGalleryName) {
         return getWithResponse(location, publicGalleryName, Context.NONE).getValue();

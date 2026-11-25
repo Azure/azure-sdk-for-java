@@ -46,7 +46,7 @@ public final class CertificateProfilesImpl implements CertificateProfiles {
     }
 
     public void delete(String resourceGroupName, String accountName, String profileName) {
-        this.serviceClient().delete(resourceGroupName, accountName, profileName);
+        this.delete(resourceGroupName, accountName, profileName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String profileName, Context context) {
@@ -54,9 +54,7 @@ public final class CertificateProfilesImpl implements CertificateProfiles {
     }
 
     public PagedIterable<CertificateProfile> listByCodeSigningAccount(String resourceGroupName, String accountName) {
-        PagedIterable<CertificateProfileInner> inner
-            = this.serviceClient().listByCodeSigningAccount(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateProfileImpl(inner1, this.manager()));
+        return this.listByCodeSigningAccount(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<CertificateProfile> listByCodeSigningAccount(String resourceGroupName, String accountName,
@@ -74,82 +72,40 @@ public final class CertificateProfilesImpl implements CertificateProfiles {
 
     public void revokeCertificate(String resourceGroupName, String accountName, String profileName,
         RevokeCertificate body) {
-        this.serviceClient().revokeCertificate(resourceGroupName, accountName, profileName, body);
+        this.revokeCertificateWithResponse(resourceGroupName, accountName, profileName, body, Context.NONE);
     }
 
     public CertificateProfile getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
-        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "certificateProfiles");
-        if (profileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificateProfiles'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, profileName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CertificateProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
-        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "certificateProfiles");
-        if (profileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificateProfiles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "accountName", "codeSigningAccounts", LOGGER);
+        String profileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "profileName", "certificateProfiles", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, profileName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
-        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "certificateProfiles");
-        if (profileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificateProfiles'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, profileName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "codeSigningAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'codeSigningAccounts'.", id)));
-        }
-        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "certificateProfiles");
-        if (profileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificateProfiles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "accountName", "codeSigningAccounts", LOGGER);
+        String profileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}",
+            "profileName", "certificateProfiles", LOGGER);
         this.delete(resourceGroupName, accountName, profileName, context);
     }
 

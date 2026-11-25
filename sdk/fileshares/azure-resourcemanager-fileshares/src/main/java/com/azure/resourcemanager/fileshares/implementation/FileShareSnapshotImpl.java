@@ -65,10 +65,7 @@ public final class FileShareSnapshotImpl
     }
 
     public FileShareSnapshot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShareSnapshots()
-            .createOrUpdateFileShareSnapshot(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileShareSnapshot create(Context context) {
@@ -90,10 +87,7 @@ public final class FileShareSnapshotImpl
     }
 
     public FileShareSnapshot apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShareSnapshots()
-            .updateFileShareSnapshot(resourceGroupName, resourceName, name, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FileShareSnapshot apply(Context context) {
@@ -107,17 +101,19 @@ public final class FileShareSnapshotImpl
         com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fileShares");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fileShareSnapshots");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}",
+            "resourceName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}",
+            "name");
     }
 
     public FileShareSnapshot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShareSnapshots()
-            .getFileShareSnapshotWithResponse(resourceGroupName, resourceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileShareSnapshot refresh(Context context) {

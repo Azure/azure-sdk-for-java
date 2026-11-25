@@ -40,21 +40,20 @@ public class ReasoningDedupSerializationTests {
     public void testVoiceRealtimeResponseObjectRoundTrip() throws IOException {
         try (JsonReader reader = JsonProviders.createReader("{\"object\":\"realtime.response\"}")) {
             VoiceAgentRealtimeResponse response = VoiceAgentRealtimeResponse.fromJson(reader);
-            assertEquals(VoiceResponseBaseObject.REALTIME_RESPONSE, response.getObject());
+            assertEquals(VoiceResponseObjectType.REALTIME_RESPONSE, response.getObjectType());
             VoiceAgentRealtimeResponse roundTrip
                 = BinaryData.fromObject(response).toObject(VoiceAgentRealtimeResponse.class);
-            assertEquals(response.getObject(), roundTrip.getObject());
+            assertEquals(response.getObjectType(), roundTrip.getObjectType());
         }
     }
 
     @Test
-    public void testVoiceRealtimeResponseBaseObjectRoundTrip() throws IOException {
+    public void testVoiceResponseObjectTypeRoundTrip() throws IOException {
         try (JsonReader reader = JsonProviders.createReader("{\"object\":\"realtime.response\"}")) {
-            VoiceAgentRealtimeResponseBase response = VoiceAgentRealtimeResponseBase.fromJson(reader);
-            assertEquals(VoiceResponseBaseObject.REALTIME_RESPONSE, response.getObject());
-            VoiceAgentRealtimeResponseBase roundTrip
-                = BinaryData.fromObject(response).toObject(VoiceAgentRealtimeResponseBase.class);
-            assertEquals(response.getObject(), roundTrip.getObject());
+            VoiceResponse response = VoiceResponse.fromJson(reader);
+            assertEquals(VoiceResponseObjectType.REALTIME_RESPONSE, response.getObjectType());
+            VoiceResponse roundTrip = BinaryData.fromObject(response).toObject(VoiceResponse.class);
+            assertEquals(response.getObjectType(), roundTrip.getObjectType());
         }
     }
 

@@ -45,7 +45,7 @@ public final class RuntimeBindingsImpl implements RuntimeBindings {
     }
 
     public void delete(String resourceGroupName, String spaceName, String bindingName) {
-        this.serviceClient().delete(resourceGroupName, spaceName, bindingName);
+        this.delete(resourceGroupName, spaceName, bindingName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String spaceName, String bindingName, Context context) {
@@ -53,9 +53,7 @@ public final class RuntimeBindingsImpl implements RuntimeBindings {
     }
 
     public PagedIterable<RuntimeBinding> listByWorkloadSpace(String resourceGroupName, String spaceName) {
-        PagedIterable<RuntimeBindingInner> inner
-            = this.serviceClient().listByWorkloadSpace(resourceGroupName, spaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuntimeBindingImpl(inner1, this.manager()));
+        return this.listByWorkloadSpace(resourceGroupName, spaceName, Context.NONE);
     }
 
     public PagedIterable<RuntimeBinding> listByWorkloadSpace(String resourceGroupName, String spaceName,
@@ -66,78 +64,36 @@ public final class RuntimeBindingsImpl implements RuntimeBindings {
     }
 
     public RuntimeBinding getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String bindingName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeBindings");
-        if (bindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeBindings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, spaceName, bindingName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RuntimeBinding> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String bindingName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeBindings");
-        if (bindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeBindings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String spaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "spaceName", "workloadSpaces", LOGGER);
+        String bindingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "bindingName", "runtimeBindings", LOGGER);
         return this.getWithResponse(resourceGroupName, spaceName, bindingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String bindingName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeBindings");
-        if (bindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeBindings'.", id)));
-        }
-        this.delete(resourceGroupName, spaceName, bindingName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String spaceName = ResourceManagerUtils.getValueFromIdByName(id, "workloadSpaces");
-        if (spaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadSpaces'.", id)));
-        }
-        String bindingName = ResourceManagerUtils.getValueFromIdByName(id, "runtimeBindings");
-        if (bindingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runtimeBindings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String spaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "spaceName", "workloadSpaces", LOGGER);
+        String bindingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}/runtimeBindings/{bindingName}",
+            "bindingName", "runtimeBindings", LOGGER);
         this.delete(resourceGroupName, spaceName, bindingName, context);
     }
 

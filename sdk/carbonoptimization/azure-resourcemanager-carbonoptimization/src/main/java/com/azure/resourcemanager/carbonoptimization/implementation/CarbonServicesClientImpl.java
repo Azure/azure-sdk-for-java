@@ -147,16 +147,7 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * API for Carbon Emissions Reports.
-     * 
-     * @param queryParameters Query parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CarbonEmissionDataListResultInner>
         queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters, Context context) {
@@ -166,15 +157,7 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
             contentType, accept, queryParameters, context);
     }
 
-    /**
-     * API for Carbon Emissions Reports.
-     * 
-     * @param queryParameters Query parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CarbonEmissionDataListResultInner queryCarbonEmissionReports(QueryFilter queryParameters) {
         return queryCarbonEmissionReportsWithResponse(queryParameters, Context.NONE).getValue();
@@ -211,15 +194,7 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * API for query carbon emission data available date range.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for available date range of carbon emission data along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CarbonEmissionDataAvailableDateRangeInner>
         queryCarbonEmissionDataAvailableDateRangeWithResponse(Context context) {
@@ -228,13 +203,7 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
             this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * API for query carbon emission data available date range.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for available date range of carbon emission data.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CarbonEmissionDataAvailableDateRangeInner queryCarbonEmissionDataAvailableDateRange() {
         return queryCarbonEmissionDataAvailableDateRangeWithResponse(Context.NONE).getValue();

@@ -1,5 +1,100 @@
 # Release History
 
+## 2.58.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.58.0-beta.1 (2026-11-11)
+
+- Package api-version 2026-10-01-preview.
+
+### Features Added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.WrappingKeyConfiguration` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.WrappingKeyValue` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.WrappingKeyAuthenticationData` was added
+
+* `models.TokenBindingParameters` was added
+
+* `models.IssueType` was added
+
+* `models.AccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.Severity` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.AccessRuleProperties` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.TokenBindingMode` was added
+
+* `models.TokenBindingStrength` was added
+
+* `models.NetworkSecurityProfile` was added
+
+#### `models.VaultPatchParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+#### `models.VaultProperties` was modified
+
+* `enableCrossTenantAccessProtection()` was added
+* `withTokenBindingParameters(models.TokenBindingParameters)` was added
+* `withEnableCrossTenantAccessProtection(java.lang.Boolean)` was added
+* `protectionKeysWrappingKey()` was added
+* `tokenBindingParameters()` was added
+* `withProtectionKeysWrappingKey(models.WrappingKeyConfiguration)` was added
+
+#### `models.VaultPatchProperties` was modified
+
+* `protectionKeysWrappingKey()` was added
+* `withProtectionKeysWrappingKey(models.WrappingKeyConfiguration)` was added
+* `withTokenBindingParameters(models.TokenBindingParameters)` was added
+* `enableCrossTenantAccessProtection()` was added
+* `tokenBindingParameters()` was added
+* `withEnableCrossTenantAccessProtection(java.lang.Boolean)` was added
+
+#### `models.VaultCreateOrUpdateParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+## 2.57.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-secrets` from `4.11.3` to version `4.13.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+- Upgraded `azure-security-keyvault-keys` from `4.11.3` to version `4.12.1`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.14` to version `2.54.1`.
+
 ## 2.56.0 (2026-10-12)
 
 - Package api-version 2026-05-15.

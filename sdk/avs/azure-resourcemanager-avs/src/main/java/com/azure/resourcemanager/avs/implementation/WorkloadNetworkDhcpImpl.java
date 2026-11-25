@@ -61,10 +61,7 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcp create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createDhcp(resourceGroupName, privateCloudName, dhcpId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkDhcp create(Context context) {
@@ -85,10 +82,7 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcp apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateDhcp(resourceGroupName, privateCloudName, dhcpId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkDhcp apply(Context context) {
@@ -102,17 +96,19 @@ public final class WorkloadNetworkDhcpImpl
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.dhcpId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dhcpConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}",
+            "privateCloudName");
+        this.dhcpId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}",
+            "dhcpId");
     }
 
     public WorkloadNetworkDhcp refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkDhcp refresh(Context context) {

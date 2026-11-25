@@ -52,12 +52,11 @@ public final class ManagedCertificatesImpl implements ManagedCertificates {
     }
 
     public void delete(String resourceGroupName, String environmentName, String managedCertificateName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, managedCertificateName);
+        this.deleteWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE);
     }
 
     public PagedIterable<ManagedCertificate> list(String resourceGroupName, String environmentName) {
-        PagedIterable<ManagedCertificateInner> inner = this.serviceClient().list(resourceGroupName, environmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCertificateImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, environmentName, Context.NONE);
     }
 
     public PagedIterable<ManagedCertificate> list(String resourceGroupName, String environmentName, Context context) {
@@ -67,79 +66,36 @@ public final class ManagedCertificatesImpl implements ManagedCertificates {
     }
 
     public ManagedCertificate getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String managedCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "managedCertificates");
-        if (managedCertificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedCertificates'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManagedCertificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String managedCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "managedCertificates");
-        if (managedCertificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedCertificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "environmentName", "managedEnvironments", LOGGER);
+        String managedCertificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "managedCertificateName", "managedCertificates", LOGGER);
         return this.getWithResponse(resourceGroupName, environmentName, managedCertificateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String managedCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "managedCertificates");
-        if (managedCertificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedCertificates'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String managedCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "managedCertificates");
-        if (managedCertificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedCertificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "environmentName", "managedEnvironments", LOGGER);
+        String managedCertificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "managedCertificateName", "managedCertificates", LOGGER);
         return this.deleteWithResponse(resourceGroupName, environmentName, managedCertificateName, context);
     }
 

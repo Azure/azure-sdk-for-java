@@ -159,10 +159,7 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchlists()
-            .createOrUpdate(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Watchlist create(Context context) {
@@ -183,10 +180,7 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchlists()
-            .createOrUpdate(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Watchlist apply(Context context) {
@@ -200,17 +194,19 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.watchlistAlias = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchlists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}",
+            "workspaceName");
+        this.watchlistAlias = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}",
+            "watchlistAlias");
     }
 
     public Watchlist refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchlists()
-            .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Watchlist refresh(Context context) {

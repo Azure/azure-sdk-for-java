@@ -83,11 +83,7 @@ public final class ClusterMeshProfileImpl
     }
 
     public ClusterMeshProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterMeshProfiles()
-            .createOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClusterMeshProfile create(Context context) {
@@ -114,11 +110,7 @@ public final class ClusterMeshProfileImpl
     }
 
     public ClusterMeshProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterMeshProfiles()
-            .createOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClusterMeshProfile apply(Context context) {
@@ -133,18 +125,19 @@ public final class ClusterMeshProfileImpl
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.clusterMeshProfileName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusterMeshProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
+            "fleetName");
+        this.clusterMeshProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/clusterMeshProfiles/{clusterMeshProfileName}",
+            "clusterMeshProfileName");
     }
 
     public ClusterMeshProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterMeshProfiles()
-            .getWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClusterMeshProfile refresh(Context context) {

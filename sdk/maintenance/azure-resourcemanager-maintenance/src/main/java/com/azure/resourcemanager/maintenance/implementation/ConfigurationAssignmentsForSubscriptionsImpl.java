@@ -59,38 +59,24 @@ public final class ConfigurationAssignmentsForSubscriptionsImpl implements Confi
     }
 
     public ConfigurationAssignment getById(String id) {
-        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
-        if (configurationAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
-        }
-        return this.getWithResponse(configurationAssignmentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ConfigurationAssignment> getByIdWithResponse(String id, Context context) {
-        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
-        if (configurationAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
-        }
+        String configurationAssignmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+            "configurationAssignmentName", "configurationAssignments", LOGGER);
         return this.getWithResponse(configurationAssignmentName, context);
     }
 
     public ConfigurationAssignment deleteById(String id) {
-        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
-        if (configurationAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
-        }
-        return this.deleteWithResponse(configurationAssignmentName, Context.NONE).getValue();
+        return this.deleteByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ConfigurationAssignment> deleteByIdWithResponse(String id, Context context) {
-        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
-        if (configurationAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
-        }
+        String configurationAssignmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+            "configurationAssignmentName", "configurationAssignments", LOGGER);
         return this.deleteWithResponse(configurationAssignmentName, context);
     }
 

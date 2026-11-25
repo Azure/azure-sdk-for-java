@@ -11,7 +11,7 @@ public final class UsagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageProperties model
-            = BinaryData.fromString("{\"currentValue\":506406018,\"limit\":1781850881,\"unit\":\"ffjkutycyarnroo\"}")
+            = BinaryData.fromString("{\"currentValue\":170135486,\"limit\":1760541497,\"unit\":\"fuqyrxpdlcgqlsi\"}")
                 .toObject(UsageProperties.class);
     }
 }

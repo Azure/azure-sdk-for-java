@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,195 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.0 (2026-11-12)
+
+### Features Added
+
+- Promoted voice-agent realtime WebSocket clients, session clients, persisted conversation clients, and core telephony
+  clients to GA. Build the clients directly through `AgentsClientBuilder`; use `allowPreview(true)` when
+  accessing capabilities that still require `Foundry-Features: VoiceAgents=V1Preview`.
+- Added preview native GPT Live voice-agent definitions, WebSocket clients, and persisted conversation clients through
+  `AgentsClientBuilder.beta().buildBetaVoiceAgentsLiveWebSocketClient()` and
+  `buildBetaVoiceAgentsLiveWebSocketAsyncClient()`, with corresponding conversation-client factories.
+  Live sessions support typed OpenAI `ClientEvent` sends and `ServerEvent` receives, raw JSON APIs, and Responses
+  delegation through OpenAI `ResponsesDelegationConfig`. Live WebSocket clients automatically send the required
+  preview header.
+- Added GPT Live samples for multi-turn text, interactive text and audio, microphone/speaker streaming, Responses
+  function tools, and persisted conversation history and audio. Persistence is opt-in through `FOUNDRY_GPT_LIVE_STORE`.
+- Added preview voice-agent post-call delivery to Event Grid and routines, and inline subagents with handoff policies
+  and runtime events.
+- Added voice-agent system tools for DTMF, SMS, input collection, language detection, and transfer routing.
+- Added preview SIP telephony bindings and telephony campaigns with recipient validation, scheduling, and long-running
+  create, cancel, and delete operations on `BetaVoiceAgentsTelephonyClient` and its asynchronous counterpart.
+- Added typed `RealtimeResponseInputItem` and `RealtimeResponseInputContent` factories for heterogeneous realtime
+  response inputs and user-message content.
+- Added skill optimization through `SkillOptimizationConfiguration`, skill references, validation and execution
+  results, and resolved candidate context. Trace-based optimization supports Application Insights connections,
+  fixed time windows, explicit trace IDs, and evaluator generation.
+- Added optimization candidate files, errors, and execution summaries, and `downloadOptimizationJobFile` on
+  `AgentsClient` and `AgentsAsyncClient`. Added skipped job and candidate statuses; optimization polling treats
+  skipped jobs as unsuccessful terminal results.
+- Added MCP toolbox request-header bindings.
+- Added request-level model-routing mode and model-pool selection, adaptive session affinity, and preview
+  required-parameter routing controls.
+
+### Breaking Changes
+
+- Removed `BetaAgentsClient` and `BetaAgentsAsyncClient`. Use `createAgentFromPrompt` and
+  `createAgentFromPromptWithResponse` on `AgentsClient` and `AgentsAsyncClient`.
+- Replaced `BetaVoiceAgentWebSocketClient`, `BetaVoiceAgentWebSocketAsyncClient`, and their session clients with
+  `VoiceAgentsWebSocketClient`, `VoiceAgentsWebSocketAsyncClient`, and the corresponding `VoiceAgentsWebSocketSession*`
+  types. Build realtime clients directly with `AgentsClientBuilder.buildVoiceAgentsWebSocketClient()` or
+  `buildVoiceAgentsWebSocketAsyncClient()` instead of `beta()`. The asynchronous session exposes `closeAsync()`
+  instead of the previous blocking `close()`.
+- Replaced `BetaVoiceAgentsConversationsClient` and its asynchronous counterpart with `VoiceAgentsConversationsClient`
+  and `VoiceAgentsConversationsAsyncClient`, built directly through `AgentsClientBuilder`.
+- Moved binding, call, call-job, and transfer operations from `BetaVoiceAgentsTelephonyClient` and its asynchronous
+  counterpart to `VoiceAgentsTelephonyClient` and `VoiceAgentsTelephonyAsyncClient`, built directly through
+  `AgentsClientBuilder`. The beta telephony clients now expose campaign operations.
+- Renamed `VoiceAgentWebSocketConnectionOptions.getTransport()` and `setTransport(...)` to
+  `getTransportType()` and `setTransportType(...)`.
+- Replaced the numeric/string token-limit accessors on voice and realtime models with `getMaxOutputTokens()` and
+  `setMaxOutputTokens(VoiceAgentMaxOutputTokens)`, where writable. Use `VoiceAgentMaxOutputTokens.of(count)` for a
+  numeric limit or `VoiceAgentMaxOutputTokens.MAXIMUM` for `"inf"`.
+- Replaced the per-variant tool-choice accessors on voice and realtime models with
+  `getToolChoice()` and `setToolChoice(VoiceAgentToolChoice)`, where writable. Use `VoiceAgentToolChoice.ofMode`,
+  `ofFunction`, or `ofMcp` to create a choice. `PromptAgentDefinition` is unchanged.
+- Changed `VoiceAgentResponseCreateOptions` input from `List<RealtimeConversationItem>` to
+  `List<RealtimeResponseInputItem>`.
+- Replaced local realtime transcription language and usage, session configuration, audio-format, turn-detection,
+  and MCP tool/error models with OpenAI Java types. Notable changes include `SessionUpdateEvent.Session`,
+  `RealtimeAudioFormats`, `RealtimeMcpListTools.Tool`, `RealtimeMcpToolCall.Error`, and the transcription event's
+  `getUsage()` union. Foundry-specific session and turn-detection models remain available.
+- Renamed session-created and session-updated event accessors from `getSessionAsVoiceAgentSessionResponseConfiguration()`
+  to `getSessionResponseConfiguration()` and removed their public constructors.
+- Renamed transcription getters from `getLogprobs()` to `getLogProbs()`, conversation-item `object` accessors to
+  `objectType`, and voice audio/recording `getBlobUri()` accessors to `getBlobUrl()`.
+- Removed unit suffixes from duration-typed voice and telephony accessors. Audio item `getStartOffsetMs()` is now
+  `getOffset()`. Transcription segment start/end values and server VAD prefix padding now use `Duration`.
+- Renamed `MemoryStoreDefaultOptions.getDefaultTtlSeconds()` and `setDefaultTtlSeconds(Duration)` to
+  `getDefaultTtl()` and `setDefaultTtl(Duration)`, and `RoutingTraceEntry.getLatencyMs()` to `getLatency()`.
+  Wire values remain in seconds and milliseconds, respectively.
+- Changed voice tool, greeting, interim-response, engine, error, and audio-timestamp type properties from strings to
+  typed enums. Recording channel roles now use `VoiceAudioRole`.
+- Changed `VoiceAgentSubagentConfiguration` to a polymorphic base. Use `VoiceAgentDelegateSubagentConfiguration` for
+  delegate subagents or the preview `VoiceAgentInlineSubagentConfiguration` for inline subagents.
+- Replaced telephony binding creation-input models with writable concrete binding models and
+  `CreateTelephonyCallJobInput` with `TelephonyCallJobCreate`. Call sources and call/transfer destinations now use
+  `TelephonyAddress` variants, and fixed-interval retries use `TelephonyFixedIntervalRetryPolicy`. Removed
+  `TelephonyCallJob.getObjectType()` and binding-status accessors/filtering; added allowed calling numbers to binding
+  updates.
+- Replaced `SessionAffinityRequestMode` and `SessionAffinityMode` with `SessionAffinityRequestStrategy` and
+  `SessionAffinityStrategy`. `SessionAffinityDetails.getMode()` is now `getStrategy()`; request `mode` accessors use
+  `SessionAffinityRequestStrategy`. Removed `SessionAffinitySource.CONVERSATION` and `PREVIOUS_RESPONSE_ID` and added
+  `DERIVED_FINGERPRINT`. The documented default affinity strategy is now adaptive rather than sticky.
+- Hosted-agent A2A passthrough requires `Foundry-Features: A2AAgents=V1Preview` when creating or modifying a definition
+  declaring the `a2a` protocol. `allowPreview(true)` adds the opt-in; `HostedAgentDefinition.getProtocolVersions()` and
+  `setProtocolVersions(...)` are now marked preview.
+
+### Bugs Fixed
+
+- Preserved exact numeric values when round-tripping agent structured input defaults and schemas, telephony
+  structured inputs, and response structured inputs through `BinaryData`.
+- Fixed OpenAI model JSON conversion to use an explicit Jackson serializer, preserving explicit nulls without
+  depending on the application's Azure JSON serializer provider.
+- Removed query values from WebSocket proxy-failure diagnostics to avoid logging structured inputs.
+
+### Other Changes
+
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
+- Updated `openai-java` from `4.69.0` to `4.99.0`.
+
+## 2.9.0 (2026-10-30)
+
+### Features Added
+
+- Added hosted-agent memory snapshot opt-in through `HostedAgentDefinition.setMemorySnapshotEnabled(...)` and
+  `isMemorySnapshotEnabled()`. Sessions for a snapshot-enabled agent version start from a snapshot of its initialized
+  process instead of starting the process from its image.
+- Added preview voice-agent soundscapes through `VoiceAgentDefinition.setSoundscape(...)`,
+  `VoiceAgentSoundscapeConfiguration`, and related track and built-in sound models. Soundscapes support background
+  ambience, delayed working audio while tools are pending, and opening, transfer, and closing cues. Rendering is
+  currently limited to telephony calls; persisted conversation recordings do not include the soundscape mix.
+- Added preview input-transcript profanity filtering through `VoiceAgentInputTranscription.setProfanityFilter(...)`
+  and `VoiceAgentProfanityFilterMode`, with `MASKED`, `REMOVED`, and `UNFILTERED` modes. Filtering is supported with
+  managed Azure Speech, including Custom Speech, and must be configured before the session starts.
+- Added `VoiceAgentInputTranscriptionModel.AZURE_SPEECH_STREAMING` for preview streaming Azure Speech transcription
+  in cascaded text-model conversations. It requires a nonempty language setting and supports Custom Speech,
+  phrase hints, and profanity filtering; it is not supported with realtime speech-to-speech models.
+- Added preview `VoiceAgentNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION_HEADSET` and
+  `AZURE_PERSONAL_NOISE_SUPPRESSION` modes for local voice activity detection. These modes enhance detection audio
+  without changing the audio used for recognition.
+- Added preview `AgentEndpointProtocol.VOICE_CONVERSATION_ENGINE` for the hosted-agent text conversation protocol
+  used by Voice Live Bridge. Audio transport remains outside this protocol.
+
+### Breaking Changes
+
+- Updated the preview hosted voice conversation-engine contract: hosted agents referenced by
+  `VoiceHostedAgentConversationEngine` must declare `voice_conversation_engine` version `1.0.0`.
+  Declaring `invocations_ws` is optional and no longer substitutes for the dedicated voice conversation-engine protocol.
+
+### Bugs Fixed
+
+- Fixed cursor-based list operations that stopped after the first page, including memory-store, memory-item,
+  toolbox, and voice-agent listings. Paging now follows the service's `last_id` cursor and supports resuming from
+  a continuation token.
+- Fixed cursor-based paging to stop when the service returns `has_more: false`, even if the response still includes
+  a `last_id`, avoiding unnecessary requests after the final page.
+
+### Other Changes
+
+- Deprecated `BrowserAutomationPreviewTool`, `BrowserAutomationPreviewToolboxTool`, and the corresponding
+  `BROWSER_AUTOMATION_PREVIEW` tool-type values. Use `BrowserAutomationTool`, `BrowserAutomationToolboxTool`,
+  and the `BROWSER_AUTOMATION` values instead. See [Browser Automation documentation](https://aka.ms/bat/docs).
+- Regenerated the client from the updated Foundry TypeSpec specification.
+- Updated `azure-core` from `1.60.0` to `1.61.0` and `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+- Updated Reactor Netty from `1.2.18` to `1.3.7` and Netty from `4.1.138.Final` to `4.2.19.Final`,
+  including the Netty codec module changes required by the newer runtime.
+
+## 2.8.0 (2026-10-19)
+
+### Features Added
+
+- Added experimental OpenTelemetry GenAI tracing and metrics for agent-version creation and Azure response operations,
+  including synchronous, asynchronous, streaming, and raw-response methods. Instrumentation emits `create_agent`,
+  `chat`, and `invoke_agent` spans, plus `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` metrics.
+  Set `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` to enable it and configure tracing and metrics per client through
+  `AgentsClientBuilder.clientOptions(...)` using `TracingOptions` and `MetricsOptions`. Message content capture is
+  disabled by default; enable it with `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`.
+  `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` remains supported as a fallback when the newer setting is unset.
+- Added tracing samples for custom OpenTelemetry configuration, console export, and Azure Monitor export.
+- Added preview Microsoft Copilot harness and built-in toolset support for prompt agents through
+  `MicrosoftCopilotHarness`, `MicrosoftCopilotToolsetPreview`, and related configuration types.
+  `AgentsClientBuilder.allowPreview(true)` and beta agent clients include the `MicrosoftCopilot=V1Preview` feature
+  opt-in. The legacy GitHub Copilot types remain available for compatibility.
+
+### Breaking Changes
+
+- Flattened the preview voice response models. Removed `VoiceResponseBase` and `VoiceAgentRealtimeResponseBase`;
+  use `VoiceResponse` and `VoiceAgentRealtimeResponse` directly. Response properties and typed token-limit accessors
+  are now declared on those concrete models.
+- Renamed `VoiceResponseBaseObject` to `VoiceResponseObjectType` and replaced `getObject()` with `getObjectType()`
+  on `VoiceResponse` and `VoiceAgentRealtimeResponse`. The JSON property remains `object`.
+- Renamed the preview Teams Phone binding models from `CreateTeamsPhoneExtensionTelephonyBindingInput`,
+  `TeamsPhoneExtensionTelephonyBinding`, and `TeamsPhoneExtensionTelephonyBindingListItem` to
+  `CreateTeamsPhoneExtensibilityTelephonyBindingInput`, `TeamsPhoneExtensibilityTelephonyBinding`, and
+  `TeamsPhoneExtensibilityTelephonyBindingListItem`, respectively.
+- Renamed `TelephonyProvider.TEAMS_PHONE_EXTENSION` and
+  `TelephonyCallLifecycleEventSource.TEAMS_PHONE_EXTENSION` to `TEAMS_PHONE_EXTENSIBILITY`.
+  Their serialized value changed from `teams_phone_extension` to `teams_phone_extensibility`.
+
+### Bugs Fixed
+
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
+### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
+  (four hours); the default remains 900 seconds.
 
 ## 2.7.0 (2026-10-06)
 
@@ -99,8 +288,8 @@
   subagents, persistence, avatars, and animation.
 - Added `createAgentFromPrompt` and `createAgentFromPromptWithResponse` to `BetaAgentsClient` and
   `BetaAgentsAsyncClient` for generating and creating agents from kind-specific high-level inputs.
-- Added preview `BetaVoiceAgentWebSocketClient`, `BetaVoiceAgentWebSocketAsyncClient`,
-  `BetaVoiceAgentWebSocketSessionClient`, and `BetaVoiceAgentWebSocketSessionAsyncClient` for authenticated realtime
+- Added preview `BetaVoiceAgentsWebSocketClient`, `BetaVoiceAgentsWebSocketAsyncClient`,
+  `BetaVoiceAgentsWebSocketSessionClient`, and `BetaVoiceAgentsWebSocketSessionAsyncClient` for authenticated realtime
   `wss://` sessions. The clients support typed and raw events, text and audio input, response cancellation,
   client-executed function results, persisted conversations, agent-version overrides, and the related realtime session,
   conversation-item, response, transcription, MCP, audio, avatar, and RTC event models.

@@ -51,7 +51,7 @@ public final class MapsImpl implements Maps {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String mapName) {
-        this.serviceClient().delete(resourceGroupName, mapName);
+        this.delete(resourceGroupName, mapName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String mapName, Context context) {
@@ -59,8 +59,7 @@ public final class MapsImpl implements Maps {
     }
 
     public PagedIterable<MapsResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MapsResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MapsResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<MapsResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -69,8 +68,7 @@ public final class MapsImpl implements Maps {
     }
 
     public PagedIterable<MapsResource> list() {
-        PagedIterable<MapsResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MapsResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<MapsResource> list(Context context) {
@@ -80,7 +78,7 @@ public final class MapsImpl implements Maps {
 
     public void getDependencyViewForFocusedMachine(String resourceGroupName, String mapName,
         GetDependencyViewForFocusedMachineRequest body) {
-        this.serviceClient().getDependencyViewForFocusedMachine(resourceGroupName, mapName, body);
+        this.getDependencyViewForFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
     public void getDependencyViewForFocusedMachine(String resourceGroupName, String mapName,
@@ -90,7 +88,7 @@ public final class MapsImpl implements Maps {
 
     public void getConnectionsWithConnectedMachineForFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsWithConnectedMachineForFocusedMachineRequest body) {
-        this.serviceClient().getConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body);
+        this.getConnectionsWithConnectedMachineForFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
     public void getConnectionsWithConnectedMachineForFocusedMachine(String resourceGroupName, String mapName,
@@ -101,7 +99,7 @@ public final class MapsImpl implements Maps {
 
     public void getConnectionsForProcessOnFocusedMachine(String resourceGroupName, String mapName,
         GetConnectionsForProcessOnFocusedMachineRequest body) {
-        this.serviceClient().getConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body);
+        this.getConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, Context.NONE);
     }
 
     public void getConnectionsForProcessOnFocusedMachine(String resourceGroupName, String mapName,
@@ -111,13 +109,7 @@ public final class MapsImpl implements Maps {
 
     public ExportDependenciesOperationResult exportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body) {
-        ExportDependenciesOperationResultInner inner
-            = this.serviceClient().exportDependencies(resourceGroupName, mapName, body);
-        if (inner != null) {
-            return new ExportDependenciesOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.exportDependencies(resourceGroupName, mapName, body, Context.NONE);
     }
 
     public ExportDependenciesOperationResult exportDependencies(String resourceGroupName, String mapName,
@@ -132,58 +124,30 @@ public final class MapsImpl implements Maps {
     }
 
     public MapsResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mapName = ResourceManagerUtils.getValueFromIdByName(id, "maps");
-        if (mapName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'maps'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, mapName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MapsResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mapName = ResourceManagerUtils.getValueFromIdByName(id, "maps");
-        if (mapName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'maps'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String mapName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}",
+            "mapName", "maps", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, mapName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mapName = ResourceManagerUtils.getValueFromIdByName(id, "maps");
-        if (mapName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'maps'.", id)));
-        }
-        this.delete(resourceGroupName, mapName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String mapName = ResourceManagerUtils.getValueFromIdByName(id, "maps");
-        if (mapName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'maps'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String mapName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}",
+            "mapName", "maps", LOGGER);
         this.delete(resourceGroupName, mapName, context);
     }
 

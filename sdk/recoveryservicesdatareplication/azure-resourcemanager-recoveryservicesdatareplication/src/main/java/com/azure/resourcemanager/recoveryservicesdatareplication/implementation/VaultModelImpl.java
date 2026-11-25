@@ -90,10 +90,7 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
     }
 
     public VaultModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaults()
-            .create(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VaultModel create(Context context) {
@@ -116,10 +113,7 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
     }
 
     public VaultModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaults()
-            .update(resourceGroupName, vaultName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VaultModel apply(Context context) {
@@ -133,16 +127,16 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationVaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}",
+            "vaultName");
     }
 
     public VaultModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaults()
-            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VaultModel refresh(Context context) {

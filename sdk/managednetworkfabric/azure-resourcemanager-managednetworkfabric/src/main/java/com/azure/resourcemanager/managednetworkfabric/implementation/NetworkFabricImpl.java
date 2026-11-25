@@ -294,10 +294,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkFabrics()
-            .create(resourceGroupName, networkFabricName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkFabric create(Context context) {
@@ -320,10 +317,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkFabrics()
-            .update(resourceGroupName, networkFabricName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkFabric apply(Context context) {
@@ -337,16 +331,16 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkFabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFabrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}",
+            "resourceGroupName");
+        this.networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}",
+            "networkFabricName");
     }
 
     public NetworkFabric refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkFabrics()
-            .getByResourceGroupWithResponse(resourceGroupName, networkFabricName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkFabric refresh(Context context) {

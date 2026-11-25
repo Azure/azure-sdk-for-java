@@ -90,10 +90,7 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public Asset create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssets()
-            .createOrReplace(resourceGroupName, assetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Asset create(Context context) {
@@ -115,10 +112,7 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public Asset apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssets()
-            .update(resourceGroupName, assetName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Asset apply(Context context) {
@@ -131,16 +125,16 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     AssetImpl(AssetInner innerObject, com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.assetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}",
+            "resourceGroupName");
+        this.assetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}",
+            "assetName");
     }
 
     public Asset refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssets()
-            .getByResourceGroupWithResponse(resourceGroupName, assetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Asset refresh(Context context) {

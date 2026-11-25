@@ -52,7 +52,7 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
     }
 
     public void delete(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
-        this.serviceClient().delete(resourceGroupName, l3IsolationDomainName, externalNetworkName);
+        this.delete(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
@@ -62,9 +62,7 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
 
     public PagedIterable<ExternalNetwork> listByL3IsolationDomain(String resourceGroupName,
         String l3IsolationDomainName) {
-        PagedIterable<ExternalNetworkInner> inner
-            = this.serviceClient().listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExternalNetworkImpl(inner1, this.manager()));
+        return this.listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     public PagedIterable<ExternalNetwork> listByL3IsolationDomain(String resourceGroupName,
@@ -76,13 +74,8 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body,
+            Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
@@ -98,14 +91,8 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
 
     public UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName,
-                body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName,
+            externalNetworkName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(String resourceGroupName,
@@ -123,13 +110,8 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
     public ExternalNetworkUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName,
         ExternalNetworkUpdateBfdAdministrativeStateRequest body) {
-        ExternalNetworkUpdateBfdAdministrativeStateResponseInner inner = this.serviceClient()
-            .updateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-        if (inner != null) {
-            return new ExternalNetworkUpdateBfdAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body,
+            Context.NONE);
     }
 
     public ExternalNetworkUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
@@ -145,79 +127,36 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
     }
 
     public ExternalNetwork getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String externalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "externalNetworks");
-        if (externalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalNetworks'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ExternalNetwork> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String externalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "externalNetworks");
-        if (externalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalNetworks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3IsolationDomainName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "l3IsolationDomainName", "l3IsolationDomains", LOGGER);
+        String externalNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "externalNetworkName", "externalNetworks", LOGGER);
         return this.getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String externalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "externalNetworks");
-        if (externalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalNetworks'.", id)));
-        }
-        this.delete(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        String externalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "externalNetworks");
-        if (externalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalNetworks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3IsolationDomainName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "l3IsolationDomainName", "l3IsolationDomains", LOGGER);
+        String externalNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "externalNetworkName", "externalNetworks", LOGGER);
         this.delete(resourceGroupName, l3IsolationDomainName, externalNetworkName, context);
     }
 

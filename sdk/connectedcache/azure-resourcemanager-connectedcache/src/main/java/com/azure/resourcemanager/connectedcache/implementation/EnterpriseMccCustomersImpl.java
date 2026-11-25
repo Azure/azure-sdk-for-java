@@ -46,7 +46,7 @@ public final class EnterpriseMccCustomersImpl implements EnterpriseMccCustomers 
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String customerResourceName) {
-        this.serviceClient().delete(resourceGroupName, customerResourceName);
+        this.delete(resourceGroupName, customerResourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String customerResourceName, Context context) {
@@ -54,10 +54,7 @@ public final class EnterpriseMccCustomersImpl implements EnterpriseMccCustomers 
     }
 
     public PagedIterable<EnterpriseMccCustomerResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<EnterpriseMccCustomerResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new EnterpriseMccCustomerResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<EnterpriseMccCustomerResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,9 +65,7 @@ public final class EnterpriseMccCustomersImpl implements EnterpriseMccCustomers 
     }
 
     public PagedIterable<EnterpriseMccCustomerResource> list() {
-        PagedIterable<EnterpriseMccCustomerResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new EnterpriseMccCustomerResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<EnterpriseMccCustomerResource> list(Context context) {
@@ -80,58 +75,30 @@ public final class EnterpriseMccCustomersImpl implements EnterpriseMccCustomers 
     }
 
     public EnterpriseMccCustomerResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, customerResourceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EnterpriseMccCustomerResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String customerResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}",
+            "customerResourceName", "enterpriseMccCustomers", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, customerResourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
-        this.delete(resourceGroupName, customerResourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String customerResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}",
+            "customerResourceName", "enterpriseMccCustomers", LOGGER);
         this.delete(resourceGroupName, customerResourceName, context);
     }
 

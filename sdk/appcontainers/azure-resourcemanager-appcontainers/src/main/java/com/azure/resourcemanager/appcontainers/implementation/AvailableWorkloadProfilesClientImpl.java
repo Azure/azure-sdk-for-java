@@ -153,11 +153,7 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailableWorkloadProfileInner> getSinglePage(String location) {
-        final String accept = "application/json";
-        Response<AvailableWorkloadProfilesCollection> res = service.getSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getSinglePage(location, Context.NONE);
     }
 
     /**
@@ -183,38 +179,13 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get available workload profiles by location.
-     * 
-     * Get all available workload profiles for a location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available workload profiles by location.
-     * 
-     * Get all available workload profiles for a location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableWorkloadProfileInner> get(String location) {
-        return new PagedIterable<>(() -> getSinglePage(location), nextLink -> getNextSinglePage(nextLink));
+        return get(location, Context.NONE);
     }
 
-    /**
-     * Get available workload profiles by location.
-     * 
-     * Get all available workload profiles for a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available workload profiles by location.
-     * 
-     * Get all available workload profiles for a location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableWorkloadProfileInner> get(String location, Context context) {
         return new PagedIterable<>(() -> getSinglePage(location, context),
@@ -259,11 +230,7 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailableWorkloadProfileInner> getNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailableWorkloadProfilesCollection> res
-            = service.getNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

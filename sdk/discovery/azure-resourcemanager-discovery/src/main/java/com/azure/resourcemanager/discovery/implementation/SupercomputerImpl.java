@@ -86,10 +86,7 @@ public final class SupercomputerImpl implements Supercomputer, Supercomputer.Def
     }
 
     public Supercomputer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSupercomputers()
-            .createOrUpdate(resourceGroupName, supercomputerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Supercomputer create(Context context) {
@@ -110,10 +107,7 @@ public final class SupercomputerImpl implements Supercomputer, Supercomputer.Def
     }
 
     public Supercomputer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSupercomputers()
-            .update(resourceGroupName, supercomputerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Supercomputer apply(Context context) {
@@ -127,16 +121,16 @@ public final class SupercomputerImpl implements Supercomputer, Supercomputer.Def
         com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.supercomputerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "supercomputers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}",
+            "resourceGroupName");
+        this.supercomputerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}",
+            "supercomputerName");
     }
 
     public Supercomputer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSupercomputers()
-            .getByResourceGroupWithResponse(resourceGroupName, supercomputerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Supercomputer refresh(Context context) {

@@ -215,20 +215,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given database account and database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricInner> listMetricsAsync(String resourceGroupName, String accountName, String databaseRid,
         String filter) {
@@ -259,41 +246,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             nextLink -> listMetricsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given database account and database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricInner> listMetrics(String resourceGroupName, String accountName, String databaseRid,
         String filter) {
         return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, databaseRid, filter));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given database account and database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricInner> listMetrics(String resourceGroupName, String accountName, String databaseRid,
         String filter, Context context) {
@@ -389,19 +349,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the usages (most recent data) for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     * name.value (name of the metric, can have an or of multiple names).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid,
         String filter) {
@@ -409,17 +357,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             nextLink -> listUsagesNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Retrieves the usages (most recent data) for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid) {
         final String filter = null;
@@ -449,37 +387,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the usages (most recent data) for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid) {
         final String filter = null;
         return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, filter));
     }
 
-    /**
-     * Retrieves the usages (most recent data) for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     * name.value (name of the metric, can have an or of multiple names).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid,
         String filter, Context context) {
@@ -572,17 +487,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves metric definitions for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(String resourceGroupName, String accountName,
         String databaseRid) {
@@ -610,35 +515,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
             nextLink -> listMetricDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves metric definitions for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> listMetricDefinitions(String resourceGroupName, String accountName,
         String databaseRid) {
         return new PagedIterable<>(listMetricDefinitionsAsync(resourceGroupName, accountName, databaseRid));
     }
 
-    /**
-     * Retrieves metric definitions for the given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> listMetricDefinitions(String resourceGroupName, String accountName,
         String databaseRid, Context context) {

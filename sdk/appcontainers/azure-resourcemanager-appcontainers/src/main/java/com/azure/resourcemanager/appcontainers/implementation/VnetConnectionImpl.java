@@ -60,12 +60,7 @@ public final class VnetConnectionImpl implements VnetConnection, VnetConnection.
     }
 
     public VnetConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVnetConnections()
-            .createOrUpdateWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VnetConnection create(Context context) {
@@ -88,12 +83,7 @@ public final class VnetConnectionImpl implements VnetConnection, VnetConnection.
     }
 
     public VnetConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVnetConnections()
-            .createOrUpdateWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VnetConnection apply(Context context) {
@@ -109,17 +99,19 @@ public final class VnetConnectionImpl implements VnetConnection, VnetConnection.
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sandboxGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sandboxGroups");
-        this.vnetConnectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vnetConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
+            "resourceGroupName");
+        this.sandboxGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
+            "sandboxGroupName");
+        this.vnetConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}/vnetConnections/{vnetConnectionName}",
+            "vnetConnectionName");
     }
 
     public VnetConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVnetConnections()
-            .getWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VnetConnection refresh(Context context) {

@@ -62,10 +62,7 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsStorages()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConnectedEnvironmentStorage create(Context context) {
@@ -87,10 +84,7 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsStorages()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConnectedEnvironmentStorage apply(Context context) {
@@ -104,18 +98,19 @@ public final class ConnectedEnvironmentStorageImpl
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}",
+            "resourceGroupName");
+        this.connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}",
+            "connectedEnvironmentName");
+        this.storageName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}",
+            "storageName");
     }
 
     public ConnectedEnvironmentStorage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsStorages()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConnectedEnvironmentStorage refresh(Context context) {

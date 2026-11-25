@@ -165,17 +165,7 @@ public final class SynapseLinkWorkspacesClientImpl implements SynapseLinkWorkspa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all synapselink workspaces for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all synapselink workspaces for a database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynapseLinkWorkspaceInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -203,35 +193,14 @@ public final class SynapseLinkWorkspacesClientImpl implements SynapseLinkWorkspa
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all synapselink workspaces for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all synapselink workspaces for a database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynapseLinkWorkspaceInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets all synapselink workspaces for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all synapselink workspaces for a database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynapseLinkWorkspaceInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {

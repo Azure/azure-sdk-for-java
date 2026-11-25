@@ -48,7 +48,7 @@ public final class VirtualHardDisksImpl implements VirtualHardDisks {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String virtualHardDiskName) {
-        this.serviceClient().delete(resourceGroupName, virtualHardDiskName);
+        this.delete(resourceGroupName, virtualHardDiskName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String virtualHardDiskName, Context context) {
@@ -56,8 +56,7 @@ public final class VirtualHardDisksImpl implements VirtualHardDisks {
     }
 
     public PagedIterable<VirtualHardDisk> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<VirtualHardDiskInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualHardDiskImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<VirtualHardDisk> listByResourceGroup(String resourceGroupName, Context context) {
@@ -67,8 +66,7 @@ public final class VirtualHardDisksImpl implements VirtualHardDisks {
     }
 
     public PagedIterable<VirtualHardDisk> list() {
-        PagedIterable<VirtualHardDiskInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualHardDiskImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<VirtualHardDisk> list(Context context) {
@@ -78,13 +76,7 @@ public final class VirtualHardDisksImpl implements VirtualHardDisks {
 
     public VirtualHardDiskUploadResponse upload(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskUploadRequest body) {
-        VirtualHardDiskUploadResponseInner inner
-            = this.serviceClient().upload(resourceGroupName, virtualHardDiskName, body);
-        if (inner != null) {
-            return new VirtualHardDiskUploadResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.upload(resourceGroupName, virtualHardDiskName, body, Context.NONE);
     }
 
     public VirtualHardDiskUploadResponse upload(String resourceGroupName, String virtualHardDiskName,
@@ -99,58 +91,30 @@ public final class VirtualHardDisksImpl implements VirtualHardDisks {
     }
 
     public VirtualHardDisk getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualHardDiskName = ResourceManagerUtils.getValueFromIdByName(id, "virtualHardDisks");
-        if (virtualHardDiskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualHardDisks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, virtualHardDiskName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VirtualHardDisk> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualHardDiskName = ResourceManagerUtils.getValueFromIdByName(id, "virtualHardDisks");
-        if (virtualHardDiskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualHardDisks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualHardDisks/{virtualHardDiskName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualHardDiskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualHardDisks/{virtualHardDiskName}",
+            "virtualHardDiskName", "virtualHardDisks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualHardDiskName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualHardDiskName = ResourceManagerUtils.getValueFromIdByName(id, "virtualHardDisks");
-        if (virtualHardDiskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualHardDisks'.", id)));
-        }
-        this.delete(resourceGroupName, virtualHardDiskName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualHardDiskName = ResourceManagerUtils.getValueFromIdByName(id, "virtualHardDisks");
-        if (virtualHardDiskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualHardDisks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualHardDisks/{virtualHardDiskName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualHardDiskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualHardDisks/{virtualHardDiskName}",
+            "virtualHardDiskName", "virtualHardDisks", LOGGER);
         this.delete(resourceGroupName, virtualHardDiskName, context);
     }
 

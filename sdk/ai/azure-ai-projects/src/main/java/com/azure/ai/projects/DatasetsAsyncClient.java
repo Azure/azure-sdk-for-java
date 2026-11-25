@@ -676,9 +676,16 @@ public final class DatasetsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDatasetVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -708,9 +715,16 @@ public final class DatasetsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listLatestDatasetVersions(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -781,6 +795,8 @@ public final class DatasetsAsyncClient {
      * Get a data generation job
      *
      * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs. Reading an existing job does not require preview opt-in.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -800,14 +816,21 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -832,7 +855,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -859,8 +882,9 @@ public final class DatasetsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a data generation job
      *
-     * Retrieves the specified data generation job and its current status along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -872,6 +896,8 @@ public final class DatasetsAsyncClient {
      * List data generation jobs
      *
      * Returns a list of data generation jobs.
+     * Each trace job includes its effective settings. Conversation jobs preserve
+     * `type: conversations`. Listing existing jobs does not require preview opt-in.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -911,14 +937,21 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -943,7 +976,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -972,6 +1005,21 @@ public final class DatasetsAsyncClient {
      * Create a data generation job
      *
      * Submits a new data generation job for asynchronous execution.
+     * Requests with `type` set to `conversations`, or `traces` with
+     * `generate_test_case_rubric` set to true, require
+     * `Foundry-Features: DataGenerationJobs=V1Preview`; the service rejects
+     * these requests without this opt-in. Ordinary turn-level trace requests
+     * without rubric generation do not require the header.
+     * Conversation samples require `scenario` to be `evaluation`.
+     * Jobs with `type: conversations` reconstruct existing traced conversations,
+     * use sources of type `traces`, and do not support `sample_level`.
+     * The `generate_test_case_rubric` flag is supported for both trace and
+     * conversation jobs and requires a nonempty `model_options.model` when true.
+     * The conversation-only `generate_test_case_description` flag also requires
+     * a nonempty `model_options.model` when true. For conversation jobs, model
+     * options must be omitted when neither flag is enabled.
+     * Create, get, and list responses preserve `type: conversations`.
+     * The response includes the effective generation settings.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -994,7 +1042,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -1023,14 +1071,21 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1055,7 +1110,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -1104,14 +1159,21 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1136,7 +1198,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -1185,6 +1247,8 @@ public final class DatasetsAsyncClient {
      * Get a data generation job
      *
      * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs. Reading an existing job does not require preview opt-in.
      *
      * @param jobId The ID of the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1195,7 +1259,9 @@ public final class DatasetsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data generation job
      *
-     * Retrieves the specified data generation job and its current status on successful completion of {@link Mono}.
+     * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1210,62 +1276,8 @@ public final class DatasetsAsyncClient {
      * List data generation jobs
      *
      * Returns a list of data generation jobs.
-     *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataGenerationJob> listGenerationJobs(Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for listGenerationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listGenerationJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DataGenerationJob>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DataGenerationJob.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List data generation jobs
-     *
-     * Returns a list of data generation jobs.
+     * Each trace job includes its effective settings. Conversation jobs preserve
+     * `type: conversations`. Listing existing jobs does not require preview opt-in.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1279,11 +1291,18 @@ public final class DatasetsAsyncClient {
     public PagedFlux<DataGenerationJob> listGenerationJobs() {
         // Generated convenience method for listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listGenerationJobs(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listGenerationJobsAsync(null, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DataGenerationJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1298,6 +1317,21 @@ public final class DatasetsAsyncClient {
      * Create a data generation job
      *
      * Submits a new data generation job for asynchronous execution.
+     * Requests with `type` set to `conversations`, or `traces` with
+     * `generate_test_case_rubric` set to true, require
+     * `Foundry-Features: DataGenerationJobs=V1Preview`; the service rejects
+     * these requests without this opt-in. Ordinary turn-level trace requests
+     * without rubric generation do not require the header.
+     * Conversation samples require `scenario` to be `evaluation`.
+     * Jobs with `type: conversations` reconstruct existing traced conversations,
+     * use sources of type `traces`, and do not support `sample_level`.
+     * The `generate_test_case_rubric` flag is supported for both trace and
+     * conversation jobs and requires a nonempty `model_options.model` when true.
+     * The conversation-only `generate_test_case_description` flag also requires
+     * a nonempty `model_options.model` when true. For conversation jobs, model
+     * options must be omitted when neither flag is enabled.
+     * Create, get, and list responses preserve `type: conversations`.
+     * The response includes the effective generation settings.
      *
      * @param job The data generation job inputs to create.
      * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
@@ -1326,6 +1360,21 @@ public final class DatasetsAsyncClient {
      * Create a data generation job
      *
      * Submits a new data generation job for asynchronous execution.
+     * Requests with `type` set to `conversations`, or `traces` with
+     * `generate_test_case_rubric` set to true, require
+     * `Foundry-Features: DataGenerationJobs=V1Preview`; the service rejects
+     * these requests without this opt-in. Ordinary turn-level trace requests
+     * without rubric generation do not require the header.
+     * Conversation samples require `scenario` to be `evaluation`.
+     * Jobs with `type: conversations` reconstruct existing traced conversations,
+     * use sources of type `traces`, and do not support `sample_level`.
+     * The `generate_test_case_rubric` flag is supported for both trace and
+     * conversation jobs and requires a nonempty `model_options.model` when true.
+     * The conversation-only `generate_test_case_description` flag also requires
+     * a nonempty `model_options.model` when true. For conversation jobs, model
+     * options must be omitted when neither flag is enabled.
+     * Create, get, and list responses preserve `type: conversations`.
+     * The response includes the effective generation settings.
      *
      * @param job The data generation job inputs to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1388,5 +1437,67 @@ public final class DatasetsAsyncClient {
         // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * List data generation jobs
+     *
+     * Returns a list of data generation jobs.
+     * Each trace job includes its effective settings. Conversation jobs preserve
+     * `type: conversations`. Listing existing jobs does not require preview opt-in.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataGenerationJob> listGenerationJobs(Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listGenerationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listGenerationJobsAsync(after, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DataGenerationJob>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DataGenerationJob.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }

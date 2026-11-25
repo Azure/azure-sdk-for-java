@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.edgeactions.generated;
 
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 
 /**
  * Samples for EdgeActionVersions Create.
@@ -25,9 +25,8 @@ public final class EdgeActionVersionsCreateSamples {
             .define("version2")
             .withRegion("global")
             .withExistingEdgeAction("testrg", "edgeAction1")
-            .withProperties(
-                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.ZIP)
-                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
+            .withProperties(new EdgeActionVersionProperties().withDeploymentType(EdgeActionVersionDeploymentType.ZIP)
+                .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
             .create();
     }
 }

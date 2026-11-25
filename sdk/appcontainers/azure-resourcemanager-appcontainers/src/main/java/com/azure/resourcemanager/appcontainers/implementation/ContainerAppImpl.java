@@ -166,10 +166,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     }
 
     public ContainerApp create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerApps()
-            .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ContainerApp create(Context context) {
@@ -190,10 +187,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     }
 
     public ContainerApp apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerApps()
-            .update(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ContainerApp apply(Context context) {
@@ -207,16 +201,16 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.containerAppName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "containerApps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
+            "resourceGroupName");
+        this.containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
+            "containerAppName");
     }
 
     public ContainerApp refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerApps()
-            .getByResourceGroupWithResponse(resourceGroupName, containerAppName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ContainerApp refresh(Context context) {

@@ -92,11 +92,7 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuardProxyOperations()
-            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceGuardProxyBaseResource create(Context context) {
@@ -119,11 +115,7 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuardProxyOperations()
-            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceGuardProxyBaseResource apply(Context context) {
@@ -138,18 +130,19 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceGuardProxyName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupResourceGuardProxies");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}",
+            "vaultName");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}",
+            "resourceGroupName");
+        this.resourceGuardProxyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}",
+            "resourceGuardProxyName");
     }
 
     public ResourceGuardProxyBaseResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceGuardProxyOperations()
-            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceGuardProxyBaseResource refresh(Context context) {

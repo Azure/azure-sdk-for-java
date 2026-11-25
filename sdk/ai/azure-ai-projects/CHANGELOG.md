@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,101 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.0 (2026-11-12)
+
+### Features Added
+
+- Promoted Agent Insights monitors, runs, insights, and related models to GA through `AgentInsightMonitorsClient` and
+  `AgentInsightMonitorsAsyncClient`. Build these clients directly through `AIProjectClientBuilder`; the Agent Insights
+  preview header is no longer required.
+- Added `ListAgentInsightsOptions` and `ListAgentInsightRunsOptions` for filtered paging. Each options object contains
+  the monitor ID as well as cursors, page size, ordering, and operation-specific filters.
+- Added monitor priorities through `AgentInsightPriorities` and `AgentInsightPrioritiesDetails`, and generated agent
+  summaries through `AgentInsightSummary`.
+- Added scheduled dataset and trace evaluation rules through `DatasetEvaluationRuleAction`,
+  `TraceEvaluationRuleAction`, `EvaluationRule.schedule`, timer-trigger events, and schedule provisioning status/error
+  reporting. Scheduling trigger and recurrence models are now GA.
+- Added evaluation run data sources for CSV files, target completions, traces, and user-conversation simulation.
+  Trace selection supports trace and conversation IDs, agent filters, time ranges, sampling, and ingestion delay.
+  Added item-generation parameters for response retrieval, synthetic data generation, target completions, and
+  red teaming with seed prompts and taxonomies.
+- Added typed `DatasetEvaluationSource`, `TraceEvaluationSource`, and `UserConversationSimulationSource` unions with
+  source-specific factories such as `ofCsv(...)`, `ofTraces(...)`, and `ofFileId(...)`, respectively, and typed getters.
+  Standard and preview conversation simulation data sources share `UserConversationSimulationSource`. Evaluation
+  sources reuse OpenAI types directly where applicable; simulation scenarios and evaluation-model settings reuse
+  Agents types.
+- Expanded evaluator generation with optional model selection, dimensions, generated weights, pass thresholds, and
+  explicit trace IDs. Added preview quality/safety categories, Boolean/Likert rubric scoring, dimension eligibility,
+  and endpoint evaluator schema-version selection.
+- Added preview evaluator diagnostics through `BetaEvaluatorsClient.listEvaluatorDiagnostics` and the asynchronous
+  equivalent, including dimension, definition, version-change, and health diagnostics.
+- Added preview conversation data generation with sample limits, redaction, descriptions, rubrics, and model options,
+  plus per-test-case rubric generation for trace jobs. Data-generation results now expose warnings and warning codes.
+- Added `deleteSkillVersion` and `deleteSkillVersionWithResponse` to the synchronous and asynchronous beta Skills clients.
+- Added `JobStatus.SKIPPED`.
+
+### Breaking Changes
+
+- Replaced `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient` with the GA clients. Replace
+  `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and its asynchronous equivalent with
+  `buildAgentInsightMonitorsClient()` and `buildAgentInsightMonitorsAsyncClient()` on the main builder.
+- Replaced `AgentInsightMonitorCreate` inputs with `createAgentInsightMonitor(agentName, modelDeploymentName, ...)`
+  overloads. Replaced `AgentInsightMonitorUpdate` and `AgentInsightUpdate` with `UpdateAgentInsightMonitorOptions`
+  and `UpdateAgentInsightOptions`.
+- Replaced the `AgentInsightRunCreate` convenience-method input with `beginCreateAgentInsightRun(monitorId, ...)`
+  overloads. `AgentInsightRun.getInputs()` now returns `AgentInsightRunInputs`.
+- Replaced the positional convenience overloads of `listAgentInsights` and `listAgentInsightRuns` with options bags.
+  Pass the monitor ID in the options object rather than as a separate method argument.
+- Replaced monitor overview/override models with agent summaries and priorities. `AgentInsightMonitor.getOverview()`
+  is now `getAgentSummary()`, returning `AgentInsightSummary`; removed `AgentInsightsOverview`,
+  `AgentInsightsOverviewOverride`, and `AgentInsightOverviewSource`.
+  Renamed `AgentInsightDetails.getRecommendedActions()` to `getRecommendedAction()`.
+- Renamed cron and recurrence trigger `startTime`/`endTime` accessors to `startAt`/`endAt`.
+  Cron and one-time trigger time zones now use `java.util.TimeZone` instead of `String`.
+- Replaced `DailyRecurrenceSchedule(List<Integer> hours)` with a no-argument constructor and `setHours(...)`.
+
+### Bugs Fixed
+
+- Fixed long-running job polling to recognize the service's `cancelled` status as terminal.
+
+### Other Changes
+
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
+- Updated `azure-ai-agents` from `2.9.0` to `2.10.0`.
+- Updated `openai-java` from `4.69.0` to `4.99.0`.
+- Updated `azure-storage-blob` from `12.36.0` to `12.37.2`.
+
+## 2.9.0 (2026-10-30)
+
+### Bugs Fixed
+
+- Fixed `SimulationSeedDataGenerationJobConfiguration` to accept and serialize the service-required `max_samples`
+  through its constructor or `setMaxSamples(int)`, while preserving the no-argument constructor for backward
+  compatibility.
+- Fixed cursor-based list operations that stopped after the first page, including data-generation jobs,
+  evaluator-generation jobs, skills and skill versions, and agent insight monitors, runs, and insights.
+  Paging now follows the service's `last_id` cursor and supports resuming from a continuation token.
+- Fixed cursor-based paging to stop when the service returns `has_more: false`, even if the response still includes
+  a `last_id`, avoiding unnecessary requests after the final page.
+
+### Other Changes
+
+- Regenerated the client from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` from `2.8.0` to `2.9.0`.
+- Updated `azure-core` from `1.60.0` to `1.61.0` and `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+
+## 2.8.0 (2026-10-19)
+
+### Bugs Fixed
+
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
+### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` to `2.8.0` and `azure-storage-blob` to `12.36.0`.
 
 ## 2.7.0 (2026-10-06)
 

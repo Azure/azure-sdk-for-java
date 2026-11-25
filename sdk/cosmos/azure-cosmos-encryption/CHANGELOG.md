@@ -5,8 +5,10 @@
 #### Features Added
 
 #### Breaking Changes
+* Reading legacy mixed-type arrays with unencrypted scalars now fails by default with `IllegalStateException`; see [migration and opt-out guidance](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/README.md#legacy-mixed-type-arrays). - See [PR 51247](https://github.com/Azure/azure-sdk-for-java/pull/51247)
 
 #### Bugs Fixed
+* Fixed client-side encryption and decryption of mixed-type arrays for item and PATCH operations. - See [PR 51247](https://github.com/Azure/azure-sdk-for-java/pull/51247)
 
 #### Other Changes
 

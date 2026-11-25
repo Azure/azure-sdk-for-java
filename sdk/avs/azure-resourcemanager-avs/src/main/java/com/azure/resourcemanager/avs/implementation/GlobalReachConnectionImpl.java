@@ -82,11 +82,7 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GlobalReachConnection create(Context context) {
@@ -107,11 +103,7 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GlobalReachConnection apply(Context context) {
@@ -125,18 +117,19 @@ public final class GlobalReachConnectionImpl
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.globalReachConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "globalReachConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}",
+            "privateCloudName");
+        this.globalReachConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}",
+            "globalReachConnectionName");
     }
 
     public GlobalReachConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GlobalReachConnection refresh(Context context) {

@@ -59,10 +59,7 @@ public final class ResourceTypeRegistrationImpl
     }
 
     public ResourceTypeRegistration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceTypeRegistrations()
-            .createOrUpdate(providerNamespace, resourceType, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceTypeRegistration create(Context context) {
@@ -83,10 +80,7 @@ public final class ResourceTypeRegistrationImpl
     }
 
     public ResourceTypeRegistration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceTypeRegistrations()
-            .createOrUpdate(providerNamespace, resourceType, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceTypeRegistration apply(Context context) {
@@ -100,16 +94,16 @@ public final class ResourceTypeRegistrationImpl
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.resourceType = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}",
+            "providerNamespace");
+        this.resourceType = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}",
+            "resourceType");
     }
 
     public ResourceTypeRegistration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceTypeRegistrations()
-            .getWithResponse(providerNamespace, resourceType, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceTypeRegistration refresh(Context context) {

@@ -73,12 +73,7 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-                managedPrivateEndpointName, this.innerModel(), createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedPrivateEndpointResource create(Context context) {
@@ -104,12 +99,7 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-                managedPrivateEndpointName, this.innerModel(), updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedPrivateEndpointResource apply(Context context) {
@@ -125,22 +115,22 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.managedVirtualNetworkName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
-        this.managedPrivateEndpointName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedPrivateEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "factoryName");
+        this.managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedVirtualNetworkName");
+        this.managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}",
+            "managedPrivateEndpointName");
     }
 
     public ManagedPrivateEndpointResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
-                localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedPrivateEndpointResource refresh(Context context) {

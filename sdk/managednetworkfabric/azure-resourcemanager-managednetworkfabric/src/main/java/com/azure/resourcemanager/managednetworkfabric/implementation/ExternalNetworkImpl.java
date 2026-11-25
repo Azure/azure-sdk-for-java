@@ -129,10 +129,7 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalNetworks()
-            .create(resourceGroupName, l3IsolationDomainName, externalNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExternalNetwork create(Context context) {
@@ -155,10 +152,7 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalNetworks()
-            .update(resourceGroupName, l3IsolationDomainName, externalNetworkName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExternalNetwork apply(Context context) {
@@ -172,17 +166,19 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
-        this.externalNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "resourceGroupName");
+        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "l3IsolationDomainName");
+        this.externalNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}",
+            "externalNetworkName");
     }
 
     public ExternalNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalNetworks()
-            .getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExternalNetwork refresh(Context context) {

@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.RaiPolicyInner;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicies;
+import com.azure.resourcemanager.cognitiveservices.models.RaiPoliciesGetResponse;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicy;
 
 public final class RaiPoliciesImpl implements RaiPolicies {
@@ -29,10 +30,14 @@ public final class RaiPoliciesImpl implements RaiPolicies {
 
     public Response<RaiPolicy> getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
         Context context) {
-        Response<RaiPolicyInner> inner
+        RaiPoliciesGetResponse inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, raiPolicyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RaiPolicyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RaiPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RaiPolicy get(String resourceGroupName, String accountName, String raiPolicyName) {
@@ -48,13 +53,13 @@ public final class RaiPoliciesImpl implements RaiPolicies {
         this.serviceClient().delete(resourceGroupName, accountName, raiPolicyName);
     }
 
-    public void delete(String resourceGroupName, String accountName, String raiPolicyName, Context context) {
-        this.serviceClient().delete(resourceGroupName, accountName, raiPolicyName, context);
+    public void delete(String resourceGroupName, String accountName, String raiPolicyName, String ifMatch,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, accountName, raiPolicyName, ifMatch, context);
     }
 
     public PagedIterable<RaiPolicy> list(String resourceGroupName, String accountName) {
-        PagedIterable<RaiPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RaiPolicyImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<RaiPolicy> list(String resourceGroupName, String accountName, Context context) {
@@ -63,79 +68,38 @@ public final class RaiPoliciesImpl implements RaiPolicies {
     }
 
     public RaiPolicy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "raiPolicies");
-        if (raiPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiPolicies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, raiPolicyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RaiPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "raiPolicies");
-        if (raiPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
+            "accountName", "accounts", LOGGER);
+        String raiPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
+            "raiPolicyName", "raiPolicies", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, raiPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "raiPolicies");
-        if (raiPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiPolicies'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, raiPolicyName, Context.NONE);
+        String localIfMatch = null;
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "raiPolicies");
-        if (raiPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiPolicies'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, raiPolicyName, context);
+    public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
+            "accountName", "accounts", LOGGER);
+        String raiPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
+            "raiPolicyName", "raiPolicies", LOGGER);
+        this.delete(resourceGroupName, accountName, raiPolicyName, ifMatch, context);
     }
 
     private RaiPoliciesClient serviceClient() {

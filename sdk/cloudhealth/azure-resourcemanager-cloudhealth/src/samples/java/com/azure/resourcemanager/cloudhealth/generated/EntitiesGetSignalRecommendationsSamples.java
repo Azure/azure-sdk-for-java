@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class EntitiesGetSignalRecommendationsSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/Entities_GetSignalRecommendations.json
+     * x-ms-original-file: 2026-11-01/Entities_GetSignalRecommendations.json
      */
     /**
      * Sample code: Entities_GetSignalRecommendations.

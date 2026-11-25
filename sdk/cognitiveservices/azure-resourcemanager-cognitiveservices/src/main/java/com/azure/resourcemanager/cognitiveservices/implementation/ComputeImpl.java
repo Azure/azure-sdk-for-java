@@ -10,8 +10,6 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
 import com.azure.resourcemanager.cognitiveservices.models.Compute;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
-import java.util.Collections;
-import java.util.Map;
 
 public final class ComputeImpl implements Compute, Compute.Definition, Compute.Update {
     private ComputeInner innerObject;
@@ -36,15 +34,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
 
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public String kind() {
@@ -84,10 +73,7 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
     }
 
     public Compute create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Compute create(Context context) {
@@ -108,10 +94,7 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
     }
 
     public Compute apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Compute apply(Context context) {
@@ -125,17 +108,19 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.computeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "computes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "accountName");
+        this.computeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "computeName");
     }
 
     public Compute refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .getWithResponse(resourceGroupName, accountName, computeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Compute refresh(Context context) {
@@ -172,11 +157,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
 
     public ComputeImpl withProperties(ComputeProperties properties) {
         this.innerModel().withProperties(properties);
-        return this;
-    }
-
-    public ComputeImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
         return this;
     }
 

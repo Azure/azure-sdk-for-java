@@ -52,7 +52,7 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
     }
 
     public void delete(String resourceGroupName, String environmentName, String storageName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, storageName);
+        this.deleteWithResponse(resourceGroupName, environmentName, storageName, Context.NONE);
     }
 
     public Response<ManagedEnvironmentStoragesCollection> listWithResponse(String resourceGroupName,
@@ -73,78 +73,36 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
     }
 
     public ManagedEnvironmentStorage getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
-        if (storageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, environmentName, storageName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManagedEnvironmentStorage> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
-        if (storageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "environmentName", "managedEnvironments", LOGGER);
+        String storageName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "storageName", "storages", LOGGER);
         return this.getWithResponse(resourceGroupName, environmentName, storageName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
-        if (storageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, environmentName, storageName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
-        if (environmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
-        }
-        String storageName = ResourceManagerUtils.getValueFromIdByName(id, "storages");
-        if (storageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String environmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "environmentName", "managedEnvironments", LOGGER);
+        String storageName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "storageName", "storages", LOGGER);
         return this.deleteWithResponse(resourceGroupName, environmentName, storageName, context);
     }
 

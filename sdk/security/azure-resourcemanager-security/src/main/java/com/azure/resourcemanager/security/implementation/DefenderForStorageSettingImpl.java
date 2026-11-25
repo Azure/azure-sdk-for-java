@@ -23,6 +23,10 @@ public final class DefenderForStorageSettingImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "resourceId");
+        this.settingName = SettingName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName"));
     }
 
     public String id() {
@@ -63,11 +67,7 @@ public final class DefenderForStorageSettingImpl
     }
 
     public DefenderForStorageSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForStorages()
-            .createWithResponse(resourceId, settingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DefenderForStorageSetting create(Context context) {
@@ -85,11 +85,7 @@ public final class DefenderForStorageSettingImpl
     }
 
     public DefenderForStorageSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForStorages()
-            .getWithResponse(resourceId, settingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DefenderForStorageSetting refresh(Context context) {

@@ -15,19 +15,18 @@ public final class RelatedResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelatedResourcesInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"wfluszdt\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"rkwofyyvoqa\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-08-28T10:18:43Z\",\"lastModifiedAt\":\"2021-02-16T07:05:48Z\"},{\"id\":\"xpbtgiwbwo\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"washr\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-08-01T13:56:15Z\",\"lastModifiedAt\":\"2021-03-25T05:20:51Z\"}]}")
+            "{\"value\":[{\"id\":\"fbunrmfqjhhk\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"pvjymjhxxjyng\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-04-19T20:15:23Z\",\"lastModifiedAt\":\"2021-06-27T09:24:26Z\"}]}")
             .toObject(RelatedResourcesInner.class);
-        Assertions.assertEquals("wfluszdt", model.value().get(0).id());
-        Assertions.assertEquals(Relevance.IRRELEVANT, model.value().get(0).relevance());
+        Assertions.assertEquals("fbunrmfqjhhk", model.value().get(0).id());
+        Assertions.assertEquals(Relevance.NONE, model.value().get(0).relevance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelatedResourcesInner model = new RelatedResourcesInner()
-            .withValue(Arrays.asList(new RelatedResource().withId("wfluszdt").withRelevance(Relevance.IRRELEVANT),
-                new RelatedResource().withId("xpbtgiwbwo").withRelevance(Relevance.IRRELEVANT)));
+            .withValue(Arrays.asList(new RelatedResource().withId("fbunrmfqjhhk").withRelevance(Relevance.NONE)));
         model = BinaryData.fromObject(model).toObject(RelatedResourcesInner.class);
-        Assertions.assertEquals("wfluszdt", model.value().get(0).id());
-        Assertions.assertEquals(Relevance.IRRELEVANT, model.value().get(0).relevance());
+        Assertions.assertEquals("fbunrmfqjhhk", model.value().get(0).id());
+        Assertions.assertEquals(Relevance.NONE, model.value().get(0).relevance());
     }
 }

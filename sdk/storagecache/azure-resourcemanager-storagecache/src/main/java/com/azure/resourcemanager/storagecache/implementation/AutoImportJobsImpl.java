@@ -45,7 +45,7 @@ public final class AutoImportJobsImpl implements AutoImportJobs {
     }
 
     public void delete(String resourceGroupName, String amlFilesystemName, String autoImportJobName) {
-        this.serviceClient().delete(resourceGroupName, amlFilesystemName, autoImportJobName);
+        this.delete(resourceGroupName, amlFilesystemName, autoImportJobName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String amlFilesystemName, String autoImportJobName, Context context) {
@@ -53,9 +53,7 @@ public final class AutoImportJobsImpl implements AutoImportJobs {
     }
 
     public PagedIterable<AutoImportJob> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        PagedIterable<AutoImportJobInner> inner
-            = this.serviceClient().listByAmlFilesystem(resourceGroupName, amlFilesystemName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoImportJobImpl(inner1, this.manager()));
+        return this.listByAmlFilesystem(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     public PagedIterable<AutoImportJob> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,
@@ -66,78 +64,36 @@ public final class AutoImportJobsImpl implements AutoImportJobs {
     }
 
     public AutoImportJob getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(id, "amlFilesystems");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String autoImportJobName = ResourceManagerUtils.getValueFromIdByName(id, "autoImportJobs");
-        if (autoImportJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoImportJobs'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, amlFilesystemName, autoImportJobName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AutoImportJob> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(id, "amlFilesystems");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String autoImportJobName = ResourceManagerUtils.getValueFromIdByName(id, "autoImportJobs");
-        if (autoImportJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoImportJobs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String amlFilesystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "amlFilesystemName", "amlFilesystems", LOGGER);
+        String autoImportJobName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "autoImportJobName", "autoImportJobs", LOGGER);
         return this.getWithResponse(resourceGroupName, amlFilesystemName, autoImportJobName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(id, "amlFilesystems");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String autoImportJobName = ResourceManagerUtils.getValueFromIdByName(id, "autoImportJobs");
-        if (autoImportJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoImportJobs'.", id)));
-        }
-        this.delete(resourceGroupName, amlFilesystemName, autoImportJobName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(id, "amlFilesystems");
-        if (amlFilesystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'amlFilesystems'.", id)));
-        }
-        String autoImportJobName = ResourceManagerUtils.getValueFromIdByName(id, "autoImportJobs");
-        if (autoImportJobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoImportJobs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String amlFilesystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "amlFilesystemName", "amlFilesystems", LOGGER);
+        String autoImportJobName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs/{autoImportJobName}",
+            "autoImportJobName", "autoImportJobs", LOGGER);
         this.delete(resourceGroupName, amlFilesystemName, autoImportJobName, context);
     }
 

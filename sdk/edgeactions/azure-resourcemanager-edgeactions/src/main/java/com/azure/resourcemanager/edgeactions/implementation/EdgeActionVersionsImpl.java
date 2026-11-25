@@ -11,10 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.edgeactions.fluent.EdgeActionVersionsClient;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersions;
 import com.azure.resourcemanager.edgeactions.models.VersionCode;
 
@@ -49,7 +47,7 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public void delete(String resourceGroupName, String edgeActionName, String version) {
-        this.serviceClient().delete(resourceGroupName, edgeActionName, version);
+        this.delete(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String edgeActionName, String version, Context context) {
@@ -57,9 +55,7 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public PagedIterable<EdgeActionVersion> listByEdgeAction(String resourceGroupName, String edgeActionName) {
-        PagedIterable<EdgeActionVersionInner> inner
-            = this.serviceClient().listByEdgeAction(resourceGroupName, edgeActionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionVersionImpl(inner1, this.manager()));
+        return this.listByEdgeAction(resourceGroupName, edgeActionName, Context.NONE);
     }
 
     public PagedIterable<EdgeActionVersion> listByEdgeAction(String resourceGroupName, String edgeActionName,
@@ -69,35 +65,24 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionVersionImpl(inner1, this.manager()));
     }
 
-    public EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body) {
-        EdgeActionVersionPropertiesInner inner
-            = this.serviceClient().deployVersionCode(resourceGroupName, edgeActionName, version, body);
-        if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public EdgeActionVersion deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body) {
+        return this.deployVersionCode(resourceGroupName, edgeActionName, version, body, Context.NONE);
     }
 
-    public EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body, Context context) {
-        EdgeActionVersionPropertiesInner inner
+    public EdgeActionVersion deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body, Context context) {
+        EdgeActionVersionInner inner
             = this.serviceClient().deployVersionCode(resourceGroupName, edgeActionName, version, body, context);
         if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
+            return new EdgeActionVersionImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
     public VersionCode getVersionCode(String resourceGroupName, String edgeActionName, String version) {
-        VersionCodeInner inner = this.serviceClient().getVersionCode(resourceGroupName, edgeActionName, version);
-        if (inner != null) {
-            return new VersionCodeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.getVersionCode(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
     public VersionCode getVersionCode(String resourceGroupName, String edgeActionName, String version,
@@ -112,7 +97,7 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public void swapDefault(String resourceGroupName, String edgeActionName, String version) {
-        this.serviceClient().swapDefault(resourceGroupName, edgeActionName, version);
+        this.swapDefault(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
     public void swapDefault(String resourceGroupName, String edgeActionName, String version, Context context) {
@@ -120,78 +105,36 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
     }
 
     public EdgeActionVersion getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (version == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, edgeActionName, version, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EdgeActionVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (version == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName", "edgeActions", LOGGER);
+        String version = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version", "versions", LOGGER);
         return this.getWithResponse(resourceGroupName, edgeActionName, version, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (version == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        this.delete(resourceGroupName, edgeActionName, version, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (version == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "edgeActionName", "edgeActions", LOGGER);
+        String version = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}",
+            "version", "versions", LOGGER);
         this.delete(resourceGroupName, edgeActionName, version, context);
     }
 

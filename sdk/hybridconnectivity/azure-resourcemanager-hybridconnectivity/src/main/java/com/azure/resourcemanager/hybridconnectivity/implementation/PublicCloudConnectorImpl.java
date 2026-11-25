@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
@@ -51,6 +52,10 @@ public final class PublicCloudConnectorImpl
         return this.innerModel().properties();
     }
 
+    public HostType kind() {
+        return this.innerModel().kind();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -87,10 +92,7 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicCloudConnectors()
-            .createOrUpdate(resourceGroupName, publicCloudConnector, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PublicCloudConnector create(Context context) {
@@ -113,11 +115,7 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicCloudConnectors()
-            .updateWithResponse(resourceGroupName, publicCloudConnector, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PublicCloudConnector apply(Context context) {
@@ -132,17 +130,16 @@ public final class PublicCloudConnectorImpl
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publicCloudConnector
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publicCloudConnectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "resourceGroupName");
+        this.publicCloudConnector = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "publicCloudConnector");
     }
 
     public PublicCloudConnector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicCloudConnectors()
-            .getByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PublicCloudConnector refresh(Context context) {

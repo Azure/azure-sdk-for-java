@@ -167,10 +167,7 @@ public final class L3IsolationDomainImpl
     }
 
     public L3IsolationDomain create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL3IsolationDomains()
-            .create(resourceGroupName, l3IsolationDomainName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public L3IsolationDomain create(Context context) {
@@ -193,10 +190,7 @@ public final class L3IsolationDomainImpl
     }
 
     public L3IsolationDomain apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL3IsolationDomains()
-            .update(resourceGroupName, l3IsolationDomainName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public L3IsolationDomain apply(Context context) {
@@ -210,16 +204,16 @@ public final class L3IsolationDomainImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}",
+            "resourceGroupName");
+        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}",
+            "l3IsolationDomainName");
     }
 
     public L3IsolationDomain refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL3IsolationDomains()
-            .getByResourceGroupWithResponse(resourceGroupName, l3IsolationDomainName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public L3IsolationDomain refresh(Context context) {

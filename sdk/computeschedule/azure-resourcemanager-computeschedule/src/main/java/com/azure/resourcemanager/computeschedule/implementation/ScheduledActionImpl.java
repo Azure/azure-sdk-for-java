@@ -92,10 +92,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScheduledActions()
-            .createOrUpdate(resourceGroupName, scheduledActionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ScheduledAction create(Context context) {
@@ -117,11 +114,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScheduledActions()
-            .updateWithResponse(resourceGroupName, scheduledActionName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ScheduledAction apply(Context context) {
@@ -136,16 +129,16 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.scheduledActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scheduledActions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "resourceGroupName");
+        this.scheduledActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "scheduledActionName");
     }
 
     public ScheduledAction refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScheduledActions()
-            .getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ScheduledAction refresh(Context context) {

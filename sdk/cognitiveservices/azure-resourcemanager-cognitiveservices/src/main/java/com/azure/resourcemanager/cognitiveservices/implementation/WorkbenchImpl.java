@@ -4,15 +4,14 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.WorkbenchInner;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.Workbench;
 import com.azure.resourcemanager.cognitiveservices.models.WorkbenchProperties;
-import java.util.Collections;
-import java.util.Map;
+import com.azure.resourcemanager.cognitiveservices.models.WorkbenchUpdate;
+import com.azure.resourcemanager.cognitiveservices.models.WorkbenchUpdateProperties;
 
 public final class WorkbenchImpl implements Workbench, Workbench.Definition, Workbench.Update {
     private WorkbenchInner innerObject;
@@ -39,33 +38,12 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
         return this.innerModel().etag();
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public Identity identity() {
         return this.innerModel().identity();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
     }
 
     public String resourceGroupName() {
@@ -88,6 +66,8 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
 
     private String workbenchName;
 
+    private WorkbenchUpdate updateProperties;
+
     public WorkbenchImpl withExistingProject(String resourceGroupName, String accountName, String projectName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -96,11 +76,7 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
     }
 
     public Workbench create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbenches()
-            .createOrUpdate(resourceGroupName, accountName, projectName, workbenchName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Workbench create(Context context) {
@@ -117,20 +93,19 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
     }
 
     public WorkbenchImpl update() {
+        this.updateProperties = new WorkbenchUpdate();
         return this;
     }
 
     public Workbench apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbenches()
-            .update(resourceGroupName, accountName, projectName, workbenchName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Workbench apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkbenches()
-            .update(resourceGroupName, accountName, projectName, workbenchName, this.innerModel(), context);
+            .updateWithResponse(resourceGroupName, accountName, projectName, workbenchName, updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -138,18 +113,22 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.workbenchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workbenches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}",
+            "accountName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}",
+            "projectName");
+        this.workbenchName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}",
+            "workbenchName");
     }
 
     public Workbench refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbenches()
-            .getWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Workbench refresh(Context context) {
@@ -189,23 +168,22 @@ public final class WorkbenchImpl implements Workbench, Workbench.Definition, Wor
         return this;
     }
 
-    public WorkbenchImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public WorkbenchImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public WorkbenchImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
-    }
-
     public WorkbenchImpl withIdentity(Identity identity) {
-        this.innerModel().withIdentity(identity);
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public WorkbenchImpl withProperties(WorkbenchUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

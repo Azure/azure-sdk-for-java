@@ -176,17 +176,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String serverName,
         String expand) {
@@ -248,16 +238,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             this.client.getSubscriptionId(), resourceGroupName, serverName, expand, accept, context);
     }
 
-    /**
-     * Gets a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName) {
         final String expand = null;
@@ -265,51 +246,21 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName,
         String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serverName, expand, context).block();
     }
 
-    /**
-     * Gets a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerInner getByResourceGroup(String resourceGroupName, String serverName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, serverName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         ServerInner parameters) {
@@ -384,17 +335,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String serverName, ServerInner parameters) {
@@ -426,52 +367,21 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             ServerInner.class, ServerInner.class, context);
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, ServerInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName,
         String serverName, ServerInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).last()
@@ -497,51 +407,20 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, parameters).block();
     }
 
-    /**
-     * Creates or updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, parameters, context).block();
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         ServerUpdate parameters) {
@@ -614,17 +493,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(String resourceGroupName,
         String serverName, ServerUpdate parameters) {
@@ -655,52 +524,21 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             ServerInner.class, ServerInner.class, context);
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
         ServerUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
         ServerUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, parameters).last()
@@ -726,49 +564,19 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerInner update(String resourceGroupName, String serverName, ServerUpdate parameters) {
         return updateAsync(resourceGroupName, serverName, parameters).block();
     }
 
-    /**
-     * Updates a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The requested server resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerInner update(String resourceGroupName, String serverName, ServerUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, serverName, parameters, context).block();
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
@@ -826,16 +634,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             resourceGroupName, serverName, context);
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName);
@@ -863,48 +662,20 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             context);
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName) {
         return this.beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName) {
         return beginDeleteAsync(resourceGroupName, serverName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -927,30 +698,13 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName) {
         deleteAsync(resourceGroupName, serverName).block();
     }
 
-    /**
-     * Deletes a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, Context context) {
         deleteAsync(resourceGroupName, serverName, context).block();
@@ -1027,31 +781,14 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of servers in a resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName, String expand) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, expand),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of servers in a resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName) {
         final String expand = null;
@@ -1076,32 +813,14 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of servers in a resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName) {
         final String expand = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, expand));
     }
 
-    /**
-     * Gets a list of servers in a resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName, String expand, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, expand, context));
@@ -1166,27 +885,13 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all servers in the subscription.
-     * 
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerInner> listAsync(String expand) {
         return new PagedFlux<>(() -> listSinglePageAsync(expand), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of all servers in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerInner> listAsync() {
         final String expand = null;
@@ -1209,46 +914,20 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all servers in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerInner> list() {
         final String expand = null;
         return new PagedIterable<>(listAsync(expand));
     }
 
-    /**
-     * Gets a list of all servers in the subscription.
-     * 
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerInner> list(String expand, Context context) {
         return new PagedIterable<>(listAsync(expand, context));
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> importDatabaseWithResponseAsync(String resourceGroupName, String serverName,
         ImportNewDatabaseDefinition parameters) {
@@ -1324,17 +1003,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
         beginImportDatabaseAsync(String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters) {
@@ -1369,35 +1038,14 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             ImportExportOperationResultInner.class, context);
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
         beginImportDatabase(String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters) {
         return this.beginImportDatabaseAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
         beginImportDatabase(String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters,
@@ -1405,17 +1053,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         return this.beginImportDatabaseAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportExportOperationResultInner> importDatabaseAsync(String resourceGroupName, String serverName,
         ImportNewDatabaseDefinition parameters) {
@@ -1442,52 +1080,21 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportExportOperationResultInner importDatabase(String resourceGroupName, String serverName,
         ImportNewDatabaseDefinition parameters) {
         return importDatabaseAsync(resourceGroupName, serverName, parameters).block();
     }
 
-    /**
-     * Imports a bacpac into a new database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The database import request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportExportOperationResultInner importDatabase(String resourceGroupName, String serverName,
         ImportNewDatabaseDefinition parameters, Context context) {
         return importDatabaseAsync(resourceGroupName, serverName, parameters, context).block();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName,
         String serverName) {
@@ -1549,16 +1156,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
@@ -1593,16 +1191,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
                 RefreshExternalGovernanceStatusOperationResultInner.class, context);
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
@@ -1610,17 +1199,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         return this.beginRefreshStatusAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
@@ -1628,16 +1207,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         return this.beginRefreshStatusAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(String resourceGroupName,
         String serverName) {
@@ -1663,49 +1233,21 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName,
         String serverName) {
         return refreshStatusAsync(resourceGroupName, serverName).block();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName,
         String serverName, Context context) {
         return refreshStatusAsync(resourceGroupName, serverName, context).block();
     }
 
-    /**
-     * Determines whether a resource can be created with the specified name.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityResponseInner>>
         checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest parameters) {
@@ -1764,46 +1306,21 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Determines whether a resource can be created with the specified name.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckNameAvailabilityResponseInner>
         checkNameAvailabilityAsync(CheckNameAvailabilityRequest parameters) {
         return checkNameAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Determines whether a resource can be created with the specified name.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(parameters, context).block();
     }
 
-    /**
-     * Determines whether a resource can be created with the specified name.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest parameters) {
         return checkNameAvailabilityWithResponse(parameters, Context.NONE).getValue();

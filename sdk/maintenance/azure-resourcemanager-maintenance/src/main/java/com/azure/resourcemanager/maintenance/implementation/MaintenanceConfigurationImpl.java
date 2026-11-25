@@ -125,11 +125,7 @@ public final class MaintenanceConfigurationImpl
     }
 
     public MaintenanceConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MaintenanceConfiguration create(Context context) {
@@ -151,11 +147,7 @@ public final class MaintenanceConfigurationImpl
     }
 
     public MaintenanceConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MaintenanceConfiguration apply(Context context) {
@@ -170,16 +162,16 @@ public final class MaintenanceConfigurationImpl
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "maintenanceConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}",
+            "resourceName");
     }
 
     public MaintenanceConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MaintenanceConfiguration refresh(Context context) {

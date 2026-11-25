@@ -132,16 +132,6 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             @PathParam("connectedRegistryName") String connectedRegistryName, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/connectedRegistries/{connectedRegistryName}/resync")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectedRegistryInner>> resync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @PathParam("connectedRegistryName") String connectedRegistryName, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -150,18 +140,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the properties of the connected registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the connected registry along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConnectedRegistryInner>> getWithResponseAsync(String resourceGroupName, String registryName,
         String connectedRegistryName) {
@@ -231,17 +210,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
-    /**
-     * Gets the properties of the connected registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the connected registry on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectedRegistryInner> getAsync(String resourceGroupName, String registryName,
         String connectedRegistryName) {
@@ -249,53 +218,20 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the connected registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the connected registry along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedRegistryInner> getWithResponse(String resourceGroupName, String registryName,
         String connectedRegistryName, Context context) {
         return getWithResponseAsync(resourceGroupName, registryName, connectedRegistryName, context).block();
     }
 
-    /**
-     * Gets the properties of the connected registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the connected registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedRegistryInner get(String resourceGroupName, String registryName, String connectedRegistryName) {
         return getWithResponse(resourceGroupName, registryName, connectedRegistryName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
         String connectedRegistryName, ConnectedRegistryInner connectedRegistryCreateParameters) {
@@ -383,19 +319,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             connectedRegistryCreateParameters, context);
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an object that represents a connected registry for a container
-     * registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectedRegistryInner>, ConnectedRegistryInner> beginCreateAsync(
         String resourceGroupName, String registryName, String connectedRegistryName,
@@ -432,19 +356,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             this.client.getHttpPipeline(), ConnectedRegistryInner.class, ConnectedRegistryInner.class, context);
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a connected registry for a container
-     * registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedRegistryInner>, ConnectedRegistryInner> beginCreate(String resourceGroupName,
         String registryName, String connectedRegistryName, ConnectedRegistryInner connectedRegistryCreateParameters) {
@@ -453,20 +365,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .getSyncPoller();
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a connected registry for a container
-     * registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedRegistryInner>, ConnectedRegistryInner> beginCreate(String resourceGroupName,
         String registryName, String connectedRegistryName, ConnectedRegistryInner connectedRegistryCreateParameters,
@@ -477,19 +376,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .getSyncPoller();
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectedRegistryInner> createAsync(String resourceGroupName, String registryName,
         String connectedRegistryName, ConnectedRegistryInner connectedRegistryCreateParameters) {
@@ -518,18 +405,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             connectedRegistryCreateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedRegistryInner create(String resourceGroupName, String registryName, String connectedRegistryName,
         ConnectedRegistryInner connectedRegistryCreateParameters) {
@@ -537,19 +413,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .block();
     }
 
-    /**
-     * Creates a connected registry for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryCreateParameters The parameters for creating a connectedRegistry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedRegistryInner create(String resourceGroupName, String registryName, String connectedRegistryName,
         ConnectedRegistryInner connectedRegistryCreateParameters, Context context) {
@@ -557,19 +421,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             context).block();
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
         String connectedRegistryName, ConnectedRegistryUpdateParameters connectedRegistryUpdateParameters) {
@@ -658,19 +510,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             connectedRegistryUpdateParameters, context);
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an object that represents a connected registry for a container
-     * registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectedRegistryInner>, ConnectedRegistryInner> beginUpdateAsync(
         String resourceGroupName, String registryName, String connectedRegistryName,
@@ -707,19 +547,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             this.client.getHttpPipeline(), ConnectedRegistryInner.class, ConnectedRegistryInner.class, context);
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a connected registry for a container
-     * registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedRegistryInner>, ConnectedRegistryInner> beginUpdate(String resourceGroupName,
         String registryName, String connectedRegistryName,
@@ -729,20 +557,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .getSyncPoller();
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a connected registry for a container
-     * registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedRegistryInner>, ConnectedRegistryInner> beginUpdate(String resourceGroupName,
         String registryName, String connectedRegistryName,
@@ -753,19 +568,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .getSyncPoller();
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectedRegistryInner> updateAsync(String resourceGroupName, String registryName,
         String connectedRegistryName, ConnectedRegistryUpdateParameters connectedRegistryUpdateParameters) {
@@ -795,18 +598,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             connectedRegistryUpdateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedRegistryInner update(String resourceGroupName, String registryName, String connectedRegistryName,
         ConnectedRegistryUpdateParameters connectedRegistryUpdateParameters) {
@@ -814,19 +606,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .block();
     }
 
-    /**
-     * Updates a connected registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param connectedRegistryUpdateParameters The parameters for updating a connectedRegistry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedRegistryInner update(String resourceGroupName, String registryName, String connectedRegistryName,
         ConnectedRegistryUpdateParameters connectedRegistryUpdateParameters, Context context) {
@@ -834,17 +614,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             context).block();
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String connectedRegistryName) {
@@ -912,17 +682,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             resourceGroupName, registryName, connectedRegistryName, context);
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
         String connectedRegistryName) {
@@ -954,52 +714,21 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             context);
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String connectedRegistryName) {
         return this.beginDeleteAsync(resourceGroupName, registryName, connectedRegistryName).getSyncPoller();
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String connectedRegistryName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, registryName, connectedRegistryName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String connectedRegistryName) {
         return beginDeleteAsync(resourceGroupName, registryName, connectedRegistryName).last()
@@ -1025,32 +754,13 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String connectedRegistryName) {
         deleteAsync(resourceGroupName, registryName, connectedRegistryName).block();
     }
 
-    /**
-     * Deletes a connected registry from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String connectedRegistryName, Context context) {
         deleteAsync(resourceGroupName, registryName, connectedRegistryName, context).block();
@@ -1139,37 +849,14 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName) {
         final String filter = null;
@@ -1199,55 +886,21 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName) {
         final String filter = null;
         return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter));
     }
 
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName, String filter,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter, context));
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deactivateWithResponseAsync(String resourceGroupName, String registryName,
         String connectedRegistryName) {
@@ -1315,17 +968,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, context);
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeactivateAsync(String resourceGroupName, String registryName,
         String connectedRegistryName) {
@@ -1357,35 +1000,14 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             context);
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeactivate(String resourceGroupName, String registryName,
         String connectedRegistryName) {
         return this.beginDeactivateAsync(resourceGroupName, registryName, connectedRegistryName).getSyncPoller();
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeactivate(String resourceGroupName, String registryName,
         String connectedRegistryName, Context context) {
@@ -1393,17 +1015,7 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .getSyncPoller();
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deactivateAsync(String resourceGroupName, String registryName, String connectedRegistryName) {
         return beginDeactivateAsync(resourceGroupName, registryName, connectedRegistryName).last()
@@ -1429,170 +1041,17 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deactivate(String resourceGroupName, String registryName, String connectedRegistryName) {
         deactivateAsync(resourceGroupName, registryName, connectedRegistryName).block();
     }
 
-    /**
-     * Deactivates the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deactivate(String resourceGroupName, String registryName, String connectedRegistryName,
         Context context) {
         deactivateAsync(resourceGroupName, registryName, connectedRegistryName, context).block();
-    }
-
-    /**
-     * Resync the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectedRegistryInner>> resyncWithResponseAsync(String resourceGroupName, String registryName,
-        String connectedRegistryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (connectedRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.resync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Resync the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedRegistryInner>> resyncWithResponseAsync(String resourceGroupName,
-        String registryName, String connectedRegistryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (connectedRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, connectedRegistryName, accept, context);
-    }
-
-    /**
-     * Resync the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectedRegistryInner> resyncAsync(String resourceGroupName, String registryName,
-        String connectedRegistryName) {
-        return resyncWithResponseAsync(resourceGroupName, registryName, connectedRegistryName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Resync the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectedRegistryInner> resyncWithResponse(String resourceGroupName, String registryName,
-        String connectedRegistryName, Context context) {
-        return resyncWithResponseAsync(resourceGroupName, registryName, connectedRegistryName, context).block();
-    }
-
-    /**
-     * Resync the connected registry instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param connectedRegistryName The name of the connected registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a connected registry for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedRegistryInner resync(String resourceGroupName, String registryName, String connectedRegistryName) {
-        return resyncWithResponse(resourceGroupName, registryName, connectedRegistryName, Context.NONE).getValue();
     }
 
     /**

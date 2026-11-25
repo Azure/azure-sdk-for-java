@@ -150,11 +150,7 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookmarks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Bookmark create(Context context) {
@@ -176,11 +172,7 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookmarks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Bookmark apply(Context context) {
@@ -195,17 +187,19 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.bookmarkId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookmarks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}",
+            "workspaceName");
+        this.bookmarkId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}",
+            "bookmarkId");
     }
 
     public Bookmark refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookmarks()
-            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Bookmark refresh(Context context) {

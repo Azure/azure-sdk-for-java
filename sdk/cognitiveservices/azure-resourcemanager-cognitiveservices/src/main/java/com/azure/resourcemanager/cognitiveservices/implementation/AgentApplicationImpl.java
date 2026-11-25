@@ -66,10 +66,7 @@ public final class AgentApplicationImpl
     }
 
     public AgentApplication create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentApplications()
-            .createOrUpdate(resourceGroupName, accountName, projectName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentApplication create(Context context) {
@@ -91,10 +88,7 @@ public final class AgentApplicationImpl
     }
 
     public AgentApplication apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentApplications()
-            .createOrUpdate(resourceGroupName, accountName, projectName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentApplication apply(Context context) {
@@ -108,18 +102,22 @@ public final class AgentApplicationImpl
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
+            "accountName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
+            "projectName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
+            "name");
     }
 
     public AgentApplication refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentApplications()
-            .getWithResponse(resourceGroupName, accountName, projectName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentApplication refresh(Context context) {

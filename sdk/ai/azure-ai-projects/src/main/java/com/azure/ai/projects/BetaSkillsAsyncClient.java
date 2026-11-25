@@ -56,6 +56,61 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return a {@link Mono} that completes when the skill is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkill(String name) {
+        return deleteSkillWithResponse(name, new RequestOptions()).then();
+    }
+
+    /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteSkillWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return a {@link Mono} that completes when the skill version is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkillVersion(String name, String version) {
+        return deleteSkillVersionWithResponse(name, version, new RequestOptions()).then();
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return internalDeleteSkillVersionWithResponse(name, version, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
      * Retrieve a skill
      *
      * Retrieves the specified skill and its current configuration.
@@ -273,6 +328,43 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Create a skill version from uploaded files
+     *
+     * Creates a new version of a skill from uploaded files via multipart form data.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param content The multipart request content.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
+        RequestOptions requestOptions) {
+        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.createSkillVersionFromFilesWithResponseInternalAsync(name, content, requestOptions);
+    }
+
+    /**
      * List skill versions
      *
      * Returns the available versions for the specified skill.
@@ -415,53 +507,6 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Deletes a skill.
-     *
-     * @param skillName The unique name of the skill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a {@link Mono} that completes when the skill is successfully deleted.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSkill(String skillName) {
-        // Generated convenience method for deleteSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteSkillWithResponse(skillName, requestOptions).then();
-    }
-
-    /**
-     * Deletes a skill.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     deleted: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The unique name of the skill.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
-        return internalDeleteSkillWithResponse(name, requestOptions)
-            .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    /**
      * Delete a specific version of a skill
      *
      * Removes the specified version of a skill.
@@ -551,17 +596,21 @@ public final class BetaSkillsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillsAsync(after, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -589,11 +638,18 @@ public final class BetaSkillsAsyncClient {
     public PagedFlux<SkillDetails> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillsAsync(null, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -700,8 +756,10 @@ public final class BetaSkillsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a skill on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SkillVersion> createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
+        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return createSkillVersionFromFilesWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions)
@@ -752,17 +810,21 @@ public final class BetaSkillsAsyncClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillVersionsAsync(after, name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -792,11 +854,18 @@ public final class BetaSkillsAsyncClient {
     public PagedFlux<SkillVersion> listSkillVersions(String name) {
         // Generated convenience method for listSkillVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillVersionsAsync(null, name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -874,42 +943,5 @@ public final class BetaSkillsAsyncClient {
         // Generated convenience method for getSkillVersionContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSkillVersionContentWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Create a skill version from uploaded files
-     *
-     * Creates a new version of a skill from uploaded files via multipart form data.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     skill_id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Required)
-     *     created_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skill.
-     * @param content The multipart request content.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
-        RequestOptions requestOptions) {
-        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
-        // and hence not generated.
-        return this.serviceClient.createSkillVersionFromFilesWithResponseInternalAsync(name, content, requestOptions);
     }
 }

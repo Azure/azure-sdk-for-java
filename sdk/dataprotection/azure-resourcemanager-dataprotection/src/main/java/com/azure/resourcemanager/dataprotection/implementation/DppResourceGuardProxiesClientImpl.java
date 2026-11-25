@@ -222,19 +222,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardProxyBaseResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String resourceGuardProxyName, Context context) {
@@ -243,17 +231,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             resourceGroupName, vaultName, resourceGuardProxyName, accept, context);
     }
 
-    /**
-     * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardProxyBaseResourceInner get(String resourceGroupName, String vaultName,
         String resourceGuardProxyName) {
@@ -306,20 +284,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or Updates a ResourceGuardProxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardProxyBaseResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String vaultName, String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters,
@@ -331,18 +296,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             parameters, context);
     }
 
-    /**
-     * Creates or Updates a ResourceGuardProxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardProxyBaseResourceInner createOrUpdate(String resourceGroupName, String vaultName,
         String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters) {
@@ -387,18 +341,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the ResourceGuardProxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String resourceGuardProxyName,
         Context context) {
@@ -406,16 +349,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             this.client.getSubscriptionId(), resourceGroupName, vaultName, resourceGuardProxyName, context);
     }
 
-    /**
-     * Deletes the ResourceGuardProxy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String resourceGuardProxyName) {
         deleteWithResponse(resourceGroupName, vaultName, resourceGuardProxyName, Context.NONE);
@@ -473,12 +407,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardProxyBaseResourceInner> listSinglePage(String resourceGroupName,
         String vaultName) {
-        final String accept = "application/json";
-        Response<ResourceGuardProxyBaseResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -503,33 +432,13 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns the list of ResourceGuardProxies associated with the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardProxyBaseResourceInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Returns the list of ResourceGuardProxies associated with the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardProxyBaseResourceInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -580,19 +489,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(String resourceGroupName, String vaultName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
@@ -603,18 +500,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             parameters, context);
     }
 
-    /**
-     * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param resourceGuardProxyName name of the resource guard proxy.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnlockDeleteResponseInner unlockDelete(String resourceGroupName, String vaultName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters) {
@@ -652,11 +538,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardProxyBaseResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceGuardProxyBaseResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

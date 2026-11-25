@@ -79,12 +79,7 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     }
 
     public IssueResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIssues()
-            .createWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, this.innerModel(),
-                createRelated, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IssueResource create(Context context) {
@@ -110,11 +105,7 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     }
 
     public IssueResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIssues()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IssueResource apply(Context context) {
@@ -129,17 +120,19 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
         com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.issueName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "issues");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "resourceGroupName");
+        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "azureMonitorWorkspaceName");
+        this.issueName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "issueName");
     }
 
     public IssueResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIssues()
-            .getWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IssueResource refresh(Context context) {

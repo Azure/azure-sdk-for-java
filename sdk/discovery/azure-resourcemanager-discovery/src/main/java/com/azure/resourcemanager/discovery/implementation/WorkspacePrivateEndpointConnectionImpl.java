@@ -62,11 +62,7 @@ public final class WorkspacePrivateEndpointConnectionImpl implements WorkspacePr
     }
 
     public WorkspacePrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspacePrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspacePrivateEndpointConnection create(Context context) {
@@ -89,11 +85,7 @@ public final class WorkspacePrivateEndpointConnectionImpl implements WorkspacePr
     }
 
     public WorkspacePrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspacePrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspacePrivateEndpointConnection apply(Context context) {
@@ -108,18 +100,19 @@ public final class WorkspacePrivateEndpointConnectionImpl implements WorkspacePr
         com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "workspaceName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
     }
 
     public WorkspacePrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspacePrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspacePrivateEndpointConnection refresh(Context context) {

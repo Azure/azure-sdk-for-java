@@ -46,7 +46,7 @@ public final class SecurityPoliciesInterfacesImpl implements SecurityPoliciesInt
     }
 
     public void delete(String resourceGroupName, String trafficControllerName, String securityPolicyName) {
-        this.serviceClient().delete(resourceGroupName, trafficControllerName, securityPolicyName);
+        this.delete(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String trafficControllerName, String securityPolicyName,
@@ -56,9 +56,7 @@ public final class SecurityPoliciesInterfacesImpl implements SecurityPoliciesInt
 
     public PagedIterable<SecurityPolicy> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        PagedIterable<SecurityPolicyInner> inner
-            = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecurityPolicyImpl(inner1, this.manager()));
+        return this.listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     public PagedIterable<SecurityPolicy> listByTrafficController(String resourceGroupName, String trafficControllerName,
@@ -69,79 +67,36 @@ public final class SecurityPoliciesInterfacesImpl implements SecurityPoliciesInt
     }
 
     public SecurityPolicy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
-        String securityPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "securityPolicies");
-        if (securityPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityPolicies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SecurityPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
-        String securityPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "securityPolicies");
-        if (securityPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String trafficControllerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "trafficControllerName", "trafficControllers", LOGGER);
+        String securityPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "securityPolicyName", "securityPolicies", LOGGER);
         return this.getWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
-        String securityPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "securityPolicies");
-        if (securityPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityPolicies'.", id)));
-        }
-        this.delete(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
-        if (trafficControllerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
-        }
-        String securityPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "securityPolicies");
-        if (securityPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String trafficControllerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "trafficControllerName", "trafficControllers", LOGGER);
+        String securityPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}",
+            "securityPolicyName", "securityPolicies", LOGGER);
         this.delete(resourceGroupName, trafficControllerName, securityPolicyName, context);
     }
 

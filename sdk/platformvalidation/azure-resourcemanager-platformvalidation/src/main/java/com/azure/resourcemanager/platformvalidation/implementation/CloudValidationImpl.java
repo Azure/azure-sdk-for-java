@@ -85,10 +85,7 @@ public final class CloudValidationImpl implements CloudValidation, CloudValidati
     }
 
     public CloudValidation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudValidations()
-            .createOrUpdate(resourceGroupName, cloudValidationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudValidation create(Context context) {
@@ -111,10 +108,7 @@ public final class CloudValidationImpl implements CloudValidation, CloudValidati
     }
 
     public CloudValidation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudValidations()
-            .update(resourceGroupName, cloudValidationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudValidation apply(Context context) {
@@ -128,16 +122,16 @@ public final class CloudValidationImpl implements CloudValidation, CloudValidati
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudValidations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}",
+            "resourceGroupName");
+        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}",
+            "cloudValidationName");
     }
 
     public CloudValidation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudValidations()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudValidationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudValidation refresh(Context context) {

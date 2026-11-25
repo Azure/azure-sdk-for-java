@@ -171,11 +171,7 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
     }
 
     public MetadataModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetadatas()
-            .createWithResponse(resourceGroupName, workspaceName, metadataName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MetadataModel create(Context context) {
@@ -198,11 +194,7 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
     }
 
     public MetadataModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetadatas()
-            .updateWithResponse(resourceGroupName, workspaceName, metadataName, updateMetadataPatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MetadataModel apply(Context context) {
@@ -217,17 +209,19 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.metadataName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metadata");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}",
+            "workspaceName");
+        this.metadataName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}",
+            "metadataName");
     }
 
     public MetadataModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetadatas()
-            .getWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MetadataModel refresh(Context context) {

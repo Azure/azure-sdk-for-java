@@ -27,10 +27,8 @@ public final class UpdatesImpl implements Updates {
 
     public PagedIterable<Update> listParent(String resourceGroupName, String providerName, String resourceParentType,
         String resourceParentName, String resourceType, String resourceName) {
-        PagedIterable<UpdateInner> inner = this.serviceClient()
-            .listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
-                resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
+        return this.listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+            resourceName, Context.NONE);
     }
 
     public PagedIterable<Update> listParent(String resourceGroupName, String providerName, String resourceParentType,
@@ -43,9 +41,7 @@ public final class UpdatesImpl implements Updates {
 
     public PagedIterable<Update> list(String resourceGroupName, String providerName, String resourceType,
         String resourceName) {
-        PagedIterable<UpdateInner> inner
-            = this.serviceClient().list(resourceGroupName, providerName, resourceType, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, providerName, resourceType, resourceName, Context.NONE);
     }
 
     public PagedIterable<Update> list(String resourceGroupName, String providerName, String resourceType,

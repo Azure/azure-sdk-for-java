@@ -97,10 +97,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     }
 
     public HealthBot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBots()
-            .create(resourceGroupName, botName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HealthBot create(Context context) {
@@ -121,10 +118,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     }
 
     public HealthBot apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBots()
-            .update(resourceGroupName, botName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HealthBot apply(Context context) {
@@ -136,16 +130,16 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
     HealthBotImpl(HealthBotInner innerObject, com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.botName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthBots");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}",
+            "resourceGroupName");
+        this.botName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{botName}",
+            "botName");
     }
 
     public HealthBot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBots()
-            .getByResourceGroupWithResponse(resourceGroupName, botName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HealthBot refresh(Context context) {

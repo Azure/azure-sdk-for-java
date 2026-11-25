@@ -65,11 +65,7 @@ public final class AzureDevOpsProjectImpl
     }
 
     public AzureDevOpsProject create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsProjects()
-            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, projectName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureDevOpsProject create(Context context) {
@@ -90,10 +86,7 @@ public final class AzureDevOpsProjectImpl
     }
 
     public AzureDevOpsProject apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsProjects()
-            .update(resourceGroupName, securityConnectorName, orgName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureDevOpsProject apply(Context context) {
@@ -107,18 +100,22 @@ public final class AzureDevOpsProjectImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.securityConnectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "securityConnectors");
-        this.orgName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "azureDevOpsOrgs");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}",
+            "resourceGroupName");
+        this.securityConnectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}",
+            "securityConnectorName");
+        this.orgName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}",
+            "orgName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}",
+            "projectName");
     }
 
     public AzureDevOpsProject refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsProjects()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureDevOpsProject refresh(Context context) {

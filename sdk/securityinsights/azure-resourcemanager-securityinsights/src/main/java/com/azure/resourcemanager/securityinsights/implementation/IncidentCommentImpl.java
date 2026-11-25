@@ -80,12 +80,7 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
     }
 
     public IncidentComment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentComments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentCommentId,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IncidentComment create(Context context) {
@@ -109,12 +104,7 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
     }
 
     public IncidentComment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentComments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentCommentId,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IncidentComment apply(Context context) {
@@ -130,18 +120,22 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.incidentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "incidents");
-        this.incidentCommentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "comments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/comments/{incidentCommentId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/comments/{incidentCommentId}",
+            "workspaceName");
+        this.incidentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/comments/{incidentCommentId}",
+            "incidentId");
+        this.incidentCommentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/comments/{incidentCommentId}",
+            "incidentCommentId");
     }
 
     public IncidentComment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentComments()
-            .getWithResponse(resourceGroupName, workspaceName, incidentId, incidentCommentId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IncidentComment refresh(Context context) {

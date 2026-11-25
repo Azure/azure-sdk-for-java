@@ -78,11 +78,7 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetUpdateStrategies()
-            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FleetUpdateStrategy create(Context context) {
@@ -109,11 +105,7 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetUpdateStrategies()
-            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FleetUpdateStrategy apply(Context context) {
@@ -128,17 +120,19 @@ public final class FleetUpdateStrategyImpl
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.updateStrategyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updateStrategies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "fleetName");
+        this.updateStrategyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}",
+            "updateStrategyName");
     }
 
     public FleetUpdateStrategy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetUpdateStrategies()
-            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FleetUpdateStrategy refresh(Context context) {

@@ -35,8 +35,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public PagedIterable<AutonomousDatabase> list() {
-        PagedIterable<AutonomousDatabaseInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutonomousDatabaseImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AutonomousDatabase> list(Context context) {
@@ -63,7 +62,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String autonomousdatabasename) {
-        this.serviceClient().delete(resourceGroupName, autonomousdatabasename);
+        this.delete(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String autonomousdatabasename, Context context) {
@@ -71,8 +70,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public PagedIterable<AutonomousDatabase> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<AutonomousDatabaseInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutonomousDatabaseImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<AutonomousDatabase> listByResourceGroup(String resourceGroupName, Context context) {
@@ -82,13 +80,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public AutonomousDatabase switchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body) {
-        AutonomousDatabaseInner inner
-            = this.serviceClient().switchover(resourceGroupName, autonomousdatabasename, body);
-        if (inner != null) {
-            return new AutonomousDatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.switchover(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     public AutonomousDatabase switchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
@@ -103,12 +95,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public AutonomousDatabase failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body) {
-        AutonomousDatabaseInner inner = this.serviceClient().failover(resourceGroupName, autonomousdatabasename, body);
-        if (inner != null) {
-            return new AutonomousDatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failover(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     public AutonomousDatabase failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
@@ -143,12 +130,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
 
     public AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body) {
-        AutonomousDatabaseInner inner = this.serviceClient().restore(resourceGroupName, autonomousdatabasename, body);
-        if (inner != null) {
-            return new AutonomousDatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.restore(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     public AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
@@ -163,12 +145,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename) {
-        AutonomousDatabaseInner inner = this.serviceClient().shrink(resourceGroupName, autonomousdatabasename);
-        if (inner != null) {
-            return new AutonomousDatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.shrink(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     public AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename, Context context) {
@@ -182,13 +159,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
 
     public AutonomousDatabase changeDisasterRecoveryConfiguration(String resourceGroupName,
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body) {
-        AutonomousDatabaseInner inner
-            = this.serviceClient().changeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body);
-        if (inner != null) {
-            return new AutonomousDatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.changeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     public AutonomousDatabase changeDisasterRecoveryConfiguration(String resourceGroupName,
@@ -204,12 +175,7 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
 
     public AutonomousDatabase action(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseLifecycleAction body) {
-        AutonomousDatabaseInner inner = this.serviceClient().action(resourceGroupName, autonomousdatabasename, body);
-        if (inner != null) {
-            return new AutonomousDatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.action(resourceGroupName, autonomousdatabasename, body, Context.NONE);
     }
 
     public AutonomousDatabase action(String resourceGroupName, String autonomousdatabasename,
@@ -224,58 +190,30 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public AutonomousDatabase getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AutonomousDatabase> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String autonomousdatabasename = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename", "autonomousDatabases", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
-        this.delete(resourceGroupName, autonomousdatabasename, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String autonomousdatabasename = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename", "autonomousDatabases", LOGGER);
         this.delete(resourceGroupName, autonomousdatabasename, context);
     }
 

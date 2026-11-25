@@ -36,7 +36,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.EdgeActionVersionsClient;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.implementation.models.EdgeActionVersionListResult;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdate;
@@ -285,18 +284,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeActionVersion along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeActionVersionInner> getWithResponse(String resourceGroupName, String edgeActionName,
         String version, Context context) {
@@ -305,17 +293,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             resourceGroupName, edgeActionName, version, accept, context);
     }
 
-    /**
-     * Get a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeActionVersion.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner get(String resourceGroupName, String edgeActionName, String version) {
         return getWithResponse(resourceGroupName, edgeActionName, version, Context.NONE).getValue();
@@ -362,11 +340,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String edgeActionName, String version,
         EdgeActionVersionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, edgeActionName, version, resource, Context.NONE);
     }
 
     /**
@@ -416,41 +390,14 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             this.client.getContext());
     }
 
-    /**
-     * Create a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginCreate(String resourceGroupName,
         String edgeActionName, String version, EdgeActionVersionInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, edgeActionName, version, resource);
-        return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(response,
-            EdgeActionVersionInner.class, EdgeActionVersionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, edgeActionName, version, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginCreate(String resourceGroupName,
         String edgeActionName, String version, EdgeActionVersionInner resource, Context context) {
@@ -480,41 +427,19 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner create(String resourceGroupName, String edgeActionName, String version,
         EdgeActionVersionInner resource) {
-        return beginCreate(resourceGroupName, edgeActionName, version, resource).getFinalResult();
+        return create(resourceGroupName, edgeActionName, version, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner create(String resourceGroupName, String edgeActionName, String version,
         EdgeActionVersionInner resource, Context context) {
-        return beginCreate(resourceGroupName, edgeActionName, version, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, edgeActionName, version, resource, context));
     }
 
     /**
@@ -564,11 +489,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName, String version,
         EdgeActionVersionUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, edgeActionName, version, properties, Context.NONE);
     }
 
     /**
@@ -624,47 +545,14 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             this.client.getContext());
     }
 
-    /**
-     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
-     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
-     * default version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdate(String resourceGroupName,
         String edgeActionName, String version, EdgeActionVersionUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, edgeActionName, version, properties);
-        return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(response,
-            EdgeActionVersionInner.class, EdgeActionVersionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, edgeActionName, version, properties, Context.NONE);
     }
 
-    /**
-     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
-     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
-     * default version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdate(String resourceGroupName,
         String edgeActionName, String version, EdgeActionVersionUpdate properties, Context context) {
@@ -697,47 +585,19 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
-     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
-     * default version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner update(String resourceGroupName, String edgeActionName, String version,
         EdgeActionVersionUpdate properties) {
-        return beginUpdate(resourceGroupName, edgeActionName, version, properties).getFinalResult();
+        return update(resourceGroupName, edgeActionName, version, properties, Context.NONE);
     }
 
-    /**
-     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
-     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
-     * default version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner update(String resourceGroupName, String edgeActionName, String version,
         EdgeActionVersionUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, edgeActionName, version, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, edgeActionName, version, properties, context));
     }
 
     /**
@@ -773,8 +633,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeActionName, String version) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
     /**
@@ -815,36 +674,14 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeActionName,
         String version) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeActionName, version);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeActionName,
         String version, Context context) {
@@ -869,35 +706,16 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeActionName, String version) {
-        beginDelete(resourceGroupName, edgeActionName, version).getFinalResult();
+        delete(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeActionVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeActionName, String version, Context context) {
-        beginDelete(resourceGroupName, edgeActionName, version, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, edgeActionName, version, context));
     }
 
     /**
@@ -952,12 +770,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionVersionInner> listByEdgeActionSinglePage(String resourceGroupName,
         String edgeActionName) {
-        final String accept = "application/json";
-        Response<EdgeActionVersionListResult> res
-            = service.listByEdgeActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, edgeActionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeActionSinglePage(resourceGroupName, edgeActionName, Context.NONE);
     }
 
     /**
@@ -982,33 +795,13 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EdgeActionVersion resources by EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeActionVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionVersionInner> listByEdgeAction(String resourceGroupName, String edgeActionName) {
-        return new PagedIterable<>(() -> listByEdgeActionSinglePage(resourceGroupName, edgeActionName),
-            nextLink -> listByEdgeActionNextSinglePage(nextLink));
+        return listByEdgeAction(resourceGroupName, edgeActionName, Context.NONE);
     }
 
-    /**
-     * List EdgeActionVersion resources by EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeActionVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionVersionInner> listByEdgeAction(String resourceGroupName, String edgeActionName,
         Context context) {
@@ -1026,7 +819,8 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version along with {@link Response} on successful completion of {@link Mono}.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deployVersionCodeWithResponseAsync(String resourceGroupName,
@@ -1050,16 +844,13 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version along with {@link Response}.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deployVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
         String version, VersionCodeInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.deployVersionCodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept, body,
-            Context.NONE);
+        return deployVersionCodeWithResponse(resourceGroupName, edgeActionName, version, body, Context.NONE);
     }
 
     /**
@@ -1073,7 +864,8 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version along with {@link Response}.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deployVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
@@ -1095,60 +887,34 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents an edge action version.
+     * @return the {@link PollerFlux} for polling of concrete tracked resource types can be created by aliasing this
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
-        beginDeployVersionCodeAsync(String resourceGroupName, String edgeActionName, String version,
-            VersionCodeInner body) {
+    private PollerFlux<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginDeployVersionCodeAsync(
+        String resourceGroupName, String edgeActionName, String version, VersionCodeInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = deployVersionCodeWithResponseAsync(resourceGroupName, edgeActionName, version, body);
-        return this.client.<EdgeActionVersionPropertiesInner, EdgeActionVersionPropertiesInner>getLroResult(mono,
-            this.client.getHttpPipeline(), EdgeActionVersionPropertiesInner.class,
-            EdgeActionVersionPropertiesInner.class, this.client.getContext());
+        return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EdgeActionVersionInner.class, EdgeActionVersionInner.class,
+            this.client.getContext());
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
+    public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner>
         beginDeployVersionCode(String resourceGroupName, String edgeActionName, String version, VersionCodeInner body) {
-        Response<BinaryData> response = deployVersionCodeWithResponse(resourceGroupName, edgeActionName, version, body);
-        return this.client.<EdgeActionVersionPropertiesInner, EdgeActionVersionPropertiesInner>getLroResult(response,
-            EdgeActionVersionPropertiesInner.class, EdgeActionVersionPropertiesInner.class, Context.NONE);
+        return beginDeployVersionCode(resourceGroupName, edgeActionName, version, body, Context.NONE);
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
-        beginDeployVersionCode(String resourceGroupName, String edgeActionName, String version, VersionCodeInner body,
-            Context context) {
+    public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginDeployVersionCode(
+        String resourceGroupName, String edgeActionName, String version, VersionCodeInner body, Context context) {
         Response<BinaryData> response
             = deployVersionCodeWithResponse(resourceGroupName, edgeActionName, version, body, context);
-        return this.client.<EdgeActionVersionPropertiesInner, EdgeActionVersionPropertiesInner>getLroResult(response,
-            EdgeActionVersionPropertiesInner.class, EdgeActionVersionPropertiesInner.class, context);
+        return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(response,
+            EdgeActionVersionInner.class, EdgeActionVersionInner.class, context);
     }
 
     /**
@@ -1161,50 +927,29 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version on successful completion of {@link Mono}.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EdgeActionVersionPropertiesInner> deployVersionCodeAsync(String resourceGroupName,
-        String edgeActionName, String version, VersionCodeInner body) {
+    private Mono<EdgeActionVersionInner> deployVersionCodeAsync(String resourceGroupName, String edgeActionName,
+        String version, VersionCodeInner body) {
         return beginDeployVersionCodeAsync(resourceGroupName, edgeActionName, version, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body) {
-        return beginDeployVersionCode(resourceGroupName, edgeActionName, version, body).getFinalResult();
+    public EdgeActionVersionInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body) {
+        return deployVersionCode(resourceGroupName, edgeActionName, version, body, Context.NONE);
     }
 
-    /**
-     * A long-running resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body, Context context) {
-        return beginDeployVersionCode(resourceGroupName, edgeActionName, version, body, context).getFinalResult();
+    public EdgeActionVersionInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body, Context context) {
+        return this.client.getLroFinalResultOrError(
+            beginDeployVersionCode(resourceGroupName, edgeActionName, version, body, context));
     }
 
     /**
@@ -1245,11 +990,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
         String version) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.getVersionCodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept,
-            Context.NONE);
+        return getVersionCodeWithResponse(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
     /**
@@ -1293,37 +1034,14 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             VersionCodeInner.class, VersionCodeInner.class, this.client.getContext());
     }
 
-    /**
-     * Get the version code for the edge action version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the version code for the edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VersionCodeInner>, VersionCodeInner> beginGetVersionCode(String resourceGroupName,
         String edgeActionName, String version) {
-        Response<BinaryData> response = getVersionCodeWithResponse(resourceGroupName, edgeActionName, version);
-        return this.client.<VersionCodeInner, VersionCodeInner>getLroResult(response, VersionCodeInner.class,
-            VersionCodeInner.class, Context.NONE);
+        return beginGetVersionCode(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
-    /**
-     * Get the version code for the edge action version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the version code for the edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VersionCodeInner>, VersionCodeInner> beginGetVersionCode(String resourceGroupName,
         String edgeActionName, String version, Context context) {
@@ -1350,38 +1068,18 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get the version code for the edge action version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the version code for the edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VersionCodeInner getVersionCode(String resourceGroupName, String edgeActionName, String version) {
-        return beginGetVersionCode(resourceGroupName, edgeActionName, version).getFinalResult();
+        return getVersionCode(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
-    /**
-     * Get the version code for the edge action version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the version code for the edge action version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VersionCodeInner getVersionCode(String resourceGroupName, String edgeActionName, String version,
         Context context) {
-        return beginGetVersionCode(resourceGroupName, edgeActionName, version, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginGetVersionCode(resourceGroupName, edgeActionName, version, context));
     }
 
     /**
@@ -1419,9 +1117,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> swapDefaultWithResponse(String resourceGroupName, String edgeActionName,
         String version) {
-        final String contentType = "application/json";
-        return service.swapDefaultSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, Context.NONE);
+        return swapDefaultWithResponse(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
     /**
@@ -1464,36 +1160,14 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             this.client.getContext());
     }
 
-    /**
-     * Swap the default version for the edge action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSwapDefault(String resourceGroupName, String edgeActionName,
         String version) {
-        Response<BinaryData> response = swapDefaultWithResponse(resourceGroupName, edgeActionName, version);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSwapDefault(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
-    /**
-     * Swap the default version for the edge action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSwapDefault(String resourceGroupName, String edgeActionName,
         String version, Context context) {
@@ -1518,35 +1192,16 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Swap the default version for the edge action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void swapDefault(String resourceGroupName, String edgeActionName, String version) {
-        beginSwapDefault(resourceGroupName, edgeActionName, version).getFinalResult();
+        swapDefault(resourceGroupName, edgeActionName, version, Context.NONE);
     }
 
-    /**
-     * Swap the default version for the edge action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param version The name of the Edge Action version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void swapDefault(String resourceGroupName, String edgeActionName, String version, Context context) {
-        beginSwapDefault(resourceGroupName, edgeActionName, version, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginSwapDefault(resourceGroupName, edgeActionName, version, context));
     }
 
     /**
@@ -1580,11 +1235,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionVersionInner> listByEdgeActionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeActionVersionListResult> res
-            = service.listByEdgeActionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeActionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

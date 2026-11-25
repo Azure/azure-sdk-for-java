@@ -164,11 +164,7 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterManagers()
-            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClusterManager create(Context context) {
@@ -195,12 +191,7 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterManagers()
-            .updateWithResponse(resourceGroupName, clusterManagerName, updateIfMatch, updateIfNoneMatch,
-                updateClusterManagerUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClusterManager apply(Context context) {
@@ -216,16 +207,16 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusterManagers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}",
+            "resourceGroupName");
+        this.clusterManagerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}",
+            "clusterManagerName");
     }
 
     public ClusterManager refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterManagers()
-            .getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClusterManager refresh(Context context) {

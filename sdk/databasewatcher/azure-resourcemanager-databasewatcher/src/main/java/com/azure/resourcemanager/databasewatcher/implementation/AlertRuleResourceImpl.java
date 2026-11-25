@@ -61,12 +61,7 @@ public final class AlertRuleResourceImpl
     }
 
     public AlertRuleResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAlertRuleResources()
-            .createOrUpdateWithResponse(resourceGroupName, watcherName, alertRuleResourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AlertRuleResource create(Context context) {
@@ -90,12 +85,7 @@ public final class AlertRuleResourceImpl
     }
 
     public AlertRuleResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAlertRuleResources()
-            .createOrUpdateWithResponse(resourceGroupName, watcherName, alertRuleResourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AlertRuleResource apply(Context context) {
@@ -111,17 +101,19 @@ public final class AlertRuleResourceImpl
         com.azure.resourcemanager.databasewatcher.DatabaseWatcherManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.watcherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchers");
-        this.alertRuleResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "alertRuleResources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources/{alertRuleResourceName}",
+            "resourceGroupName");
+        this.watcherName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources/{alertRuleResourceName}",
+            "watcherName");
+        this.alertRuleResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources/{alertRuleResourceName}",
+            "alertRuleResourceName");
     }
 
     public AlertRuleResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAlertRuleResources()
-            .getWithResponse(resourceGroupName, watcherName, alertRuleResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AlertRuleResource refresh(Context context) {

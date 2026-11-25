@@ -106,11 +106,7 @@ public final class PolicySetDefinitionImpl
     private String policySetDefinitionName;
 
     public PolicySetDefinition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitions()
-            .createOrUpdateWithResponse(policySetDefinitionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicySetDefinition create(Context context) {
@@ -132,11 +128,7 @@ public final class PolicySetDefinitionImpl
     }
 
     public PolicySetDefinition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitions()
-            .createOrUpdateWithResponse(policySetDefinitionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PolicySetDefinition apply(Context context) {
@@ -151,17 +143,23 @@ public final class PolicySetDefinitionImpl
         com.azure.resourcemanager.resources.policy.PolicyManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.policySetDefinitionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policySetDefinitions");
+        this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}",
+            "policySetDefinitionName");
+        if (this.policySetDefinitionName == null) {
+            this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}",
+                "policySetDefinitionName");
+        }
+        if (this.policySetDefinitionName == null) {
+            this.policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}",
+                "policySetDefinitionName");
+        }
     }
 
     public PolicySetDefinition refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitions()
-            .getWithResponse(policySetDefinitionName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicySetDefinition refresh(Context context) {

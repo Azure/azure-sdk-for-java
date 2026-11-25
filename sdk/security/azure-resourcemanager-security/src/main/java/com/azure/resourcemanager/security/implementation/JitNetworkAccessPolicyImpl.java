@@ -103,12 +103,7 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJitNetworkAccessPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public JitNetworkAccessPolicy create(Context context) {
@@ -131,12 +126,7 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJitNetworkAccessPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public JitNetworkAccessPolicy apply(Context context) {
@@ -152,18 +142,19 @@ public final class JitNetworkAccessPolicyImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ascLocation = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.jitNetworkAccessPolicyName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jitNetworkAccessPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}",
+            "resourceGroupName");
+        this.ascLocation = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}",
+            "ascLocation");
+        this.jitNetworkAccessPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}",
+            "jitNetworkAccessPolicyName");
     }
 
     public JitNetworkAccessPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJitNetworkAccessPolicies()
-            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public JitNetworkAccessPolicy refresh(Context context) {

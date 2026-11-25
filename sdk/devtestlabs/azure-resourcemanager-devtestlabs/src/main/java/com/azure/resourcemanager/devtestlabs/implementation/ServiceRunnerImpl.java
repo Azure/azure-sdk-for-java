@@ -84,11 +84,7 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceRunners()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceRunner create(Context context) {
@@ -110,11 +106,7 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceRunners()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceRunner apply(Context context) {
@@ -129,17 +121,19 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servicerunners");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/servicerunners/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/servicerunners/{name}",
+            "labName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/servicerunners/{name}",
+            "name");
     }
 
     public ServiceRunner refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceRunners()
-            .getWithResponse(resourceGroupName, labName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceRunner refresh(Context context) {

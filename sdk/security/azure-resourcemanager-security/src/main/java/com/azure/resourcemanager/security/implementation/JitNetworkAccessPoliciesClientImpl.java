@@ -282,38 +282,14 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JitNetworkAccessPolicyInner> getWithResponse(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context).block();
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JitNetworkAccessPolicyInner get(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName) {
@@ -442,21 +418,7 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a policy for protecting resources using Just-in-Time access control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JitNetworkAccessPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
         String ascLocation, String jitNetworkAccessPolicyName, JitNetworkAccessPolicyInner body, Context context) {
@@ -464,19 +426,7 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             context).block();
     }
 
-    /**
-     * Create a policy for protecting resources using Just-in-Time access control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JitNetworkAccessPolicyInner createOrUpdate(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, JitNetworkAccessPolicyInner body) {
@@ -584,36 +534,14 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Just-in-Time access control policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context).block();
     }
 
-    /**
-     * Delete a Just-in-Time access control policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
         deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE);
@@ -736,35 +664,14 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             nextLink -> listByResourceGroupAndRegionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> listByResourceGroupAndRegion(String resourceGroupName,
         String ascLocation) {
         return new PagedIterable<>(listByResourceGroupAndRegionAsync(resourceGroupName, ascLocation));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> listByResourceGroupAndRegion(String resourceGroupName,
         String ascLocation, Context context) {
@@ -872,32 +779,13 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             nextLink -> listByRegionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> listByRegion(String ascLocation) {
         return new PagedIterable<>(listByRegionAsync(ascLocation));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> listByRegion(String ascLocation, Context context) {
         return new PagedIterable<>(listByRegionAsync(ascLocation, context));
@@ -1026,20 +914,7 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Initiate a JIT access from a specific Just-in-Time policy configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JitNetworkAccessRequestInner> initiateWithResponse(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, JitNetworkAccessPolicyInitiateRequest body, Context context) {
@@ -1047,19 +922,7 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             .block();
     }
 
-    /**
-     * Initiate a JIT access from a specific Just-in-Time policy configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JitNetworkAccessRequestInner initiate(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, JitNetworkAccessPolicyInitiateRequest body) {
@@ -1148,27 +1011,13 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
@@ -1274,30 +1123,13 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JitNetworkAccessPolicyInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));

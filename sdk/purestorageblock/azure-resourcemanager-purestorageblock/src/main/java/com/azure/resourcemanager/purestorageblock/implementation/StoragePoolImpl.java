@@ -99,10 +99,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .create(resourceGroupName, storagePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StoragePool create(Context context) {
@@ -124,10 +121,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .update(resourceGroupName, storagePoolName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StoragePool apply(Context context) {
@@ -141,16 +135,16 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
         com.azure.resourcemanager.purestorageblock.PureStorageBlockManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storagePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storagePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "resourceGroupName");
+        this.storagePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}",
+            "storagePoolName");
     }
 
     public StoragePool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .getByResourceGroupWithResponse(resourceGroupName, storagePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StoragePool refresh(Context context) {

@@ -199,34 +199,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptCmdletInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String scriptPackageName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptPackageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptPackageName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ScriptCmdletsList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, privateCloudName, scriptPackageName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, scriptPackageName, Context.NONE);
     }
 
     /**
@@ -273,36 +246,14 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ScriptCmdlet resources by ScriptPackage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptCmdlet list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptCmdletInner> list(String resourceGroupName, String privateCloudName,
         String scriptPackageName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName, scriptPackageName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, scriptPackageName, Context.NONE);
     }
 
-    /**
-     * List ScriptCmdlet resources by ScriptPackage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptCmdlet list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptCmdletInner> list(String resourceGroupName, String privateCloudName,
         String scriptPackageName, Context context) {
@@ -377,19 +328,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ScriptCmdlet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
-     * @param scriptCmdletName Name of the script cmdlet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptCmdlet along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptCmdletInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String scriptPackageName, String scriptCmdletName, Context context) {
@@ -424,18 +363,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
             resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName, accept, context);
     }
 
-    /**
-     * Get a ScriptCmdlet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
-     * @param scriptCmdletName Name of the script cmdlet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptCmdlet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptCmdletInner get(String resourceGroupName, String privateCloudName, String scriptPackageName,
         String scriptCmdletName) {
@@ -480,20 +408,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptCmdletInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ScriptCmdletsList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

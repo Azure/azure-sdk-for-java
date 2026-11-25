@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class EntitiesGetSignalHistorySamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/Entities_GetSignalHistory.json
+     * x-ms-original-file: 2026-11-01/Entities_GetSignalHistory.json
      */
     /**
      * Sample code: Entities_GetSignalHistory.

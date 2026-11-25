@@ -31,6 +31,13 @@ public final class SecurityAssessmentMetadataResponseImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.assessmentMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}",
+            "assessmentMetadataName");
+        if (this.assessmentMetadataName == null) {
+            this.assessmentMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}", "assessmentMetadataName");
+        }
     }
 
     public String id() {
@@ -144,11 +151,7 @@ public final class SecurityAssessmentMetadataResponseImpl
     private String assessmentMetadataName;
 
     public SecurityAssessmentMetadataResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessmentsMetadatas()
-            .createInSubscriptionWithResponse(assessmentMetadataName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityAssessmentMetadataResponse create(Context context) {
@@ -167,11 +170,7 @@ public final class SecurityAssessmentMetadataResponseImpl
     }
 
     public SecurityAssessmentMetadataResponse refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessmentsMetadatas()
-            .getInSubscriptionWithResponse(assessmentMetadataName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityAssessmentMetadataResponse refresh(Context context) {

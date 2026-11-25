@@ -195,17 +195,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
         return getWithResponseAsync(location, featureName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of a compute limit feature.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a compute limit feature along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureInner> getWithResponse(String location, String featureName, Context context) {
         final String accept = "application/json";
@@ -213,16 +203,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
             location, featureName, accept, context);
     }
 
-    /**
-     * Gets the properties of a compute limit feature.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a compute limit feature.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeatureInner get(String location, String featureName) {
         return getWithResponse(location, featureName, Context.NONE).getValue();
@@ -275,11 +256,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FeatureInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<FeatureListResult> res = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -301,31 +278,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all compute limit features for the subscription at the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Feature list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * Lists all compute limit features for the subscription at the specified location.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Feature list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureInner> listBySubscriptionLocationResource(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location, context),
@@ -367,9 +326,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableWithResponse(String location, String featureName, FeatureEnableRequest body) {
-        final String accept = "application/json";
-        return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, featureName, accept, body, Context.NONE);
+        return enableWithResponse(location, featureName, body, Context.NONE);
     }
 
     /**
@@ -444,44 +401,20 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
         String featureName, FeatureEnableRequest body) {
-        Response<BinaryData> response = enableWithResponse(location, featureName, body);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
-            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+        return beginEnable(location, featureName, body, Context.NONE);
     }
 
-    /**
-     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
         String featureName) {
         final FeatureEnableRequest body = null;
-        Response<BinaryData> response = enableWithResponse(location, featureName, body);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
-            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+        return beginEnable(location, featureName, body, Context.NONE);
     }
 
-    /**
-     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
         String featureName, FeatureEnableRequest body, Context context) {
@@ -523,38 +456,18 @@ public final class FeaturesClientImpl implements FeaturesClient {
         return beginEnableAsync(location, featureName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner enable(String location, String featureName) {
         final FeatureEnableRequest body = null;
-        return beginEnable(location, featureName, body).getFinalResult();
+        return enable(location, featureName, body, Context.NONE);
     }
 
-    /**
-     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner enable(String location, String featureName, FeatureEnableRequest body,
         Context context) {
-        return beginEnable(location, featureName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginEnable(location, featureName, body, context));
     }
 
     /**
@@ -589,9 +502,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableWithResponse(String location, String featureName) {
-        final String accept = "application/json";
-        return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, featureName, accept, Context.NONE);
+        return disableWithResponse(location, featureName, Context.NONE);
     }
 
     /**
@@ -631,35 +542,14 @@ public final class FeaturesClientImpl implements FeaturesClient {
             this.client.getContext());
     }
 
-    /**
-     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDisable(String location,
         String featureName) {
-        Response<BinaryData> response = disableWithResponse(location, featureName);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
-            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+        return beginDisable(location, featureName, Context.NONE);
     }
 
-    /**
-     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDisable(String location,
         String featureName, Context context) {
@@ -683,35 +573,16 @@ public final class FeaturesClientImpl implements FeaturesClient {
         return beginDisableAsync(location, featureName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner disable(String location, String featureName) {
-        return beginDisable(location, featureName).getFinalResult();
+        return disable(location, featureName, Context.NONE);
     }
 
-    /**
-     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
-     * 
-     * @param location The name of the Azure region.
-     * @param featureName The name of the Feature.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner disable(String location, String featureName, Context context) {
-        return beginDisable(location, featureName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginDisable(location, featureName, context));
     }
 
     /**
@@ -746,11 +617,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FeatureInner> listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FeatureListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

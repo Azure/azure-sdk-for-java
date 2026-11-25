@@ -29,19 +29,6 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     private final MagnitudeScoringParameters parameters;
 
     /**
-     * Creates an instance of MagnitudeScoringFunction class.
-     *
-     * @param fieldName the fieldName value to set.
-     * @param boost the boost value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    public MagnitudeScoringFunction(String fieldName, double boost, MagnitudeScoringParameters parameters) {
-        super(fieldName, boost);
-        this.parameters = parameters;
-    }
-
-    /**
      * Get the type property: Type of ScoringFunction.
      *
      * @return the type value.
@@ -79,9 +66,9 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fieldName", getFieldName());
-        jsonWriter.writeDoubleField("boost", getBoost());
         jsonWriter.writeStringField("interpolation", getInterpolation() == null ? null : getInterpolation().toString());
+        jsonWriter.writeDoubleField("boost", this.boost);
+        jsonWriter.writeStringField("fieldName", this.fieldName);
         jsonWriter.writeJsonField("magnitude", this.parameters);
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
@@ -99,20 +86,20 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     @Generated
     public static MagnitudeScoringFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String fieldName = null;
-            double boost = 0.0;
             ScoringFunctionInterpolation interpolation = null;
+            double boost = 0.0;
+            String fieldName = null;
             MagnitudeScoringParameters parameters = null;
             String type = "magnitude";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String jsonFieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("fieldName".equals(jsonFieldName)) {
-                    fieldName = reader.getString();
+                if ("interpolation".equals(jsonFieldName)) {
+                    interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
                 } else if ("boost".equals(jsonFieldName)) {
                     boost = reader.getDouble();
-                } else if ("interpolation".equals(jsonFieldName)) {
-                    interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
+                } else if ("fieldName".equals(jsonFieldName)) {
+                    fieldName = reader.getString();
                 } else if ("magnitude".equals(jsonFieldName)) {
                     parameters = MagnitudeScoringParameters.fromJson(reader);
                 } else if ("type".equals(jsonFieldName)) {
@@ -122,10 +109,67 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
                 }
             }
             MagnitudeScoringFunction deserializedMagnitudeScoringFunction
-                = new MagnitudeScoringFunction(fieldName, boost, parameters);
+                = new MagnitudeScoringFunction(boost, fieldName, parameters);
             deserializedMagnitudeScoringFunction.setInterpolation(interpolation);
             deserializedMagnitudeScoringFunction.type = type;
             return deserializedMagnitudeScoringFunction;
         });
+    }
+
+    /*
+     * A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     */
+    @Generated
+    private final double boost;
+
+    /*
+     * The name of the field used as input to the scoring function.
+     */
+    @Generated
+    private final String fieldName;
+
+    /**
+     * Creates an instance of MagnitudeScoringFunction class.
+     *
+     * @param boost the boost value to set.
+     * @param fieldName the fieldName value to set.
+     * @param parameters the parameters value to set.
+     */
+    @Generated
+    public MagnitudeScoringFunction(double boost, String fieldName, MagnitudeScoringParameters parameters) {
+        this.boost = boost;
+        this.fieldName = fieldName;
+        this.parameters = parameters;
+    }
+
+    /**
+     * Get the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     *
+     * @return the boost value.
+     */
+    @Generated
+    public double getBoost() {
+        return this.boost;
+    }
+
+    /**
+     * Get the fieldName property: The name of the field used as input to the scoring function.
+     *
+     * @return the fieldName value.
+     */
+    @Generated
+    public String getFieldName() {
+        return this.fieldName;
+    }
+
+    /**
+     * Creates a field-based scoring function.
+     *
+     * @param fieldName the field used as input.
+     * @param boost the score multiplier.
+     * @param parameters the scoring parameters.
+     */
+    public MagnitudeScoringFunction(String fieldName, double boost, MagnitudeScoringParameters parameters) {
+        this(boost, fieldName, parameters);
     }
 }

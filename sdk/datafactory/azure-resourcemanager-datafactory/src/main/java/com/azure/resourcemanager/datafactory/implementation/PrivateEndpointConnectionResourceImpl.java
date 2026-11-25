@@ -75,12 +75,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnectionOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, createResource,
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
@@ -107,12 +102,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnectionOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, updateResource,
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource apply(Context context) {
@@ -128,20 +118,19 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "factoryName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
     }
 
     public PrivateEndpointConnectionResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnectionOperations()
-            .getWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, localIfNoneMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {

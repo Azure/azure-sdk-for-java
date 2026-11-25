@@ -89,10 +89,7 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilter create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionExecutionFilters()
-            .create(resourceGroupName, edgeActionName, executionFilter, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeActionExecutionFilter create(Context context) {
@@ -115,10 +112,7 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilter apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionExecutionFilters()
-            .update(resourceGroupName, edgeActionName, executionFilter, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeActionExecutionFilter apply(Context context) {
@@ -132,17 +126,19 @@ public final class EdgeActionExecutionFilterImpl
         com.azure.resourcemanager.edgeactions.EdgeActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeActions");
-        this.executionFilter = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "executionFilters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "resourceGroupName");
+        this.edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "edgeActionName");
+        this.executionFilter = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}",
+            "executionFilter");
     }
 
     public EdgeActionExecutionFilter refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionExecutionFilters()
-            .getWithResponse(resourceGroupName, edgeActionName, executionFilter, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeActionExecutionFilter refresh(Context context) {

@@ -259,18 +259,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> getWithResponse(String resourceGroupName, String namespaceName, String policyName,
         Context context) {
@@ -279,17 +268,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             resourceGroupName, namespaceName, policyName, accept, context);
     }
 
-    /**
-     * Get a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner get(String resourceGroupName, String namespaceName, String policyName) {
         return getWithResponse(resourceGroupName, namespaceName, policyName, Context.NONE).getValue();
@@ -334,11 +313,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String policyName, PolicyInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, policyName, resource, Context.NONE);
     }
 
     /**
@@ -385,40 +360,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             PolicyInner.class, PolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String policyName, PolicyInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, namespaceName, policyName, resource);
-        return this.client.<PolicyInner, PolicyInner>getLroResult(response, PolicyInner.class, PolicyInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, policyName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String policyName, PolicyInner resource, Context context) {
@@ -447,41 +396,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner createOrUpdate(String resourceGroupName, String namespaceName, String policyName,
         PolicyInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, policyName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, policyName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner createOrUpdate(String resourceGroupName, String namespaceName, String policyName,
         PolicyInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, policyName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, namespaceName, policyName, resource, context));
     }
 
     /**
@@ -517,8 +444,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName, String policyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
     /**
@@ -559,36 +485,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String policyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, policyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
-    /**
-     * Delete a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String policyName, Context context) {
@@ -613,35 +517,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String policyName) {
-        beginDelete(resourceGroupName, namespaceName, policyName).getFinalResult();
+        delete(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
-    /**
-     * Delete a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String policyName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, policyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, policyName, context));
     }
 
     /**
@@ -683,11 +568,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName, String policyName,
         PolicyUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, policyName, properties, Context.NONE);
     }
 
     /**
@@ -734,39 +615,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             PolicyInner.class, PolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String namespaceName,
         String policyName, PolicyUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, namespaceName, policyName, properties);
-        return this.client.<PolicyInner, PolicyInner>getLroResult(response, PolicyInner.class, PolicyInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, policyName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String namespaceName,
         String policyName, PolicyUpdate properties, Context context) {
@@ -795,41 +651,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner update(String resourceGroupName, String namespaceName, String policyName,
         PolicyUpdate properties) {
-        return beginUpdate(resourceGroupName, namespaceName, policyName, properties).getFinalResult();
+        return update(resourceGroupName, namespaceName, policyName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner update(String resourceGroupName, String namespaceName, String policyName,
         PolicyUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, policyName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, namespaceName, policyName, properties, context));
     }
 
     /**
@@ -883,12 +717,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyInner> listByResourceGroupSinglePage(String resourceGroupName, String namespaceName) {
-        final String accept = "application/json";
-        Response<PolicyListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -913,33 +742,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Policy resources by Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Policy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyInner> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List Policy resources by Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Policy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyInner> listByResourceGroup(String resourceGroupName, String namespaceName,
         Context context) {
@@ -981,8 +790,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revokeIssuerWithResponse(String resourceGroupName, String namespaceName,
         String policyName) {
-        return service.revokeIssuerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, Context.NONE);
+        return revokeIssuerWithResponse(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
     /**
@@ -1024,36 +832,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * The revokeIssuer operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeIssuer(String resourceGroupName, String namespaceName,
         String policyName) {
-        Response<BinaryData> response = revokeIssuerWithResponse(resourceGroupName, namespaceName, policyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRevokeIssuer(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
-    /**
-     * The revokeIssuer operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeIssuer(String resourceGroupName, String namespaceName,
         String policyName, Context context) {
@@ -1078,35 +864,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The revokeIssuer operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeIssuer(String resourceGroupName, String namespaceName, String policyName) {
-        beginRevokeIssuer(resourceGroupName, namespaceName, policyName).getFinalResult();
+        revokeIssuer(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
-    /**
-     * The revokeIssuer operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeIssuer(String resourceGroupName, String namespaceName, String policyName, Context context) {
-        beginRevokeIssuer(resourceGroupName, namespaceName, policyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRevokeIssuer(resourceGroupName, namespaceName, policyName, context));
     }
 
     /**
@@ -1149,10 +916,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> activateBringYourOwnRootWithResponse(String resourceGroupName, String namespaceName,
         String policyName, ActivateBringYourOwnRootRequest body) {
-        final String contentType = "application/json";
-        return service.activateBringYourOwnRootSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, contentType, body,
-            Context.NONE);
+        return activateBringYourOwnRootWithResponse(resourceGroupName, namespaceName, policyName, body, Context.NONE);
     }
 
     /**
@@ -1199,41 +963,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
-     * long-running operation that returns no content upon completion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginActivateBringYourOwnRoot(String resourceGroupName,
         String namespaceName, String policyName, ActivateBringYourOwnRootRequest body) {
-        Response<BinaryData> response
-            = activateBringYourOwnRootWithResponse(resourceGroupName, namespaceName, policyName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginActivateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, Context.NONE);
     }
 
-    /**
-     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
-     * long-running operation that returns no content upon completion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginActivateBringYourOwnRoot(String resourceGroupName,
         String namespaceName, String policyName, ActivateBringYourOwnRootRequest body, Context context) {
@@ -1262,41 +999,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
-     * long-running operation that returns no content upon completion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
         ActivateBringYourOwnRootRequest body) {
-        beginActivateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body).getFinalResult();
+        activateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, Context.NONE);
     }
 
-    /**
-     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
-     * long-running operation that returns no content upon completion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy proxy resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
         ActivateBringYourOwnRootRequest body, Context context) {
-        beginActivateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginActivateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, context));
     }
 
     /**
@@ -1331,11 +1046,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

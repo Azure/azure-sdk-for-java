@@ -90,10 +90,7 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     }
 
     public AppLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinks()
-            .createOrUpdate(resourceGroupName, appLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AppLink create(Context context) {
@@ -115,10 +112,7 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     }
 
     public AppLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinks()
-            .update(resourceGroupName, appLinkName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AppLink apply(Context context) {
@@ -131,16 +125,16 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     AppLinkImpl(AppLinkInner innerObject, com.azure.resourcemanager.appnetwork.AppnetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.appLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}",
+            "resourceGroupName");
+        this.appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}",
+            "appLinkName");
     }
 
     public AppLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinks()
-            .getByResourceGroupWithResponse(resourceGroupName, appLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AppLink refresh(Context context) {

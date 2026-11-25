@@ -108,22 +108,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             @QueryParam("softDeleteActionKind") SoftDeleteActionKind softDeleteActionKind, Context context);
     }
 
-    /**
-     * Retrieves the properties of a soft-deleted Azure Cosmos DB SQL container. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB soft-deleted SQL container along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SoftDeletedSqlContainerGetResultInner>> getWithResponseAsync(String resourceGroupName,
         String location, String accountName, String databaseName, String containerName) {
@@ -209,21 +194,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             resourceGroupName, location, accountName, databaseName, containerName, accept, context);
     }
 
-    /**
-     * Retrieves the properties of a soft-deleted Azure Cosmos DB SQL container. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB soft-deleted SQL container on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SoftDeletedSqlContainerGetResultInner> getAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName) {
@@ -231,22 +202,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of a soft-deleted Azure Cosmos DB SQL container. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB soft-deleted SQL container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SoftDeletedSqlContainerGetResultInner> getWithResponse(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName, Context context) {
@@ -254,21 +210,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .block();
     }
 
-    /**
-     * Retrieves the properties of a soft-deleted Azure Cosmos DB SQL container. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB soft-deleted SQL container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SoftDeletedSqlContainerGetResultInner get(String resourceGroupName, String location, String accountName,
         String databaseName, String containerName) {
@@ -276,21 +218,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .getValue();
     }
 
-    /**
-     * Lists all the soft-deleted Azure Cosmos DB SQL containers under a soft-deleted SQL database. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the soft-deleted SQL containers and their properties along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SoftDeletedSqlContainersListResultInner>> listWithResponseAsync(String resourceGroupName,
         String location, String accountName, String databaseName) {
@@ -367,21 +295,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             resourceGroupName, location, accountName, databaseName, accept, context);
     }
 
-    /**
-     * Lists all the soft-deleted Azure Cosmos DB SQL containers under a soft-deleted SQL database. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the soft-deleted SQL containers and their properties on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SoftDeletedSqlContainersListResultInner> listAsync(String resourceGroupName, String location,
         String accountName, String databaseName) {
@@ -389,62 +303,21 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all the soft-deleted Azure Cosmos DB SQL containers under a soft-deleted SQL database. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the soft-deleted SQL containers and their properties along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SoftDeletedSqlContainersListResultInner> listWithResponse(String resourceGroupName, String location,
         String accountName, String databaseName, Context context) {
         return listWithResponseAsync(resourceGroupName, location, accountName, databaseName, context).block();
     }
 
-    /**
-     * Lists all the soft-deleted Azure Cosmos DB SQL containers under a soft-deleted SQL database. This call requires
-     * 'Microsoft.DocumentDB/locations/softDeletedDatabaseAccounts/softDeletedSqlDatabases/softDeletedSqlContainers/read'
-     * permission.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the soft-deleted SQL containers and their properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SoftDeletedSqlContainersListResultInner list(String resourceGroupName, String location, String accountName,
         String databaseName) {
         return listWithResponse(resourceGroupName, location, accountName, databaseName, Context.NONE).getValue();
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName, SoftDeleteActionKind softDeleteActionKind) {
@@ -527,20 +400,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             accountName, databaseName, containerName, this.client.getApiVersion(), softDeleteActionKind, context);
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestoreAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName, SoftDeleteActionKind softDeleteActionKind) {
@@ -550,19 +410,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             this.client.getContext());
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestoreAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName) {
@@ -599,19 +447,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             context);
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestore(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName) {
@@ -622,21 +458,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .getSyncPoller();
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestore(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName, SoftDeleteActionKind softDeleteActionKind,
@@ -647,20 +469,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .getSyncPoller();
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restoreAsync(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName, SoftDeleteActionKind softDeleteActionKind) {
@@ -668,19 +477,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             softDeleteActionKind).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restoreAsync(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName) {
@@ -711,18 +508,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             softDeleteActionKind, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restore(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName) {
@@ -731,20 +517,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .block();
     }
 
-    /**
-     * Restores a soft-deleted Azure Cosmos DB SQL container to active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restore(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName, SoftDeleteActionKind softDeleteActionKind, Context context) {
@@ -752,20 +525,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             context).block();
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName, SoftDeleteActionKind softDeleteActionKind) {
@@ -848,20 +608,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             accountName, databaseName, containerName, this.client.getApiVersion(), softDeleteActionKind, context);
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName, SoftDeleteActionKind softDeleteActionKind) {
@@ -871,19 +618,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             this.client.getContext());
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceGroupName, String location,
         String accountName, String databaseName, String containerName) {
@@ -920,19 +655,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             context);
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String location, String accountName,
         String databaseName, String containerName) {
@@ -943,21 +666,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .getSyncPoller();
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String location, String accountName,
         String databaseName, String containerName, SoftDeleteActionKind softDeleteActionKind, Context context) {
@@ -967,20 +676,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             .getSyncPoller();
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeAsync(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName, SoftDeleteActionKind softDeleteActionKind) {
@@ -988,19 +684,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             softDeleteActionKind).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeAsync(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName) {
@@ -1031,18 +715,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
             softDeleteActionKind, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName) {
@@ -1050,20 +723,7 @@ public final class SoftDeletedSqlContainersClientImpl implements SoftDeletedSqlC
         purgeAsync(resourceGroupName, location, accountName, databaseName, containerName, softDeleteActionKind).block();
     }
 
-    /**
-     * Permanently deletes a soft-deleted Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB SQL database name.
-     * @param containerName Cosmos DB SQL container name.
-     * @param softDeleteActionKind The kind of soft delete action to perform.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String location, String accountName, String databaseName,
         String containerName, SoftDeleteActionKind softDeleteActionKind, Context context) {

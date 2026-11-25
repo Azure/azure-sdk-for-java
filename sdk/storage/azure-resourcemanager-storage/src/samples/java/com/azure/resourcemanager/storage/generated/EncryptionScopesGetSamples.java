@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class EncryptionScopesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountGetEncryptionScope.json
+     * x-ms-original-file: 2026-09-01/StorageAccountGetEncryptionScope.json
      */
     /**
      * Sample code: StorageAccountGetEncryptionScope.

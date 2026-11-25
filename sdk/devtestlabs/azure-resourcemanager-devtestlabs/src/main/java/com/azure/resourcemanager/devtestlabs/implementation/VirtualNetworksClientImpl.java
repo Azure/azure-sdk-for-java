@@ -226,19 +226,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkInner> getWithResponse(String resourceGroupName, String labName, String name,
         String expand, Context context) {
@@ -247,17 +235,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             resourceGroupName, labName, name, expand, accept, context);
     }
 
-    /**
-     * Get virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner get(String resourceGroupName, String labName, String name) {
         final String expand = null;
@@ -303,11 +281,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
         VirtualNetworkInner virtualNetwork) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType, accept, virtualNetwork,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, labName, name, virtualNetwork, Context.NONE);
     }
 
     /**
@@ -354,39 +328,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             VirtualNetworkInner.class, VirtualNetworkInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a virtual network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner>
         beginCreateOrUpdate(String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, labName, name, virtualNetwork);
-        return this.client.<VirtualNetworkInner, VirtualNetworkInner>getLroResult(response, VirtualNetworkInner.class,
-            VirtualNetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, labName, name, virtualNetwork, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a virtual network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork, Context context) {
@@ -415,41 +364,19 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String labName, String name,
         VirtualNetworkInner virtualNetwork) {
-        return beginCreateOrUpdate(resourceGroupName, labName, name, virtualNetwork).getFinalResult();
+        return createOrUpdate(resourceGroupName, labName, name, virtualNetwork, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String labName, String name,
         VirtualNetworkInner virtualNetwork, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, labName, name, virtualNetwork, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, labName, name, virtualNetwork, context));
     }
 
     /**
@@ -495,19 +422,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of virtual networks. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkInner> updateWithResponse(String resourceGroupName, String labName, String name,
         VirtualNetworkFragment virtualNetwork, Context context) {
@@ -518,18 +433,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             context);
     }
 
-    /**
-     * Allows modifying tags of virtual networks. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner update(String resourceGroupName, String labName, String name,
         VirtualNetworkFragment virtualNetwork) {
@@ -569,8 +473,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String labName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -610,35 +513,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Delete virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name,
         Context context) {
@@ -662,35 +543,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
         return beginDeleteAsync(resourceGroupName, labName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String name) {
-        beginDelete(resourceGroupName, labName, name).getFinalResult();
+        delete(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Delete virtual network. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String name, Context context) {
-        beginDelete(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -777,12 +639,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkInner> listSinglePage(String resourceGroupName, String labName, String expand,
         String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<VirtualNetworkList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -810,41 +667,17 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List virtual networks in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list(String resourceGroupName, String labName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, labName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List virtual networks in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list(String resourceGroupName, String labName, String expand,
         String filter, Integer top, String orderby, Context context) {
@@ -883,11 +716,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualNetworkList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

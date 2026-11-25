@@ -61,38 +61,24 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public Application getById(String id) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (applicationId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
-        return this.getWithResponse(applicationId, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Application> getByIdWithResponse(String id, Context context) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (applicationId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
+        String applicationId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId", "applications", LOGGER);
         return this.getWithResponse(applicationId, context);
     }
 
     public void deleteById(String id) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (applicationId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
-        this.deleteWithResponse(applicationId, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
-        if (applicationId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
-        }
+        String applicationId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId", "applications", LOGGER);
         return this.deleteWithResponse(applicationId, context);
     }
 

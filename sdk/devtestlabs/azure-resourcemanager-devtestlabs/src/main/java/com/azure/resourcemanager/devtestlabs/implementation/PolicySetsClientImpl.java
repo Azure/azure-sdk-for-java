@@ -123,19 +123,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Evaluates lab policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the PolicySet.
-     * @param evaluatePoliciesRequest Request body for evaluating a policy set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(String resourceGroupName,
         String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context) {
@@ -146,18 +134,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
             evaluatePoliciesRequest, context);
     }
 
-    /**
-     * Evaluates lab policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the PolicySet.
-     * @param evaluatePoliciesRequest Request body for evaluating a policy set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvaluatePoliciesResponseInner evaluatePolicies(String resourceGroupName, String labName, String name,
         EvaluatePoliciesRequest evaluatePoliciesRequest) {

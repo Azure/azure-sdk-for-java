@@ -220,18 +220,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns ResourceGuardProxy under vault and with the name referenced in request.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardProxyBaseResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String resourceGuardProxyName, Context context) {
@@ -240,17 +229,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             resourceGroupName, vaultName, resourceGuardProxyName, accept, context);
     }
 
-    /**
-     * Returns ResourceGuardProxy under vault and with the name referenced in request.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardProxyBaseResourceInner get(String vaultName, String resourceGroupName,
         String resourceGuardProxyName) {
@@ -302,20 +281,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Add or Update ResourceGuardProxy under vault
-     * Secures vault critical operations.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardProxyBaseResourceInner> putWithResponse(String vaultName, String resourceGroupName,
         String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters, Context context) {
@@ -325,19 +291,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             resourceGroupName, vaultName, resourceGuardProxyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Add or Update ResourceGuardProxy under vault
-     * Secures vault critical operations.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardProxyBaseResourceInner put(String vaultName, String resourceGroupName,
         String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters) {
@@ -382,18 +336,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete ResourceGuardProxy under vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String resourceGuardProxyName,
         Context context) {
@@ -401,16 +344,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             this.client.getSubscriptionId(), resourceGroupName, vaultName, resourceGuardProxyName, context);
     }
 
-    /**
-     * Delete ResourceGuardProxy under vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName) {
         deleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE);
@@ -459,19 +393,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Secures delete ResourceGuardProxy operations.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(String vaultName, String resourceGroupName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
@@ -482,18 +404,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             parameters, context);
     }
 
-    /**
-     * Secures delete ResourceGuardProxy operations.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnlockDeleteResponseInner unlockDelete(String vaultName, String resourceGroupName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters) {
@@ -553,12 +464,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardProxyBaseResourceInner> listSinglePage(String vaultName,
         String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ResourceGuardProxyBaseResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, Context.NONE);
     }
 
     /**
@@ -583,33 +489,13 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the ResourceGuardProxies under vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardProxyBaseResourceInner> list(String vaultName, String resourceGroupName) {
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List the ResourceGuardProxies under vault.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardProxyBaseResourceInner> list(String vaultName, String resourceGroupName,
         Context context) {
@@ -647,11 +533,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardProxyBaseResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceGuardProxyBaseResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

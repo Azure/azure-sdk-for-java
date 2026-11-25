@@ -85,10 +85,7 @@ public final class SandboxGroupImpl implements SandboxGroup, SandboxGroup.Defini
     }
 
     public SandboxGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSandboxGroups()
-            .createOrUpdate(resourceGroupName, sandboxGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SandboxGroup create(Context context) {
@@ -110,10 +107,7 @@ public final class SandboxGroupImpl implements SandboxGroup, SandboxGroup.Defini
     }
 
     public SandboxGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSandboxGroups()
-            .update(resourceGroupName, sandboxGroupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SandboxGroup apply(Context context) {
@@ -127,16 +121,16 @@ public final class SandboxGroupImpl implements SandboxGroup, SandboxGroup.Defini
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sandboxGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sandboxGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}",
+            "resourceGroupName");
+        this.sandboxGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sandboxGroups/{sandboxGroupName}",
+            "sandboxGroupName");
     }
 
     public SandboxGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSandboxGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, sandboxGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SandboxGroup refresh(Context context) {

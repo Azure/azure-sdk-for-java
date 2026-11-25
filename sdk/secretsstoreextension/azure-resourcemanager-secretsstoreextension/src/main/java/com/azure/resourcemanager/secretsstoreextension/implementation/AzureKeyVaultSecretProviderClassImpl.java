@@ -91,10 +91,7 @@ public final class AzureKeyVaultSecretProviderClassImpl implements AzureKeyVault
     }
 
     public AzureKeyVaultSecretProviderClass create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureKeyVaultSecretProviderClasses()
-            .createOrUpdate(resourceGroupName, azureKeyVaultSecretProviderClassName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureKeyVaultSecretProviderClass create(Context context) {
@@ -117,10 +114,7 @@ public final class AzureKeyVaultSecretProviderClassImpl implements AzureKeyVault
     }
 
     public AzureKeyVaultSecretProviderClass apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureKeyVaultSecretProviderClasses()
-            .update(resourceGroupName, azureKeyVaultSecretProviderClassName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureKeyVaultSecretProviderClass apply(Context context) {
@@ -134,17 +128,16 @@ public final class AzureKeyVaultSecretProviderClassImpl implements AzureKeyVault
         com.azure.resourcemanager.secretsstoreextension.SecretsStoreExtensionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureKeyVaultSecretProviderClassName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "azureKeyVaultSecretProviderClasses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "resourceGroupName");
+        this.azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "azureKeyVaultSecretProviderClassName");
     }
 
     public AzureKeyVaultSecretProviderClass refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureKeyVaultSecretProviderClasses()
-            .getByResourceGroupWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureKeyVaultSecretProviderClass refresh(Context context) {

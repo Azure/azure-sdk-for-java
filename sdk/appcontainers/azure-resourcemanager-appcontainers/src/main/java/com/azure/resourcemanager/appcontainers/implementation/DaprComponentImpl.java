@@ -118,11 +118,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DaprComponent create(Context context) {
@@ -143,11 +139,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DaprComponent apply(Context context) {
@@ -161,18 +153,29 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.componentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "daprComponents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}",
+                "resourceGroupName");
+        }
+        this.connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "connectedEnvironmentName");
+        this.componentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "componentName");
+        if (this.componentName == null) {
+            this.componentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}",
+                "componentName");
+        }
     }
 
     public DaprComponent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsDaprComponents()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DaprComponent refresh(Context context) {

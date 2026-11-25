@@ -15,12 +15,11 @@ public final class OperatorsAuthenticationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperatorsAuthenticationProfile model = BinaryData.fromString(
-            "{\"userAssignedIdentities\":{\"controlPlaneOperators\":{\"zuhtymwisdkfthwx\":\"fidfvzw\",\"mijcmmxdcufufs\":\"nteiwaopv\",\"fycc\":\"pymzidnsezcxtbzs\"},\"dataPlaneOperators\":{\"jeiachboosfl\":\"ewmdw\",\"fqpte\":\"ro\",\"i\":\"hzzvypyq\",\"npvswjdkirso\":\"z\"},\"serviceManagedIdentity\":\"dqxhcrmnohjtckwh\"}}")
+            "{\"userAssignedIdentities\":{\"controlPlaneOperators\":{\"mwisdkfthwxmnt\":\"uht\",\"aop\":\"i\",\"jcmmxdcufufsrp\":\"km\",\"sgfyccsnew\":\"mzidnsezcxtb\"},\"dataPlaneOperators\":{\"oosflnr\":\"wzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\"},\"serviceManagedIdentity\":\"t\"}}")
             .toObject(OperatorsAuthenticationProfile.class);
-        Assertions.assertEquals("fidfvzw",
-            model.userAssignedIdentities().controlPlaneOperators().get("zuhtymwisdkfthwx"));
-        Assertions.assertEquals("ewmdw", model.userAssignedIdentities().dataPlaneOperators().get("jeiachboosfl"));
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.userAssignedIdentities().serviceManagedIdentity());
+        Assertions.assertEquals("uht", model.userAssignedIdentities().controlPlaneOperators().get("mwisdkfthwxmnt"));
+        Assertions.assertEquals("wzjeiach", model.userAssignedIdentities().dataPlaneOperators().get("oosflnr"));
+        Assertions.assertEquals("t", model.userAssignedIdentities().serviceManagedIdentity());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,15 +27,14 @@ public final class OperatorsAuthenticationProfileTests {
         OperatorsAuthenticationProfile model
             = new OperatorsAuthenticationProfile().withUserAssignedIdentities(new UserAssignedIdentitiesProfile()
                 .withControlPlaneOperators(
-                    mapOf("zuhtymwisdkfthwx", "fidfvzw", "mijcmmxdcufufs", "nteiwaopv", "fycc", "pymzidnsezcxtbzs"))
+                    mapOf("mwisdkfthwxmnt", "uht", "aop", "i", "jcmmxdcufufsrp", "km", "sgfyccsnew", "mzidnsezcxtb"))
                 .withDataPlaneOperators(
-                    mapOf("jeiachboosfl", "ewmdw", "fqpte", "ro", "i", "hzzvypyq", "npvswjdkirso", "z"))
-                .withServiceManagedIdentity("dqxhcrmnohjtckwh"));
+                    mapOf("oosflnr", "wzjeiach", "vypyqrimzinpv", "sfqpteehz", "rsoodqxhcrmnoh", "wjdk"))
+                .withServiceManagedIdentity("t"));
         model = BinaryData.fromObject(model).toObject(OperatorsAuthenticationProfile.class);
-        Assertions.assertEquals("fidfvzw",
-            model.userAssignedIdentities().controlPlaneOperators().get("zuhtymwisdkfthwx"));
-        Assertions.assertEquals("ewmdw", model.userAssignedIdentities().dataPlaneOperators().get("jeiachboosfl"));
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.userAssignedIdentities().serviceManagedIdentity());
+        Assertions.assertEquals("uht", model.userAssignedIdentities().controlPlaneOperators().get("mwisdkfthwxmnt"));
+        Assertions.assertEquals("wzjeiach", model.userAssignedIdentities().dataPlaneOperators().get("oosflnr"));
+        Assertions.assertEquals("t", model.userAssignedIdentities().serviceManagedIdentity());
     }
 
     // Use "Map.of" if available

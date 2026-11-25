@@ -13,14 +13,14 @@ public final class ListReplicationsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListReplicationsRequest model
-            = BinaryData.fromString("{\"exclude\":\"Deleted\"}").toObject(ListReplicationsRequest.class);
-        Assertions.assertEquals(Exclude.DELETED, model.exclude());
+            = BinaryData.fromString("{\"exclude\":\"None\"}").toObject(ListReplicationsRequest.class);
+        Assertions.assertEquals(Exclude.NONE, model.exclude());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListReplicationsRequest model = new ListReplicationsRequest().withExclude(Exclude.DELETED);
+        ListReplicationsRequest model = new ListReplicationsRequest().withExclude(Exclude.NONE);
         model = BinaryData.fromObject(model).toObject(ListReplicationsRequest.class);
-        Assertions.assertEquals(Exclude.DELETED, model.exclude());
+        Assertions.assertEquals(Exclude.NONE, model.exclude());
     }
 }

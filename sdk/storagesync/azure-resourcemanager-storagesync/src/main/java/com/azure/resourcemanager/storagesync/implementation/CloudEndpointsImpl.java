@@ -63,7 +63,7 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public void delete(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName) {
-        this.serviceClient().delete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName);
+        this.delete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
@@ -74,9 +74,7 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public PagedIterable<CloudEndpoint> listBySyncGroup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName) {
-        PagedIterable<CloudEndpointInner> inner
-            = this.serviceClient().listBySyncGroup(resourceGroupName, storageSyncServiceName, syncGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudEndpointImpl(inner1, this.manager()));
+        return this.listBySyncGroup(resourceGroupName, storageSyncServiceName, syncGroupName, Context.NONE);
     }
 
     public PagedIterable<CloudEndpoint> listBySyncGroup(String resourceGroupName, String storageSyncServiceName,
@@ -88,8 +86,8 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public void preBackup(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, BackupRequest parameters) {
-        this.serviceClient()
-            .preBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters);
+        this.preBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
     public void preBackup(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
@@ -101,13 +99,8 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public PostBackupResponse postBackup(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, BackupRequest parameters) {
-        PostBackupResponseInner inner = this.serviceClient()
-            .postBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters);
-        if (inner != null) {
-            return new PostBackupResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.postBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
     public PostBackupResponse postBackup(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
@@ -124,8 +117,8 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public void preRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, PreRestoreRequest parameters) {
-        this.serviceClient()
-            .preRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters);
+        this.preRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
     public void preRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
@@ -144,14 +137,14 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public void restoreHeartbeat(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName) {
-        this.serviceClient()
-            .restoreHeartbeat(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName);
+        this.restoreHeartbeatWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            Context.NONE);
     }
 
     public void postRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, PostRestoreRequest parameters) {
-        this.serviceClient()
-            .postRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters);
+        this.postRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
     public void postRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
@@ -163,9 +156,8 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
 
     public void triggerChangeDetection(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, TriggerChangeDetectionParameters parameters) {
-        this.serviceClient()
-            .triggerChangeDetection(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
-                parameters);
+        this.triggerChangeDetection(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
     public void triggerChangeDetection(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
@@ -202,101 +194,43 @@ public final class CloudEndpointsImpl implements CloudEndpoints {
     }
 
     public CloudEndpoint getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageSyncServiceName = ResourceManagerUtils.getValueFromIdByName(id, "storageSyncServices");
-        if (storageSyncServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageSyncServices'.", id)));
-        }
-        String syncGroupName = ResourceManagerUtils.getValueFromIdByName(id, "syncGroups");
-        if (syncGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'syncGroups'.", id)));
-        }
-        String cloudEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "cloudEndpoints");
-        if (cloudEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudEndpoints'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CloudEndpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageSyncServiceName = ResourceManagerUtils.getValueFromIdByName(id, "storageSyncServices");
-        if (storageSyncServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageSyncServices'.", id)));
-        }
-        String syncGroupName = ResourceManagerUtils.getValueFromIdByName(id, "syncGroups");
-        if (syncGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'syncGroups'.", id)));
-        }
-        String cloudEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "cloudEndpoints");
-        if (cloudEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageSyncServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "storageSyncServiceName", "storageSyncServices", LOGGER);
+        String syncGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "syncGroupName", "syncGroups", LOGGER);
+        String cloudEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "cloudEndpointName", "cloudEndpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
             context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageSyncServiceName = ResourceManagerUtils.getValueFromIdByName(id, "storageSyncServices");
-        if (storageSyncServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageSyncServices'.", id)));
-        }
-        String syncGroupName = ResourceManagerUtils.getValueFromIdByName(id, "syncGroups");
-        if (syncGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'syncGroups'.", id)));
-        }
-        String cloudEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "cloudEndpoints");
-        if (cloudEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudEndpoints'.", id)));
-        }
-        this.delete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageSyncServiceName = ResourceManagerUtils.getValueFromIdByName(id, "storageSyncServices");
-        if (storageSyncServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageSyncServices'.", id)));
-        }
-        String syncGroupName = ResourceManagerUtils.getValueFromIdByName(id, "syncGroups");
-        if (syncGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'syncGroups'.", id)));
-        }
-        String cloudEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "cloudEndpoints");
-        if (cloudEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageSyncServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "storageSyncServiceName", "storageSyncServices", LOGGER);
+        String syncGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "syncGroupName", "syncGroups", LOGGER);
+        String cloudEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}",
+            "cloudEndpointName", "cloudEndpoints", LOGGER);
         this.delete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, context);
     }
 

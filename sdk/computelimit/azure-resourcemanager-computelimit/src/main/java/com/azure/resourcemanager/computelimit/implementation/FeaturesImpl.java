@@ -46,8 +46,7 @@ public final class FeaturesImpl implements Features {
     }
 
     public PagedIterable<Feature> listBySubscriptionLocationResource(String location) {
-        PagedIterable<FeatureInner> inner = this.serviceClient().listBySubscriptionLocationResource(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FeatureImpl(inner1, this.manager()));
+        return this.listBySubscriptionLocationResource(location, Context.NONE);
     }
 
     public PagedIterable<Feature> listBySubscriptionLocationResource(String location, Context context) {
@@ -75,12 +74,7 @@ public final class FeaturesImpl implements Features {
     }
 
     public OperationStatusResult disable(String location, String featureName) {
-        OperationStatusResultInner inner = this.serviceClient().disable(location, featureName);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.disable(location, featureName, Context.NONE);
     }
 
     public OperationStatusResult disable(String location, String featureName, Context context) {

@@ -76,40 +76,19 @@ public final class AzureDevOpsOrgsImpl implements AzureDevOpsOrgs {
     }
 
     public AzureDevOpsOrg getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
-        if (securityConnectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
-        }
-        String orgName = ResourceManagerUtils.getValueFromIdByName(id, "azureDevOpsOrgs");
-        if (orgName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'azureDevOpsOrgs'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, securityConnectorName, orgName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AzureDevOpsOrg> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
-        if (securityConnectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
-        }
-        String orgName = ResourceManagerUtils.getValueFromIdByName(id, "azureDevOpsOrgs");
-        if (orgName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'azureDevOpsOrgs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String securityConnectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}",
+            "securityConnectorName", "securityConnectors", LOGGER);
+        String orgName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}",
+            "orgName", "azureDevOpsOrgs", LOGGER);
         return this.getWithResponse(resourceGroupName, securityConnectorName, orgName, context);
     }
 

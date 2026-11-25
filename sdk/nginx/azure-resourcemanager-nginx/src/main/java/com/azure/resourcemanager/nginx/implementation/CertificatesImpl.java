@@ -45,7 +45,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void delete(String resourceGroupName, String deploymentName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, deploymentName, certificateName);
+        this.delete(resourceGroupName, deploymentName, certificateName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String deploymentName, String certificateName, Context context) {
@@ -53,8 +53,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public PagedIterable<NginxCertificate> list(String resourceGroupName, String deploymentName) {
-        PagedIterable<NginxCertificateInner> inner = this.serviceClient().list(resourceGroupName, deploymentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxCertificateImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, deploymentName, Context.NONE);
     }
 
     public PagedIterable<NginxCertificate> list(String resourceGroupName, String deploymentName, Context context) {
@@ -64,78 +63,36 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public NginxCertificate getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NginxCertificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "deploymentName", "nginxDeployments", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "certificateName", "certificates", LOGGER);
         return this.getWithResponse(resourceGroupName, deploymentName, certificateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        this.delete(resourceGroupName, deploymentName, certificateName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "deploymentName", "nginxDeployments", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}",
+            "certificateName", "certificates", LOGGER);
         this.delete(resourceGroupName, deploymentName, certificateName, context);
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSDeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-11-01/DPSDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.

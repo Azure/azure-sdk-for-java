@@ -69,12 +69,7 @@ public final class DaprComponentResiliencyPolicyImpl implements DaprComponentRes
     }
 
     public DaprComponentResiliencyPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDaprComponentResiliencyPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, name, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DaprComponentResiliencyPolicy create(Context context) {
@@ -98,12 +93,7 @@ public final class DaprComponentResiliencyPolicyImpl implements DaprComponentRes
     }
 
     public DaprComponentResiliencyPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDaprComponentResiliencyPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, name, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DaprComponentResiliencyPolicy apply(Context context) {
@@ -119,18 +109,22 @@ public final class DaprComponentResiliencyPolicyImpl implements DaprComponentRes
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.componentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "daprComponents");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resiliencyPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "resourceGroupName");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "environmentName");
+        this.componentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "componentName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}",
+            "name");
     }
 
     public DaprComponentResiliencyPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDaprComponentResiliencyPolicies()
-            .getWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DaprComponentResiliencyPolicy refresh(Context context) {

@@ -94,10 +94,7 @@ public final class CommunityResourceImpl
     }
 
     public CommunityResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunities()
-            .createOrUpdate(resourceGroupName, communityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommunityResource create(Context context) {
@@ -119,10 +116,7 @@ public final class CommunityResourceImpl
     }
 
     public CommunityResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunities()
-            .update(resourceGroupName, communityName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommunityResource apply(Context context) {
@@ -136,16 +130,16 @@ public final class CommunityResourceImpl
         com.azure.resourcemanager.enclave.AzureEnclaveManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.communityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}",
+            "resourceGroupName");
+        this.communityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}",
+            "communityName");
     }
 
     public CommunityResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunities()
-            .getByResourceGroupWithResponse(resourceGroupName, communityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommunityResource refresh(Context context) {

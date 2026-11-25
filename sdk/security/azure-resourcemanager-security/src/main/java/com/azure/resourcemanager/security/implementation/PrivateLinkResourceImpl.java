@@ -118,10 +118,7 @@ public final class PrivateLinkResourceImpl
     }
 
     public PrivateLinkResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateLinks()
-            .create(resourceGroupName, privateLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateLinkResource create(Context context) {
@@ -143,11 +140,7 @@ public final class PrivateLinkResourceImpl
     }
 
     public PrivateLinkResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateLinks()
-            .updateWithResponse(resourceGroupName, privateLinkName, updatePrivateLink, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateLinkResource apply(Context context) {
@@ -162,16 +155,16 @@ public final class PrivateLinkResourceImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}",
+            "resourceGroupName");
+        this.privateLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}",
+            "privateLinkName");
     }
 
     public PrivateLinkResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateLinks()
-            .getByResourceGroupWithResponse(resourceGroupName, privateLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateLinkResource refresh(Context context) {

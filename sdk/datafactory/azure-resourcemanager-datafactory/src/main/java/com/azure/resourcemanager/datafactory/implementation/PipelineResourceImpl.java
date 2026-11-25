@@ -144,12 +144,7 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), createIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PipelineResource create(Context context) {
@@ -174,12 +169,7 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PipelineResource apply(Context context) {
@@ -195,18 +185,19 @@ public final class PipelineResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.pipelineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pipelines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}",
+            "factoryName");
+        this.pipelineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}",
+            "pipelineName");
     }
 
     public PipelineResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PipelineResource refresh(Context context) {

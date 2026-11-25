@@ -155,11 +155,7 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
     }
 
     public L2Network create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL2Networks()
-            .createOrUpdate(resourceGroupName, l2NetworkName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public L2Network create(Context context) {
@@ -186,12 +182,7 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
     }
 
     public L2Network apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL2Networks()
-            .updateWithResponse(resourceGroupName, l2NetworkName, updateIfMatch, updateIfNoneMatch,
-                updateL2NetworkUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public L2Network apply(Context context) {
@@ -207,16 +198,16 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l2NetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l2Networks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l2Networks/{l2NetworkName}",
+            "resourceGroupName");
+        this.l2NetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l2Networks/{l2NetworkName}",
+            "l2NetworkName");
     }
 
     public L2Network refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getL2Networks()
-            .getByResourceGroupWithResponse(resourceGroupName, l2NetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public L2Network refresh(Context context) {

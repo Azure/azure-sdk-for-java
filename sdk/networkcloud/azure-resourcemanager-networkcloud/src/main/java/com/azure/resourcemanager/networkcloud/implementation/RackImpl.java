@@ -130,11 +130,7 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRacks()
-            .createOrUpdate(resourceGroupName, rackName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Rack create(Context context) {
@@ -160,11 +156,7 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRacks()
-            .update(resourceGroupName, rackName, updateIfMatch, updateIfNoneMatch, updateRackUpdateParameters,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Rack apply(Context context) {
@@ -177,16 +169,16 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     RackImpl(RackInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.rackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "racks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}",
+            "resourceGroupName");
+        this.rackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}",
+            "rackName");
     }
 
     public Rack refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRacks()
-            .getByResourceGroupWithResponse(resourceGroupName, rackName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Rack refresh(Context context) {

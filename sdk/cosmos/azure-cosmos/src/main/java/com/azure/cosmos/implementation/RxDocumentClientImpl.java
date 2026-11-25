@@ -1103,7 +1103,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 globalEndpointManager,
                 httpClient,
                 apiType,
-                additionalHeaders);
+                additionalHeaders,
+                this.clientTelemetryConfig);
     }
 
     ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,
@@ -1119,7 +1120,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            additionalHeaders);
+            additionalHeaders,
+            this.clientTelemetryConfig);
     }
 
     private HttpClient httpClient() {
@@ -1215,39 +1217,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return;
         }
 
-        // Check for duplicate using token matching to prevent unbounded growth when
-        // multiple encryption clients wrap the same CosmosAsyncClient
-        String currentSuffix = this.userAgentContainer.getSuffix();
-        if (StringUtils.isNotEmpty(currentSuffix)) {
-            for (String token : currentSuffix.split("\\s+")) {
-                if (trimmedSuffix.equals(token)) {
-                    return;
-                }
-            }
-        }
+        this.userAgentContainer.appendSuffix(trimmedSuffix);
+    }
 
-        // Preserve feature flags ("|F...") which are appended to userAgent directly
-        // by setFeatureEnabledFlagsAsSuffix and would be lost when setSuffix overwrites userAgent
-        String currentUserAgent = this.userAgentContainer.getUserAgent();
-        String featureFlagsSuffix = null;
-        int featureFlagsIndex = currentUserAgent.indexOf("|F");
-        if (featureFlagsIndex >= 0) {
-            featureFlagsSuffix = currentUserAgent.substring(featureFlagsIndex);
-        }
-
-        String newSuffix;
-        if (StringUtils.isNotEmpty(currentSuffix)) {
-            newSuffix = currentSuffix + " " + trimmedSuffix;
-        } else {
-            newSuffix = trimmedSuffix;
-        }
-
-        this.userAgentContainer.setSuffix(newSuffix);
-
-        // Re-apply feature flags since setSuffix overwrites the userAgent string
-        if (StringUtils.isNotEmpty(featureFlagsSuffix)) {
-            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
-        }
+    @Override
+    public void addUserAgentFeatureFlag(UserAgentFeatureFlags userAgentFeatureFlag) {
+        this.userAgentContainer.addFeatureEnabledFlag(userAgentFeatureFlag);
     }
 
     @Override
@@ -1699,6 +1674,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void addUserAgentSuffix(UserAgentContainer userAgentContainer, Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+
+        // The encryption SDK registers its opt-out explicitly, not through core feature evaluation.
+        userAgentFeatureFlags.remove(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
 
         if (!this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionAutomaticFailover);
@@ -7643,6 +7621,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             LifeCycleUtils.closeQuietly(this.storeClientFactory);
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+            if (this.gatewayProxy != null) {
+                this.gatewayProxy.close();
+            }
+            if (this.thinProxy != null) {
+                this.thinProxy.close();
+            }
             logger.info("Shutting down CpuMonitor ...");
             CpuMemoryMonitor.unregister(this);
 

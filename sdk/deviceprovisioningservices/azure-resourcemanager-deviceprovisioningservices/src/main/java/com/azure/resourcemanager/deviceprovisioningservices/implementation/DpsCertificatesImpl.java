@@ -66,9 +66,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     }
 
     public PagedIterable<CertificateResponse> list(String resourceGroupName, String provisioningServiceName) {
-        PagedIterable<CertificateResponseInner> inner
-            = this.serviceClient().list(resourceGroupName, provisioningServiceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateResponseImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, provisioningServiceName, Context.NONE);
     }
 
     public PagedIterable<CertificateResponse> list(String resourceGroupName, String provisioningServiceName,
@@ -127,62 +125,24 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     }
 
     public CertificateResponse getById(String id) {
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
         String localIfMatch = null;
-        return this
-            .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, localIfMatch, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localIfMatch, Context.NONE).getValue();
     }
 
     public Response<CertificateResponse> getByIdWithResponse(String id, String ifMatch, Context context) {
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "certificateName", "certificates", LOGGER);
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String provisioningServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "provisioningServiceName", "provisioningServices", LOGGER);
         return this.getWithResponse(certificateName, resourceGroupName, provisioningServiceName, ifMatch, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
         String localIfMatch = null;
         String localCertificateNameParam = null;
         byte[] localCertificateRawBytes = null;
@@ -192,31 +152,24 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         OffsetDateTime localCertificateLastUpdated = null;
         Boolean localCertificateHasPrivateKey = null;
         String localCertificateNonce = null;
-        this.deleteWithResponse(resourceGroupName, localIfMatch, provisioningServiceName, certificateName,
-            localCertificateNameParam, localCertificateRawBytes, localCertificateIsVerified, localCertificatePurpose,
-            localCertificateCreated, localCertificateLastUpdated, localCertificateHasPrivateKey, localCertificateNonce,
-            Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, localCertificateNameParam, localCertificateRawBytes,
+            localCertificateIsVerified, localCertificatePurpose, localCertificateCreated, localCertificateLastUpdated,
+            localCertificateHasPrivateKey, localCertificateNonce, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, String certificateNameParam,
         byte[] certificateRawBytes, Boolean certificateIsVerified, CertificatePurpose certificatePurpose,
         OffsetDateTime certificateCreated, OffsetDateTime certificateLastUpdated, Boolean certificateHasPrivateKey,
         String certificateNonce, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
-        if (provisioningServiceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
-        }
-        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
-        if (certificateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String provisioningServiceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "provisioningServiceName", "provisioningServices", LOGGER);
+        String certificateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "certificateName", "certificates", LOGGER);
         return this.deleteWithResponse(resourceGroupName, ifMatch, provisioningServiceName, certificateName,
             certificateNameParam, certificateRawBytes, certificateIsVerified, certificatePurpose, certificateCreated,
             certificateLastUpdated, certificateHasPrivateKey, certificateNonce, context);

@@ -86,12 +86,7 @@ public final class WorkspaceManagerAssignmentImpl
     }
 
     public WorkspaceManagerAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceManagerAssignment create(Context context) {
@@ -115,12 +110,7 @@ public final class WorkspaceManagerAssignmentImpl
     }
 
     public WorkspaceManagerAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceManagerAssignment apply(Context context) {
@@ -136,18 +126,19 @@ public final class WorkspaceManagerAssignmentImpl
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.workspaceManagerAssignmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaceManagerAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}",
+            "workspaceName");
+        this.workspaceManagerAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}",
+            "workspaceManagerAssignmentName");
     }
 
     public WorkspaceManagerAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerAssignments()
-            .getWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceManagerAssignment refresh(Context context) {

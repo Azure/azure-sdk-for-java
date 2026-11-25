@@ -94,10 +94,7 @@ public final class ProtectionContainerResourceImpl
     }
 
     public ProtectionContainerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionContainers()
-            .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionContainerResource create(Context context) {
@@ -119,10 +116,7 @@ public final class ProtectionContainerResourceImpl
     }
 
     public ProtectionContainerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionContainers()
-            .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectionContainerResource apply(Context context) {
@@ -136,18 +130,22 @@ public final class ProtectionContainerResourceImpl
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupFabrics");
-        this.containerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectionContainers");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}",
+            "vaultName");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}",
+            "resourceGroupName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}",
+            "fabricName");
+        this.containerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}",
+            "containerName");
     }
 
     public ProtectionContainerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionContainers()
-            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionContainerResource refresh(Context context) {

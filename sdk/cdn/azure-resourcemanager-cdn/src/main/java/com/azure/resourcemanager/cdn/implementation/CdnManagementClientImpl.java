@@ -32,18 +32,14 @@ import com.azure.resourcemanager.cdn.fluent.AfdOriginsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
-import com.azure.resourcemanager.cdn.fluent.DeploymentVersionsClient;
 import com.azure.resourcemanager.cdn.fluent.EdgeNodesClient;
 import com.azure.resourcemanager.cdn.fluent.EndpointsClient;
-import com.azure.resourcemanager.cdn.fluent.KeyGroupsClient;
-import com.azure.resourcemanager.cdn.fluent.KnowledgeSourcesClient;
 import com.azure.resourcemanager.cdn.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.cdn.fluent.ManagedRuleSetsClient;
 import com.azure.resourcemanager.cdn.fluent.OperationsClient;
 import com.azure.resourcemanager.cdn.fluent.OriginGroupsClient;
 import com.azure.resourcemanager.cdn.fluent.OriginsClient;
 import com.azure.resourcemanager.cdn.fluent.PoliciesClient;
-import com.azure.resourcemanager.cdn.fluent.ProfileAgentsClient;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.ResourceUsagesClient;
 import com.azure.resourcemanager.cdn.fluent.RoutesClient;
@@ -51,7 +47,6 @@ import com.azure.resourcemanager.cdn.fluent.RuleSetsClient;
 import com.azure.resourcemanager.cdn.fluent.RulesClient;
 import com.azure.resourcemanager.cdn.fluent.SecretsClient;
 import com.azure.resourcemanager.cdn.fluent.SecurityPoliciesClient;
-import com.azure.resourcemanager.cdn.fluent.WebAgentsClient;
 import com.azure.resourcemanager.cdn.fluent.models.CheckEndpointNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateProbeOutputInner;
@@ -297,34 +292,6 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The KeyGroupsClient object to access its operations.
-     */
-    private final KeyGroupsClient keyGroups;
-
-    /**
-     * Gets the KeyGroupsClient object to access its operations.
-     * 
-     * @return the KeyGroupsClient object.
-     */
-    public KeyGroupsClient getKeyGroups() {
-        return this.keyGroups;
-    }
-
-    /**
-     * The DeploymentVersionsClient object to access its operations.
-     */
-    private final DeploymentVersionsClient deploymentVersions;
-
-    /**
-     * Gets the DeploymentVersionsClient object to access its operations.
-     * 
-     * @return the DeploymentVersionsClient object.
-     */
-    public DeploymentVersionsClient getDeploymentVersions() {
-        return this.deploymentVersions;
-    }
-
-    /**
      * The EndpointsClient object to access its operations.
      */
     private final EndpointsClient endpoints;
@@ -378,48 +345,6 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      */
     public CustomDomainsClient getCustomDomains() {
         return this.customDomains;
-    }
-
-    /**
-     * The ProfileAgentsClient object to access its operations.
-     */
-    private final ProfileAgentsClient profileAgents;
-
-    /**
-     * Gets the ProfileAgentsClient object to access its operations.
-     * 
-     * @return the ProfileAgentsClient object.
-     */
-    public ProfileAgentsClient getProfileAgents() {
-        return this.profileAgents;
-    }
-
-    /**
-     * The WebAgentsClient object to access its operations.
-     */
-    private final WebAgentsClient webAgents;
-
-    /**
-     * Gets the WebAgentsClient object to access its operations.
-     * 
-     * @return the WebAgentsClient object.
-     */
-    public WebAgentsClient getWebAgents() {
-        return this.webAgents;
-    }
-
-    /**
-     * The KnowledgeSourcesClient object to access its operations.
-     */
-    private final KnowledgeSourcesClient knowledgeSources;
-
-    /**
-     * Gets the KnowledgeSourcesClient object to access its operations.
-     * 
-     * @return the KnowledgeSourcesClient object.
-     */
-    public KnowledgeSourcesClient getKnowledgeSources() {
-        return this.knowledgeSources;
     }
 
     /**
@@ -538,7 +463,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01-preview";
+        this.apiVersion = "2026-10-01";
         this.operations = new OperationsClientImpl(this);
         this.profiles = new ProfilesClientImpl(this);
         this.afdEndpoints = new AfdEndpointsClientImpl(this);
@@ -549,15 +474,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.rules = new RulesClientImpl(this);
         this.securityPolicies = new SecurityPoliciesClientImpl(this);
         this.secrets = new SecretsClientImpl(this);
-        this.keyGroups = new KeyGroupsClientImpl(this);
-        this.deploymentVersions = new DeploymentVersionsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.origins = new OriginsClientImpl(this);
         this.originGroups = new OriginGroupsClientImpl(this);
         this.customDomains = new CustomDomainsClientImpl(this);
-        this.profileAgents = new ProfileAgentsClientImpl(this);
-        this.webAgents = new WebAgentsClientImpl(this);
-        this.knowledgeSources = new KnowledgeSourcesClientImpl(this);
         this.afdCustomDomains = new AfdCustomDomainsClientImpl(this);
         this.afdProfiles = new AfdProfilesClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);
@@ -613,18 +533,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             @BodyParam("application/json") ValidateProbeInput validateProbeInput, Context context);
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * afdx endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param checkEndpointNameAvailabilityInput Input to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
         String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
@@ -697,17 +606,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             resourceGroupName, contentType, accept, checkEndpointNameAvailabilityInput, context);
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * afdx endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param checkEndpointNameAvailabilityInput Input to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(String resourceGroupName,
         CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
@@ -715,18 +614,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * afdx endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param checkEndpointNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityWithResponse(
         String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
@@ -735,17 +623,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             context).block();
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * afdx endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param checkEndpointNameAvailabilityInput Input to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(String resourceGroupName,
         CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
@@ -753,17 +631,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             Context.NONE).getValue();
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityOutputInner>>
         checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
@@ -817,16 +685,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             checkNameAvailabilityInput, context);
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckNameAvailabilityOutputInner>
         checkNameAvailabilityAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
@@ -834,50 +693,21 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityOutputInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput, context).block();
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityOutputInner
         checkNameAvailability(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponse(checkNameAvailabilityInput, Context.NONE).getValue();
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityOutputInner>>
         checkNameAvailabilityWithSubscriptionWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
@@ -940,16 +770,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             this.getSubscriptionId(), contentType, accept, checkNameAvailabilityInput, context);
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckNameAvailabilityOutputInner>
         checkNameAvailabilityWithSubscriptionAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
@@ -957,50 +778,21 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithSubscriptionWithResponse(
         CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         return checkNameAvailabilityWithSubscriptionWithResponseAsync(checkNameAvailabilityInput, context).block();
     }
 
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     * 
-     * @param checkNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityOutputInner
         checkNameAvailabilityWithSubscription(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithSubscriptionWithResponse(checkNameAvailabilityInput, Context.NONE).getValue();
     }
 
-    /**
-     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
-     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
-     * to the origin path specified in the endpoint configuration.
-     * 
-     * @param validateProbeInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ValidateProbeOutputInner>>
         validateProbeWithResponseAsync(ValidateProbeInput validateProbeInput) {
@@ -1062,51 +854,20 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             accept, validateProbeInput, context);
     }
 
-    /**
-     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
-     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
-     * to the origin path specified in the endpoint configuration.
-     * 
-     * @param validateProbeInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateProbeOutputInner> validateProbeAsync(ValidateProbeInput validateProbeInput) {
         return validateProbeWithResponseAsync(validateProbeInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
-     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
-     * to the origin path specified in the endpoint configuration.
-     * 
-     * @param validateProbeInput The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateProbeOutputInner> validateProbeWithResponse(ValidateProbeInput validateProbeInput,
         Context context) {
         return validateProbeWithResponseAsync(validateProbeInput, context).block();
     }
 
-    /**
-     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
-     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
-     * to the origin path specified in the endpoint configuration.
-     * 
-     * @param validateProbeInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateProbeOutputInner validateProbe(ValidateProbeInput validateProbeInput) {
         return validateProbeWithResponse(validateProbeInput, Context.NONE).getValue();

@@ -101,6 +101,8 @@ public class TestUtils {
     static final int USE_CASE_MULTIPLE_SESSIONS2 = 30;
     static final int USE_CASE_MULTIPLE_SESSIONS3 = 31;
     static final int USE_CASE_AUTO_RENEW_RECEIVE = 32;
+    static final int USE_CASE_ASYNC_PROCESSOR = 33;
+    static final int USE_CASE_ASYNC_SESSION_PROCESSOR = 34;
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.

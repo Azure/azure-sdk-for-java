@@ -321,17 +321,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves details of this L3 Isolation Domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3 Isolation Domain resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L3IsolationDomainInner> getByResourceGroupWithResponse(String resourceGroupName,
         String l3IsolationDomainName, Context context) {
@@ -340,16 +330,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, accept, context);
     }
 
-    /**
-     * Retrieves details of this L3 Isolation Domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner getByResourceGroup(String resourceGroupName, String l3IsolationDomainName) {
         return getByResourceGroupWithResponse(resourceGroupName, l3IsolationDomainName, Context.NONE).getValue();
@@ -397,11 +378,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String l3IsolationDomainName,
         L3IsolationDomainInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
     /**
@@ -450,41 +427,14 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             this.client.getContext());
     }
 
-    /**
-     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
-     * external services .This configuration is applied on the devices only after the creation of networks is completed
-     * and isolation domain is enabled.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(String resourceGroupName,
         String l3IsolationDomainName, L3IsolationDomainInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, l3IsolationDomainName, body);
-        return this.client.<L3IsolationDomainInner, L3IsolationDomainInner>getLroResult(response,
-            L3IsolationDomainInner.class, L3IsolationDomainInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
-    /**
-     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
-     * external services .This configuration is applied on the devices only after the creation of networks is completed
-     * and isolation domain is enabled.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(String resourceGroupName,
         String l3IsolationDomainName, L3IsolationDomainInner body, Context context) {
@@ -513,43 +463,19 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
-     * external services .This configuration is applied on the devices only after the creation of networks is completed
-     * and isolation domain is enabled.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner create(String resourceGroupName, String l3IsolationDomainName,
         L3IsolationDomainInner body) {
-        return beginCreate(resourceGroupName, l3IsolationDomainName, body).getFinalResult();
+        return create(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
-    /**
-     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
-     * external services .This configuration is applied on the devices only after the creation of networks is completed
-     * and isolation domain is enabled.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner create(String resourceGroupName, String l3IsolationDomainName,
         L3IsolationDomainInner body, Context context) {
-        return beginCreate(resourceGroupName, l3IsolationDomainName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, l3IsolationDomainName, body, context));
     }
 
     /**
@@ -590,11 +516,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String l3IsolationDomainName,
         L3IsolationDomainPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
     /**
@@ -639,37 +561,14 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body API to update certain properties of the L3 Isolation Domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(String resourceGroupName,
         String l3IsolationDomainName, L3IsolationDomainPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, l3IsolationDomainName, body);
-        return this.client.<L3IsolationDomainInner, L3IsolationDomainInner>getLroResult(response,
-            L3IsolationDomainInner.class, L3IsolationDomainInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body API to update certain properties of the L3 Isolation Domain resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(String resourceGroupName,
         String l3IsolationDomainName, L3IsolationDomainPatch body, Context context) {
@@ -696,39 +595,19 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body API to update certain properties of the L3 Isolation Domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner update(String resourceGroupName, String l3IsolationDomainName,
         L3IsolationDomainPatch body) {
-        return beginUpdate(resourceGroupName, l3IsolationDomainName, body).getFinalResult();
+        return update(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body API to update certain properties of the L3 Isolation Domain resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3 Isolation Domain resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner update(String resourceGroupName, String l3IsolationDomainName,
         L3IsolationDomainPatch body, Context context) {
-        return beginUpdate(resourceGroupName, l3IsolationDomainName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, l3IsolationDomainName, body, context));
     }
 
     /**
@@ -762,8 +641,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String l3IsolationDomainName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     /**
@@ -802,33 +680,13 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             this.client.getContext());
     }
 
-    /**
-     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, l3IsolationDomainName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
         Context context) {
@@ -852,33 +710,16 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String l3IsolationDomainName) {
-        beginDelete(resourceGroupName, l3IsolationDomainName).getFinalResult();
+        delete(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String l3IsolationDomainName, Context context) {
-        beginDelete(resourceGroupName, l3IsolationDomainName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, l3IsolationDomainName, context));
     }
 
     /**
@@ -928,11 +769,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3IsolationDomainInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<L3IsolationDomainsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -955,31 +792,13 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays L3IsolationDomains list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of L3IsolationDomain items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Displays L3IsolationDomains list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of L3IsolationDomain items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1027,11 +846,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3IsolationDomainInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<L3IsolationDomainsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1052,27 +867,13 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays L3IsolationDomains list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of L3IsolationDomain items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Displays L3IsolationDomains list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of L3IsolationDomain items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1117,11 +918,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String l3IsolationDomainName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, contentType, accept, body,
-            Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
     /**
@@ -1168,40 +965,15 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the administrative state of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
             UpdateAdministrativeState body) {
-        Response<BinaryData> response
-            = updateAdministrativeStateWithResponse(resourceGroupName, l3IsolationDomainName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
-            Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
-    /**
-     * Updates the administrative state of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
@@ -1231,39 +1003,19 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the administrative state of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
-    /**
-     * Updates the administrative state of the L3 Isolation Domain resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context));
     }
 
     /**
@@ -1301,9 +1053,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateConfigurationWithResponse(String resourceGroupName,
         String l3IsolationDomainName) {
-        final String accept = "application/json";
-        return service.validateConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, accept, Context.NONE);
+        return validateConfigurationWithResponse(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     /**
@@ -1345,35 +1095,14 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             ValidateConfigurationResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfiguration(String resourceGroupName, String l3IsolationDomainName) {
-        Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, l3IsolationDomainName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return beginValidateConfiguration(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfiguration(String resourceGroupName, String l3IsolationDomainName, Context context) {
@@ -1400,37 +1129,19 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
         String l3IsolationDomainName) {
-        return beginValidateConfiguration(resourceGroupName, l3IsolationDomainName).getFinalResult();
+        return validateConfiguration(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Validates the configuration of the resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the action validate configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
         String l3IsolationDomainName, Context context) {
-        return beginValidateConfiguration(resourceGroupName, l3IsolationDomainName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginValidateConfiguration(resourceGroupName, l3IsolationDomainName, context));
     }
 
     /**
@@ -1467,9 +1178,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> commitConfigurationWithResponse(String resourceGroupName,
         String l3IsolationDomainName) {
-        final String accept = "application/json";
-        return service.commitConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3IsolationDomainName, accept, Context.NONE);
+        return commitConfigurationWithResponse(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     /**
@@ -1513,38 +1222,15 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
                 CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfiguration(String resourceGroupName, String l3IsolationDomainName) {
-        Response<BinaryData> response = commitConfigurationWithResponse(resourceGroupName, l3IsolationDomainName);
-        return this.client
-            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                response, CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class, Context.NONE);
+        return beginCommitConfiguration(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
@@ -1574,37 +1260,19 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
         String l3IsolationDomainName) {
-        return beginCommitConfiguration(resourceGroupName, l3IsolationDomainName).getFinalResult();
+        return commitConfiguration(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
-    /**
-     * Commits the configuration of the given resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
         String l3IsolationDomainName, Context context) {
-        return beginCommitConfiguration(resourceGroupName, l3IsolationDomainName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCommitConfiguration(resourceGroupName, l3IsolationDomainName, context));
     }
 
     /**
@@ -1639,11 +1307,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3IsolationDomainInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<L3IsolationDomainsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1697,11 +1361,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3IsolationDomainInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<L3IsolationDomainsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

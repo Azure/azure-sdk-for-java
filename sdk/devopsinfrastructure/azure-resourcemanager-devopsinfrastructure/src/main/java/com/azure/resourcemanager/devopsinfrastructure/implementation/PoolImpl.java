@@ -90,10 +90,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .createOrUpdate(resourceGroupName, poolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Pool create(Context context) {
@@ -115,10 +112,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .update(resourceGroupName, poolName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Pool apply(Context context) {
@@ -131,16 +125,16 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}",
+            "resourceGroupName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}",
+            "poolName");
     }
 
     public Pool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .getByResourceGroupWithResponse(resourceGroupName, poolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Pool refresh(Context context) {

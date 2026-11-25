@@ -75,11 +75,7 @@ public final class RaiTopicImpl implements RaiTopic, RaiTopic.Definition, RaiTop
     }
 
     public RaiTopic create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiTopics()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiTopicName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiTopic create(Context context) {
@@ -101,11 +97,7 @@ public final class RaiTopicImpl implements RaiTopic, RaiTopic.Definition, RaiTop
     }
 
     public RaiTopic apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiTopics()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiTopicName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiTopic apply(Context context) {
@@ -120,17 +112,19 @@ public final class RaiTopicImpl implements RaiTopic, RaiTopic.Definition, RaiTop
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.raiTopicName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "raitopics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raitopics/{raiTopicName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raitopics/{raiTopicName}",
+            "accountName");
+        this.raiTopicName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raitopics/{raiTopicName}",
+            "raiTopicName");
     }
 
     public RaiTopic refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiTopics()
-            .getWithResponse(resourceGroupName, accountName, raiTopicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiTopic refresh(Context context) {

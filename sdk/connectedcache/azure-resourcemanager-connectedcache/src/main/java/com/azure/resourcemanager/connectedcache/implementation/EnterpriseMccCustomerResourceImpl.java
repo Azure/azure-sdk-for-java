@@ -85,10 +85,7 @@ public final class EnterpriseMccCustomerResourceImpl implements EnterpriseMccCus
     }
 
     public EnterpriseMccCustomerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCustomers()
-            .createOrUpdate(resourceGroupName, customerResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnterpriseMccCustomerResource create(Context context) {
@@ -111,11 +108,7 @@ public final class EnterpriseMccCustomerResourceImpl implements EnterpriseMccCus
     }
 
     public EnterpriseMccCustomerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCustomers()
-            .updateWithResponse(resourceGroupName, customerResourceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnterpriseMccCustomerResource apply(Context context) {
@@ -130,17 +123,16 @@ public final class EnterpriseMccCustomerResourceImpl implements EnterpriseMccCus
         com.azure.resourcemanager.connectedcache.ConnectedCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.customerResourceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "enterpriseMccCustomers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}",
+            "resourceGroupName");
+        this.customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}",
+            "customerResourceName");
     }
 
     public EnterpriseMccCustomerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnterpriseMccCustomers()
-            .getByResourceGroupWithResponse(resourceGroupName, customerResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnterpriseMccCustomerResource refresh(Context context) {

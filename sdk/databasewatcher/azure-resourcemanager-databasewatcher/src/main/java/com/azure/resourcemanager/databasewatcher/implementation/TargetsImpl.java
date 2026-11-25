@@ -50,12 +50,11 @@ public final class TargetsImpl implements Targets {
     }
 
     public void delete(String resourceGroupName, String watcherName, String targetName) {
-        this.serviceClient().delete(resourceGroupName, watcherName, targetName);
+        this.deleteWithResponse(resourceGroupName, watcherName, targetName, Context.NONE);
     }
 
     public PagedIterable<Target> listByWatcher(String resourceGroupName, String watcherName) {
-        PagedIterable<TargetInner> inner = this.serviceClient().listByWatcher(resourceGroupName, watcherName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
+        return this.listByWatcher(resourceGroupName, watcherName, Context.NONE);
     }
 
     public PagedIterable<Target> listByWatcher(String resourceGroupName, String watcherName, Context context) {
@@ -64,78 +63,36 @@ public final class TargetsImpl implements Targets {
     }
 
     public Target getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, watcherName, targetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Target> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String watcherName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "watcherName", "watchers", LOGGER);
+        String targetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "targetName", "targets", LOGGER);
         return this.getWithResponse(resourceGroupName, watcherName, targetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, watcherName, targetName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String targetName = ResourceManagerUtils.getValueFromIdByName(id, "targets");
-        if (targetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'targets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String watcherName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "watcherName", "watchers", LOGGER);
+        String targetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "targetName", "targets", LOGGER);
         return this.deleteWithResponse(resourceGroupName, watcherName, targetName, context);
     }
 

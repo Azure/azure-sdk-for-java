@@ -55,26 +55,31 @@ public class KnowledgeSourceFilePreviewExample {
 
         String knowledgeSourceName
             = "file-ks-sample-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+        AzureOpenAIVectorizerParameters vectorizerParameters
+            = new AzureOpenAIVectorizerParameters().setResourceUrl(openAiEndpoint)
+                .setDeploymentName(embeddingDeployment)
+                .setModelName(AzureOpenAIModelName.fromString(embeddingModel));
+        if (userAssignedIdentity == null || userAssignedIdentity.isEmpty()) {
+            vectorizerParameters.setApiKey(openAiApiKey);
+        } else {
+            vectorizerParameters
+                .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(userAssignedIdentity));
+        }
+        KnowledgeSourceIngestionParameters ingestionParameters = new KnowledgeSourceIngestionParameters()
+            .setContentExtractionMode(KnowledgeSourceContentExtractionMode.MINIMAL)
+            .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                .setAzureOpenAIParameters(vectorizerParameters));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(knowledgeSourceName,
+            new FileKnowledgeSourceParameters().setIngestionParameters(ingestionParameters));
+        runFileLifecycle(searchIndexClient, knowledgeSource);
+    }
+
+    static void runFileLifecycle(SearchIndexClient searchIndexClient, FileKnowledgeSource knowledgeSource) {
+        String knowledgeSourceName = knowledgeSource.getName();
         List<String> uploadedFileIds = new ArrayList<>();
         boolean knowledgeSourceCreated = false;
 
         try {
-            AzureOpenAIVectorizerParameters vectorizerParameters
-                = new AzureOpenAIVectorizerParameters().setResourceUrl(openAiEndpoint)
-                    .setDeploymentName(embeddingDeployment)
-                    .setModelName(AzureOpenAIModelName.fromString(embeddingModel));
-            if (userAssignedIdentity == null || userAssignedIdentity.isEmpty()) {
-                vectorizerParameters.setApiKey(openAiApiKey);
-            } else {
-                vectorizerParameters
-                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(userAssignedIdentity));
-            }
-            KnowledgeSourceIngestionParameters ingestionParameters = new KnowledgeSourceIngestionParameters()
-                .setContentExtractionMode(KnowledgeSourceContentExtractionMode.MINIMAL)
-                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
-                    .setAzureOpenAIParameters(vectorizerParameters));
-            FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(knowledgeSourceName,
-                new FileKnowledgeSourceParameters().setIngestionParameters(ingestionParameters));
             searchIndexClient.createKnowledgeSource(knowledgeSource);
             knowledgeSourceCreated = true;
 
@@ -105,8 +110,8 @@ public class KnowledgeSourceFilePreviewExample {
 
             Map<String, String> updatedMetadata = new LinkedHashMap<>(metadata);
             updatedMetadata.put("status", "reviewed");
-            KnowledgeSourceFile updatedFile = searchIndexClient.updateKnowledgeSourceFile(firstFile.getFileId(),
-                knowledgeSourceName,
+            KnowledgeSourceFile updatedFile = searchIndexClient.updateKnowledgeSourceFile(knowledgeSourceName,
+                firstFile.getFileId(),
                 new UpdateKnowledgeSourceFileRequest(
                     new FileUploadMetadata().setFileName(firstFile.getFileName()).setMetadata(updatedMetadata),
                     createFileContent("# August features\n\nUpdated and reviewed.", "features.md")));
@@ -115,20 +120,20 @@ public class KnowledgeSourceFilePreviewExample {
                 throw new IllegalStateException("The file wasn't updated in place.");
             }
 
-            searchIndexClient.deleteKnowledgeSourceFile(secondFile.getFileId(), knowledgeSourceName);
+            searchIndexClient.deleteKnowledgeSourceFile(knowledgeSourceName, secondFile.getFileId());
             uploadedFileIds.remove(secondFile.getFileId());
             long remainingFiles = searchIndexClient.listKnowledgeSourceFiles(knowledgeSourceName).stream().count();
             if (remainingFiles != 1) {
                 throw new IllegalStateException("Deleting one file should leave the other file intact.");
             }
 
-            searchIndexClient.deleteKnowledgeSourceFile(firstFile.getFileId(), knowledgeSourceName);
+            searchIndexClient.deleteKnowledgeSourceFile(knowledgeSourceName, firstFile.getFileId());
             uploadedFileIds.remove(firstFile.getFileId());
             if (searchIndexClient.listKnowledgeSourceFiles(knowledgeSourceName).stream().findAny().isPresent()) {
                 throw new IllegalStateException("The File knowledge source should be empty after deleting its files.");
             }
         } finally {
-            uploadedFileIds.forEach(fileId -> searchIndexClient.deleteKnowledgeSourceFile(fileId, knowledgeSourceName));
+            uploadedFileIds.forEach(fileId -> searchIndexClient.deleteKnowledgeSourceFile(knowledgeSourceName, fileId));
             if (knowledgeSourceCreated) {
                 searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
             }

@@ -14,6 +14,8 @@ import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
+import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -37,15 +39,91 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
-        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
+        customizeCampaignPollingStrategies(libraryCustomization, logger);
+        stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
+        internalizeUnusedFunctionToolType(libraryCustomization, logger);
+        deprecateLegacyBrowserAutomationTools(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
+        registerRealtimeWebSocketClients(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
+    private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
+        int[] customizedMethods = new int[1];
+        customization.getPackage("com.azure.ai.agents.implementation").listClasses().forEach(classCustomization ->
+            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{\n"
+                        + "    try {\n"
+                        + "        Object value = binaryData.toObject(Map.class);\n"
+                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                        + "            return null;\n"
+                        + "        }\n"
+                        + "        for (String segment : path) {\n"
+                        + "            value = ((Map<?, ?>) value).get(segment);\n"
+                        + "        }\n"
+                        + "        return (String) value;\n"
+                        + "    } catch (RuntimeException e) {\n"
+                        + "        return null;\n"
+                        + "    }\n"
+                        + "}"));
+                    customizedMethods[0]++;
+                }))));
+
+        if (customizedMethods[0] == 0) {
+            throw new IllegalStateException("No generated getNextLink methods were found.");
+        }
+        logger.info("Customized {} paging continuation methods to honor has_more.", customizedMethods[0]);
+    }
+
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
+
+    private void deprecateLegacyBrowserAutomationTools(LibraryCustomization customization) {
+        for (String className : Arrays.asList("BrowserAutomationPreviewTool", "BrowserAutomationPreviewToolboxTool")) {
+            customization.getClass(MODELS_PACKAGE, className).customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException(className + " was not generated"));
+                deprecateBrowserAutomationNode(clazz, className.replace("Preview", ""));
+            });
+        }
+
+        customization.getClass(MODELS_PACKAGE, "ToolType").customizeAst(ast -> {
+            FieldDeclaration field = ast.getClassByName("ToolType")
+                .orElseThrow(() -> new IllegalStateException("ToolType was not generated"))
+                .getFieldByName("BROWSER_AUTOMATION_PREVIEW")
+                .orElseThrow(() -> new IllegalStateException("ToolType.BROWSER_AUTOMATION_PREVIEW was not generated"));
+            deprecateBrowserAutomationNode(field, "ToolType#BROWSER_AUTOMATION");
+        });
+
+        customization.getClass(MODELS_PACKAGE, "ToolboxToolType")
+            .customizeAst(ast -> deprecateBrowserAutomationNode(
+                ast.getEnumByName("ToolboxToolType")
+                    .orElseThrow(() -> new IllegalStateException("ToolboxToolType was not generated"))
+                    .getEntries()
+                    .stream()
+                    .filter(entry -> "BROWSER_AUTOMATION_PREVIEW".equals(entry.getNameAsString()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "ToolboxToolType.BROWSER_AUTOMATION_PREVIEW was not generated")),
+                "ToolboxToolType#BROWSER_AUTOMATION"));
+    }
+
+    private <T extends Node & NodeWithAnnotations<T> & NodeWithJavadoc<T>> void deprecateBrowserAutomationNode(T node,
+        String replacement) {
+        if (!node.isAnnotationPresent(Deprecated.class)) {
+            node.addMarkerAnnotation(Deprecated.class);
+        }
+        com.github.javaparser.javadoc.Javadoc javadoc = node.getJavadoc()
+            .orElseThrow(() -> new IllegalStateException("Missing Javadoc for legacy Browser Automation API"));
+        javadoc.getBlockTags().removeIf(tag -> "deprecated".equals(tag.getTagName()));
+        javadoc.addBlockTag("deprecated",
+            "This legacy Browser Automation tool is deprecated and is no longer available. Use {@link " + replacement
+                + "} instead. See <a href=\"https://aka.ms/bat/docs\">Browser Automation documentation</a>.");
+        node.setJavadocComment(javadoc);
+    }
 
     private static final String UNION_MARKER = "AI Tooling: union type";
 
@@ -93,11 +171,18 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
-    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
-        customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")
-            .customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
-                .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
-                .removeModifier(Modifier.Keyword.PUBLIC));
+    private void internalizeUnusedFunctionToolType(LibraryCustomization customization, Logger logger) {
+        ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
+            .filter(clazz -> "ToolFunctionToolType3".equals(clazz.getClassName()))
+            .findFirst()
+            .orElse(null);
+        if (enumCustomization == null) {
+            logger.info("ToolFunctionToolType3 is not generated; no enum visibility change is needed.");
+            return;
+        }
+        enumCustomization.customizeAst(ast -> ast.getEnumByName("ToolFunctionToolType3")
+            .orElseThrow(() -> new IllegalStateException("ToolFunctionToolType3 was not generated"))
+            .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
     /**
@@ -109,24 +194,30 @@ public class AgentsCustomizations extends Customization {
      */
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
-            "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationEvaluationSet", "AgentOptimizationEvaluatorGenerationConfiguration",
+            "AgentOptimizationSkillReference", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationTraceConnectionConfiguration", "AgentOptimizationTraceWindow",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
-            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
+            "EvaluationVoiceModelConfiguration", "OptimizationContext",
             "MemoryItem", "MemoryStoreDefinition",
-            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
-            "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
-            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
-            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
-            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
-            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
+            "RealtimeClientEvent", "RealtimeConversationItem",
+            "RealtimeConversationItemMessage", "RealtimeResponseInputMessage",
+            "TelephonyAddress", "TelephonyBinding", "TelephonyCampaignSchedule",
+            "TelephonyOutboundRetryPolicy",
+            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentBaseDefinition",
+            "VoiceAgentGreetingConfiguration",
+            "VoiceAgentPostCallDestination",
+            "VoiceAgentInterimResponseConfiguration", "VoiceAgentLiveDelegation", "VoiceAgentSystemTool", "VoiceAgentTool",
+            "VoiceAgentSubagentConfiguration", "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
-            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
+            classCustomization.customizeAst(ast -> ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
                 .getConstructors()
                 .stream()
                 .filter(constructor -> constructor.isPublic())
-                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
         }
     }
 
@@ -140,112 +231,13 @@ public class AgentsCustomizations extends Customization {
         List<String[]> requireApproval = Arrays.asList(
             stringUnionVariant("the approval setting string to set (e.g., \"always\" or \"never\")"),
             modelUnionVariant("McpToolRequireApproval", "the {@link McpToolRequireApproval} filter to set"));
-        List<String[]> toolChoice = Arrays.asList(
-            openAiDirectUnionVariant("com.openai.models.responses.ToolChoiceOptions", "ToolChoiceOptions",
-                "the openai-java {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or"
-                    + " {@code REQUIRED})",
-                "an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another"
-                    + " variant",
-                "json.startsWith(\"\\\"\")"),
-            openAiUnionVariant("com.openai.models.responses.ToolChoiceFunction",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isFunction",
-                "asFunction", "a specific function tool"),
-            openAiUnionVariant("com.openai.models.responses.ToolChoiceMcp",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isMcp",
-                "asMcp", "a specific MCP tool"));
-        List<String[]> longMaxOutputTokens = Arrays.asList(
-            longUnionVariant("the maximum number of output tokens to set"),
-            stringUnionVariant(
-                "the token-limit string to set, for example {@code \"inf\"} for an unlimited count"));
         List<String[]> allowedTools
             = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
                 modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
-        List<String[]> tracing = Arrays.asList(stringUnionVariant("the tracing mode string to set"),
-            modelUnionVariant("RealtimeSessionTracingConfiguration",
-                "the {@link RealtimeSessionTracingConfiguration} configuration to set"));
-        List<String[]> truncation = Arrays.asList(stringUnionVariant("the truncation mode string to set"),
-            openAiDirectUnionVariant("com.openai.models.realtime.RealtimeTruncationRetentionRatio",
-                "RealtimeTruncationRetentionRatio",
-                "the openai-java {@link RealtimeTruncationRetentionRatio} configuration to set",
-                "an openai-java {@link RealtimeTruncationRetentionRatio}, or {@code null} when it is not set or"
-                    + " holds another variant",
-                "json.startsWith(\"{\")"));
-        List<String[]> voice = Arrays.asList(
-            stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
-            modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
-                "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
-        List<String[]> transcriptionUsage = Arrays.asList(
-            discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
-                "the {@link TranscriptTextUsageTokens} usage to set"),
-            discriminatedModelUnionVariant("TranscriptTextUsageDuration", "TranscriptTextUsage",
-                "the {@link TranscriptTextUsageDuration} usage to set"));
-        List<String[]> voiceAgentSessionResponse = Arrays.<String[]>asList(
-            modelUnionVariant("VoiceAgentSessionResponseConfiguration",
-                "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
-
-        customizeImmutableUnionProperty(customization,
-            "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
-            "Usage statistics for the transcription.", transcriptionUsage, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeSessionCreatedEvent", "session",
-            "The session configuration.", voiceAgentSessionResponse, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdatedEvent", "session",
-            "The session configuration.", voiceAgentSessionResponse, logger);
-
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "tracing", "Tracing configuration.",
-            tracing, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "toolChoice",
-            "How the model chooses tools.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
-            logger);
-        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "truncation",
-            "The truncation policy for the session.", truncation, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionAudioOutput", "voice",
-            "The built-in or custom voice used for audio output.", voice, true, false, logger);
-
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "maxOutputTokens",
-            "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
-            "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfiguration", "toolChoice",
-            "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
-            logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
             allowedTools, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
             "The require_approval property.", requireApproval, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "toolChoice",
-            "How the model chooses tools.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
-            logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "maxOutputTokens",
-            "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "toolChoice",
-            "Tool-selection behavior for the session.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "maxOutputTokens",
-            "The maximum output-token count for one response.", longMaxOutputTokens, false, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
-            "Tool-selection behavior for the session.", toolChoice, false, false, logger);
-
-        // The response base models are immutable outputs. Their typed getters read through the overridable raw accessor
-        // so the generated subclasses that shadow the field share the same typed API.
-        customizeUnionProperty(customization, "VoiceAgentRealtimeResponseBase", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            longMaxOutputTokens, false, true, logger);
-        customizeUnionProperty(customization, "VoiceAgentRealtimeResponse", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            new ArrayList<>(), false, false, logger);
-        customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            longMaxOutputTokens, false, true, logger);
-        customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            new ArrayList<>(), false, false, logger);
         customizeUnionProperty(customization, "WebIqPreviewTool", "requireApproval",
             "Whether the agent requires approval before executing actions. When omitted, the service defaults to"
                 + " \"always\".",
@@ -560,12 +552,6 @@ public class AgentsCustomizations extends Customization {
         return variant;
     }
 
-    private static String[] longUnionVariant(String paramDoc) {
-        return unionVariant("long", "Long", "Long.class", "Long", "fromObject", paramDoc,
-            "a Long, or {@code null} when it is not set or holds another variant",
-            "!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-')", null, false);
-    }
-
     private static String[] stringListUnionVariant(String paramDoc) {
         return unionVariant("List<String>", "List<String>", "new TypeReference<List<String>>() { }", "StringList",
             "fromObject", paramDoc, "a list of Strings, or {@code null} when it is not set or holds another variant",
@@ -734,6 +720,77 @@ public class AgentsCustomizations extends Customization {
         });
     }
 
+    private void customizeCampaignPollingStrategies(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents.implementation", "BetaVoiceAgentsTelephoniesImpl").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("BetaVoiceAgentsTelephoniesImpl")
+                .orElseThrow(() -> new IllegalStateException("BetaVoiceAgentsTelephoniesImpl was not generated."));
+            customizeCampaignPollingStrategies(clazz);
+            logger.info("Customized twelve campaign polling strategies.");
+        });
+    }
+
+    private static void customizeCampaignPollingStrategies(ClassOrInterfaceDeclaration clazz) {
+        String[] prefixes = { "beginCreateCampaign", "beginCancelCampaign", "beginDeleteCampaign" };
+        int[] counts = new int[prefixes.length];
+        for (MethodDeclaration method : clazz.getMethods()) {
+            for (int i = 0; i < prefixes.length; i++) {
+                if (!method.getNameAsString().startsWith(prefixes[i])) {
+                    continue;
+                }
+                boolean async = method.getNameAsString().endsWith("Async");
+                String originalType = async ? "DefaultPollingStrategy" : "SyncDefaultPollingStrategy";
+                String replacementType
+                    = async ? "CampaignOperationLocationPollingStrategy" : "SyncCampaignOperationLocationPollingStrategy";
+                List<ObjectCreationExpr> strategies = method.findAll(ObjectCreationExpr.class);
+                strategies.removeIf(creation -> !originalType.equals(creation.getType().getNameAsString())
+                    && !replacementType.equals(creation.getType().getNameAsString()));
+                if (strategies.size() != 1) {
+                    throw new IllegalStateException("Expected one campaign polling strategy in "
+                        + method.getNameAsString() + " but found " + strategies.size() + ".");
+                }
+                ObjectCreationExpr creation = strategies.get(0);
+                int expectedArguments = originalType.equals(creation.getType().getNameAsString()) ? 1 : 2;
+                if (creation.getArguments().size() != expectedArguments) {
+                    throw new IllegalStateException("Unexpected campaign polling strategy arguments in "
+                        + method.getNameAsString() + ".");
+                }
+                creation.setType(StaticJavaParser.parseClassOrInterfaceType(
+                    "com.azure.ai.agents.implementation." + replacementType + "<>"));
+                creation.setArguments(NodeList.nodeList(creation.getArgument(0).clone(),
+                    StaticJavaParser.parseExpression("finalRequestOptions -> this.getCampaignWithResponse"
+                        + (async ? "Async" : "") + "(agentName, campaignName, finalRequestOptions)")));
+                counts[i]++;
+            }
+        }
+        for (int i = 0; i < prefixes.length; i++) {
+            if (counts[i] != 4) {
+                throw new IllegalStateException("Expected four campaign polling strategies for " + prefixes[i]
+                    + " but customized " + counts[i] + ".");
+            }
+        }
+    }
+
+    private void registerRealtimeWebSocketClients(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder was not generated."));
+            NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder has no service-client metadata."))
+                .asNormalAnnotationExpr();
+            com.github.javaparser.ast.expr.ArrayInitializerExpr clients = annotation.getPairs().stream()
+                .filter(pair -> "serviceClients".equals(pair.getNameAsString()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder has no serviceClients list."))
+                .getValue()
+                .asArrayInitializerExpr();
+            for (String client : Arrays.asList("VoiceAgentsWebSocketClient", "VoiceAgentsWebSocketAsyncClient")) {
+                if (clients.getValues().stream().noneMatch(value -> (client + ".class").equals(value.toString()))) {
+                    clients.getValues().add(StaticJavaParser.parseExpression(client + ".class"));
+                }
+            }
+        });
+    }
+
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
         customization.getPackage("com.azure.ai.agents")
             .listClasses()
@@ -784,7 +841,9 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void annotateMember(TypeDeclaration<?> type, String member, String description, Logger logger) {
-        String fieldName = toCamelCase(member);
+        String fieldName = type.getFields().stream()
+            .flatMap(field -> field.getVariables().stream())
+            .anyMatch(variable -> variable.getNameAsString().equals(member)) ? member : toCamelCase(member);
         boolean found = false;
 
         for (FieldDeclaration field : type.getFields()) {

@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -35,7 +36,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CapabilitiesByS
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CapturedLogsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DbAgentsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MaintenanceEventsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MajorVersionUpgradePrechecksClient;
@@ -306,20 +306,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
-     * The DbAgentsClient object to access its operations.
-     */
-    private final DbAgentsClient dbAgents;
-
-    /**
-     * Gets the DbAgentsClient object to access its operations.
-     * 
-     * @return the DbAgentsClient object.
-     */
-    public DbAgentsClient getDbAgents() {
-        return this.dbAgents;
-    }
-
-    /**
      * The AdministratorsMicrosoftEntrasClient object to access its operations.
      */
     private final AdministratorsMicrosoftEntrasClient administratorsMicrosoftEntras;
@@ -532,7 +518,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01-preview";
+        this.apiVersion = "2026-10-01";
         this.operations = new OperationsClientImpl(this);
         this.migrations = new MigrationsClientImpl(this);
         this.servers = new ServersClientImpl(this);
@@ -544,7 +530,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.virtualEndpoints = new VirtualEndpointsClientImpl(this);
         this.maintenanceEvents = new MaintenanceEventsClientImpl(this);
         this.majorVersionUpgradePrechecks = new MajorVersionUpgradePrechecksClientImpl(this);
-        this.dbAgents = new DbAgentsClientImpl(this);
         this.administratorsMicrosoftEntras = new AdministratorsMicrosoftEntrasClientImpl(this);
         this.capabilitiesByServers = new CapabilitiesByServersClientImpl(this);
         this.capturedLogs = new CapturedLogsClientImpl(this);
@@ -616,6 +601,24 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -624,17 +627,25 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -653,12 +664,11 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

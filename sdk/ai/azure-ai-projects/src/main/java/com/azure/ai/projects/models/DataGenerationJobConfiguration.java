@@ -142,6 +142,8 @@ public class DataGenerationJobConfiguration implements JsonSerializable<DataGene
                     return SimpleQnADataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else if ("traces".equals(discriminatorValue)) {
                     return TracesDataGenerationJobConfiguration.fromJson(readerToUse.reset());
+                } else if ("conversations".equals(discriminatorValue)) {
+                    return ConversationsDataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else if ("simulation_seed".equals(discriminatorValue)) {
                     return SimulationSeedDataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else if ("tool_use".equals(discriminatorValue)) {

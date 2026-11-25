@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class RelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/Relationships_Delete.json
+     * x-ms-original-file: 2026-11-01/Relationships_Delete.json
      */
     /**
      * Sample code: Relationships_Delete.

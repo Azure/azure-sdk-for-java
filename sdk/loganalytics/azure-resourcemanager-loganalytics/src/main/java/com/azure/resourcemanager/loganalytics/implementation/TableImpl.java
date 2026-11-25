@@ -110,10 +110,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     }
 
     public Table create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTables()
-            .createOrUpdate(resourceGroupName, workspaceName, tableName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Table create(Context context) {
@@ -134,10 +131,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     }
 
     public Table apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTables()
-            .update(resourceGroupName, workspaceName, tableName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Table apply(Context context) {
@@ -150,17 +144,19 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     TableImpl(TableInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.tableName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tables");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}",
+            "workspaceName");
+        this.tableName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}",
+            "tableName");
     }
 
     public Table refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTables()
-            .getWithResponse(resourceGroupName, workspaceName, tableName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Table refresh(Context context) {

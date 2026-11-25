@@ -161,17 +161,7 @@ public final class NetworkSecurityPerimeterConfigurationOperationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityPerimeterConfigurationInner> listAsync(String resourceGroupName,
         String namespaceName) {
@@ -198,35 +188,14 @@ public final class NetworkSecurityPerimeterConfigurationOperationsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> list(String resourceGroupName,
         String namespaceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, namespaceName));
     }
 
-    /**
-     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> list(String resourceGroupName,
         String namespaceName, Context context) {

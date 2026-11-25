@@ -45,7 +45,7 @@ public final class MachineRunCommandsImpl implements MachineRunCommands {
     }
 
     public void delete(String resourceGroupName, String machineName, String runCommandName) {
-        this.serviceClient().delete(resourceGroupName, machineName, runCommandName);
+        this.delete(resourceGroupName, machineName, runCommandName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String machineName, String runCommandName, Context context) {
@@ -65,78 +65,36 @@ public final class MachineRunCommandsImpl implements MachineRunCommands {
     }
 
     public MachineRunCommand getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
-        if (machineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
-        }
-        String runCommandName = ResourceManagerUtils.getValueFromIdByName(id, "runCommands");
-        if (runCommandName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runCommands'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, machineName, runCommandName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MachineRunCommand> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
-        if (machineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
-        }
-        String runCommandName = ResourceManagerUtils.getValueFromIdByName(id, "runCommands");
-        if (runCommandName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runCommands'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String machineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "machineName", "machines", LOGGER);
+        String runCommandName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "runCommandName", "runCommands", LOGGER);
         return this.getWithResponse(resourceGroupName, machineName, runCommandName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
-        if (machineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
-        }
-        String runCommandName = ResourceManagerUtils.getValueFromIdByName(id, "runCommands");
-        if (runCommandName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runCommands'.", id)));
-        }
-        this.delete(resourceGroupName, machineName, runCommandName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
-        if (machineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
-        }
-        String runCommandName = ResourceManagerUtils.getValueFromIdByName(id, "runCommands");
-        if (runCommandName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'runCommands'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String machineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "machineName", "machines", LOGGER);
+        String runCommandName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}",
+            "runCommandName", "runCommands", LOGGER);
         this.delete(resourceGroupName, machineName, runCommandName, context);
     }
 

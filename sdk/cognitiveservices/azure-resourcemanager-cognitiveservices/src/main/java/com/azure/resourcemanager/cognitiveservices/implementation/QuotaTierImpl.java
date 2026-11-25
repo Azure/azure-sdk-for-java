@@ -46,11 +46,7 @@ public final class QuotaTierImpl implements QuotaTier, QuotaTier.Definition, Quo
     private String defaultParameter;
 
     public QuotaTier create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTiers()
-            .createOrUpdateWithResponse(defaultParameter, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public QuotaTier create(Context context) {
@@ -72,11 +68,7 @@ public final class QuotaTierImpl implements QuotaTier, QuotaTier.Definition, Quo
     }
 
     public QuotaTier apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTiers()
-            .updateWithResponse(defaultParameter, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public QuotaTier apply(Context context) {
@@ -91,13 +83,12 @@ public final class QuotaTierImpl implements QuotaTier, QuotaTier.Definition, Quo
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.defaultParameter = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "quotaTiers");
+        this.defaultParameter = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}", "default");
     }
 
     public QuotaTier refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getQuotaTiers().getWithResponse(defaultParameter, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public QuotaTier refresh(Context context) {

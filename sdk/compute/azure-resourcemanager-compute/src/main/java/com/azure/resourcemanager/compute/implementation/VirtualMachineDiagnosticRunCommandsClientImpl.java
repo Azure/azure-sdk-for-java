@@ -131,19 +131,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * The operation to get the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineDiagnosticRunCommandInner>> getByVirtualMachineWithResponseAsync(
         String resourceGroupName, String vmName, String runCommandName, String expand) {
@@ -215,17 +203,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             resourceGroupName, vmName, runCommandName, expand, accept, context);
     }
 
-    /**
-     * The operation to get the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineDiagnosticRunCommandInner> getByVirtualMachineAsync(String resourceGroupName,
         String vmName, String runCommandName) {
@@ -234,36 +212,14 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineDiagnosticRunCommandInner> getByVirtualMachineWithResponse(String resourceGroupName,
         String vmName, String runCommandName, String expand, Context context) {
         return getByVirtualMachineWithResponseAsync(resourceGroupName, vmName, runCommandName, expand, context).block();
     }
 
-    /**
-     * The operation to get the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineDiagnosticRunCommandInner getByVirtualMachine(String resourceGroupName, String vmName,
         String runCommandName) {
@@ -272,19 +228,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             .getValue();
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineDiagnosticRunCommandInner runCommand) {
@@ -369,18 +313,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             resourceGroupName, vmName, runCommandName, contentType, accept, runCommand, context);
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineDiagnosticRunCommandInner runCommand) {
@@ -413,37 +346,14 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             context);
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineDiagnosticRunCommandInner runCommand) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).getSyncPoller();
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineDiagnosticRunCommandInner runCommand, Context context) {
@@ -451,18 +361,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createOrUpdateAsync(String resourceGroupName, String vmName, String runCommandName,
         VirtualMachineDiagnosticRunCommandInner runCommand) {
@@ -490,54 +389,21 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createOrUpdate(String resourceGroupName, String vmName, String runCommandName,
         VirtualMachineDiagnosticRunCommandInner runCommand) {
         createOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).block();
     }
 
-    /**
-     * The operation to create or update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Create Virtual Machine Diagnostic RunCommand operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createOrUpdate(String resourceGroupName, String vmName, String runCommandName,
         VirtualMachineDiagnosticRunCommandInner runCommand, Context context) {
         createOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).block();
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
@@ -622,18 +488,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             vmName, runCommandName, contentType, accept, runCommand, context);
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
@@ -666,55 +521,21 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             context);
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
         return this.beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).getSyncPoller();
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine diagnostic run command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String vmName,
         String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         return this.beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).getSyncPoller();
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine diagnostic run command on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAsync(String resourceGroupName, String vmName, String runCommandName,
         VirtualMachineRunCommandUpdate runCommand) {
@@ -742,52 +563,21 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String vmName, String runCommandName,
         VirtualMachineRunCommandUpdate runCommand) {
         updateAsync(resourceGroupName, vmName, runCommandName, runCommand).block();
     }
 
-    /**
-     * The operation to update the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param runCommand Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String vmName, String runCommandName,
         VirtualMachineRunCommandUpdate runCommand, Context context) {
         updateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).block();
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName,
         String runCommandName) {
@@ -855,17 +645,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             vmName, runCommandName, context);
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName,
         String runCommandName) {
@@ -896,52 +676,21 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             context);
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
         String runCommandName) {
         return this.beginDeleteAsync(resourceGroupName, vmName, runCommandName).getSyncPoller();
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
         String runCommandName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vmName, runCommandName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String runCommandName) {
         return beginDeleteAsync(resourceGroupName, vmName, runCommandName).last()
@@ -966,32 +715,13 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmName, String runCommandName) {
         deleteAsync(resourceGroupName, vmName, runCommandName).block();
     }
 
-    /**
-     * The operation to delete the diagnostic run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param runCommandName The name of the VirtualMachineDiagnosticRunCommand.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmName, String runCommandName, Context context) {
         deleteAsync(resourceGroupName, vmName, runCommandName, context).block();
@@ -1079,17 +809,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The operation to get all diagnostic run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List diagnostic run command operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineDiagnosticRunCommandInner>
         diagnosticListByVirtualMachineAsync(String resourceGroupName, String vmName, String expand) {
@@ -1097,16 +817,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             nextLink -> diagnosticListByVirtualMachineNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * The operation to get all diagnostic run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List diagnostic run command operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineDiagnosticRunCommandInner>
         diagnosticListByVirtualMachineAsync(String resourceGroupName, String vmName) {
@@ -1135,16 +846,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
             nextLink -> diagnosticListByVirtualMachineNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The operation to get all diagnostic run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List diagnostic run command operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineDiagnosticRunCommandInner>
         diagnosticListByVirtualMachine(String resourceGroupName, String vmName) {
@@ -1152,18 +854,7 @@ public final class VirtualMachineDiagnosticRunCommandsClientImpl implements Virt
         return new PagedIterable<>(diagnosticListByVirtualMachineAsync(resourceGroupName, vmName, expand));
     }
 
-    /**
-     * The operation to get all diagnostic run commands of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the VirtualMachine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List diagnostic run command operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineDiagnosticRunCommandInner>
         diagnosticListByVirtualMachine(String resourceGroupName, String vmName, String expand, Context context) {

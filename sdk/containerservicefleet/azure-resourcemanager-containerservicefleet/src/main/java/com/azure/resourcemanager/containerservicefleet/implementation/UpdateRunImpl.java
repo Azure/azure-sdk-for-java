@@ -96,11 +96,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .createOrUpdate(resourceGroupName, fleetName, updateRunName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public UpdateRun create(Context context) {
@@ -127,11 +123,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .createOrUpdate(resourceGroupName, fleetName, updateRunName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public UpdateRun apply(Context context) {
@@ -146,17 +138,19 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.updateRunName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updateRuns");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}",
+            "fleetName");
+        this.updateRunName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}",
+            "updateRunName");
     }
 
     public UpdateRun refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .getWithResponse(resourceGroupName, fleetName, updateRunName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public UpdateRun refresh(Context context) {

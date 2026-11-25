@@ -137,17 +137,7 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Copy Job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyJobGetResultsInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String jobName) {
@@ -215,69 +205,27 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             resourceGroupName, accountName, jobName, accept, context);
     }
 
-    /**
-     * Get a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Copy Job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyJobGetResultsInner> getAsync(String resourceGroupName, String accountName, String jobName) {
         return getWithResponseAsync(resourceGroupName, accountName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Copy Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyJobGetResultsInner> getWithResponse(String resourceGroupName, String accountName,
         String jobName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, jobName, context).block();
     }
 
-    /**
-     * Get a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Copy Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyJobGetResultsInner get(String resourceGroupName, String accountName, String jobName) {
         return getWithResponse(resourceGroupName, accountName, jobName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param jobCreateParameters The jobCreateParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyJobGetResultsInner>> createWithResponseAsync(String resourceGroupName, String accountName,
         String jobName, CopyJobGetResultsInner jobCreateParameters) {
@@ -361,18 +309,7 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             resourceGroupName, accountName, jobName, contentType, accept, jobCreateParameters, context);
     }
 
-    /**
-     * Creates a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param jobCreateParameters The jobCreateParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyJobGetResultsInner> createAsync(String resourceGroupName, String accountName, String jobName,
         CopyJobGetResultsInner jobCreateParameters) {
@@ -380,37 +317,14 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param jobCreateParameters The jobCreateParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyJobGetResultsInner> createWithResponse(String resourceGroupName, String accountName,
         String jobName, CopyJobGetResultsInner jobCreateParameters, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, jobName, jobCreateParameters, context).block();
     }
 
-    /**
-     * Creates a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param jobCreateParameters The jobCreateParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyJobGetResultsInner create(String resourceGroupName, String accountName, String jobName,
         CopyJobGetResultsInner jobCreateParameters) {
@@ -494,16 +408,7 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get a list of Copy jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Copy jobs as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CopyJobGetResultsInner> listByDatabaseAccountAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listByDatabaseAccountSinglePageAsync(resourceGroupName, accountName),
@@ -528,49 +433,20 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             nextLink -> listByDatabaseAccountNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of Copy jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Copy jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CopyJobGetResultsInner> listByDatabaseAccount(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listByDatabaseAccountAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Get a list of Copy jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Copy jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CopyJobGetResultsInner> listByDatabaseAccount(String resourceGroupName, String accountName,
         Context context) {
         return new PagedIterable<>(listByDatabaseAccountAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Pause a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyJobGetResultsInner>> pauseWithResponseAsync(String resourceGroupName, String accountName,
         String jobName) {
@@ -638,68 +514,27 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             resourceGroupName, accountName, jobName, accept, context);
     }
 
-    /**
-     * Pause a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyJobGetResultsInner> pauseAsync(String resourceGroupName, String accountName, String jobName) {
         return pauseWithResponseAsync(resourceGroupName, accountName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Pause a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyJobGetResultsInner> pauseWithResponse(String resourceGroupName, String accountName,
         String jobName, Context context) {
         return pauseWithResponseAsync(resourceGroupName, accountName, jobName, context).block();
     }
 
-    /**
-     * Pause a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyJobGetResultsInner pause(String resourceGroupName, String accountName, String jobName) {
         return pauseWithResponse(resourceGroupName, accountName, jobName, Context.NONE).getValue();
     }
 
-    /**
-     * Resumes a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyJobGetResultsInner>> resumeWithResponseAsync(String resourceGroupName, String accountName,
         String jobName) {
@@ -767,68 +602,27 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             resourceGroupName, accountName, jobName, accept, context);
     }
 
-    /**
-     * Resumes a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyJobGetResultsInner> resumeAsync(String resourceGroupName, String accountName, String jobName) {
         return resumeWithResponseAsync(resourceGroupName, accountName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Resumes a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyJobGetResultsInner> resumeWithResponse(String resourceGroupName, String accountName,
         String jobName, Context context) {
         return resumeWithResponseAsync(resourceGroupName, accountName, jobName, context).block();
     }
 
-    /**
-     * Resumes a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyJobGetResultsInner resume(String resourceGroupName, String accountName, String jobName) {
         return resumeWithResponse(resourceGroupName, accountName, jobName, Context.NONE).getValue();
     }
 
-    /**
-     * Cancels a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyJobGetResultsInner>> cancelWithResponseAsync(String resourceGroupName, String accountName,
         String jobName) {
@@ -896,68 +690,27 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             resourceGroupName, accountName, jobName, accept, context);
     }
 
-    /**
-     * Cancels a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyJobGetResultsInner> cancelAsync(String resourceGroupName, String accountName, String jobName) {
         return cancelWithResponseAsync(resourceGroupName, accountName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Cancels a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyJobGetResultsInner> cancelWithResponse(String resourceGroupName, String accountName,
         String jobName, Context context) {
         return cancelWithResponseAsync(resourceGroupName, accountName, jobName, context).block();
     }
 
-    /**
-     * Cancels a Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyJobGetResultsInner cancel(String resourceGroupName, String accountName, String jobName) {
         return cancelWithResponse(resourceGroupName, accountName, jobName, Context.NONE).getValue();
     }
 
-    /**
-     * Completes an Online Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyJobGetResultsInner>> completeWithResponseAsync(String resourceGroupName,
         String accountName, String jobName) {
@@ -1025,52 +778,21 @@ public final class CopyJobsClientImpl implements CopyJobsClient {
             resourceGroupName, accountName, jobName, accept, context);
     }
 
-    /**
-     * Completes an Online Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyJobGetResultsInner> completeAsync(String resourceGroupName, String accountName, String jobName) {
         return completeWithResponseAsync(resourceGroupName, accountName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Completes an Online Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyJobGetResultsInner> completeWithResponse(String resourceGroupName, String accountName,
         String jobName, Context context) {
         return completeWithResponseAsync(resourceGroupName, accountName, jobName, context).block();
     }
 
-    /**
-     * Completes an Online Copy Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param jobName Name of the Copy Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cosmos DB Copy Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyJobGetResultsInner complete(String resourceGroupName, String accountName, String jobName) {
         return completeWithResponse(resourceGroupName, accountName, jobName, Context.NONE).getValue();

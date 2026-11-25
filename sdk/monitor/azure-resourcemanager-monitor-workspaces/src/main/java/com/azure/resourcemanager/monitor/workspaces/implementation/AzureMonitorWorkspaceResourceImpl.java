@@ -94,11 +94,7 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
     }
 
     public AzureMonitorWorkspaceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureMonitorWorkspaces()
-            .createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureMonitorWorkspaceResource create(Context context) {
@@ -122,11 +118,7 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
     }
 
     public AzureMonitorWorkspaceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureMonitorWorkspaces()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureMonitorWorkspaceResource apply(Context context) {
@@ -141,16 +133,16 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
         com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}",
+            "resourceGroupName");
+        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}",
+            "azureMonitorWorkspaceName");
     }
 
     public AzureMonitorWorkspaceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureMonitorWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, azureMonitorWorkspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureMonitorWorkspaceResource refresh(Context context) {

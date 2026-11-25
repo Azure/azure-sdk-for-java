@@ -91,10 +91,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .createOrUpdate(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OrganizationResource create(Context context) {
@@ -116,10 +113,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .update(resourceGroupName, organizationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OrganizationResource apply(Context context) {
@@ -133,16 +127,16 @@ public final class OrganizationResourceImpl
         com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}",
+            "organizationName");
     }
 
     public OrganizationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OrganizationResource refresh(Context context) {

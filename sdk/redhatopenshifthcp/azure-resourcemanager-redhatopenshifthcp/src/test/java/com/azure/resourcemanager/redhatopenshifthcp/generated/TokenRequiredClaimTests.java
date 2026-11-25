@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TokenRequiredClaimTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TokenRequiredClaim model = BinaryData.fromString("{\"claim\":\"wfqkquj\",\"requiredValue\":\"dsuyonobgla\"}")
+        TokenRequiredClaim model = BinaryData.fromString("{\"claim\":\"aex\",\"requiredValue\":\"pvfadmwsrcr\"}")
             .toObject(TokenRequiredClaim.class);
-        Assertions.assertEquals("wfqkquj", model.claim());
-        Assertions.assertEquals("dsuyonobgla", model.requiredValue());
+        Assertions.assertEquals("aex", model.claim());
+        Assertions.assertEquals("pvfadmwsrcr", model.requiredValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TokenRequiredClaim model = new TokenRequiredClaim().withClaim("wfqkquj").withRequiredValue("dsuyonobgla");
+        TokenRequiredClaim model = new TokenRequiredClaim().withClaim("aex").withRequiredValue("pvfadmwsrcr");
         model = BinaryData.fromObject(model).toObject(TokenRequiredClaim.class);
-        Assertions.assertEquals("wfqkquj", model.claim());
-        Assertions.assertEquals("dsuyonobgla", model.requiredValue());
+        Assertions.assertEquals("aex", model.claim());
+        Assertions.assertEquals("pvfadmwsrcr", model.requiredValue());
     }
 }

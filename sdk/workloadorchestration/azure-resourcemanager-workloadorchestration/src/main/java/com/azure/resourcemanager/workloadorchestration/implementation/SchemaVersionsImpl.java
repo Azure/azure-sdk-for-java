@@ -45,7 +45,7 @@ public final class SchemaVersionsImpl implements SchemaVersions {
     }
 
     public void delete(String resourceGroupName, String schemaName, String schemaVersionName) {
-        this.serviceClient().delete(resourceGroupName, schemaName, schemaVersionName);
+        this.delete(resourceGroupName, schemaName, schemaVersionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schemaName, String schemaVersionName, Context context) {
@@ -53,8 +53,7 @@ public final class SchemaVersionsImpl implements SchemaVersions {
     }
 
     public PagedIterable<SchemaVersion> listBySchema(String resourceGroupName, String schemaName) {
-        PagedIterable<SchemaVersionInner> inner = this.serviceClient().listBySchema(resourceGroupName, schemaName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaVersionImpl(inner1, this.manager()));
+        return this.listBySchema(resourceGroupName, schemaName, Context.NONE);
     }
 
     public PagedIterable<SchemaVersion> listBySchema(String resourceGroupName, String schemaName, Context context) {
@@ -64,78 +63,36 @@ public final class SchemaVersionsImpl implements SchemaVersions {
     }
 
     public SchemaVersion getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String schemaVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (schemaVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, schemaName, schemaVersionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SchemaVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String schemaVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (schemaVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}",
+            "schemaName", "schemas", LOGGER);
+        String schemaVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}",
+            "schemaVersionName", "versions", LOGGER);
         return this.getWithResponse(resourceGroupName, schemaName, schemaVersionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String schemaVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (schemaVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        this.delete(resourceGroupName, schemaName, schemaVersionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String schemaVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (schemaVersionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}",
+            "schemaName", "schemas", LOGGER);
+        String schemaVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}",
+            "schemaVersionName", "versions", LOGGER);
         this.delete(resourceGroupName, schemaName, schemaVersionName, context);
     }
 

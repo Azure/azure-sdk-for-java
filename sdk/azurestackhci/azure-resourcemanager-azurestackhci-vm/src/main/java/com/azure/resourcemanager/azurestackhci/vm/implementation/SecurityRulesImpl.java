@@ -46,7 +46,7 @@ public final class SecurityRulesImpl implements SecurityRules {
     }
 
     public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        this.serviceClient().delete(resourceGroupName, networkSecurityGroupName, securityRuleName);
+        this.delete(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName,
@@ -56,9 +56,7 @@ public final class SecurityRulesImpl implements SecurityRules {
 
     public PagedIterable<SecurityRule> listByNetworkSecurityGroup(String resourceGroupName,
         String networkSecurityGroupName) {
-        PagedIterable<SecurityRuleInner> inner
-            = this.serviceClient().listByNetworkSecurityGroup(resourceGroupName, networkSecurityGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecurityRuleImpl(inner1, this.manager()));
+        return this.listByNetworkSecurityGroup(resourceGroupName, networkSecurityGroupName, Context.NONE);
     }
 
     public PagedIterable<SecurityRule> listByNetworkSecurityGroup(String resourceGroupName,
@@ -69,79 +67,36 @@ public final class SecurityRulesImpl implements SecurityRules {
     }
 
     public SecurityRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkSecurityGroupName = ResourceManagerUtils.getValueFromIdByName(id, "networkSecurityGroups");
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkSecurityGroups'.", id)));
-        }
-        String securityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "securityRules");
-        if (securityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SecurityRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkSecurityGroupName = ResourceManagerUtils.getValueFromIdByName(id, "networkSecurityGroups");
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkSecurityGroups'.", id)));
-        }
-        String securityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "securityRules");
-        if (securityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkSecurityGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "networkSecurityGroupName", "networkSecurityGroups", LOGGER);
+        String securityRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "securityRuleName", "securityRules", LOGGER);
         return this.getWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkSecurityGroupName = ResourceManagerUtils.getValueFromIdByName(id, "networkSecurityGroups");
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkSecurityGroups'.", id)));
-        }
-        String securityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "securityRules");
-        if (securityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityRules'.", id)));
-        }
-        this.delete(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkSecurityGroupName = ResourceManagerUtils.getValueFromIdByName(id, "networkSecurityGroups");
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkSecurityGroups'.", id)));
-        }
-        String securityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "securityRules");
-        if (securityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securityRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkSecurityGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "networkSecurityGroupName", "networkSecurityGroups", LOGGER);
+        String securityRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "securityRuleName", "securityRules", LOGGER);
         this.delete(resourceGroupName, networkSecurityGroupName, securityRuleName, context);
     }
 

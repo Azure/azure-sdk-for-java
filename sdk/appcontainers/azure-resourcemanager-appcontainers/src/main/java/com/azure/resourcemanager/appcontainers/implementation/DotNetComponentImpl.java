@@ -87,10 +87,7 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDotNetComponents()
-            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DotNetComponent create(Context context) {
@@ -111,10 +108,7 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDotNetComponents()
-            .update(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DotNetComponent apply(Context context) {
@@ -128,17 +122,19 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dotNetComponents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}",
+            "resourceGroupName");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}",
+            "environmentName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}",
+            "name");
     }
 
     public DotNetComponent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDotNetComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DotNetComponent refresh(Context context) {

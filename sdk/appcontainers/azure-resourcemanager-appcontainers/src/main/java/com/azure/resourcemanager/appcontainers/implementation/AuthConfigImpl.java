@@ -85,12 +85,7 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsAuthConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AuthConfig create(Context context) {
@@ -112,12 +107,7 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsAuthConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AuthConfig apply(Context context) {
@@ -132,17 +122,19 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.containerAppName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "containerApps");
-        this.authConfigName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authConfigs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/authConfigs/{authConfigName}",
+            "resourceGroupName");
+        this.containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/authConfigs/{authConfigName}",
+            "containerAppName");
+        this.authConfigName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/authConfigs/{authConfigName}",
+            "authConfigName");
     }
 
     public AuthConfig refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsAuthConfigs()
-            .getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AuthConfig refresh(Context context) {

@@ -155,10 +155,7 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewalls()
-            .createOrUpdate(resourceGroupName, firewallName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FirewallResource create(Context context) {
@@ -181,11 +178,7 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewalls()
-            .updateWithResponse(resourceGroupName, firewallName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FirewallResource apply(Context context) {
@@ -200,16 +193,16 @@ public final class FirewallResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.firewallName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewalls");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "resourceGroupName");
+        this.firewallName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "firewallName");
     }
 
     public FirewallResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewalls()
-            .getByResourceGroupWithResponse(resourceGroupName, firewallName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FirewallResource refresh(Context context) {

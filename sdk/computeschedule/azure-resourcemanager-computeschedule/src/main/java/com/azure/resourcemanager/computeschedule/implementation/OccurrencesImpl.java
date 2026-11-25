@@ -51,9 +51,7 @@ public final class OccurrencesImpl implements Occurrences {
     }
 
     public PagedIterable<Occurrence> listByScheduledAction(String resourceGroupName, String scheduledActionName) {
-        PagedIterable<OccurrenceInner> inner
-            = this.serviceClient().listByScheduledAction(resourceGroupName, scheduledActionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OccurrenceImpl(inner1, this.manager()));
+        return this.listByScheduledAction(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     public PagedIterable<Occurrence> listByScheduledAction(String resourceGroupName, String scheduledActionName,
@@ -65,9 +63,7 @@ public final class OccurrencesImpl implements Occurrences {
 
     public PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
         String occurrenceId) {
-        PagedIterable<OccurrenceResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName, occurrenceId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OccurrenceResourceImpl(inner1, this.manager()));
+        return this.listResources(resourceGroupName, scheduledActionName, occurrenceId, Context.NONE);
     }
 
     public PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
@@ -98,13 +94,7 @@ public final class OccurrencesImpl implements Occurrences {
 
     public RecurringActionsResourceOperationResult delay(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body) {
-        RecurringActionsResourceOperationResultInner inner
-            = this.serviceClient().delay(resourceGroupName, scheduledActionName, occurrenceId, body);
-        if (inner != null) {
-            return new RecurringActionsResourceOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.delay(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
     public RecurringActionsResourceOperationResult delay(String resourceGroupName, String scheduledActionName,

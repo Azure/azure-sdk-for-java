@@ -158,11 +158,7 @@ public final class ServerEndpointImpl implements ServerEndpoint, ServerEndpoint.
     }
 
     public ServerEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerEndpoints()
-            .create(resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, createParameters,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServerEndpoint create(Context context) {
@@ -185,11 +181,7 @@ public final class ServerEndpointImpl implements ServerEndpoint, ServerEndpoint.
     }
 
     public ServerEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerEndpoints()
-            .update(resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, updateParameters,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServerEndpoint apply(Context context) {
@@ -204,19 +196,22 @@ public final class ServerEndpointImpl implements ServerEndpoint, ServerEndpoint.
         com.azure.resourcemanager.storagesync.StorageSyncManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageSyncServiceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageSyncServices");
-        this.syncGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "syncGroups");
-        this.serverEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "serverEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}",
+            "resourceGroupName");
+        this.storageSyncServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}",
+            "storageSyncServiceName");
+        this.syncGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}",
+            "syncGroupName");
+        this.serverEndpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}",
+            "serverEndpointName");
     }
 
     public ServerEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerEndpoints()
-            .getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServerEndpoint refresh(Context context) {

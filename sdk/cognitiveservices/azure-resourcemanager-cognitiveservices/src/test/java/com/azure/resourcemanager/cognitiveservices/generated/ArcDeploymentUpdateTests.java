@@ -18,35 +18,36 @@ public final class ArcDeploymentUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"replicas\":149068707,\"resources\":{\"requests\":{\"cpu\":\"kpbafvafhl\",\"memory\":\"lc\"},\"limits\":{\"cpu\":\"vxrh\",\"memory\":\"d\",\"gpu\":1616798113}},\"nodeSelector\":{\"bmairrhvhfnracwn\":\"fplt\",\"grbjbxsjybvitvqk\":\"qigtuujwouhdaws\"}}}")
+            "{\"properties\":{\"replicas\":1243480794,\"resources\":{\"requests\":{\"cpu\":\"urbti\",\"memory\":\"pdyarikeejdpd\"},\"limits\":{\"cpu\":\"wmmkfq\",\"memory\":\"iqulwwtrjmeq\",\"gpu\":1078722102}},\"nodeSelector\":{\"ensnaa\":\"okpoyuoh\",\"jsumxpezcoio\":\"phmpoejnglpwsada\"}}}")
             .toObject(ArcDeploymentUpdate.class);
-        Assertions.assertEquals(149068707, model.properties().replicas());
-        Assertions.assertEquals("kpbafvafhl", model.properties().resources().requests().cpu());
-        Assertions.assertEquals("lc", model.properties().resources().requests().memory());
-        Assertions.assertEquals("vxrh", model.properties().resources().limits().cpu());
-        Assertions.assertEquals("d", model.properties().resources().limits().memory());
-        Assertions.assertEquals(1616798113, model.properties().resources().limits().gpu());
-        Assertions.assertEquals("fplt", model.properties().nodeSelector().get("bmairrhvhfnracwn"));
+        Assertions.assertEquals(1243480794, model.properties().replicas());
+        Assertions.assertEquals("urbti", model.properties().resources().requests().cpu());
+        Assertions.assertEquals("pdyarikeejdpd", model.properties().resources().requests().memory());
+        Assertions.assertEquals("wmmkfq", model.properties().resources().limits().cpu());
+        Assertions.assertEquals("iqulwwtrjmeq", model.properties().resources().limits().memory());
+        Assertions.assertEquals(1078722102, model.properties().resources().limits().gpu());
+        Assertions.assertEquals("okpoyuoh", model.properties().nodeSelector().get("ensnaa"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcDeploymentUpdate model
-            = new ArcDeploymentUpdate().withProperties(new ArcDeploymentUpdateProperties().withReplicas(149068707)
-                .withResources(new ArcDeploymentPatchKubernetesResources()
-                    .withRequests(
-                        new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("kpbafvafhl").withMemory("lc"))
-                    .withLimits(
-                        new ArcDeploymentResourceRequirements().withCpu("vxrh").withMemory("d").withGpu(1616798113)))
-                .withNodeSelector(mapOf("bmairrhvhfnracwn", "fplt", "grbjbxsjybvitvqk", "qigtuujwouhdaws")));
+        ArcDeploymentUpdate model = new ArcDeploymentUpdate().withProperties(new ArcDeploymentUpdateProperties()
+            .withReplicas(1243480794)
+            .withResources(new ArcDeploymentPatchKubernetesResources()
+                .withRequests(
+                    new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("urbti").withMemory("pdyarikeejdpd"))
+                .withLimits(new ArcDeploymentResourceRequirements().withCpu("wmmkfq")
+                    .withMemory("iqulwwtrjmeq")
+                    .withGpu(1078722102)))
+            .withNodeSelector(mapOf("ensnaa", "okpoyuoh", "jsumxpezcoio", "phmpoejnglpwsada")));
         model = BinaryData.fromObject(model).toObject(ArcDeploymentUpdate.class);
-        Assertions.assertEquals(149068707, model.properties().replicas());
-        Assertions.assertEquals("kpbafvafhl", model.properties().resources().requests().cpu());
-        Assertions.assertEquals("lc", model.properties().resources().requests().memory());
-        Assertions.assertEquals("vxrh", model.properties().resources().limits().cpu());
-        Assertions.assertEquals("d", model.properties().resources().limits().memory());
-        Assertions.assertEquals(1616798113, model.properties().resources().limits().gpu());
-        Assertions.assertEquals("fplt", model.properties().nodeSelector().get("bmairrhvhfnracwn"));
+        Assertions.assertEquals(1243480794, model.properties().replicas());
+        Assertions.assertEquals("urbti", model.properties().resources().requests().cpu());
+        Assertions.assertEquals("pdyarikeejdpd", model.properties().resources().requests().memory());
+        Assertions.assertEquals("wmmkfq", model.properties().resources().limits().cpu());
+        Assertions.assertEquals("iqulwwtrjmeq", model.properties().resources().limits().memory());
+        Assertions.assertEquals(1078722102, model.properties().resources().limits().gpu());
+        Assertions.assertEquals("okpoyuoh", model.properties().nodeSelector().get("ensnaa"));
     }
 
     // Use "Map.of" if available

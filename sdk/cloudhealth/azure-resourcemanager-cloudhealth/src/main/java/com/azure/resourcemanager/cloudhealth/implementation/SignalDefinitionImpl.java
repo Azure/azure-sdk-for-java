@@ -61,10 +61,7 @@ public final class SignalDefinitionImpl
     }
 
     public SignalDefinition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSignalDefinitions()
-            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SignalDefinition create(Context context) {
@@ -85,10 +82,7 @@ public final class SignalDefinitionImpl
     }
 
     public SignalDefinition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSignalDefinitions()
-            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SignalDefinition apply(Context context) {
@@ -102,17 +96,19 @@ public final class SignalDefinitionImpl
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signaldefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "healthModelName");
+        this.signalDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "signalDefinitionName");
     }
 
     public SignalDefinition refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSignalDefinitions()
-            .getWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SignalDefinition refresh(Context context) {

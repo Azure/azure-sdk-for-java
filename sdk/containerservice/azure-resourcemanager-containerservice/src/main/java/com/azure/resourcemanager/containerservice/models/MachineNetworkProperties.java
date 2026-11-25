@@ -40,6 +40,12 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     private String podSubnetId;
 
     /*
+     * Pod IP Allocation Mode. The IP allocation mode for pods on the machine. Must be used with podSubnetID. The
+     * default is 'DynamicIndividual'.
+     */
+    private PodIpAllocationMode podIPAllocationMode;
+
+    /*
      * Whether the machine is allocated its own public IP. Some scenarios may require the machine to receive their own
      * dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct
      * connection to a cloud virtual machine to minimize hops. The default is false.
@@ -120,6 +126,28 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
      */
     public MachineNetworkProperties withPodSubnetId(String podSubnetId) {
         this.podSubnetId = podSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the podIPAllocationMode property: Pod IP Allocation Mode. The IP allocation mode for pods on the machine.
+     * Must be used with podSubnetID. The default is 'DynamicIndividual'.
+     * 
+     * @return the podIPAllocationMode value.
+     */
+    public PodIpAllocationMode podIPAllocationMode() {
+        return this.podIPAllocationMode;
+    }
+
+    /**
+     * Set the podIPAllocationMode property: Pod IP Allocation Mode. The IP allocation mode for pods on the machine.
+     * Must be used with podSubnetID. The default is 'DynamicIndividual'.
+     * 
+     * @param podIPAllocationMode the podIPAllocationMode value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withPodIPAllocationMode(PodIpAllocationMode podIPAllocationMode) {
+        this.podIPAllocationMode = podIPAllocationMode;
         return this;
     }
 
@@ -215,6 +243,8 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("vnetSubnetID", this.vnetSubnetId);
         jsonWriter.writeStringField("podSubnetID", this.podSubnetId);
+        jsonWriter.writeStringField("podIPAllocationMode",
+            this.podIPAllocationMode == null ? null : this.podIPAllocationMode.toString());
         jsonWriter.writeBooleanField("enableNodePublicIP", this.enableNodePublicIp);
         jsonWriter.writeStringField("nodePublicIPPrefixID", this.nodePublicIpPrefixId);
         jsonWriter.writeArrayField("nodePublicIPTags", this.nodePublicIpTags,
@@ -245,6 +275,9 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
                     deserializedMachineNetworkProperties.vnetSubnetId = reader.getString();
                 } else if ("podSubnetID".equals(fieldName)) {
                     deserializedMachineNetworkProperties.podSubnetId = reader.getString();
+                } else if ("podIPAllocationMode".equals(fieldName)) {
+                    deserializedMachineNetworkProperties.podIPAllocationMode
+                        = PodIpAllocationMode.fromString(reader.getString());
                 } else if ("enableNodePublicIP".equals(fieldName)) {
                     deserializedMachineNetworkProperties.enableNodePublicIp
                         = reader.getNullable(JsonReader::getBoolean);

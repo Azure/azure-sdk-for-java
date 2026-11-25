@@ -61,10 +61,7 @@ public final class PureStoragePolicyImpl
     }
 
     public PureStoragePolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPureStoragePolicies()
-            .createOrUpdate(resourceGroupName, privateCloudName, storagePolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PureStoragePolicy create(Context context) {
@@ -85,10 +82,7 @@ public final class PureStoragePolicyImpl
     }
 
     public PureStoragePolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPureStoragePolicies()
-            .createOrUpdate(resourceGroupName, privateCloudName, storagePolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PureStoragePolicy apply(Context context) {
@@ -101,17 +95,19 @@ public final class PureStoragePolicyImpl
     PureStoragePolicyImpl(PureStoragePolicyInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.storagePolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pureStoragePolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}",
+            "privateCloudName");
+        this.storagePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}",
+            "storagePolicyName");
     }
 
     public PureStoragePolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPureStoragePolicies()
-            .getWithResponse(resourceGroupName, privateCloudName, storagePolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PureStoragePolicy refresh(Context context) {

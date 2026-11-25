@@ -60,12 +60,7 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnections()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Connection create(Context context) {
@@ -87,12 +82,7 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnections()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Connection apply(Context context) {
@@ -106,17 +96,19 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     ConnectionImpl(ConnectionInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.connectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections/{connectionName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections/{connectionName}",
+            "workspaceName");
+        this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections/{connectionName}",
+            "connectionName");
     }
 
     public Connection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnections()
-            .getWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Connection refresh(Context context) {

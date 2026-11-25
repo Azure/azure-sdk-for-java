@@ -41,6 +41,8 @@ import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountSharedKeyAccessProperties;
 import com.azure.resourcemanager.storage.models.StorageDataCollaborationPolicyProperties;
+import com.azure.resourcemanager.storage.models.TurboTier;
+import com.azure.resourcemanager.storage.models.TurboTierStatus;
 import com.azure.resourcemanager.storage.models.UserAssignedIdentity;
 import com.azure.resourcemanager.storage.models.VirtualNetworkRule;
 import com.azure.resourcemanager.storage.models.ZonePlacementPolicy;
@@ -53,7 +55,7 @@ import java.util.Map;
  */
 public final class StorageAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/NfsV3AccountCreate.json
+     * x-ms-original-file: 2026-09-01/NfsV3AccountCreate.json
      */
     /**
      * Sample code: NfsV3AccountCreate.
@@ -79,7 +81,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateWithSmartAccessTier.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateWithSmartAccessTier.json
      */
     /**
      * Sample code: StorageAccountCreateWithSmartAccessTier.
@@ -121,7 +123,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreate.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreate.json
      */
     /**
      * Sample code: StorageAccountCreate.
@@ -169,7 +171,27 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreate_zones.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateWithTurboTier.json
+     */
+    /**
+     * Sample code: StorageAccountCreateWithTurboTier.
+     * 
+     * @param manager Entry point to StorageManager.
+     */
+    public static void storageAccountCreateWithTurboTier(com.azure.resourcemanager.storage.StorageManager manager) {
+        manager.serviceClient()
+            .getStorageAccounts()
+            .create("res9101", "staturbocontoso01",
+                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                    .withKind(Kind.STORAGE_V2)
+                    .withLocation("eastus2")
+                    .withAccessTier(AccessTier.HOT)
+                    .withTurboTier(new TurboTier().withStatus(TurboTierStatus.ENABLED).withTargetPercent(10)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/StorageAccountCreate_zones.json
      */
     /**
      * Sample code: StorageAccountCreate_zones.
@@ -208,7 +230,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreate_placement.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreate_placement.json
      */
     /**
      * Sample code: StorageAccountCreate_placement.
@@ -247,7 +269,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateDisallowPublicNetworkAccess.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateDisallowPublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountCreateDisallowPublicNetworkAccess.
@@ -285,7 +307,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateDnsEndpointTypeToStandard.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateDnsEndpointTypeToStandard.json
      */
     /**
      * Sample code: StorageAccountCreateDnsEndpointTypeToStandard.
@@ -325,7 +347,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
      */
     /**
      * Sample code: StorageAccountCreateDnsEndpointTypeToAzureDnsZone.
@@ -365,7 +387,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateWithDataCollaborationPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateWithDataCollaborationPolicy.json
      */
     /**
      * Sample code: StorageAccountCreateWithDataCollaborationPolicy.
@@ -388,7 +410,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreatePremiumBlockBlobStorage.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreatePremiumBlockBlobStorage.json
      */
     /**
      * Sample code: StorageAccountCreatePremiumBlockBlobStorage.
@@ -416,7 +438,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateWithImmutabilityPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountCreateWithImmutabilityPolicy.
@@ -442,7 +464,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
      */
     /**
      * Sample code: StorageAccountCreateAllowedCopyScopeToPrivateLink.
@@ -478,7 +500,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateEnablePublicNetworkAccess.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateEnablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountCreateEnablePublicNetworkAccess.
@@ -516,7 +538,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountCreateAllowedCopyScopeToAAD.
@@ -552,7 +574,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.
@@ -586,7 +608,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: 2026-09-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.

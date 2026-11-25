@@ -78,7 +78,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String networkFabricName) {
-        this.serviceClient().delete(resourceGroupName, networkFabricName);
+        this.delete(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkFabricName, Context context) {
@@ -86,8 +86,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public PagedIterable<NetworkFabric> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NetworkFabricInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NetworkFabric> listByResourceGroup(String resourceGroupName, Context context) {
@@ -96,8 +95,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public PagedIterable<NetworkFabric> list() {
-        PagedIterable<NetworkFabricInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetworkFabric> list(Context context) {
@@ -106,12 +104,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public OperationStatusResult provision(String resourceGroupName, String networkFabricName) {
-        OperationStatusResultInner inner = this.serviceClient().provision(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.provision(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public OperationStatusResult provision(String resourceGroupName, String networkFabricName, Context context) {
@@ -125,12 +118,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public OperationStatusResult deprovision(String resourceGroupName, String networkFabricName) {
-        OperationStatusResultInner inner = this.serviceClient().deprovision(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.deprovision(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public OperationStatusResult deprovision(String resourceGroupName, String networkFabricName, Context context) {
@@ -145,12 +133,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public OperationStatusResult upgrade(String resourceGroupName, String networkFabricName,
         UpgradeNetworkFabricProperties body) {
-        OperationStatusResultInner inner = this.serviceClient().upgrade(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.upgrade(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public OperationStatusResult upgrade(String resourceGroupName, String networkFabricName,
@@ -165,13 +148,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public OperationStatusResult refreshConfiguration(String resourceGroupName, String networkFabricName) {
-        OperationStatusResultInner inner
-            = this.serviceClient().refreshConfiguration(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.refreshConfiguration(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public OperationStatusResult refreshConfiguration(String resourceGroupName, String networkFabricName,
@@ -187,13 +164,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(String resourceGroupName,
         String networkFabricName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner
-            = this.serviceClient().updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(String resourceGroupName,
@@ -209,13 +180,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(String resourceGroupName,
         String networkFabricName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner
-            = this.serviceClient().updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(String resourceGroupName,
@@ -231,13 +196,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body) {
-        ValidateConfigurationResponseInner inner
-            = this.serviceClient().validateConfiguration(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateConfiguration(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
@@ -252,12 +211,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public GetTopologyResponse getTopology(String resourceGroupName, String networkFabricName) {
-        GetTopologyResponseInner inner = this.serviceClient().getTopology(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new GetTopologyResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.getTopology(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public GetTopologyResponse getTopology(String resourceGroupName, String networkFabricName, Context context) {
@@ -293,13 +247,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public CommitBatchStatusOperationResponse commitBatchStatus(String resourceGroupName, String networkFabricName,
         CommitBatchStatusRequest body) {
-        CommitBatchStatusOperationResponseInner inner
-            = this.serviceClient().commitBatchStatus(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new CommitBatchStatusOperationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.commitBatchStatus(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public CommitBatchStatusOperationResponse commitBatchStatus(String resourceGroupName, String networkFabricName,
@@ -315,13 +263,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public DiscardCommitBatchOperationResponse discardCommitBatch(String resourceGroupName, String networkFabricName,
         DiscardCommitBatchRequest body) {
-        DiscardCommitBatchOperationResponseInner inner
-            = this.serviceClient().discardCommitBatch(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new DiscardCommitBatchOperationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.discardCommitBatch(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public DiscardCommitBatchOperationResponse discardCommitBatch(String resourceGroupName, String networkFabricName,
@@ -337,12 +279,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public OperationStatusResult lockFabric(String resourceGroupName, String networkFabricName,
         NetworkFabricLockRequest body) {
-        OperationStatusResultInner inner = this.serviceClient().lockFabric(resourceGroupName, networkFabricName, body);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.lockFabric(resourceGroupName, networkFabricName, body, Context.NONE);
     }
 
     public OperationStatusResult lockFabric(String resourceGroupName, String networkFabricName,
@@ -358,13 +295,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public ViewDeviceConfigurationOperationResponse viewDeviceConfiguration(String resourceGroupName,
         String networkFabricName) {
-        ViewDeviceConfigurationOperationResponseInner inner
-            = this.serviceClient().viewDeviceConfiguration(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new ViewDeviceConfigurationOperationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.viewDeviceConfiguration(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public ViewDeviceConfigurationOperationResponse viewDeviceConfiguration(String resourceGroupName,
@@ -380,13 +311,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public ArmConfigurationDiffOperationResponse armConfigurationDiff(String resourceGroupName,
         String networkFabricName) {
-        ArmConfigurationDiffOperationResponseInner inner
-            = this.serviceClient().armConfigurationDiff(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new ArmConfigurationDiffOperationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.armConfigurationDiff(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public ArmConfigurationDiffOperationResponse armConfigurationDiff(String resourceGroupName,
@@ -401,13 +326,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public NetworkFabricRotatePasswordsResponse rotatePasswords(String resourceGroupName, String networkFabricName) {
-        NetworkFabricRotatePasswordsResponseInner inner
-            = this.serviceClient().rotatePasswords(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new NetworkFabricRotatePasswordsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.rotatePasswords(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public NetworkFabricRotatePasswordsResponse rotatePasswords(String resourceGroupName, String networkFabricName,
@@ -422,13 +341,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public NetworkFabricResyncPasswordsResponse resyncPasswords(String resourceGroupName, String networkFabricName) {
-        NetworkFabricResyncPasswordsResponseInner inner
-            = this.serviceClient().resyncPasswords(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new NetworkFabricResyncPasswordsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resyncPasswords(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public NetworkFabricResyncPasswordsResponse resyncPasswords(String resourceGroupName, String networkFabricName,
@@ -444,13 +357,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public NetworkFabricRotateCertificatesResponse rotateCertificates(String resourceGroupName,
         String networkFabricName) {
-        NetworkFabricRotateCertificatesResponseInner inner
-            = this.serviceClient().rotateCertificates(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new NetworkFabricRotateCertificatesResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.rotateCertificates(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public NetworkFabricRotateCertificatesResponse rotateCertificates(String resourceGroupName,
@@ -466,13 +373,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public NetworkFabricResyncCertificatesResponse resyncCertificates(String resourceGroupName,
         String networkFabricName) {
-        NetworkFabricResyncCertificatesResponseInner inner
-            = this.serviceClient().resyncCertificates(resourceGroupName, networkFabricName);
-        if (inner != null) {
-            return new NetworkFabricResyncCertificatesResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resyncCertificates(resourceGroupName, networkFabricName, Context.NONE);
     }
 
     public NetworkFabricResyncCertificatesResponse resyncCertificates(String resourceGroupName,
@@ -487,58 +388,30 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public NetworkFabric getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, networkFabricName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkFabric> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkFabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}",
+            "networkFabricName", "networkFabrics", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, networkFabricName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
-        this.delete(resourceGroupName, networkFabricName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
-        if (networkFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkFabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}",
+            "networkFabricName", "networkFabrics", LOGGER);
         this.delete(resourceGroupName, networkFabricName, context);
     }
 

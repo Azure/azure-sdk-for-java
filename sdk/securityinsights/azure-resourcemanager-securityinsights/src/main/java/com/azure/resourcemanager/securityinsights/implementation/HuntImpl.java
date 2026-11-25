@@ -112,11 +112,7 @@ public final class HuntImpl implements Hunt, Hunt.Definition, Hunt.Update {
     }
 
     public Hunt create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHunts()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, huntId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Hunt create(Context context) {
@@ -138,11 +134,7 @@ public final class HuntImpl implements Hunt, Hunt.Definition, Hunt.Update {
     }
 
     public Hunt apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHunts()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, huntId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Hunt apply(Context context) {
@@ -156,17 +148,19 @@ public final class HuntImpl implements Hunt, Hunt.Definition, Hunt.Update {
     HuntImpl(HuntInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.huntId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hunts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/hunts/{huntId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/hunts/{huntId}",
+            "workspaceName");
+        this.huntId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/hunts/{huntId}",
+            "huntId");
     }
 
     public Hunt refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHunts()
-            .getWithResponse(resourceGroupName, workspaceName, huntId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Hunt refresh(Context context) {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class ObjectReplicationPoliciesOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountDeleteObjectReplicationPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountDeleteObjectReplicationPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteObjectReplicationPolicies.

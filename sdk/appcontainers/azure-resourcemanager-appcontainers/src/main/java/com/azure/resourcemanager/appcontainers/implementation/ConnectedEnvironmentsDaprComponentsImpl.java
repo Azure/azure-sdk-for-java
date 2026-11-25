@@ -47,7 +47,7 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String componentName) {
-        this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, componentName);
+        this.delete(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String componentName,
@@ -56,9 +56,7 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
     }
 
     public PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName) {
-        PagedIterable<DaprComponentInner> inner
-            = this.serviceClient().list(resourceGroupName, connectedEnvironmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DaprComponentImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
     public PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName,
@@ -88,79 +86,36 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
     }
 
     public DaprComponent getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DaprComponent> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectedEnvironmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "connectedEnvironmentName", "connectedEnvironments", LOGGER);
+        String componentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "componentName", "daprComponents", LOGGER);
         return this.getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
-        this.delete(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        String componentName = ResourceManagerUtils.getValueFromIdByName(id, "daprComponents");
-        if (componentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectedEnvironmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "connectedEnvironmentName", "connectedEnvironments", LOGGER);
+        String componentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}",
+            "componentName", "daprComponents", LOGGER);
         this.delete(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 

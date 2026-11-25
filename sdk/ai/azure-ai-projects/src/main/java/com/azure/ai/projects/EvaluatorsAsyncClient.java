@@ -647,10 +647,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
-     *     model: String (Required)
+     *     category: String(quality/safety) (Optional)
+     *     model: String (Optional)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      * }
      * }
      * </pre>
@@ -716,13 +731,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -744,10 +760,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -849,13 +880,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -877,10 +909,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1014,13 +1061,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1042,10 +1090,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1144,13 +1207,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1172,10 +1236,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1262,9 +1341,16 @@ public final class EvaluatorsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listEvaluatorVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluatorVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1296,9 +1382,16 @@ public final class EvaluatorsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEvaluatorVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluatorVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1338,9 +1431,16 @@ public final class EvaluatorsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listLatestEvaluatorVersions(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluatorVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1370,9 +1470,16 @@ public final class EvaluatorsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listLatestEvaluatorVersions(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluatorVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1518,66 +1625,6 @@ public final class EvaluatorsAsyncClient {
      * immediately; use the Get evaluator generation job API with the job ID to
      * retrieve a specific job without delay.
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorGenerationJob> listEvaluatorGenerationJobs(Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for listEvaluatorGenerationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listEvaluatorGenerationJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, EvaluatorGenerationJob>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List evaluator generation jobs
-     *
-     * Returns a list of evaluator generation jobs. The List API has up to a few
-     * seconds of propagation delay, so a recently created job may not appear
-     * immediately; use the Get evaluator generation job API with the job ID to
-     * retrieve a specific job without delay.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1590,11 +1637,18 @@ public final class EvaluatorsAsyncClient {
     public PagedFlux<EvaluatorGenerationJob> listEvaluatorGenerationJobs() {
         // Generated convenience method for listEvaluatorGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listEvaluatorGenerationJobs(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listEvaluatorGenerationJobsAsync(null, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, EvaluatorGenerationJob>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -1708,5 +1762,69 @@ public final class EvaluatorsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateEvaluatorGenerationJobWithModelAsync(BinaryData.fromObject(job),
             requestOptions);
+    }
+
+    /**
+     * List evaluator generation jobs
+     *
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EvaluatorGenerationJob> listEvaluatorGenerationJobs(Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listEvaluatorGenerationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listEvaluatorGenerationJobsAsync(after, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, EvaluatorGenerationJob>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 }

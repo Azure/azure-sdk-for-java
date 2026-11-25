@@ -18,6 +18,7 @@ import com.azure.ai.agents.implementation.models.GetMicrosoft365AppPackageReques
 import com.azure.ai.agents.implementation.models.PublishAgentToMicrosoft365Request;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
 import com.azure.ai.agents.implementation.utils.FileUtils;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
@@ -79,6 +80,8 @@ public final class AgentsClient {
 
     @Generated
     private final AgentsImpl serviceClient;
+
+    private final GenAiAgentTracing tracer;
 
     /**
      * Get an agent
@@ -518,7 +521,7 @@ public final class AgentsClient {
     public PagedIterable<AgentDetails> listAgents() {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgents(requestOptions)
+        return serviceClient.listAgents(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
     }
 
@@ -541,7 +544,7 @@ public final class AgentsClient {
     public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentVersions(agentName, requestOptions)
+        return serviceClient.listAgentVersions(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
@@ -985,10 +988,11 @@ public final class AgentsClient {
      * Initializes an instance of AgentsClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param tracer the tracer used to emit GenAI spans for agent operations.
      */
-    @Generated
-    AgentsClient(AgentsImpl serviceClient) {
+    AgentsClient(AgentsImpl serviceClient, GenAiAgentTracing tracer) {
         this.serviceClient = serviceClient;
+        this.tracer = tracer;
     }
 
     /**
@@ -1674,55 +1678,6 @@ public final class AgentsClient {
      * List agents
      *
      * Returns a paged collection of agent resources.
-     *
-     * @param kind Filter agents by kind. If not provided, all agents are returned.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for listAgents
-        RequestOptions requestOptions = new RequestOptions();
-        if (kind != null) {
-            requestOptions.addQueryParam("kind", kind.toString(), false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgents(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
-    }
-
-    /**
-     * List agents
-     *
-     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1998,7 +1953,7 @@ public final class AgentsClient {
     public PagedIterable<Conversation> listAgentConversations() {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversations(requestOptions)
+        return serviceClient.listAgentConversations(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
@@ -2187,8 +2142,10 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -2217,13 +2174,15 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
         Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -2245,10 +2204,13 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, CreateAgentVersionInput createAgentVersionInput) {
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, createAgentVersionInput.getDefinition(),
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -2292,9 +2254,6 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -2307,7 +2266,7 @@ public final class AgentsClient {
         if (userIdentity != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-identity"), userIdentity);
         }
-        return serviceClient.listAgentConversations(requestOptions)
+        return serviceClient.listAgentConversations(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
@@ -3678,7 +3637,7 @@ public final class AgentsClient {
     public PagedIterable<AgentSessionResource> listSessions(String agentName) {
         // Generated convenience method for listSessions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSessions(agentName, requestOptions)
+        return serviceClient.listSessions(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
     }
 
@@ -3757,7 +3716,7 @@ public final class AgentsClient {
     public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId) {
         // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSessionFiles(agentName, sessionId, requestOptions)
+        return serviceClient.listSessionFiles(null, agentName, sessionId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 
@@ -3938,106 +3897,6 @@ public final class AgentsClient {
     }
 
     /**
-     * List sessions for an agent
-     *
-     * Returns a paged collection of sessions associated with the specified agent endpoint.
-     *
-     * @param agentName The name of the agent.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order,
-        String after, String before) {
-        // Generated convenience method for listSessions
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listSessions(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * List session files
-     *
-     * Returns files and directories at the specified path in the session sandbox.
-     * The response includes only the immediate children of the target directory and defaults to the session home
-     * directory when no path is supplied.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
-     * not provided.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId, String path,
-        Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSessionFiles
-        RequestOptions requestOptions = new RequestOptions();
-        if (path != null) {
-            requestOptions.addQueryParam("path", path, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listSessionFiles(agentName, sessionId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
-    }
-
-    /**
      * Delete a session file
      *
      * Deletes the specified file or directory from the session sandbox.
@@ -4064,57 +3923,6 @@ public final class AgentsClient {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
         deleteSessionFileWithResponse(agentName, sessionId, path, requestOptions).getValue();
-    }
-
-    /**
-     * List agent versions
-     *
-     * Returns a paged collection of versions for the specified agent.
-     *
-     * @param agentName The name of the agent to retrieve versions for.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param includeDrafts (Preview) Whether to include draft versions in the listing. The service defaults to `false`
-     * if a value is not specified by the caller (only non-draft versions are returned).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
-        String after, String before, Boolean includeDrafts) {
-        // Generated convenience method for listAgentVersions
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (includeDrafts != null) {
-            requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
-        }
-        return serviceClient.listAgentVersions(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
     /**
@@ -4891,13 +4699,14 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -4922,7 +4731,7 @@ public final class AgentsClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -4977,13 +4786,14 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -5008,7 +4818,7 @@ public final class AgentsClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5027,7 +4837,7 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link SyncPoller} for polling of agent optimization job resource — a long-running job that produces
-     * candidate changes to a Foundry agent configuration.
+     * candidate changes or versioned skill packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -5083,13 +4893,14 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -5114,7 +4925,7 @@ public final class AgentsClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5172,7 +4983,7 @@ public final class AgentsClient {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5219,13 +5030,14 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -5250,7 +5062,7 @@ public final class AgentsClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5322,13 +5134,14 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -5353,7 +5166,7 @@ public final class AgentsClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5371,8 +5184,8 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
-     * configuration along with {@link Response}.
+     * @return agent optimization job resource — a long-running job that produces candidate changes or versioned skill
+     * packages along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5415,7 +5228,7 @@ public final class AgentsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of agent optimization job resource — a long-running job that produces
-     * candidate changes to a Foundry agent configuration.
+     * candidate changes or versioned skill packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -5443,7 +5256,7 @@ public final class AgentsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of agent optimization job resource — a long-running job that produces
-     * candidate changes to a Foundry agent configuration.
+     * candidate changes or versioned skill packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -5483,59 +5296,6 @@ public final class AgentsClient {
      *
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param status Filter to jobs in this lifecycle state.
-     * @param agentName Filter to jobs targeting this agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
-        String before, JobStatus status, String agentName) {
-        // Generated convenience method for listOptimizationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        return serviceClient.listOptimizationJobs(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
-    }
-
-    /**
-     * List agent optimization jobs
-     *
-     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -5548,7 +5308,7 @@ public final class AgentsClient {
     public PagedIterable<AgentOptimizationJob> listOptimizationJobs() {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listOptimizationJobs(requestOptions)
+        return serviceClient.listOptimizationJobs(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
     }
 
@@ -5564,8 +5324,8 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
-     * configuration.
+     * @return agent optimization job resource — a long-running job that produces candidate changes or versioned skill
+     * packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5612,7 +5372,7 @@ public final class AgentsClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *         goal: String(improve_quality) (Optional)
      *         evaluation_configuration (Required): {
      *             training_set (Required): {
@@ -5728,8 +5488,11 @@ public final class AgentsClient {
     /**
      * List candidates for an agent optimization job
      *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * Lists candidates for the given optimization job with cursor pagination. Agent optimization can include the
+     * original baseline and multiple generated candidates; prompt and skill optimization generate a single candidate.
+     * Evaluated skill jobs also expose the original baseline for reporting through the existing evaluation field; the
+     * baseline is not a generated alternative. A generated skill candidate contains zero or more skill outcomes, not
+     * one candidate per skill. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
      * fields are omitted unless the client passes `expand=mutations`.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -5757,12 +5520,66 @@ public final class AgentsClient {
      *     candidate_id: String (Required)
      *     job_id: String (Required)
      *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     status: String(generating/evaluating/completed/failed/skipped) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      *     started_at: long (Required)
      *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
+     *     }
+     *     execution_summary (Optional): {
+     *         updated_at: long (Required)
+     *         steps (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 status: String(not_started/in_progress/completed/failed/skipped/cancelled) (Required)
+     *                 summary: String (Optional)
+     *                 step_details (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *                 error_code: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     resolved_context (Optional): {
+     *         source_trace_ids (Optional): [
+     *             String (Optional)
+     *         ]
+     *         agent_skills (Optional): [
+     *              (Optional){
+     *                 type: String(foundry_skill) (Required)
+     *             }
+     *         ]
      *     }
      *     rationale: String (Optional)
+     *     files (Optional): [
+     *          (Optional){
+     *             path: String (Required)
+     *             type: String (Required)
+     *             size_in_bytes: long (Required)
+     *         }
+     *     ]
      *     agent_version: String (Optional)
      *     evaluation (Optional): {
      *         score: Double (Optional)
@@ -5801,7 +5618,9 @@ public final class AgentsClient {
     /**
      * Get a candidate for an agent optimization job
      *
-     * Retrieves a single candidate. Mutation values are always included.
+     * Retrieves a single candidate. Mutation values are always included. Skill optimization detail includes independent
+     * skill results, resolved context, and the persisted execution snapshot when available; these detail fields are
+     * omitted from candidate lists.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5810,12 +5629,66 @@ public final class AgentsClient {
      *     candidate_id: String (Required)
      *     job_id: String (Required)
      *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     status: String(generating/evaluating/completed/failed/skipped) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      *     started_at: long (Required)
      *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
+     *     }
+     *     execution_summary (Optional): {
+     *         updated_at: long (Required)
+     *         steps (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 status: String(not_started/in_progress/completed/failed/skipped/cancelled) (Required)
+     *                 summary: String (Optional)
+     *                 step_details (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *                 error_code: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     resolved_context (Optional): {
+     *         source_trace_ids (Optional): [
+     *             String (Optional)
+     *         ]
+     *         agent_skills (Optional): [
+     *              (Optional){
+     *                 type: String(foundry_skill) (Required)
+     *             }
+     *         ]
      *     }
      *     rationale: String (Optional)
+     *     files (Optional): [
+     *          (Optional){
+     *             path: String (Required)
+     *             type: String (Required)
+     *             size_in_bytes: long (Required)
+     *         }
+     *     ]
      *     agent_version: String (Optional)
      *     evaluation (Optional): {
      *         score: Double (Optional)
@@ -5858,9 +5731,12 @@ public final class AgentsClient {
     /**
      * Promote a candidate for an agent optimization job
      *
-     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
-     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
-     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * Promotes a supported completed candidate to the Foundry agent stored in the parent job's target configuration. A
+     * skill-optimization candidate must be the evaluated learned candidate for a supported Prompt or Managed target;
+     * baseline, unevaluated, agentless, and unsupported-runtime skill candidates cannot be promoted. Skill promotion
+     * releases the exact evaluated candidate configuration without regenerating skills. Prompt-agent promotion creates
+     * a new agent version. Hosted-agent promotion currently records promotion metadata without deploying a new
+     * hosted-agent version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5869,12 +5745,66 @@ public final class AgentsClient {
      *     candidate_id: String (Required)
      *     job_id: String (Required)
      *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     status: String(generating/evaluating/completed/failed/skipped) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      *     started_at: long (Required)
      *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
+     *     }
+     *     execution_summary (Optional): {
+     *         updated_at: long (Required)
+     *         steps (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 status: String(not_started/in_progress/completed/failed/skipped/cancelled) (Required)
+     *                 summary: String (Optional)
+     *                 step_details (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *                 error_code: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     resolved_context (Optional): {
+     *         source_trace_ids (Optional): [
+     *             String (Optional)
+     *         ]
+     *         agent_skills (Optional): [
+     *              (Optional){
+     *                 type: String(foundry_skill) (Required)
+     *             }
+     *         ]
      *     }
      *     rationale: String (Optional)
+     *     files (Optional): [
+     *          (Optional){
+     *             path: String (Required)
+     *             type: String (Required)
+     *             size_in_bytes: long (Required)
+     *         }
+     *     ]
      *     agent_version: String (Optional)
      *     evaluation (Optional): {
      *         score: Double (Optional)
@@ -5938,8 +5868,284 @@ public final class AgentsClient {
     /**
      * List candidates for an agent optimization job
      *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * Lists candidates for the given optimization job with cursor pagination. Agent optimization can include the
+     * original baseline and multiple generated candidates; prompt and skill optimization generate a single candidate.
+     * Evaluated skill jobs also expose the original baseline for reporting through the existing evaluation field; the
+     * baseline is not a generated alternative. A generated skill candidate contains zero or more skill outcomes, not
+     * one candidate per skill. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * fields are omitted unless the client passes `expand=mutations`.
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentOptimizationCandidate> listOptimizationCandidates(String jobId) {
+        // Generated convenience method for listOptimizationCandidates
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listOptimizationCandidates(null, jobId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
+    }
+
+    /**
+     * Get a candidate for an agent optimization job
+     *
+     * Retrieves a single candidate. Mutation values are always included. Skill optimization detail includes independent
+     * skill results, resolved context, and the persisted execution snapshot when available; these detail fields are
+     * omitted from candidate lists.
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a candidate for an agent optimization job
+     *
+     * Retrieves a single candidate.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentOptimizationCandidate getOptimizationCandidate(String jobId, String candidateId) {
+        // Generated convenience method for getOptimizationCandidateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(AgentOptimizationCandidate.class);
+    }
+
+    /**
+     * Promote a candidate for an agent optimization job
+     *
+     * Promotes a supported completed candidate to the Foundry agent stored in the parent job's target configuration. A
+     * skill-optimization candidate must be the evaluated learned candidate for a supported Prompt or Managed target;
+     * baseline, unevaluated, agentless, and unsupported-runtime skill candidates cannot be promoted. Skill promotion
+     * releases the exact evaluated candidate configuration without regenerating skills. Prompt-agent promotion creates
+     * a new agent version. Hosted-agent promotion currently records promotion metadata without deploying a new
+     * hosted-agent version.
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a candidate generated by an optimization job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentOptimizationCandidate promoteOptimizationCandidate(String jobId, String candidateId) {
+        // Generated convenience method for promoteOptimizationCandidateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return promoteOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(AgentOptimizationCandidate.class);
+    }
+
+    /**
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
+     *
+     * @param kind Filter agents by kind. If not provided, all agents are returned.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listAgents
+        RequestOptions requestOptions = new RequestOptions();
+        if (kind != null) {
+            requestOptions.addQueryParam("kind", kind.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listAgents(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
+    }
+
+    /**
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
+     *
+     * @param agentName The name of the agent to retrieve versions for.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param includeDrafts (Preview) Whether to include draft versions in the listing. The service defaults to `false`
+     * if a value is not specified by the caller (only non-draft versions are returned).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
+        String after, String before, Boolean includeDrafts) {
+        // Generated convenience method for listAgentVersions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (includeDrafts != null) {
+            requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
+        }
+        return serviceClient.listAgentVersions(after, agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * List sessions for an agent
+     *
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
+     *
+     * @param agentName The name of the agent.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listSessions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listSessions(after, agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
+    }
+
+    /**
+     * List session files
+     *
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
+     *
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
+     * not provided.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId, String path,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listSessionFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (path != null) {
+            requestOptions.addQueryParam("path", path, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listSessionFiles(after, agentName, sessionId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
+    }
+
+    /**
+     * List candidates for an agent optimization job
+     *
+     * Lists candidates for the given optimization job with cursor pagination. Agent optimization can include the
+     * original baseline and multiple generated candidates; prompt and skill optimization generate a single candidate.
+     * Evaluated skill jobs also expose the original baseline for reporting through the existing evaluation field; the
+     * baseline is not a generated alternative. A generated skill candidate contains zero or more skill outcomes, not
+     * one candidate per skill. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
      * fields are omitted unless the client passes `expand=mutations`.
      *
      * @param jobId The ID of the parent optimization job.
@@ -5977,24 +6183,198 @@ public final class AgentsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listOptimizationCandidates(jobId, requestOptions)
+        return serviceClient.listOptimizationCandidates(after, jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
     }
 
     /**
-     * List candidates for an agent optimization job
+     * Generate an agent
      *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
-     * fields are omitted unless the client passes `expand=mutations`.
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
      *
-     * @param jobId The ID of the parent optimization job.
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAgentFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createAgentFromPromptWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentDetails createAgentFromPrompt(BinaryData body) {
+        // Generated convenience method for createAgentFromPromptWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createAgentFromPromptWithResponse(body, requestOptions).getValue().toObject(AgentDetails.class);
+    }
+
+    /**
+     * List agent optimization jobs
+     *
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param status Filter to jobs in this lifecycle state.
+     * @param agentName Filter to jobs targeting this agent name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6005,62 +6385,115 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentOptimizationCandidate> listOptimizationCandidates(String jobId) {
-        // Generated convenience method for listOptimizationCandidates
+    public PagedIterable<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
+        String before, JobStatus status, String agentName) {
+        // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listOptimizationCandidates(jobId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        return serviceClient.listOptimizationJobs(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
     }
 
     /**
-     * Get a candidate for an agent optimization job
+     * Download an agent optimization job file
      *
-     * Retrieves a single candidate. Mutation values are always included.
+     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
+     * candidate_id is omitted, the request is scoped to the job.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>candidate_id</td><td>String</td><td>No</td><td>The candidate that owns the file. Omit to request a
+     * job-level file.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
      *
      * @param jobId The ID of the parent optimization job.
-     * @param candidateId The candidate identifier.
+     * @param path The file path returned in the file descriptor.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadOptimizationJobFileWithResponse(String jobId, String path,
+        RequestOptions requestOptions) {
+        return this.serviceClient.downloadOptimizationJobFileWithResponse(jobId, path, requestOptions);
+    }
+
+    /**
+     * Download an agent optimization job file
+     *
+     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
+     * candidate_id is omitted, the request is scoped to the job.
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param path The file path returned in the file descriptor.
+     * @param candidateId The candidate that owns the file. Omit to request a job-level file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate for an agent optimization job
-     *
-     * Retrieves a single candidate.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentOptimizationCandidate getOptimizationCandidate(String jobId, String candidateId) {
-        // Generated convenience method for getOptimizationCandidateWithResponse
+    public BinaryData downloadOptimizationJobFile(String jobId, String path, String candidateId) {
+        // Generated convenience method for downloadOptimizationJobFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
-            .toObject(AgentOptimizationCandidate.class);
+        if (candidateId != null) {
+            requestOptions.addQueryParam("candidate_id", candidateId, false);
+        }
+        return downloadOptimizationJobFileWithResponse(jobId, path, requestOptions).getValue();
     }
 
     /**
-     * Promote a candidate for an agent optimization job
+     * Download an agent optimization job file
      *
-     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
-     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
-     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
+     * candidate_id is omitted, the request is scoped to the job.
      *
      * @param jobId The ID of the parent optimization job.
-     * @param candidateId The candidate identifier.
+     * @param path The file path returned in the file descriptor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate generated by an optimization job.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentOptimizationCandidate promoteOptimizationCandidate(String jobId, String candidateId) {
-        // Generated convenience method for promoteOptimizationCandidateWithResponse
+    public BinaryData downloadOptimizationJobFile(String jobId, String path) {
+        // Generated convenience method for downloadOptimizationJobFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return promoteOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
-            .toObject(AgentOptimizationCandidate.class);
+        return downloadOptimizationJobFileWithResponse(jobId, path, requestOptions).getValue();
     }
 }

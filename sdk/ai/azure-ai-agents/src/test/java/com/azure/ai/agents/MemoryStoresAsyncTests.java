@@ -72,6 +72,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                             assertEquals(updatedDescription, updatedStore.getDescription());
 
                             return memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null, null)
+                                .takeUntil(store -> store.getName().equals(updatedStore.getName()))
                                 .collectList()
                                 .doOnNext(stores -> {
                                     assertNotNull(stores);

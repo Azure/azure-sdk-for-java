@@ -12,19 +12,19 @@ public final class DeploymentSettingVirtualSwitchConfigurationOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingVirtualSwitchConfigurationOverrides model
-            = BinaryData.fromString("{\"enableIov\":\"i\",\"loadBalancingAlgorithm\":\"blxgwimf\"}")
+            = BinaryData.fromString("{\"enableIov\":\"grauwjuetaebur\",\"loadBalancingAlgorithm\":\"dmovsm\"}")
                 .toObject(DeploymentSettingVirtualSwitchConfigurationOverrides.class);
-        Assertions.assertEquals("i", model.enableIov());
-        Assertions.assertEquals("blxgwimf", model.loadBalancingAlgorithm());
+        Assertions.assertEquals("grauwjuetaebur", model.enableIov());
+        Assertions.assertEquals("dmovsm", model.loadBalancingAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentSettingVirtualSwitchConfigurationOverrides model
-            = new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("i")
-                .withLoadBalancingAlgorithm("blxgwimf");
+            = new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("grauwjuetaebur")
+                .withLoadBalancingAlgorithm("dmovsm");
         model = BinaryData.fromObject(model).toObject(DeploymentSettingVirtualSwitchConfigurationOverrides.class);
-        Assertions.assertEquals("i", model.enableIov());
-        Assertions.assertEquals("blxgwimf", model.loadBalancingAlgorithm());
+        Assertions.assertEquals("grauwjuetaebur", model.enableIov());
+        Assertions.assertEquals("dmovsm", model.loadBalancingAlgorithm());
     }
 }

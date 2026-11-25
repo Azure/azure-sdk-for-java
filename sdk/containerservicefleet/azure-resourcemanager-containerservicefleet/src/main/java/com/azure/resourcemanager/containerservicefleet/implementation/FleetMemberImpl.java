@@ -102,11 +102,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetMembers()
-            .create(resourceGroupName, fleetName, fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FleetMember create(Context context) {
@@ -133,10 +129,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetMembers()
-            .updateAsync(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FleetMember apply(Context context) {
@@ -150,17 +143,19 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.fleetMemberName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "members");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}",
+            "fleetName");
+        this.fleetMemberName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}",
+            "fleetMemberName");
     }
 
     public FleetMember refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetMembers()
-            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FleetMember refresh(Context context) {

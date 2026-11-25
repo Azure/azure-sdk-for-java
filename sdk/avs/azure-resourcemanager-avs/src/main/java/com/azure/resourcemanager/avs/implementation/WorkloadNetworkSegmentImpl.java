@@ -95,10 +95,7 @@ public final class WorkloadNetworkSegmentImpl
     }
 
     public WorkloadNetworkSegment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createSegments(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkSegment create(Context context) {
@@ -119,10 +116,7 @@ public final class WorkloadNetworkSegmentImpl
     }
 
     public WorkloadNetworkSegment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateSegments(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkSegment apply(Context context) {
@@ -136,17 +130,19 @@ public final class WorkloadNetworkSegmentImpl
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.segmentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "segments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}",
+            "privateCloudName");
+        this.segmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}",
+            "segmentId");
     }
 
     public WorkloadNetworkSegment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkSegment refresh(Context context) {

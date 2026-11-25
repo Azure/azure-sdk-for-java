@@ -96,7 +96,7 @@ public final class BulkActionsImpl implements BulkActions {
     }
 
     public void cancel(String resourceGroupName, String location, String name) {
-        this.serviceClient().cancel(resourceGroupName, location, name);
+        this.cancel(resourceGroupName, location, name, Context.NONE);
     }
 
     public void cancel(String resourceGroupName, String location, String name, Context context) {
@@ -105,10 +105,7 @@ public final class BulkActionsImpl implements BulkActions {
 
     public PagedIterable<LocationBasedLaunchBulkInstancesOperation> listByResourceGroup(String resourceGroupName,
         String location) {
-        PagedIterable<LocationBasedLaunchBulkInstancesOperationInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new LocationBasedLaunchBulkInstancesOperationImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, location, Context.NONE);
     }
 
     public PagedIterable<LocationBasedLaunchBulkInstancesOperation> listByResourceGroup(String resourceGroupName,
@@ -120,10 +117,7 @@ public final class BulkActionsImpl implements BulkActions {
     }
 
     public PagedIterable<LocationBasedLaunchBulkInstancesOperation> listBySubscription(String location) {
-        PagedIterable<LocationBasedLaunchBulkInstancesOperationInner> inner
-            = this.serviceClient().listBySubscription(location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new LocationBasedLaunchBulkInstancesOperationImpl(inner1, this.manager()));
+        return this.listBySubscription(location, Context.NONE);
     }
 
     public PagedIterable<LocationBasedLaunchBulkInstancesOperation> listBySubscription(String location,
@@ -281,79 +275,37 @@ public final class BulkActionsImpl implements BulkActions {
     }
 
     public LocationBasedLaunchBulkInstancesOperation getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "launchBulkInstancesOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'launchBulkInstancesOperations'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, location, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<LocationBasedLaunchBulkInstancesOperation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "launchBulkInstancesOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'launchBulkInstancesOperations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "location", "locations", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "name", "launchBulkInstancesOperations", LOGGER);
         return this.getWithResponse(resourceGroupName, location, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "launchBulkInstancesOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'launchBulkInstancesOperations'.", id)));
-        }
         Boolean localDeleteInstances = null;
-        this.delete(resourceGroupName, location, name, localDeleteInstances, Context.NONE);
+        this.deleteByIdWithResponse(id, localDeleteInstances, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean deleteInstances, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "launchBulkInstancesOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'launchBulkInstancesOperations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "location", "locations", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}",
+            "name", "launchBulkInstancesOperations", LOGGER);
         this.delete(resourceGroupName, location, name, deleteInstances, context);
     }
 

@@ -44,7 +44,7 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String deploymentName) {
-        this.serviceClient().delete(resourceGroupName, deploymentName);
+        this.delete(resourceGroupName, deploymentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String deploymentName, Context context) {
@@ -52,8 +52,7 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public PagedIterable<NginxDeployment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NginxDeploymentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxDeploymentImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NginxDeployment> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public PagedIterable<NginxDeployment> list() {
-        PagedIterable<NginxDeploymentInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxDeploymentImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NginxDeployment> list(Context context) {
@@ -73,58 +71,30 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public NginxDeployment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NginxDeployment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}",
+            "deploymentName", "nginxDeployments", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, deploymentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        this.delete(resourceGroupName, deploymentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}",
+            "deploymentName", "nginxDeployments", LOGGER);
         this.delete(resourceGroupName, deploymentName, context);
     }
 

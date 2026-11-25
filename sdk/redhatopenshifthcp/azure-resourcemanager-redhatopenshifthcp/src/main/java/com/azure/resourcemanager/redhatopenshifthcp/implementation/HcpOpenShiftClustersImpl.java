@@ -49,7 +49,7 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String hcpOpenShiftClusterName) {
-        this.serviceClient().delete(resourceGroupName, hcpOpenShiftClusterName);
+        this.delete(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, Context context) {
@@ -57,8 +57,7 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public PagedIterable<HcpOpenShiftCluster> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<HcpOpenShiftClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HcpOpenShiftClusterImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<HcpOpenShiftCluster> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,8 +67,7 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public PagedIterable<HcpOpenShiftCluster> list() {
-        PagedIterable<HcpOpenShiftClusterInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HcpOpenShiftClusterImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<HcpOpenShiftCluster> list(Context context) {
@@ -79,13 +77,7 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
 
     public HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName,
         String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
-        HcpOpenShiftClusterAdminCredentialInner inner
-            = this.serviceClient().requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body);
-        if (inner != null) {
-            return new HcpOpenShiftClusterAdminCredentialImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, Context.NONE);
     }
 
     public HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName,
@@ -100,7 +92,7 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public void revokeCredentials(String resourceGroupName, String hcpOpenShiftClusterName) {
-        this.serviceClient().revokeCredentials(resourceGroupName, hcpOpenShiftClusterName);
+        this.revokeCredentials(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     public void revokeCredentials(String resourceGroupName, String hcpOpenShiftClusterName, Context context) {
@@ -108,58 +100,30 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public HcpOpenShiftCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, hcpOpenShiftClusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<HcpOpenShiftCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hcpOpenShiftClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "hcpOpenShiftClusterName", "hcpOpenShiftClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, hcpOpenShiftClusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        this.delete(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hcpOpenShiftClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "hcpOpenShiftClusterName", "hcpOpenShiftClusters", LOGGER);
         this.delete(resourceGroupName, hcpOpenShiftClusterName, context);
     }
 

@@ -72,10 +72,7 @@ public final class WorkflowVersionImpl implements WorkflowVersion, WorkflowVersi
     }
 
     public WorkflowVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflowVersions()
-            .createOrUpdate(resourceGroupName, contextName, workflowName, versionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkflowVersion create(Context context) {
@@ -97,10 +94,7 @@ public final class WorkflowVersionImpl implements WorkflowVersion, WorkflowVersi
     }
 
     public WorkflowVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflowVersions()
-            .update(resourceGroupName, contextName, workflowName, versionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkflowVersion apply(Context context) {
@@ -114,18 +108,22 @@ public final class WorkflowVersionImpl implements WorkflowVersion, WorkflowVersi
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contextName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contexts");
-        this.workflowName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workflows");
-        this.versionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "resourceGroupName");
+        this.contextName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "contextName");
+        this.workflowName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "workflowName");
+        this.versionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}",
+            "versionName");
     }
 
     public WorkflowVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflowVersions()
-            .getWithResponse(resourceGroupName, contextName, workflowName, versionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkflowVersion refresh(Context context) {

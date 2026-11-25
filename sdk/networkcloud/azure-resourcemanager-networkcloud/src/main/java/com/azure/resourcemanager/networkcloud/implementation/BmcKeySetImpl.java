@@ -152,11 +152,7 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBmcKeySets()
-            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BmcKeySet create(Context context) {
@@ -183,11 +179,7 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBmcKeySets()
-            .update(resourceGroupName, clusterName, bmcKeySetName, updateIfMatch, updateIfNoneMatch,
-                updateBmcKeySetUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BmcKeySet apply(Context context) {
@@ -202,17 +194,19 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.bmcKeySetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bmcKeySets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}",
+            "clusterName");
+        this.bmcKeySetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}",
+            "bmcKeySetName");
     }
 
     public BmcKeySet refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBmcKeySets()
-            .getWithResponse(resourceGroupName, clusterName, bmcKeySetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BmcKeySet refresh(Context context) {

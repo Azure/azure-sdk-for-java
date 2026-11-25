@@ -93,12 +93,7 @@ public final class IncidentTaskImpl implements IncidentTask, IncidentTask.Defini
     }
 
     public IncidentTask create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentTasks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IncidentTask create(Context context) {
@@ -121,12 +116,7 @@ public final class IncidentTaskImpl implements IncidentTask, IncidentTask.Defini
     }
 
     public IncidentTask apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentTasks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IncidentTask apply(Context context) {
@@ -142,18 +132,22 @@ public final class IncidentTaskImpl implements IncidentTask, IncidentTask.Defini
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.incidentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "incidents");
-        this.incidentTaskId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tasks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/tasks/{incidentTaskId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/tasks/{incidentTaskId}",
+            "workspaceName");
+        this.incidentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/tasks/{incidentTaskId}",
+            "incidentId");
+        this.incidentTaskId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/tasks/{incidentTaskId}",
+            "incidentTaskId");
     }
 
     public IncidentTask refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentTasks()
-            .getWithResponse(resourceGroupName, workspaceName, incidentId, incidentTaskId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IncidentTask refresh(Context context) {

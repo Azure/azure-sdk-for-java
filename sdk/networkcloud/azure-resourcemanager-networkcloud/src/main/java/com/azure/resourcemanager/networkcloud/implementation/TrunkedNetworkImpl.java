@@ -169,11 +169,7 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
     }
 
     public TrunkedNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrunkedNetworks()
-            .createOrUpdate(resourceGroupName, trunkedNetworkName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TrunkedNetwork create(Context context) {
@@ -200,12 +196,7 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
     }
 
     public TrunkedNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrunkedNetworks()
-            .updateWithResponse(resourceGroupName, trunkedNetworkName, updateIfMatch, updateIfNoneMatch,
-                updateTrunkedNetworkUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TrunkedNetwork apply(Context context) {
@@ -221,16 +212,16 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trunkedNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trunkedNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}",
+            "resourceGroupName");
+        this.trunkedNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}",
+            "trunkedNetworkName");
     }
 
     public TrunkedNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrunkedNetworks()
-            .getByResourceGroupWithResponse(resourceGroupName, trunkedNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TrunkedNetwork refresh(Context context) {

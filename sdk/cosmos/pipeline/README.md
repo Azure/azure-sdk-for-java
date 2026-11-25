@@ -1,23 +1,21 @@
 # Cosmos live-test fixed accounts
 
-This directory holds the **single-secret JSON configuration** used to point the Cosmos
-Java live tests at fixed, self-owned Cosmos DB accounts (no central EngSys
-provisioner). It is the Track A mechanism from the retargeting plan.
+This directory holds the CI runtime resolver used to point the Cosmos Java live tests
+at fixed, self-owned Cosmos DB accounts. Account provisioning and local-only tooling
+are not part of this directory.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `live-test-accounts.schema.json` | JSON schema (draft-07) for the single secret. |
-| `live-test-accounts.sample.json` | Example with all logical accounts (placeholder values). |
 | `resolve-cosmos-test-account.sh` | Pre-step parser: reads the JSON secret + a selector, exports `ACCOUNT_HOST`/`ACCOUNT_KEY`. |
-| `resolve-cosmos-test-account.tests.sh` | Local tests for the parser (no ADO required). |
 | `resolve-test-account-steps.yml` | Reusable `PreTestRunSteps` template that runs the parser for a selector. |
+| `cspell.json` | Spelling configuration for this directory's CI files and documentation. |
 
 ## How it works
 
 1. A **single ADO variable-group secret** (`sub-config-cosmos-azure-cloud-test-resources`)
-   holds a JSON document (see schema) mapping a **logical account name** to its
+   holds a version 1 JSON document mapping a **logical account name** to its
    `{ endpoint, key, secondaryKey, ... }`.
 2. Each pipeline stage passes a **selector** (the logical name it needs).
 3. A **pre-step** runs `resolve-cosmos-test-account.sh`, which validates the JSON,
@@ -25,13 +23,34 @@ provisioner). It is the Track A mechanism from the retargeting plan.
    `SECONDARY_ACCOUNT_KEY` when present) for the tests to read via `TestConfigurations`.
    It does NOT set `ACCOUNT_CONSISTENCY`/`PREFERRED_LOCATIONS` — those are matrix-controlled
    per leg.
-4. The account provisioning script (in [`account-provisioning/`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/pipeline/account-provisioning))
-   regenerates the accounts + JSON on every ephemeral-tenant rotation
-   (`New-CosmosLiveTestAccounts.ps1` creates the accounts and outputs the JSON). The
-   secret is then updated manually with that JSON, so pipelines pick up refreshed
-   endpoints/keys automatically.
+4. Account provisioning is managed separately. After account or tenant rotation, update
+   the secret with the current endpoints and keys so pipelines pick up refreshed
+   credentials automatically.
 
 All Cosmos live-test matrix legs run on **linux** agents, so the parser is bash + jq.
+
+## Secret format
+
+The resolver requires `version: 1`, an `accounts` object containing the selected
+logical name, a nonempty HTTPS `endpoint`, and a nonempty `key`. Supply `secondaryKey`
+for profiles that exercise key rotation. Other account metadata is ignored by the
+resolver; consistency and preferred locations remain matrix-controlled.
+
+```json
+{
+  "version": 1,
+  "accounts": {
+    "single-session": {
+      "endpoint": "https://REPLACE.documents.azure.com:443/",
+      "key": "REPLACE_PRIMARY_KEY",
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    }
+  }
+}
+```
+
+This example contains placeholders only. Store real account keys in the secret, not
+in source files or logs.
 
 ## Selectors (from the test matrices)
 
@@ -79,10 +98,33 @@ The main `Cosmos_live_test` stage spans many consistency/topology configs, so ea
 - `Cosmos_live_test` (main) — per-leg selector.
 - `Cosmos_Live_Test_Http2` — `multimaster-session-http2`.
 
-NOT yet wired (need follow-up): the thin-client stages and GSI (their accounts need
+NOT yet wired to the JSON selector (need follow-up): the thin-client stages and GSI (their accounts need
 thin-client / GSI-preview enablement that plain account creation doesn't do), Kafka
 (entangled with AAD — belongs in the separate AAD pipeline), and Spring (uses its own
 test-resources with `AZURE_SPRING_TENANT_ID`).
+
+### Fixed thin-client and GSI accounts
+
+These stages do not use the JSON selector. They pass fixed credentials to Maven as
+`ACCOUNT_HOST`/`ACCOUNT_KEY` and to the post-job database cleanup:
+
+| Stage (`Cosmos_Live_Test_` prefix) | Endpoint variable | Key variable |
+| --- | --- | --- |
+| `Http2NetworkFault`, `ThinClient`, `ThinClient_EndpointProbe` | `thinclient-test-endpoint` | `thinclient-test-key` |
+| `ThinClient_MultiRegion` | `thin-client-canary-multi-region-session-endpoint` | `thin-client-canary-multi-region-session-key` |
+| `ThinClient_MultiMaster` | `thin-client-canary-multi-writer-session-endpoint` | `thin-client-canary-multi-writer-session-key` |
+| `GSI` | `gsi-pipeline-uri` | `gsi-pipeline-key` |
+
+Their selected profiles use these accounts for setup and tests; they do not require
+ARM-generated `NEW_ACCOUNT_*` or secondary-key outputs. This includes the query and
+consistency-override legs of `ThinClient` and both transport legs of `Http2NetworkFault`.
+
+All six stages set `DisableAzureResourceCreation: true` to skip per-run ARM resource
+configuration, deployment, and removal. Maven feed authentication and the federated
+test runner remain enabled. The legacy `ArmTemplateParameters` in their matrices are
+unused while provisioning is disabled; consistency and other test inputs still apply.
+The endpoint-probe stage still leaves `COSMOS.THINCLIENT_ENABLED` unset, and the
+network-fault stage retains its iptables setup and per-profile transport selection.
 
 ### Secret upkeep
 
@@ -95,11 +137,6 @@ would fall back to the emulator key and fail against a live account.
 The JSON lives in the ADO variable-group secret
 `sub-config-cosmos-azure-cloud-test-resources` (Cosmos "user administered" variable
 group). The resolve steps template reads it by default. Refresh it manually whenever the
-accounts are re-provisioned (e.g. after an ephemeral-tenant rotation) by pasting the
-regenerated JSON from `New-CosmosLiveTestAccounts.ps1`.
-
-## Local test
-
-```bash
-bash sdk/cosmos/pipeline/resolve-cosmos-test-account.tests.sh
-```
+accounts are re-provisioned (e.g. after an ephemeral-tenant rotation), using the format
+above and including every selector used by the test matrices. Do not print or commit
+the secret's contents.

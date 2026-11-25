@@ -135,10 +135,7 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileSystems()
-            .createOrUpdate(resourceGroupName, fileSystemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileSystemResource create(Context context) {
@@ -160,11 +157,7 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileSystems()
-            .updateWithResponse(resourceGroupName, fileSystemName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FileSystemResource apply(Context context) {
@@ -179,16 +172,16 @@ public final class FileSystemResourceImpl
         com.azure.resourcemanager.qumulo.QumuloManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fileSystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fileSystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "resourceGroupName");
+        this.fileSystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "fileSystemName");
     }
 
     public FileSystemResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileSystems()
-            .getByResourceGroupWithResponse(resourceGroupName, fileSystemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileSystemResource refresh(Context context) {

@@ -88,10 +88,7 @@ public final class DiscoverySourceResourceImpl
     }
 
     public DiscoverySourceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoverySources()
-            .createOrUpdate(resourceGroupName, mapName, sourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DiscoverySourceResource create(Context context) {
@@ -114,10 +111,7 @@ public final class DiscoverySourceResourceImpl
     }
 
     public DiscoverySourceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoverySources()
-            .update(resourceGroupName, mapName, sourceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DiscoverySourceResource apply(Context context) {
@@ -131,17 +125,19 @@ public final class DiscoverySourceResourceImpl
         com.azure.resourcemanager.dependencymap.DependencyMapManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.mapName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "maps");
-        this.sourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "discoverySources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}",
+            "resourceGroupName");
+        this.mapName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}",
+            "mapName");
+        this.sourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}",
+            "sourceName");
     }
 
     public DiscoverySourceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoverySources()
-            .getWithResponse(resourceGroupName, mapName, sourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DiscoverySourceResource refresh(Context context) {

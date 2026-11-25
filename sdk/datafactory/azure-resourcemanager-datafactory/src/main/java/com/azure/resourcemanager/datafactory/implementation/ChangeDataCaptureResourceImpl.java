@@ -119,12 +119,7 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptures()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ChangeDataCaptureResource create(Context context) {
@@ -150,12 +145,7 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptures()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ChangeDataCaptureResource apply(Context context) {
@@ -171,18 +161,19 @@ public final class ChangeDataCaptureResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.changeDataCaptureName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "adfcdcs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
+            "factoryName");
+        this.changeDataCaptureName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
+            "changeDataCaptureName");
     }
 
     public ChangeDataCaptureResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptures()
-            .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ChangeDataCaptureResource refresh(Context context) {

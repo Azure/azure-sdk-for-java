@@ -130,10 +130,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .create(resourceGroupName, elasticSanName, volumeGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeGroup create(Context context) {
@@ -155,10 +152,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .update(resourceGroupName, elasticSanName, volumeGroupName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VolumeGroup apply(Context context) {
@@ -172,17 +166,19 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.elasticSanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "elasticSans");
-        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumegroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}",
+            "resourceGroupName");
+        this.elasticSanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}",
+            "elasticSanName");
+        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}",
+            "volumeGroupName");
     }
 
     public VolumeGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeGroup refresh(Context context) {

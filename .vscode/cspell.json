@@ -123,6 +123,9 @@
     "dinclude",
     "djacoco",
     "djava",
+    "djdk",
+    "djmh",
+    "dmdep",
     "doesnt",
     "dremote",
     "drevapi",
@@ -268,6 +271,12 @@
     "xlsb"
   ],
   "overrides": [
+    {
+      "filename": ".github/agents/management-autopr-*.agent.md",
+      "words": [
+        "autopr"
+      ]
+    },
     {
       "filename": ".github/skills/management-autopr-review/**",
       "words": [

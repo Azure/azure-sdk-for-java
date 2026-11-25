@@ -89,10 +89,7 @@ public final class HcpOpenShiftClusterImpl
     }
 
     public HcpOpenShiftCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcpOpenShiftClusters()
-            .createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HcpOpenShiftCluster create(Context context) {
@@ -114,10 +111,7 @@ public final class HcpOpenShiftClusterImpl
     }
 
     public HcpOpenShiftCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcpOpenShiftClusters()
-            .update(resourceGroupName, hcpOpenShiftClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HcpOpenShiftCluster apply(Context context) {
@@ -131,17 +125,16 @@ public final class HcpOpenShiftClusterImpl
         com.azure.resourcemanager.redhatopenshifthcp.RedHatOpenShiftHostedControlPlanesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hcpOpenShiftClusterName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hcpOpenShiftClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "resourceGroupName");
+        this.hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}",
+            "hcpOpenShiftClusterName");
     }
 
     public HcpOpenShiftCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcpOpenShiftClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, hcpOpenShiftClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HcpOpenShiftCluster refresh(Context context) {

@@ -49,7 +49,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
-        this.serviceClient().delete(resourceGroupName, clusterName);
+        this.delete(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, Context context) {
@@ -57,8 +57,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context) {
@@ -67,8 +66,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public PagedIterable<Cluster> list() {
-        PagedIterable<ClusterInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Cluster> list(Context context) {
@@ -86,7 +84,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void restart(String resourceGroupName, String clusterName) {
-        this.serviceClient().restart(resourceGroupName, clusterName);
+        this.restart(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void restart(String resourceGroupName, String clusterName, Context context) {
@@ -94,7 +92,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void start(String resourceGroupName, String clusterName) {
-        this.serviceClient().start(resourceGroupName, clusterName);
+        this.start(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void start(String resourceGroupName, String clusterName, Context context) {
@@ -102,7 +100,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void stop(String resourceGroupName, String clusterName) {
-        this.serviceClient().stop(resourceGroupName, clusterName);
+        this.stop(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String clusterName, Context context) {
@@ -127,58 +125,30 @@ public final class ClustersImpl implements Clusters {
     }
 
     public Cluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Cluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}",
+            "clusterName", "serverGroupsv2", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        this.delete(resourceGroupName, clusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}",
+            "clusterName", "serverGroupsv2", LOGGER);
         this.delete(resourceGroupName, clusterName, context);
     }
 

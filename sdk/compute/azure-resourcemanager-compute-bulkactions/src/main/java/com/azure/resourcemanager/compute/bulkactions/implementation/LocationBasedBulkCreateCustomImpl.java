@@ -104,10 +104,7 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
     }
 
     public LocationBasedBulkCreateCustom create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom create(Context context) {
@@ -129,10 +126,7 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
     }
 
     public LocationBasedBulkCreateCustom apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom apply(Context context) {
@@ -146,17 +140,19 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bulkCreateCustom");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "resourceGroupName");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
+            "name");
     }
 
     public LocationBasedBulkCreateCustom refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .getWithResponse(resourceGroupName, location, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom refresh(Context context) {

@@ -43,8 +43,7 @@ public final class ExtendedZonesImpl implements ExtendedZones {
     }
 
     public PagedIterable<ExtendedZone> list() {
-        PagedIterable<ExtendedZoneInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtendedZoneImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ExtendedZone> list(Context context) {

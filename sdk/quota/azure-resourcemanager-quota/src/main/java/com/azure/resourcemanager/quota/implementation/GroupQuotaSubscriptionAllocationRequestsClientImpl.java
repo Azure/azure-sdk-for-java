@@ -201,10 +201,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            this.client.getSubscriptionId(), groupQuotaName, resourceProviderName, location, contentType, accept,
+        return updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location,
             allocateQuotaRequest, Context.NONE);
     }
 
@@ -267,54 +264,16 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
             SubscriptionQuotaAllocationsListInner.class, this.client.getContext());
     }
 
-    /**
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of subscription quota list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubscriptionQuotaAllocationsListInner>, SubscriptionQuotaAllocationsListInner>
         beginUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
             SubscriptionQuotaAllocationsListInner allocateQuotaRequest) {
-        Response<BinaryData> response = updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName,
-            location, allocateQuotaRequest);
-        return this.client.<SubscriptionQuotaAllocationsListInner, SubscriptionQuotaAllocationsListInner>getLroResult(
-            response, SubscriptionQuotaAllocationsListInner.class, SubscriptionQuotaAllocationsListInner.class,
+        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, allocateQuotaRequest,
             Context.NONE);
     }
 
-    /**
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of subscription quota list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubscriptionQuotaAllocationsListInner>, SubscriptionQuotaAllocationsListInner>
         beginUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
@@ -352,56 +311,21 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription quota list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionQuotaAllocationsListInner update(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest) {
-        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, allocateQuotaRequest)
-            .getFinalResult();
+        return update(managementGroupId, groupQuotaName, resourceProviderName, location, allocateQuotaRequest,
+            Context.NONE);
     }
 
-    /**
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription quota list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionQuotaAllocationsListInner update(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest,
         Context context) {
-        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, allocateQuotaRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(managementGroupId, groupQuotaName, resourceProviderName,
+            location, allocateQuotaRequest, context));
     }
 
     /**
@@ -450,20 +374,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the quota allocation request status for the subscriptionId by allocationId.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param allocationId Request Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota allocation request status for the subscriptionId by allocationId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaAllocationRequestStatusInner> getWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String allocationId, Context context) {
@@ -472,19 +383,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
             this.client.getSubscriptionId(), groupQuotaName, resourceProviderName, allocationId, accept, context);
     }
 
-    /**
-     * Get the quota allocation request status for the subscriptionId by allocationId.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param allocationId Request Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota allocation request status for the subscriptionId by allocationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaAllocationRequestStatusInner get(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String allocationId) {
@@ -572,12 +471,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaAllocationRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter) {
-        final String accept = "application/json";
-        Response<QuotaAllocationRequestStatusList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-                this.client.getSubscriptionId(), groupQuotaName, resourceProviderName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(managementGroupId, groupQuotaName, resourceProviderName, filter, Context.NONE);
     }
 
     /**
@@ -610,53 +504,14 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the quotaAllocationRequests for a resourceProvider/location. The filter paramter for location is
-     * required.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param filter | Field | Supported operators
-     * |---------------------|------------------------
-     * 
-     * location eq {location}
-     * Example: $filter=location eq eastus.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the quotaAllocationRequests for a resourceProvider/location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaAllocationRequestStatusInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter) {
-        return new PagedIterable<>(
-            () -> listSinglePage(managementGroupId, groupQuotaName, resourceProviderName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(managementGroupId, groupQuotaName, resourceProviderName, filter, Context.NONE);
     }
 
-    /**
-     * Get all the quotaAllocationRequests for a resourceProvider/location. The filter paramter for location is
-     * required.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param filter | Field | Supported operators
-     * |---------------------|------------------------
-     * 
-     * location eq {location}
-     * Example: $filter=location eq eastus.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the quotaAllocationRequests for a resourceProvider/location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaAllocationRequestStatusInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter, Context context) {
@@ -695,11 +550,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaAllocationRequestStatusInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QuotaAllocationRequestStatusList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

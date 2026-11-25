@@ -86,12 +86,7 @@ public final class StorageDiscoveryWorkspaceImpl
     }
 
     public StorageDiscoveryWorkspace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageDiscoveryWorkspaces()
-            .createOrUpdateWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageDiscoveryWorkspace create(Context context) {
@@ -115,11 +110,7 @@ public final class StorageDiscoveryWorkspaceImpl
     }
 
     public StorageDiscoveryWorkspace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageDiscoveryWorkspaces()
-            .updateWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageDiscoveryWorkspace apply(Context context) {
@@ -134,17 +125,16 @@ public final class StorageDiscoveryWorkspaceImpl
         com.azure.resourcemanager.storagediscovery.StorageDiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageDiscoveryWorkspaceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageDiscoveryWorkspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
+            "resourceGroupName");
+        this.storageDiscoveryWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
+            "storageDiscoveryWorkspaceName");
     }
 
     public StorageDiscoveryWorkspace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageDiscoveryWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageDiscoveryWorkspace refresh(Context context) {

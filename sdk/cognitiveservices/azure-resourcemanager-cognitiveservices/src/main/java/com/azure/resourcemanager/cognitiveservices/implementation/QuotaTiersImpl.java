@@ -43,8 +43,7 @@ public final class QuotaTiersImpl implements QuotaTiers {
     }
 
     public PagedIterable<QuotaTier> list() {
-        PagedIterable<QuotaTierInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaTierImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<QuotaTier> list(Context context) {
@@ -53,20 +52,13 @@ public final class QuotaTiersImpl implements QuotaTiers {
     }
 
     public QuotaTier getById(String id) {
-        String defaultParameter = ResourceManagerUtils.getValueFromIdByName(id, "quotaTiers");
-        if (defaultParameter == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTiers'.", id)));
-        }
-        return this.getWithResponse(defaultParameter, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<QuotaTier> getByIdWithResponse(String id, Context context) {
-        String defaultParameter = ResourceManagerUtils.getValueFromIdByName(id, "quotaTiers");
-        if (defaultParameter == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'quotaTiers'.", id)));
-        }
+        String defaultParameter = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}", "default",
+            "quotaTiers", LOGGER);
         return this.getWithResponse(defaultParameter, context);
     }
 

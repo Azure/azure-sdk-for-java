@@ -13,10 +13,10 @@ public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfile model = BinaryData.fromString(
-            "{\"networkType\":\"OVNKubernetes\",\"podCidr\":\"yqkgfg\",\"serviceCidr\":\"madgakeqsrxyb\",\"machineCidr\":\"qedqytbciqfoufl\",\"hostPrefix\":1004345628}")
+            "{\"networkType\":\"OVNKubernetes\",\"podCidr\":\"kgfg\",\"serviceCidr\":\"madgakeqsrxyb\",\"machineCidr\":\"qedqytbciqfoufl\",\"hostPrefix\":1004345628}")
             .toObject(NetworkProfile.class);
         Assertions.assertEquals(NetworkType.OVNKUBERNETES, model.networkType());
-        Assertions.assertEquals("yqkgfg", model.podCIDR());
+        Assertions.assertEquals("kgfg", model.podCIDR());
         Assertions.assertEquals("madgakeqsrxyb", model.serviceCIDR());
         Assertions.assertEquals("qedqytbciqfoufl", model.machineCIDR());
         Assertions.assertEquals(1004345628, model.hostPrefix());
@@ -25,13 +25,13 @@ public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkProfile model = new NetworkProfile().withNetworkType(NetworkType.OVNKUBERNETES)
-            .withPodCIDR("yqkgfg")
+            .withPodCIDR("kgfg")
             .withServiceCIDR("madgakeqsrxyb")
             .withMachineCIDR("qedqytbciqfoufl")
             .withHostPrefix(1004345628);
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
         Assertions.assertEquals(NetworkType.OVNKUBERNETES, model.networkType());
-        Assertions.assertEquals("yqkgfg", model.podCIDR());
+        Assertions.assertEquals("kgfg", model.podCIDR());
         Assertions.assertEquals("madgakeqsrxyb", model.serviceCIDR());
         Assertions.assertEquals("qedqytbciqfoufl", model.machineCIDR());
         Assertions.assertEquals(1004345628, model.hostPrefix());

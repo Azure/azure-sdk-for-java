@@ -234,18 +234,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data connector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataConnectorInner> getWithResponse(String resourceGroupName, String workspaceName,
         String dataConnectorId, Context context) {
@@ -254,17 +243,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             resourceGroupName, workspaceName, dataConnectorId, accept, context);
     }
 
-    /**
-     * Gets a data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnectorInner get(String resourceGroupName, String workspaceName, String dataConnectorId) {
         return getWithResponse(resourceGroupName, workspaceName, dataConnectorId, Context.NONE).getValue();
@@ -313,19 +292,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param dataConnector The data connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data connector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataConnectorInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String dataConnectorId, DataConnectorInner dataConnector, Context context) {
@@ -336,18 +303,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             dataConnector, context);
     }
 
-    /**
-     * Creates or updates the data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param dataConnector The data connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnectorInner createOrUpdate(String resourceGroupName, String workspaceName, String dataConnectorId,
         DataConnectorInner dataConnector) {
@@ -392,18 +348,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataConnectorId,
         Context context) {
@@ -411,16 +356,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, dataConnectorId, context);
     }
 
-    /**
-     * Delete the data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String dataConnectorId) {
         deleteWithResponse(resourceGroupName, workspaceName, dataConnectorId, Context.NONE);
@@ -476,11 +412,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataConnectorInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<DataConnectorList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -504,33 +436,13 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all data connectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connectors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnectorInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all data connectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connectors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnectorInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -579,19 +491,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Connects a data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param connectBody The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> connectWithResponse(String resourceGroupName, String workspaceName, String dataConnectorId,
         DataConnectorConnectBody connectBody, Context context) {
@@ -601,17 +501,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             connectBody, context);
     }
 
-    /**
-     * Connects a data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param connectBody The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void connect(String resourceGroupName, String workspaceName, String dataConnectorId,
         DataConnectorConnectBody connectBody) {
@@ -655,18 +545,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Disconnect a data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disconnectWithResponse(String resourceGroupName, String workspaceName, String dataConnectorId,
         Context context) {
@@ -674,16 +553,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, dataConnectorId, context);
     }
 
-    /**
-     * Disconnect a data connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorId Connector ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disconnect(String resourceGroupName, String workspaceName, String dataConnectorId) {
         disconnectWithResponse(resourceGroupName, workspaceName, dataConnectorId, Context.NONE);
@@ -718,11 +588,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataConnectorInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataConnectorList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

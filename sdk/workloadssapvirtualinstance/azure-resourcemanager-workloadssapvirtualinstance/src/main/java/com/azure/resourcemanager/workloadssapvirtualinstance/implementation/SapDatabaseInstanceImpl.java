@@ -92,10 +92,7 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapDatabaseInstances()
-            .create(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SapDatabaseInstance create(Context context) {
@@ -118,12 +115,7 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapDatabaseInstances()
-            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SapDatabaseInstance apply(Context context) {
@@ -139,18 +131,19 @@ public final class SapDatabaseInstanceImpl
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
-        this.databaseInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databaseInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}",
+            "resourceGroupName");
+        this.sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}",
+            "sapVirtualInstanceName");
+        this.databaseInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}",
+            "databaseInstanceName");
     }
 
     public SapDatabaseInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapDatabaseInstances()
-            .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SapDatabaseInstance refresh(Context context) {

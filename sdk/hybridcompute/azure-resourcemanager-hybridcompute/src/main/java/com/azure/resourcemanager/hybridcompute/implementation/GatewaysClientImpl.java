@@ -247,17 +247,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the view of a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an Arc Gateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String gatewayName,
         Context context) {
@@ -266,16 +256,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
             this.client.getSubscriptionId(), resourceGroupName, gatewayName, accept, context);
     }
 
-    /**
-     * Retrieves information about the view of a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an Arc Gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GatewayInner getByResourceGroup(String resourceGroupName, String gatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, gatewayName, Context.NONE).getValue();
@@ -318,11 +299,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String gatewayName,
         GatewayInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, gatewayName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, gatewayName, parameters, Context.NONE);
     }
 
     /**
@@ -366,37 +343,14 @@ public final class GatewaysClientImpl implements GatewaysClient {
             GatewayInner.class, GatewayInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param parameters Parameters supplied to the Create gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes an Arc Gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GatewayInner>, GatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String gatewayName, GatewayInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, gatewayName, parameters);
-        return this.client.<GatewayInner, GatewayInner>getLroResult(response, GatewayInner.class, GatewayInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, gatewayName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param parameters Parameters supplied to the Create gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes an Arc Gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GatewayInner>, GatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String gatewayName, GatewayInner parameters, Context context) {
@@ -423,38 +377,18 @@ public final class GatewaysClientImpl implements GatewaysClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param parameters Parameters supplied to the Create gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an Arc Gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GatewayInner createOrUpdate(String resourceGroupName, String gatewayName, GatewayInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, gatewayName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, gatewayName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param parameters Parameters supplied to the Create gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an Arc Gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GatewayInner createOrUpdate(String resourceGroupName, String gatewayName, GatewayInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, gatewayName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, gatewayName, parameters, context));
     }
 
     /**
@@ -495,18 +429,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to update a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param parameters Parameters supplied to the Update gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an Arc Gateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GatewayInner> updateWithResponse(String resourceGroupName, String gatewayName,
         GatewayUpdate parameters, Context context) {
@@ -516,17 +439,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
             this.client.getSubscriptionId(), resourceGroupName, gatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to update a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param parameters Parameters supplied to the Update gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an Arc Gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GatewayInner update(String resourceGroupName, String gatewayName, GatewayUpdate parameters) {
         return updateWithResponse(resourceGroupName, gatewayName, parameters, Context.NONE).getValue();
@@ -562,8 +475,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String gatewayName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, gatewayName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, gatewayName, Context.NONE);
     }
 
     /**
@@ -600,33 +512,13 @@ public final class GatewaysClientImpl implements GatewaysClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, gatewayName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, gatewayName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName,
         Context context) {
@@ -649,33 +541,16 @@ public final class GatewaysClientImpl implements GatewaysClient {
         return beginDeleteAsync(resourceGroupName, gatewayName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String gatewayName) {
-        beginDelete(resourceGroupName, gatewayName).getFinalResult();
+        delete(resourceGroupName, gatewayName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String gatewayName, Context context) {
-        beginDelete(resourceGroupName, gatewayName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, gatewayName, context));
     }
 
     /**
@@ -725,11 +600,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GatewayInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<GatewaysListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -751,31 +622,13 @@ public final class GatewaysClientImpl implements GatewaysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all gateways of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Gateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GatewayInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * The operation to get all gateways of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Gateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -823,11 +676,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GatewayInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<GatewaysListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -848,27 +697,13 @@ public final class GatewaysClientImpl implements GatewaysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all gateways of a non-Azure machine.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Gateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GatewayInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * The operation to get all gateways of a non-Azure machine.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Gateway items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GatewayInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -907,11 +742,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GatewayInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GatewaysListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -965,11 +796,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GatewayInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GatewaysListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

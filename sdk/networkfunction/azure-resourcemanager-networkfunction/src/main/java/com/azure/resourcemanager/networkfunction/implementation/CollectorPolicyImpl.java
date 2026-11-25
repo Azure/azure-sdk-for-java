@@ -108,11 +108,7 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCollectorPolicies()
-            .createOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CollectorPolicy create(Context context) {
@@ -136,12 +132,7 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCollectorPolicies()
-            .updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CollectorPolicy apply(Context context) {
@@ -157,18 +148,19 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureTrafficCollectorName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "azureTrafficCollectors");
-        this.collectorPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "collectorPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
+            "resourceGroupName");
+        this.azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
+            "azureTrafficCollectorName");
+        this.collectorPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}",
+            "collectorPolicyName");
     }
 
     public CollectorPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCollectorPolicies()
-            .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CollectorPolicy refresh(Context context) {

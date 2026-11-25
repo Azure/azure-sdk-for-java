@@ -90,10 +90,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
     }
 
     public SchemaRegistry create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaRegistries()
-            .createOrReplace(resourceGroupName, schemaRegistryName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SchemaRegistry create(Context context) {
@@ -115,10 +112,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
     }
 
     public SchemaRegistry apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaRegistries()
-            .update(resourceGroupName, schemaRegistryName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SchemaRegistry apply(Context context) {
@@ -132,16 +126,16 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schemaRegistryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schemaRegistries");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}",
+            "resourceGroupName");
+        this.schemaRegistryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}",
+            "schemaRegistryName");
     }
 
     public SchemaRegistry refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaRegistries()
-            .getByResourceGroupWithResponse(resourceGroupName, schemaRegistryName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SchemaRegistry refresh(Context context) {

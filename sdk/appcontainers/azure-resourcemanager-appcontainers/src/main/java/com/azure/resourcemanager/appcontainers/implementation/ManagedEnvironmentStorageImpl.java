@@ -62,12 +62,7 @@ public final class ManagedEnvironmentStorageImpl
     }
 
     public ManagedEnvironmentStorage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedEnvironmentsStorages()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedEnvironmentStorage create(Context context) {
@@ -90,12 +85,7 @@ public final class ManagedEnvironmentStorageImpl
     }
 
     public ManagedEnvironmentStorage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedEnvironmentsStorages()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedEnvironmentStorage apply(Context context) {
@@ -110,17 +100,19 @@ public final class ManagedEnvironmentStorageImpl
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "resourceGroupName");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "environmentName");
+        this.storageName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}",
+            "storageName");
     }
 
     public ManagedEnvironmentStorage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedEnvironmentsStorages()
-            .getWithResponse(resourceGroupName, environmentName, storageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedEnvironmentStorage refresh(Context context) {

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.redisenterprise.fluent.MigrationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationValidationResponseInner;
 import com.azure.resourcemanager.redisenterprise.models.Migration;
+import com.azure.resourcemanager.redisenterprise.models.MigrationUndoRequest;
 import com.azure.resourcemanager.redisenterprise.models.MigrationValidationRequest;
 import com.azure.resourcemanager.redisenterprise.models.MigrationValidationResponse;
 import com.azure.resourcemanager.redisenterprise.models.Migrations;
@@ -46,12 +47,7 @@ public final class MigrationsImpl implements Migrations {
     }
 
     public Migration start(String resourceGroupName, String clusterName, MigrationInner parameters) {
-        MigrationInner inner = this.serviceClient().start(resourceGroupName, clusterName, parameters);
-        if (inner != null) {
-            return new MigrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.start(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     public Migration start(String resourceGroupName, String clusterName, MigrationInner parameters, Context context) {
@@ -64,8 +60,7 @@ public final class MigrationsImpl implements Migrations {
     }
 
     public PagedIterable<Migration> list(String resourceGroupName, String clusterName) {
-        PagedIterable<MigrationInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Migration> list(String resourceGroupName, String clusterName, Context context) {
@@ -73,12 +68,20 @@ public final class MigrationsImpl implements Migrations {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationImpl(inner1, this.manager()));
     }
 
-    public void cancel(String resourceGroupName, String clusterName) {
-        this.serviceClient().cancel(resourceGroupName, clusterName);
+    public void undo(String resourceGroupName, String clusterName) {
+        this.serviceClient().undo(resourceGroupName, clusterName);
     }
 
-    public void cancel(String resourceGroupName, String clusterName, Context context) {
-        this.serviceClient().cancel(resourceGroupName, clusterName, context);
+    public void undo(String resourceGroupName, String clusterName, MigrationUndoRequest body, Context context) {
+        this.serviceClient().undo(resourceGroupName, clusterName, body, context);
+    }
+
+    public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName) {
+        this.unlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
+    }
+
+    public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().unlinkMigratedEndpoint(resourceGroupName, clusterName, context);
     }
 
     public Response<MigrationValidationResponse> validateWithResponse(String resourceGroupName, String clusterName,

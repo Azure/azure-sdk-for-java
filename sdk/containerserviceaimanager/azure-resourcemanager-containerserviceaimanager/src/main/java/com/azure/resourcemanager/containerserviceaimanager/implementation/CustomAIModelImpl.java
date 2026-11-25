@@ -74,11 +74,7 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
     }
 
     public CustomAIModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomAIModels()
-            .createOrUpdate(resourceGroupName, aiManagerName, customAIModelName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomAIModel create(Context context) {
@@ -105,11 +101,7 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
     }
 
     public CustomAIModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomAIModels()
-            .createOrUpdate(resourceGroupName, aiManagerName, customAIModelName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomAIModel apply(Context context) {
@@ -124,17 +116,19 @@ public final class CustomAIModelImpl implements CustomAIModel, CustomAIModel.Def
         com.azure.resourcemanager.containerserviceaimanager.ContainerServiceAIManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.aiManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "aiManagers");
-        this.customAIModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customAIModels");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}",
+            "resourceGroupName");
+        this.aiManagerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}",
+            "aiManagerName");
+        this.customAIModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}",
+            "customAIModelName");
     }
 
     public CustomAIModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomAIModels()
-            .getWithResponse(resourceGroupName, aiManagerName, customAIModelName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomAIModel refresh(Context context) {

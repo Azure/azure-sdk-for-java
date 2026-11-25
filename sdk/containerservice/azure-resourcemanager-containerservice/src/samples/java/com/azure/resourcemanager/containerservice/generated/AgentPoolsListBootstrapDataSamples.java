@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.resourcemanager.containerservice.models.ListBootstrapDataRequest;
-
 /**
  * Samples for AgentPools ListBootstrapData.
  */
 public final class AgentPoolsListBootstrapDataSamples {
     /*
-     * x-ms-original-file: 2026-07-02-preview/AgentPoolsListBootstrapData.json
+     * x-ms-original-file: 2026-09-02-preview/AgentPoolsListBootstrapData.json
      */
     /**
      * Sample code: List Bootstrap Data for FlexNode Agent Pool.
@@ -22,7 +20,6 @@ public final class AgentPoolsListBootstrapDataSamples {
         com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
         manager.serviceClient()
             .getAgentPools()
-            .listBootstrapDataWithResponse("rg1", "clustername1", "flexnode1", new ListBootstrapDataRequest(),
-                com.azure.core.util.Context.NONE);
+            .listBootstrapDataWithResponse("rg1", "clustername1", "flexnode1", com.azure.core.util.Context.NONE);
     }
 }

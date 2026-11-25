@@ -23,6 +23,10 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.securityContactName
+            = SecurityContactName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}",
+                "securityContactName"));
     }
 
     public String id() {
@@ -77,11 +81,7 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
     private SecurityContactName securityContactName;
 
     public SecurityContact create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityContacts()
-            .createWithResponse(securityContactName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityContact create(Context context) {
@@ -99,11 +99,7 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
     }
 
     public SecurityContact refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityContacts()
-            .getWithResponse(securityContactName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityContact refresh(Context context) {

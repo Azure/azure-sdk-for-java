@@ -70,11 +70,7 @@ public final class DataflowGraphResourceImpl
     }
 
     public DataflowGraphResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowGraphs()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataflowGraphResource create(Context context) {
@@ -97,11 +93,7 @@ public final class DataflowGraphResourceImpl
     }
 
     public DataflowGraphResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowGraphs()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataflowGraphResource apply(Context context) {
@@ -116,18 +108,22 @@ public final class DataflowGraphResourceImpl
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.dataflowProfileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataflowProfiles");
-        this.dataflowGraphName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataflowGraphs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "instanceName");
+        this.dataflowProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "dataflowProfileName");
+        this.dataflowGraphName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "dataflowGraphName");
     }
 
     public DataflowGraphResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowGraphs()
-            .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataflowGraphResource refresh(Context context) {

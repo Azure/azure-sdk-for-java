@@ -92,10 +92,7 @@ public final class CommunityEndpointResourceImpl
     }
 
     public CommunityEndpointResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunityEndpoints()
-            .createOrUpdate(resourceGroupName, communityName, communityEndpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommunityEndpointResource create(Context context) {
@@ -117,10 +114,7 @@ public final class CommunityEndpointResourceImpl
     }
 
     public CommunityEndpointResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunityEndpoints()
-            .update(resourceGroupName, communityName, communityEndpointName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommunityEndpointResource apply(Context context) {
@@ -134,17 +128,19 @@ public final class CommunityEndpointResourceImpl
         com.azure.resourcemanager.enclave.AzureEnclaveManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.communityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communities");
-        this.communityEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communityEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "resourceGroupName");
+        this.communityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "communityName");
+        this.communityEndpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",
+            "communityEndpointName");
     }
 
     public CommunityEndpointResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunityEndpoints()
-            .getWithResponse(resourceGroupName, communityName, communityEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommunityEndpointResource refresh(Context context) {

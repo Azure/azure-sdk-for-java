@@ -128,11 +128,7 @@ public final class FleetManagedNamespaceImpl
     }
 
     public FleetManagedNamespace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetManagedNamespaces()
-            .createOrUpdate(resourceGroupName, fleetName, managedNamespaceName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FleetManagedNamespace create(Context context) {
@@ -159,10 +155,7 @@ public final class FleetManagedNamespaceImpl
     }
 
     public FleetManagedNamespace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetManagedNamespaces()
-            .update(resourceGroupName, fleetName, managedNamespaceName, updateProperties, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FleetManagedNamespace apply(Context context) {
@@ -176,17 +169,19 @@ public final class FleetManagedNamespaceImpl
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.managedNamespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedNamespaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "fleetName");
+        this.managedNamespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}",
+            "managedNamespaceName");
     }
 
     public FleetManagedNamespace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetManagedNamespaces()
-            .getWithResponse(resourceGroupName, fleetName, managedNamespaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FleetManagedNamespace refresh(Context context) {

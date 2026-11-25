@@ -98,10 +98,7 @@ public final class GoldenGateDeploymentImpl
     }
 
     public GoldenGateDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGoldenGateDeployments()
-            .createOrUpdate(resourceGroupName, goldenGateDeploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GoldenGateDeployment create(Context context) {
@@ -124,10 +121,7 @@ public final class GoldenGateDeploymentImpl
     }
 
     public GoldenGateDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGoldenGateDeployments()
-            .update(resourceGroupName, goldenGateDeploymentName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GoldenGateDeployment apply(Context context) {
@@ -141,17 +135,16 @@ public final class GoldenGateDeploymentImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.goldenGateDeploymentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "goldenGateDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}",
+            "resourceGroupName");
+        this.goldenGateDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}",
+            "goldenGateDeploymentName");
     }
 
     public GoldenGateDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGoldenGateDeployments()
-            .getByResourceGroupWithResponse(resourceGroupName, goldenGateDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GoldenGateDeployment refresh(Context context) {

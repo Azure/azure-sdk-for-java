@@ -209,11 +209,7 @@ public final class TemplateModelImpl implements TemplateModel, TemplateModel.Def
     }
 
     public TemplateModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentTemplates()
-            .installWithResponse(resourceGroupName, workspaceName, templateId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TemplateModel create(Context context) {
@@ -235,11 +231,7 @@ public final class TemplateModelImpl implements TemplateModel, TemplateModel.Def
     }
 
     public TemplateModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentTemplates()
-            .installWithResponse(resourceGroupName, workspaceName, templateId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TemplateModel apply(Context context) {
@@ -254,17 +246,19 @@ public final class TemplateModelImpl implements TemplateModel, TemplateModel.Def
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.templateId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentTemplates/{templateId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentTemplates/{templateId}",
+            "workspaceName");
+        this.templateId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentTemplates/{templateId}",
+            "templateId");
     }
 
     public TemplateModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentTemplates()
-            .getWithResponse(resourceGroupName, workspaceName, templateId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TemplateModel refresh(Context context) {

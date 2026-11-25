@@ -61,10 +61,7 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
     }
 
     public Storage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorages()
-            .createOrUpdate(resourceGroupName, cloudAccountName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Storage create(Context context) {
@@ -86,10 +83,7 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
     }
 
     public Storage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorages()
-            .createOrUpdate(resourceGroupName, cloudAccountName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Storage apply(Context context) {
@@ -103,17 +97,19 @@ public final class StorageImpl implements Storage, Storage.Definition, Storage.U
         com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudAccounts");
-        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "resourceGroupName");
+        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "cloudAccountName");
+        this.storageName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}",
+            "storageName");
     }
 
     public Storage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorages()
-            .getWithResponse(resourceGroupName, cloudAccountName, storageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Storage refresh(Context context) {

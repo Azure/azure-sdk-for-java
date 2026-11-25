@@ -245,17 +245,7 @@ public final class ToolsClientImpl implements ToolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Tool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ToolInner> getByResourceGroupWithResponse(String resourceGroupName, String toolName,
         Context context) {
@@ -264,16 +254,7 @@ public final class ToolsClientImpl implements ToolsClient {
             this.client.getSubscriptionId(), resourceGroupName, toolName, accept, context);
     }
 
-    /**
-     * Get a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Tool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ToolInner getByResourceGroup(String resourceGroupName, String toolName) {
         return getByResourceGroupWithResponse(resourceGroupName, toolName, Context.NONE).getValue();
@@ -315,10 +296,7 @@ public final class ToolsClientImpl implements ToolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String toolName,
         ToolInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, toolName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, toolName, resource, Context.NONE);
     }
 
     /**
@@ -361,36 +339,14 @@ public final class ToolsClientImpl implements ToolsClient {
             ToolInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ToolInner>, ToolInner> beginCreateOrUpdate(String resourceGroupName, String toolName,
         ToolInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, toolName, resource);
-        return this.client.<ToolInner, ToolInner>getLroResult(response, ToolInner.class, ToolInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, toolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ToolInner>, ToolInner> beginCreateOrUpdate(String resourceGroupName, String toolName,
         ToolInner resource, Context context) {
@@ -415,37 +371,17 @@ public final class ToolsClientImpl implements ToolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ToolInner createOrUpdate(String resourceGroupName, String toolName, ToolInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, toolName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, toolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ToolInner createOrUpdate(String resourceGroupName, String toolName, ToolInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, toolName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, toolName, resource, context));
     }
 
     /**
@@ -483,11 +419,7 @@ public final class ToolsClientImpl implements ToolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String toolName, ToolInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, toolName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, toolName, properties, Context.NONE);
     }
 
     /**
@@ -530,36 +462,14 @@ public final class ToolsClientImpl implements ToolsClient {
             ToolInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ToolInner>, ToolInner> beginUpdate(String resourceGroupName, String toolName,
         ToolInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, toolName, properties);
-        return this.client.<ToolInner, ToolInner>getLroResult(response, ToolInner.class, ToolInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, toolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ToolInner>, ToolInner> beginUpdate(String resourceGroupName, String toolName,
         ToolInner properties, Context context) {
@@ -584,37 +494,16 @@ public final class ToolsClientImpl implements ToolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ToolInner update(String resourceGroupName, String toolName, ToolInner properties) {
-        return beginUpdate(resourceGroupName, toolName, properties).getFinalResult();
+        return update(resourceGroupName, toolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ToolInner update(String resourceGroupName, String toolName, ToolInner properties, Context context) {
-        return beginUpdate(resourceGroupName, toolName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, toolName, properties, context));
     }
 
     /**
@@ -647,8 +536,7 @@ public final class ToolsClientImpl implements ToolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String toolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, toolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, toolName, Context.NONE);
     }
 
     /**
@@ -685,33 +573,13 @@ public final class ToolsClientImpl implements ToolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String toolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, toolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, toolName, Context.NONE);
     }
 
-    /**
-     * Delete a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String toolName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, toolName, context);
@@ -733,33 +601,16 @@ public final class ToolsClientImpl implements ToolsClient {
         return beginDeleteAsync(resourceGroupName, toolName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String toolName) {
-        beginDelete(resourceGroupName, toolName).getFinalResult();
+        delete(resourceGroupName, toolName, Context.NONE);
     }
 
-    /**
-     * Delete a Tool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param toolName The name of the Tool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String toolName, Context context) {
-        beginDelete(resourceGroupName, toolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, toolName, context));
     }
 
     /**
@@ -809,11 +660,7 @@ public final class ToolsClientImpl implements ToolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ToolInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ToolListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -835,31 +682,13 @@ public final class ToolsClientImpl implements ToolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Tool resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Tool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ToolInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Tool resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Tool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ToolInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -907,11 +736,7 @@ public final class ToolsClientImpl implements ToolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ToolInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ToolListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -932,27 +757,13 @@ public final class ToolsClientImpl implements ToolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Tool resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Tool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ToolInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Tool resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Tool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ToolInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -991,11 +802,7 @@ public final class ToolsClientImpl implements ToolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ToolInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ToolListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1049,11 +856,7 @@ public final class ToolsClientImpl implements ToolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ToolInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ToolListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

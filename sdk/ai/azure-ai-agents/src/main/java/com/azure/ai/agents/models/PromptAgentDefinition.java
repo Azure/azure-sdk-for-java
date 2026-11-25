@@ -479,7 +479,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * The managed runtime and agent loop used to execute this prompt agent.
      */
     @Generated
-    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview")
     private AgentHarness harness;
 
     /*
@@ -496,7 +496,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the harness value.
      */
     @Generated
-    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview")
     public AgentHarness getHarness() {
         return this.harness;
     }
@@ -508,7 +508,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the PromptAgentDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview")
     public PromptAgentDefinition setHarness(AgentHarness harness) {
         this.harness = harness;
         return this;

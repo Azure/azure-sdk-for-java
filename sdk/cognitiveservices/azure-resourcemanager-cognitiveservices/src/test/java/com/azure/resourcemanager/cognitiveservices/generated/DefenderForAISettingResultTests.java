@@ -13,10 +13,10 @@ public final class DefenderForAISettingResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingResult model = BinaryData.fromString(
-            "{\"nextLink\":\"im\",\"value\":[{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"wpbmzgwesydsxwef\",\"tags\":{\"mtkhlowkxxpvbr\":\"cbvopwndyqleallk\"},\"id\":\"jmzsyzfh\",\"name\":\"tlhikcyychun\",\"type\":\"jlpjrtwszhv\"}]}")
+            "{\"nextLink\":\"jyg\",\"value\":[{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"hammgmqfmefgv\",\"tags\":{\"quxweyslandkd\":\"dwj\"},\"id\":\"jhunhghcg\",\"name\":\"wnrrnquoxso\",\"type\":\"ireimseobf\"}]}")
             .toObject(DefenderForAISettingResult.class);
-        Assertions.assertEquals("im", model.nextLink());
-        Assertions.assertEquals("cbvopwndyqleallk", model.value().get(0).tags().get("mtkhlowkxxpvbr"));
+        Assertions.assertEquals("jyg", model.nextLink());
+        Assertions.assertEquals("dwj", model.value().get(0).tags().get("quxweyslandkd"));
         Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.value().get(0).state());
     }
 }

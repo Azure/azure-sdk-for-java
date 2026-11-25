@@ -132,10 +132,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .createOrUpdate(resourceGroupName, jobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Job create(Context context) {
@@ -157,10 +154,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .update(resourceGroupName, jobName, updateJobEnvelope, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Job apply(Context context) {
@@ -172,16 +166,16 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     JobImpl(JobInner innerObject, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.jobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}",
+            "resourceGroupName");
+        this.jobName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}",
+            "jobName");
     }
 
     public Job refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Job refresh(Context context) {

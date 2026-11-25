@@ -75,11 +75,7 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
     }
 
     public ActionResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getActions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, ruleId, actionId, createAction, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ActionResponse create(Context context) {
@@ -102,11 +98,7 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
     }
 
     public ActionResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getActions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, ruleId, actionId, updateAction, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ActionResponse apply(Context context) {
@@ -121,18 +113,22 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.ruleId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "alertRules");
-        this.actionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "actions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}",
+            "workspaceName");
+        this.ruleId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}",
+            "ruleId");
+        this.actionId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}",
+            "actionId");
     }
 
     public ActionResponse refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getActions()
-            .getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ActionResponse refresh(Context context) {

@@ -47,7 +47,7 @@ public final class StorageTasksImpl implements StorageTasks {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String storageTaskName) {
-        this.serviceClient().delete(resourceGroupName, storageTaskName);
+        this.delete(resourceGroupName, storageTaskName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storageTaskName, Context context) {
@@ -55,8 +55,7 @@ public final class StorageTasksImpl implements StorageTasks {
     }
 
     public PagedIterable<StorageTask> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<StorageTaskInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<StorageTask> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class StorageTasksImpl implements StorageTasks {
     }
 
     public PagedIterable<StorageTask> list() {
-        PagedIterable<StorageTaskInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<StorageTask> list(Context context) {
@@ -92,58 +90,30 @@ public final class StorageTasksImpl implements StorageTasks {
     }
 
     public StorageTask getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageTaskName = ResourceManagerUtils.getValueFromIdByName(id, "storageTasks");
-        if (storageTaskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTasks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, storageTaskName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StorageTask> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageTaskName = ResourceManagerUtils.getValueFromIdByName(id, "storageTasks");
-        if (storageTaskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTasks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageTaskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "storageTaskName", "storageTasks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, storageTaskName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageTaskName = ResourceManagerUtils.getValueFromIdByName(id, "storageTasks");
-        if (storageTaskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTasks'.", id)));
-        }
-        this.delete(resourceGroupName, storageTaskName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageTaskName = ResourceManagerUtils.getValueFromIdByName(id, "storageTasks");
-        if (storageTaskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageTasks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageTaskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "storageTaskName", "storageTasks", LOGGER);
         this.delete(resourceGroupName, storageTaskName, context);
     }
 

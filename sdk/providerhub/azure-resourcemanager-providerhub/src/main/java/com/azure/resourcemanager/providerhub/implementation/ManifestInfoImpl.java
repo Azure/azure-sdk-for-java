@@ -53,11 +53,7 @@ public final class ManifestInfoImpl implements ManifestInfo, ManifestInfo.Defini
     }
 
     public ManifestInfo create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManifests()
-            .createOrUpdateWithResponse(providerNamespace, environment, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManifestInfo create(Context context) {
@@ -79,11 +75,7 @@ public final class ManifestInfoImpl implements ManifestInfo, ManifestInfo.Defini
     }
 
     public ManifestInfo apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManifests()
-            .createOrUpdateWithResponse(providerNamespace, environment, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManifestInfo apply(Context context) {
@@ -98,16 +90,16 @@ public final class ManifestInfoImpl implements ManifestInfo, ManifestInfo.Defini
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.environment = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "manifests");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "providerNamespace");
+        this.environment = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "environment");
     }
 
     public ManifestInfo refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManifests()
-            .getWithResponse(providerNamespace, environment, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManifestInfo refresh(Context context) {

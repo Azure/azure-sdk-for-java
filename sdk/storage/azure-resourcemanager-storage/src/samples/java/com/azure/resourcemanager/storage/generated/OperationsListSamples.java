@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/OperationsList.json
+     * x-ms-original-file: 2026-09-01/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -17,6 +17,18 @@ public final class OperationsListSamples {
      * @param manager Entry point to StorageManager.
      */
     public static void operationsList(com.azure.resourcemanager.storage.StorageManager manager) {
+        manager.serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/Operations_List.json
+     */
+    /**
+     * Sample code: ListOperations.
+     * 
+     * @param manager Entry point to StorageManager.
+     */
+    public static void listOperations(com.azure.resourcemanager.storage.StorageManager manager) {
         manager.serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

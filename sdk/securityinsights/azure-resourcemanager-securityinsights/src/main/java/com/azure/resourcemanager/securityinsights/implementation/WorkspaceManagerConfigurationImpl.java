@@ -65,12 +65,7 @@ public final class WorkspaceManagerConfigurationImpl implements WorkspaceManager
     }
 
     public WorkspaceManagerConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceManagerConfiguration create(Context context) {
@@ -94,12 +89,7 @@ public final class WorkspaceManagerConfigurationImpl implements WorkspaceManager
     }
 
     public WorkspaceManagerConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceManagerConfiguration apply(Context context) {
@@ -115,18 +105,19 @@ public final class WorkspaceManagerConfigurationImpl implements WorkspaceManager
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.workspaceManagerConfigurationName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaceManagerConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerConfigurations/{workspaceManagerConfigurationName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerConfigurations/{workspaceManagerConfigurationName}",
+            "workspaceName");
+        this.workspaceManagerConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerConfigurations/{workspaceManagerConfigurationName}",
+            "workspaceManagerConfigurationName");
     }
 
     public WorkspaceManagerConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerConfigurations()
-            .getWithResponse(resourceGroupName, workspaceName, workspaceManagerConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceManagerConfiguration refresh(Context context) {

@@ -105,6 +105,7 @@ jobs:
           targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
           displayName: 'Capture troubleshooting artifacts'
           condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+          isProduction: false
           sbomEnabled: false
 
         - output: pipelineArtifact
@@ -112,6 +113,7 @@ jobs:
           targetPath: '$(System.DefaultWorkingDirectory)'
           displayName: 'Capture repo state for analysis'
           condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          isProduction: false
           sbomEnabled: false
 
         # See eng/common/pipelines/templates/steps/upload-llm-artifacts.yml for corresponding file copy step
@@ -119,6 +121,7 @@ jobs:
           targetPath: '$(Build.ArtifactStagingDirectory)/llm-artifacts'
           artifactName: "LLM Artifacts - $(System.JobName) - $(System.JobAttempt)"
           condition: eq(variables['uploadLlmArtifacts'], 'true')
+          isProduction: false
           sbomEnabled: false
 
     steps:

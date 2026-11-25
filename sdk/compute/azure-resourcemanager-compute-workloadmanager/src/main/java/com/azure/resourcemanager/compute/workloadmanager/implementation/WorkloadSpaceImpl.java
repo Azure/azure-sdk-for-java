@@ -84,10 +84,7 @@ public final class WorkloadSpaceImpl implements WorkloadSpace, WorkloadSpace.Def
     }
 
     public WorkloadSpace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadSpaces()
-            .createOrUpdate(resourceGroupName, spaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadSpace create(Context context) {
@@ -110,10 +107,7 @@ public final class WorkloadSpaceImpl implements WorkloadSpace, WorkloadSpace.Def
     }
 
     public WorkloadSpace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadSpaces()
-            .update(resourceGroupName, spaceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadSpace apply(Context context) {
@@ -127,16 +121,16 @@ public final class WorkloadSpaceImpl implements WorkloadSpace, WorkloadSpace.Def
         com.azure.resourcemanager.compute.workloadmanager.ComputeWorkloadManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadSpaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}",
+            "resourceGroupName");
+        this.spaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/workloadSpaces/{spaceName}",
+            "spaceName");
     }
 
     public WorkloadSpace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadSpaces()
-            .getByResourceGroupWithResponse(resourceGroupName, spaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadSpace refresh(Context context) {

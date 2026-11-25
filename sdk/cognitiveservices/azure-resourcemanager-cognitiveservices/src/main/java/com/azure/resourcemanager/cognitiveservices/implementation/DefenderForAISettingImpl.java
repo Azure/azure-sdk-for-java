@@ -76,12 +76,7 @@ public final class DefenderForAISettingImpl
     }
 
     public DefenderForAISetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForAISettings()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, defenderForAISettingName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DefenderForAISetting create(Context context) {
@@ -105,12 +100,7 @@ public final class DefenderForAISettingImpl
     }
 
     public DefenderForAISetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForAISettings()
-            .updateWithResponse(resourceGroupName, accountName, defenderForAISettingName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DefenderForAISetting apply(Context context) {
@@ -125,18 +115,19 @@ public final class DefenderForAISettingImpl
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.defenderForAISettingName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "defenderForAISettings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings/{defenderForAISettingName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings/{defenderForAISettingName}",
+            "accountName");
+        this.defenderForAISettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings/{defenderForAISettingName}",
+            "defenderForAISettingName");
     }
 
     public DefenderForAISetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForAISettings()
-            .getWithResponse(resourceGroupName, accountName, defenderForAISettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DefenderForAISetting refresh(Context context) {

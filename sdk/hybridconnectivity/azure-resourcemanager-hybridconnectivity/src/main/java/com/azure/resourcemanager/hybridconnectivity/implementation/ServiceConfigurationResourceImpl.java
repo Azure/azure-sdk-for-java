@@ -73,12 +73,7 @@ public final class ServiceConfigurationResourceImpl implements ServiceConfigurat
     }
 
     public ServiceConfigurationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceConfigurations()
-            .createOrupdateWithResponse(resourceUri, endpointName, serviceConfigurationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceConfigurationResource create(Context context) {
@@ -102,12 +97,7 @@ public final class ServiceConfigurationResourceImpl implements ServiceConfigurat
     }
 
     public ServiceConfigurationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceConfigurations()
-            .updateWithResponse(resourceUri, endpointName, serviceConfigurationName, updateServiceConfigurationResource,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceConfigurationResource apply(Context context) {
@@ -135,11 +125,7 @@ public final class ServiceConfigurationResourceImpl implements ServiceConfigurat
     }
 
     public ServiceConfigurationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceConfigurations()
-            .getWithResponse(resourceUri, endpointName, serviceConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceConfigurationResource refresh(Context context) {
