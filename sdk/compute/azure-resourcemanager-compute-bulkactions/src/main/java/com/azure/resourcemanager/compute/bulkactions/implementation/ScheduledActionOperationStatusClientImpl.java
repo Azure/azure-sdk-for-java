@@ -111,17 +111,7 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of the specified recurring bulk action operation.
-     * 
-     * @param location The Azure region where the operation is running.
-     * @param operationId The operation ID in UUID format.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified recurring bulk action operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
         final String accept = "application/json";
@@ -129,16 +119,7 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
             location, operationId, accept, context);
     }
 
-    /**
-     * Gets the status of the specified recurring bulk action operation.
-     * 
-     * @param location The Azure region where the operation is running.
-     * @param operationId The operation ID in UUID format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified recurring bulk action operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

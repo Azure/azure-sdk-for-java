@@ -252,17 +252,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage Mover resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageMoverInner> getByResourceGroupWithResponse(String resourceGroupName, String storageMoverName,
         Context context) {
@@ -271,16 +261,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             this.client.getSubscriptionId(), resourceGroupName, storageMoverName, accept, context);
     }
 
-    /**
-     * Gets a Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage Mover resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageMoverInner getByResourceGroup(String resourceGroupName, String storageMoverName) {
         return getByResourceGroupWithResponse(resourceGroupName, storageMoverName, Context.NONE).getValue();
@@ -329,19 +310,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a top-level Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The storageMover parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageMoverInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
         StorageMoverInner storageMover, Context context) {
@@ -352,17 +321,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             context);
     }
 
-    /**
-     * Creates or updates a top-level Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The storageMover parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageMoverInner createOrUpdate(String resourceGroupName, String storageMoverName,
         StorageMoverInner storageMover) {
@@ -412,19 +371,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates properties for a Storage Mover resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The storageMover parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageMoverInner> updateWithResponse(String resourceGroupName, String storageMoverName,
         StorageMoverUpdateParameters storageMover, Context context) {
@@ -435,17 +382,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             context);
     }
 
-    /**
-     * Updates properties for a Storage Mover resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The storageMover parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageMoverInner update(String resourceGroupName, String storageMoverName,
         StorageMoverUpdateParameters storageMover) {
@@ -483,8 +420,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageMoverName, Context.NONE);
     }
 
     /**
@@ -522,33 +458,13 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageMoverName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageMoverName, Context.NONE);
     }
 
-    /**
-     * Deletes a Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         Context context) {
@@ -572,33 +488,16 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName) {
-        beginDelete(resourceGroupName, storageMoverName).getFinalResult();
+        delete(resourceGroupName, storageMoverName, Context.NONE);
     }
 
-    /**
-     * Deletes a Storage Mover resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, Context context) {
-        beginDelete(resourceGroupName, storageMoverName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageMoverName, context));
     }
 
     /**
@@ -647,11 +546,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageMoverInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StorageMoverList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -673,31 +568,13 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Storage Movers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Storage Movers as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageMoverInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all Storage Movers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Storage Movers as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageMoverInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -744,11 +621,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageMoverInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StorageMoverList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -769,27 +642,13 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Storage Movers in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Storage Movers as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageMoverInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all Storage Movers in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Storage Movers as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageMoverInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -825,11 +684,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageMoverInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageMoverList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -881,11 +736,7 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageMoverInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageMoverList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

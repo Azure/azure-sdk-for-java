@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class IotHubResourceUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/iothub_patch.json
+     * x-ms-original-file: 2026-11-01/iothub_patch.json
      */
     /**
      * Sample code: IotHubResource_Update.

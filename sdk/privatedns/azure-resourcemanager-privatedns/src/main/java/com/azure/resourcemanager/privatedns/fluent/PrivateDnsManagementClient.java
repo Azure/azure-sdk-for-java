@@ -66,4 +66,11 @@ public interface PrivateDnsManagementClient {
      * @return the VirtualNetworkLinksClient object.
      */
     VirtualNetworkLinksClient getVirtualNetworkLinks();
+
+    /**
+     * Gets the PrivateDnsResourceReferencesClient object to access its operations.
+     * 
+     * @return the PrivateDnsResourceReferencesClient object.
+     */
+    PrivateDnsResourceReferencesClient getPrivateDnsResourceReferences();
 }

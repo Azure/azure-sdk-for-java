@@ -13,38 +13,38 @@ import com.azure.core.util.Context;
  */
 public interface Users {
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user along with {@link Response}.
+     * @return the defintion of a DocumentDB cluster user along with {@link Response}.
      */
     Response<User> getWithResponse(String resourceGroupName, String mongoClusterName, String userName, Context context);
 
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user.
+     * @return the defintion of a DocumentDB cluster user.
      */
     User get(String resourceGroupName, String mongoClusterName, String userName);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,11 +52,11 @@ public interface Users {
     void delete(String resourceGroupName, String mongoClusterName, String userName);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param userName The name of the mongo cluster user.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param userName The name of the DocumentDB cluster user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,10 +65,10 @@ public interface Users {
     void delete(String resourceGroupName, String mongoClusterName, String userName, Context context);
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -77,10 +77,10 @@ public interface Users {
     PagedIterable<User> listByMongoCluster(String resourceGroupName, String mongoClusterName);
 
     /**
-     * List all the users on a mongo cluster.
+     * List all the users on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,30 +90,30 @@ public interface Users {
     PagedIterable<User> listByMongoCluster(String resourceGroupName, String mongoClusterName, Context context);
 
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user along with {@link Response}.
+     * @return the defintion of a DocumentDB cluster user along with {@link Response}.
      */
     User getById(String id);
 
     /**
-     * Gets the defintion of a Mongo cluster user.
+     * Gets the defintion of a DocumentDB cluster user.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the defintion of a Mongo cluster user along with {@link Response}.
+     * @return the defintion of a DocumentDB cluster user along with {@link Response}.
      */
     Response<User> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,7 +123,7 @@ public interface Users {
     void deleteById(String id);
 
     /**
-     * Deletes a mongo cluster user.
+     * Deletes a DocumentDB cluster user.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

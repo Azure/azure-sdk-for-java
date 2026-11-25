@@ -22,7 +22,7 @@ public final class AccountsListSkusWithResponseMockTests {
     @Test
     public void testListSkusWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"zxmbt\",\"sku\":{\"name\":\"efoi\",\"tier\":\"Free\",\"size\":\"oxznvgvd\",\"family\":\"uuvdawsx\",\"capacity\":200373066}},{\"resourceType\":\"bknimxl\",\"sku\":{\"name\":\"erxrzutylcurza\",\"tier\":\"Enterprise\",\"size\":\"xqaehtd\",\"family\":\"mbnvynfaooeacted\",\"capacity\":736880781}},{\"resourceType\":\"kakddidahzllrqm\",\"sku\":{\"name\":\"pbyxroiduyqy\",\"tier\":\"Basic\",\"size\":\"noiicsu\",\"family\":\"hbrj\",\"capacity\":121440006}},{\"resourceType\":\"xrdsjrholuqwg\",\"sku\":{\"name\":\"xxhdodpjwybl\",\"tier\":\"Free\",\"size\":\"mvsbyidaelqpve\",\"family\":\"kwjfbotloggdusxu\",\"capacity\":261969173}}]}";
+            = "{\"value\":[{\"resourceType\":\"idullnjgcpskg\",\"sku\":{\"name\":\"nytslgsazuqznghx\",\"tier\":\"Free\",\"size\":\"zj\",\"family\":\"k\",\"capacity\":1119199866}},{\"resourceType\":\"vzwpffxsfyb\",\"sku\":{\"name\":\"mveh\",\"tier\":\"Free\",\"size\":\"yuvbgtzqzqweu\",\"family\":\"ybnai\",\"capacity\":547737103}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,15 @@ public final class AccountsListSkusWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        AccountSkuListResult response
-            = manager.accounts().listSkusWithResponse("gvqoj", "xao", com.azure.core.util.Context.NONE).getValue();
+        AccountSkuListResult response = manager.accounts()
+            .listSkusWithResponse("pgve", "robujnjgybuxm", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("zxmbt", response.value().get(0).resourceType());
-        Assertions.assertEquals("efoi", response.value().get(0).sku().name());
+        Assertions.assertEquals("idullnjgcpskg", response.value().get(0).resourceType());
+        Assertions.assertEquals("nytslgsazuqznghx", response.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.FREE, response.value().get(0).sku().tier());
-        Assertions.assertEquals("oxznvgvd", response.value().get(0).sku().size());
-        Assertions.assertEquals("uuvdawsx", response.value().get(0).sku().family());
-        Assertions.assertEquals(200373066, response.value().get(0).sku().capacity());
+        Assertions.assertEquals("zj", response.value().get(0).sku().size());
+        Assertions.assertEquals("k", response.value().get(0).sku().family());
+        Assertions.assertEquals(1119199866, response.value().get(0).sku().capacity());
     }
 }

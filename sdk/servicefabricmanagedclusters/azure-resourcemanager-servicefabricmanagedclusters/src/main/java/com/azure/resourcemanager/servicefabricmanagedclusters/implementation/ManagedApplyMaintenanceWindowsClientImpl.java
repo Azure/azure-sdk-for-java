@@ -112,18 +112,7 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
         return postWithResponseAsync(resourceGroupName, clusterName, body).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> postWithResponse(String resourceGroupName, String clusterName,
         ApplyMaintenanceWindowRequest body, Context context) {
@@ -131,15 +120,7 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
             resourceGroupName, clusterName, body, context);
     }
 
-    /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String clusterName) {
         final ApplyMaintenanceWindowRequest body = null;

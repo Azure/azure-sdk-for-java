@@ -15,6 +15,12 @@ have to be online at the same time.
 [Source code][source_code] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs] | [Samples][sample_examples] | [Package (Maven)][maven_package]
 
+The asynchronous processor accepts reactive message and error handlers through `processorAsync()` and
+`sessionProcessorAsync()`. Its `ServiceBusReceivedMessageAsyncContext` exposes non-blocking manual settlement.
+Return a `Mono` covering all application work and settlement so acknowledgement happens after downstream work succeeds.
+See the [reactive processor sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorAsyncSample.java)
+for queue and session processing with Microsoft Entra ID authentication.
+
 ## Getting started
 
 ### Prerequisites
@@ -553,4 +559,3 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
 [receive_and_delete_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete
-

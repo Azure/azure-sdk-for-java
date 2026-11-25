@@ -373,54 +373,6 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
     }
 
     /**
-     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @return the metadataSearch value.
-     */
-    public MetadataSearch metadataSearch() {
-        return this.innerProperties() == null ? null : this.innerProperties().metadataSearch();
-    }
-
-    /**
-     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @param metadataSearch the metadataSearch value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RegistryPropertiesUpdateParameters();
-        }
-        this.innerProperties().withMetadataSearch(metadataSearch);
-        return this;
-    }
-
-    /**
-     * Get the writableCacheRepos property: Whether to allow cache operations that write to repositories in this
-     * registry.
-     * 
-     * @return the writableCacheRepos value.
-     */
-    public WritableCacheRepos writableCacheRepos() {
-        return this.innerProperties() == null ? null : this.innerProperties().writableCacheRepos();
-    }
-
-    /**
-     * Set the writableCacheRepos property: Whether to allow cache operations that write to repositories in this
-     * registry.
-     * 
-     * @param writableCacheRepos the writableCacheRepos value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withWritableCacheRepos(WritableCacheRepos writableCacheRepos) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RegistryPropertiesUpdateParameters();
-        }
-        this.innerProperties().withWritableCacheRepos(writableCacheRepos);
-        return this;
-    }
-
-    /**
      * Get the roleAssignmentMode property: Determines registry role assignment mode.
      * 
      * @return the roleAssignmentMode value.

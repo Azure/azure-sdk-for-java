@@ -44,8 +44,7 @@ public final class DnsPrivateZonesImpl implements DnsPrivateZones {
     }
 
     public PagedIterable<DnsPrivateZone> listByLocation(String location) {
-        PagedIterable<DnsPrivateZoneInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsPrivateZoneImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<DnsPrivateZone> listByLocation(String location, Context context) {

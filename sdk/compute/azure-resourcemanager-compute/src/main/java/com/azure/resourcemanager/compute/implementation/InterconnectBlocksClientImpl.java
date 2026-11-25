@@ -151,20 +151,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about an Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param expand The expand expression to apply on the operation. 'instanceView' retrieves a snapshot of the runtime
-     * properties of the Interconnect Block that is managed by the platform and can change outside of control plane
-     * operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<InterconnectBlockInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String interconnectBlockName, InterconnectBlockExpandTypes expand) {
@@ -233,16 +220,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             resourceGroupName, interconnectBlockName, expand, accept, context);
     }
 
-    /**
-     * Retrieves information about an Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectBlockInner> getByResourceGroupAsync(String resourceGroupName,
         String interconnectBlockName) {
@@ -251,36 +229,14 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about an Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param expand The expand expression to apply on the operation. 'instanceView' retrieves a snapshot of the runtime
-     * properties of the Interconnect Block that is managed by the platform and can change outside of control plane
-     * operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InterconnectBlockInner> getByResourceGroupWithResponse(String resourceGroupName,
         String interconnectBlockName, InterconnectBlockExpandTypes expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, interconnectBlockName, expand, context).block();
     }
 
-    /**
-     * Retrieves information about an Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectBlockInner getByResourceGroup(String resourceGroupName, String interconnectBlockName) {
         final InterconnectBlockExpandTypes expand = null;
@@ -288,19 +244,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             .getValue();
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String interconnectBlockName, InterconnectBlockInner resource) {
@@ -381,18 +325,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             resourceGroupName, interconnectBlockName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InterconnectBlockInner>, InterconnectBlockInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String interconnectBlockName, InterconnectBlockInner resource) {
@@ -426,37 +359,14 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             this.client.getHttpPipeline(), InterconnectBlockInner.class, InterconnectBlockInner.class, context);
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InterconnectBlockInner>, InterconnectBlockInner>
         beginCreateOrUpdate(String resourceGroupName, String interconnectBlockName, InterconnectBlockInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, interconnectBlockName, resource).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InterconnectBlockInner>, InterconnectBlockInner> beginCreateOrUpdate(
         String resourceGroupName, String interconnectBlockName, InterconnectBlockInner resource, Context context) {
@@ -464,18 +374,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectBlockInner> createOrUpdateAsync(String resourceGroupName, String interconnectBlockName,
         InterconnectBlockInner resource) {
@@ -503,55 +402,21 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectBlockInner createOrUpdate(String resourceGroupName, String interconnectBlockName,
         InterconnectBlockInner resource) {
         return createOrUpdateAsync(resourceGroupName, interconnectBlockName, resource).block();
     }
 
-    /**
-     * Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be
-     * modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param resource Parameters supplied to the Create Interconnect Block.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectBlockInner createOrUpdate(String resourceGroupName, String interconnectBlockName,
         InterconnectBlockInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, interconnectBlockName, resource, context).block();
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String interconnectBlockName, InterconnectBlockUpdate properties) {
@@ -631,17 +496,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             interconnectBlockName, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InterconnectBlockInner>, InterconnectBlockInner>
         beginUpdateAsync(String resourceGroupName, String interconnectBlockName, InterconnectBlockUpdate properties) {
@@ -674,52 +529,21 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             this.client.getHttpPipeline(), InterconnectBlockInner.class, InterconnectBlockInner.class, context);
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InterconnectBlockInner>, InterconnectBlockInner> beginUpdate(String resourceGroupName,
         String interconnectBlockName, InterconnectBlockUpdate properties) {
         return this.beginUpdateAsync(resourceGroupName, interconnectBlockName, properties).getSyncPoller();
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InterconnectBlockInner>, InterconnectBlockInner> beginUpdate(String resourceGroupName,
         String interconnectBlockName, InterconnectBlockUpdate properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, interconnectBlockName, properties, context).getSyncPoller();
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectBlockInner> updateAsync(String resourceGroupName, String interconnectBlockName,
         InterconnectBlockUpdate properties) {
@@ -746,52 +570,21 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectBlockInner update(String resourceGroupName, String interconnectBlockName,
         InterconnectBlockUpdate properties) {
         return updateAsync(resourceGroupName, interconnectBlockName, properties).block();
     }
 
-    /**
-     * Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param properties Parameters supplied to the Update Interconnect Block operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Interconnect Block.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectBlockInner update(String resourceGroupName, String interconnectBlockName,
         InterconnectBlockUpdate properties, Context context) {
         return updateAsync(resourceGroupName, interconnectBlockName, properties, context).block();
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String interconnectBlockName) {
@@ -855,17 +648,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             interconnectBlockName, context);
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String interconnectBlockName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, interconnectBlockName);
@@ -895,51 +678,20 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             context);
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String interconnectBlockName) {
         return this.beginDeleteAsync(resourceGroupName, interconnectBlockName).getSyncPoller();
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String interconnectBlockName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, interconnectBlockName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String interconnectBlockName) {
         return beginDeleteAsync(resourceGroupName, interconnectBlockName).last()
@@ -964,32 +716,13 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String interconnectBlockName) {
         deleteAsync(resourceGroupName, interconnectBlockName).block();
     }
 
-    /**
-     * Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM
-     * instances associated with the Interconnect Block.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectBlockName The name of the Interconnect Block.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String interconnectBlockName, Context context) {
         deleteAsync(resourceGroupName, interconnectBlockName, context).block();
@@ -1067,16 +800,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the Interconnect Blocks in the specified resource group. Use the nextLink property in the response
-     * to get the next page of Interconnect Blocks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Interconnect Block operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InterconnectBlockInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1100,32 +824,13 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the Interconnect Blocks in the specified resource group. Use the nextLink property in the response
-     * to get the next page of Interconnect Blocks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Interconnect Block operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectBlockInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all of the Interconnect Blocks in the specified resource group. Use the nextLink property in the response
-     * to get the next page of Interconnect Blocks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Interconnect Block operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectBlockInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1189,14 +894,7 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the Interconnect Blocks in the subscription. Use the nextLink property in the response to get the
-     * next page of Interconnect Blocks.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Interconnect Block operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InterconnectBlockInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1219,29 +917,13 @@ public final class InterconnectBlocksClientImpl implements InnerSupportsGet<Inte
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the Interconnect Blocks in the subscription. Use the nextLink property in the response to get the
-     * next page of Interconnect Blocks.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Interconnect Block operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectBlockInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all of the Interconnect Blocks in the subscription. Use the nextLink property in the response to get the
-     * next page of Interconnect Blocks.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Interconnect Block operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectBlockInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

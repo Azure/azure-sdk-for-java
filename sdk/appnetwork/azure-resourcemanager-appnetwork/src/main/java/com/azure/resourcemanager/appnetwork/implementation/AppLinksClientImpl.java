@@ -248,17 +248,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the details of an Azure Kubernetes Application Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Azure Kubernetes Application Network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppLinkInner> getByResourceGroupWithResponse(String resourceGroupName, String appLinkName,
         Context context) {
@@ -267,16 +257,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
             this.client.getSubscriptionId(), resourceGroupName, appLinkName, accept, context);
     }
 
-    /**
-     * Get the details of an Azure Kubernetes Application Network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Azure Kubernetes Application Network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner getByResourceGroup(String resourceGroupName, String appLinkName) {
         return getByResourceGroupWithResponse(resourceGroupName, appLinkName, Context.NONE).getValue();
@@ -320,11 +301,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String appLinkName,
         AppLinkInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, appLinkName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, appLinkName, resource, Context.NONE);
     }
 
     /**
@@ -368,37 +345,14 @@ public final class AppLinksClientImpl implements AppLinksClient {
             AppLinkInner.class, AppLinkInner.class, this.client.getContext());
     }
 
-    /**
-     * Create an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginCreateOrUpdate(String resourceGroupName,
         String appLinkName, AppLinkInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, appLinkName, resource);
-        return this.client.<AppLinkInner, AppLinkInner>getLroResult(response, AppLinkInner.class, AppLinkInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, appLinkName, resource, Context.NONE);
     }
 
-    /**
-     * Create an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginCreateOrUpdate(String resourceGroupName,
         String appLinkName, AppLinkInner resource, Context context) {
@@ -425,38 +379,18 @@ public final class AppLinksClientImpl implements AppLinksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner createOrUpdate(String resourceGroupName, String appLinkName, AppLinkInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, appLinkName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, appLinkName, resource, Context.NONE);
     }
 
-    /**
-     * Create an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner createOrUpdate(String resourceGroupName, String appLinkName, AppLinkInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, appLinkName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, appLinkName, resource, context));
     }
 
     /**
@@ -495,11 +429,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String appLinkName,
         AppLinkUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, appLinkName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, appLinkName, properties, Context.NONE);
     }
 
     /**
@@ -542,37 +472,14 @@ public final class AppLinksClientImpl implements AppLinksClient {
             AppLinkInner.class, AppLinkInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginUpdate(String resourceGroupName, String appLinkName,
         AppLinkUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, appLinkName, properties);
-        return this.client.<AppLinkInner, AppLinkInner>getLroResult(response, AppLinkInner.class, AppLinkInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, appLinkName, properties, Context.NONE);
     }
 
-    /**
-     * Update an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginUpdate(String resourceGroupName, String appLinkName,
         AppLinkUpdate properties, Context context) {
@@ -598,38 +505,17 @@ public final class AppLinksClientImpl implements AppLinksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner update(String resourceGroupName, String appLinkName, AppLinkUpdate properties) {
-        return beginUpdate(resourceGroupName, appLinkName, properties).getFinalResult();
+        return update(resourceGroupName, appLinkName, properties, Context.NONE);
     }
 
-    /**
-     * Update an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Kubernetes Application Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner update(String resourceGroupName, String appLinkName, AppLinkUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, appLinkName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, appLinkName, properties, context));
     }
 
     /**
@@ -662,8 +548,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String appLinkName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, appLinkName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, appLinkName, Context.NONE);
     }
 
     /**
@@ -700,33 +585,13 @@ public final class AppLinksClientImpl implements AppLinksClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String appLinkName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, appLinkName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, appLinkName, Context.NONE);
     }
 
-    /**
-     * Delete an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String appLinkName,
         Context context) {
@@ -749,33 +614,16 @@ public final class AppLinksClientImpl implements AppLinksClient {
         return beginDeleteAsync(resourceGroupName, appLinkName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String appLinkName) {
-        beginDelete(resourceGroupName, appLinkName).getFinalResult();
+        delete(resourceGroupName, appLinkName, Context.NONE);
     }
 
-    /**
-     * Delete an Azure Kubernetes Application Network resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String appLinkName, Context context) {
-        beginDelete(resourceGroupName, appLinkName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, appLinkName, context));
     }
 
     /**
@@ -825,11 +673,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppLinkInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AppLinkListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -851,31 +695,13 @@ public final class AppLinksClientImpl implements AppLinksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Azure Kubernetes Application Network resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AppLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppLinkInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Azure Kubernetes Application Network resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AppLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppLinkInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -923,11 +749,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppLinkInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AppLinkListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -948,27 +770,13 @@ public final class AppLinksClientImpl implements AppLinksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Azure Kubernetes Application Network resources by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AppLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppLinkInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Azure Kubernetes Application Network resources by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AppLink list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppLinkInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1007,11 +815,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppLinkInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AppLinkListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1065,11 +869,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AppLinkInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AppLinkListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

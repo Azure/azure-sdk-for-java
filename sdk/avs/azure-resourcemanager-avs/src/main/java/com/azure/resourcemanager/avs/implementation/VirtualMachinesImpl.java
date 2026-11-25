@@ -29,9 +29,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public PagedIterable<VirtualMachine> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        PagedIterable<VirtualMachineInner> inner
-            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
     public PagedIterable<VirtualMachine> list(String resourceGroupName, String privateCloudName, String clusterName,
@@ -62,8 +60,8 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     public void restrictMovement(String resourceGroupName, String privateCloudName, String clusterName,
         String virtualMachineId, VirtualMachineRestrictMovement restrictMovement) {
-        this.serviceClient()
-            .restrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement);
+        this.restrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement,
+            Context.NONE);
     }
 
     public void restrictMovement(String resourceGroupName, String privateCloudName, String clusterName,

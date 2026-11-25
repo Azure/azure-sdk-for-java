@@ -24,6 +24,18 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
         com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}",
+            "accountName");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}",
+            "applicationName");
+        this.versionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}",
+            "versionName");
     }
 
     public String id() {
@@ -100,12 +112,7 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
     }
 
     public ApplicationPackage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationPackages()
-            .createWithResponse(resourceGroupName, accountName, applicationName, versionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationPackage create(Context context) {
@@ -124,11 +131,7 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
     }
 
     public ApplicationPackage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationPackages()
-            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationPackage refresh(Context context) {

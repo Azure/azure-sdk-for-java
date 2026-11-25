@@ -227,19 +227,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI for managed network settings of a cognitive services account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedNetworkSettingsPropertiesBasicResourceInner> getWithResponse(String resourceGroupName,
         String accountName, String managedNetworkName, Context context) {
@@ -248,18 +236,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             resourceGroupName, accountName, managedNetworkName, accept, context);
     }
 
-    /**
-     * Get API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI for managed network settings of a cognitive services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkSettingsPropertiesBasicResourceInner get(String resourceGroupName, String accountName,
         String managedNetworkName) {
@@ -309,10 +286,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> putWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsPropertiesBasicResourceInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.putSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, managedNetworkName, contentType, accept, body, Context.NONE);
+        return putWithResponse(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
     /**
@@ -366,47 +340,16 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
                 ManagedNetworkSettingsPropertiesBasicResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * PUT API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedNetworkSettingsPropertiesBasicResourceInner>, ManagedNetworkSettingsPropertiesBasicResourceInner>
         beginPut(String resourceGroupName, String accountName, String managedNetworkName,
             ManagedNetworkSettingsPropertiesBasicResourceInner body) {
-        Response<BinaryData> response = putWithResponse(resourceGroupName, accountName, managedNetworkName, body);
-        return this.client
-            .<ManagedNetworkSettingsPropertiesBasicResourceInner, ManagedNetworkSettingsPropertiesBasicResourceInner>getLroResult(
-                response, ManagedNetworkSettingsPropertiesBasicResourceInner.class,
-                ManagedNetworkSettingsPropertiesBasicResourceInner.class, Context.NONE);
+        return beginPut(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * PUT API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedNetworkSettingsPropertiesBasicResourceInner>, ManagedNetworkSettingsPropertiesBasicResourceInner>
@@ -441,43 +384,19 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * PUT API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkSettingsPropertiesBasicResourceInner put(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsPropertiesBasicResourceInner body) {
-        return beginPut(resourceGroupName, accountName, managedNetworkName, body).getFinalResult();
+        return put(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * PUT API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkSettingsPropertiesBasicResourceInner put(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsPropertiesBasicResourceInner body, Context context) {
-        return beginPut(resourceGroupName, accountName, managedNetworkName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginPut(resourceGroupName, accountName, managedNetworkName, body, context));
     }
 
     /**
@@ -520,10 +439,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> patchWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsPropertiesBasicResourceInner body) {
-        final String accept = "application/json";
-        return service.patchSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, accept, body,
-            Context.NONE);
+        return patchWithResponse(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
     /**
@@ -617,57 +533,23 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
      * using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public
+    private
         SyncPoller<PollResult<ManagedNetworkSettingsPropertiesBasicResourceInner>, ManagedNetworkSettingsPropertiesBasicResourceInner>
         beginPatch(String resourceGroupName, String accountName, String managedNetworkName,
             ManagedNetworkSettingsPropertiesBasicResourceInner body) {
-        Response<BinaryData> response = patchWithResponse(resourceGroupName, accountName, managedNetworkName, body);
-        return this.client
-            .<ManagedNetworkSettingsPropertiesBasicResourceInner, ManagedNetworkSettingsPropertiesBasicResourceInner>getLroResult(
-                response, ManagedNetworkSettingsPropertiesBasicResourceInner.class,
-                ManagedNetworkSettingsPropertiesBasicResourceInner.class, Context.NONE);
+        return beginPatch(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Patch API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedNetworkSettingsPropertiesBasicResourceInner>, ManagedNetworkSettingsPropertiesBasicResourceInner>
         beginPatch(String resourceGroupName, String accountName, String managedNetworkName) {
         final ManagedNetworkSettingsPropertiesBasicResourceInner body = null;
-        Response<BinaryData> response = patchWithResponse(resourceGroupName, accountName, managedNetworkName, body);
-        return this.client
-            .<ManagedNetworkSettingsPropertiesBasicResourceInner, ManagedNetworkSettingsPropertiesBasicResourceInner>getLroResult(
-                response, ManagedNetworkSettingsPropertiesBasicResourceInner.class,
-                ManagedNetworkSettingsPropertiesBasicResourceInner.class, Context.NONE);
+        return beginPatch(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Patch API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedNetworkSettingsPropertiesBasicResourceInner>, ManagedNetworkSettingsPropertiesBasicResourceInner>
@@ -723,43 +605,20 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkSettingsPropertiesBasicResourceInner patch(String resourceGroupName, String accountName,
         String managedNetworkName) {
         final ManagedNetworkSettingsPropertiesBasicResourceInner body = null;
-        return beginPatch(resourceGroupName, accountName, managedNetworkName, body).getFinalResult();
+        return patch(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Patch API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body The Managed Network Settings object of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkSettingsPropertiesBasicResourceInner patch(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsPropertiesBasicResourceInner body, Context context) {
-        return beginPatch(resourceGroupName, accountName, managedNetworkName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginPatch(resourceGroupName, accountName, managedNetworkName, body, context));
     }
 
     /**
@@ -798,8 +657,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, managedNetworkName, Context.NONE);
     }
 
     /**
@@ -843,38 +701,14 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             this.client.getContext());
     }
 
-    /**
-     * Delete API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String managedNetworkName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, managedNetworkName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, managedNetworkName, Context.NONE);
     }
 
-    /**
-     * Delete API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String managedNetworkName, Context context) {
@@ -900,37 +734,16 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String managedNetworkName) {
-        beginDelete(resourceGroupName, accountName, managedNetworkName).getFinalResult();
+        delete(resourceGroupName, accountName, managedNetworkName, Context.NONE);
     }
 
-    /**
-     * Delete API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String managedNetworkName, Context context) {
-        beginDelete(resourceGroupName, accountName, managedNetworkName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, managedNetworkName, context));
     }
 
     /**
@@ -987,12 +800,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedNetworkSettingsPropertiesBasicResourceInner> listSinglePage(String resourceGroupName,
         String accountName) {
-        final String accept = "application/json";
-        Response<ManagedNetworkListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1017,36 +825,14 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed networks of a cognitive services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedNetworkSettingsPropertiesBasicResourceInner> list(String resourceGroupName,
         String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * List API for managed network settings of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed networks of a cognitive services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedNetworkSettingsPropertiesBasicResourceInner> list(String resourceGroupName,
         String accountName, Context context) {
@@ -1090,11 +876,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedNetworkSettingsPropertiesBasicResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedNetworkListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -108,18 +108,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database extension. This will return resource not found as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database extension along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getWithResponseAsync(String resourceGroupName, String serverName, String databaseName,
         String extensionName) {
@@ -192,73 +181,27 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             resourceGroupName, serverName, databaseName, extensionName, context);
     }
 
-    /**
-     * Gets a database extension. This will return resource not found as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAsync(String resourceGroupName, String serverName, String databaseName, String extensionName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, extensionName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Gets a database extension. This will return resource not found as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database extension along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String resourceGroupName, String serverName, String databaseName,
         String extensionName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, extensionName, context).block();
     }
 
-    /**
-     * Gets a database extension. This will return resource not found as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void get(String resourceGroupName, String serverName, String databaseName, String extensionName) {
         getWithResponse(resourceGroupName, serverName, databaseName, extensionName, Context.NONE);
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension operation result resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String extensionName, DatabaseExtensions parameters) {
@@ -349,19 +292,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             accept, parameters, context);
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Extension operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
@@ -403,19 +334,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
                 ImportExportExtensionsOperationResultInner.class, context);
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Extension operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
@@ -425,20 +344,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             .getSyncPoller();
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Extension operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
@@ -449,19 +355,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             .getSyncPoller();
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportExportExtensionsOperationResultInner> createOrUpdateAsync(String resourceGroupName,
         String serverName, String databaseName, String extensionName, DatabaseExtensions parameters) {
@@ -491,39 +385,14 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportExportExtensionsOperationResultInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, String extensionName, DatabaseExtensions parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters).block();
     }
 
-    /**
-     * Perform a database extension operation, like database import, database export, or polybase import.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param extensionName The extensionName parameter.
-     * @param parameters The database import request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportExportExtensionsOperationResultInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, String extensionName, DatabaseExtensions parameters, Context context) {
@@ -617,17 +486,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List database extension. This will return an empty list as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return import export operation extensions list as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ImportExportExtensionsOperationResultInner> listByDatabaseAsync(String resourceGroupName,
         String serverName, String databaseName) {
@@ -655,35 +514,14 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List database extension. This will return an empty list as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return import export operation extensions list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImportExportExtensionsOperationResultInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * List database extension. This will return an empty list as it is not supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return import export operation extensions list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImportExportExtensionsOperationResultInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName, Context context) {

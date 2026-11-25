@@ -221,17 +221,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
         return getWithResponseAsync(resourceUri, storageClassName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageClassResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageClassResourceInner> getWithResponse(String resourceUri, String storageClassName,
         Context context) {
@@ -240,16 +230,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
             accept, context);
     }
 
-    /**
-     * Get a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageClassResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassResourceInner get(String resourceUri, String storageClassName) {
         return getWithResponse(resourceUri, storageClassName, Context.NONE).getValue();
@@ -293,10 +274,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String storageClassName,
         StorageClassResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            storageClassName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, storageClassName, resource, Context.NONE);
     }
 
     /**
@@ -343,39 +321,14 @@ public final class StorageClassClientImpl implements StorageClassClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StorageClass resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassResourceInner>, StorageClassResourceInner>
         beginCreateOrUpdate(String resourceUri, String storageClassName, StorageClassResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, storageClassName, resource);
-        return this.client.<StorageClassResourceInner, StorageClassResourceInner>getLroResult(response,
-            StorageClassResourceInner.class, StorageClassResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, storageClassName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StorageClass resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassResourceInner>, StorageClassResourceInner> beginCreateOrUpdate(
         String resourceUri, String storageClassName, StorageClassResourceInner resource, Context context) {
@@ -403,39 +356,19 @@ public final class StorageClassClientImpl implements StorageClassClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassResourceInner createOrUpdate(String resourceUri, String storageClassName,
         StorageClassResourceInner resource) {
-        return beginCreateOrUpdate(resourceUri, storageClassName, resource).getFinalResult();
+        return createOrUpdate(resourceUri, storageClassName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassResourceInner createOrUpdate(String resourceUri, String storageClassName,
         StorageClassResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceUri, storageClassName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, storageClassName, resource, context));
     }
 
     /**
@@ -476,10 +409,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceUri, String storageClassName,
         StorageClassResourceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, storageClassName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceUri, storageClassName, properties, Context.NONE);
     }
 
     /**
@@ -525,39 +455,14 @@ public final class StorageClassClientImpl implements StorageClassClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StorageClass resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassResourceInner>, StorageClassResourceInner> beginUpdate(String resourceUri,
         String storageClassName, StorageClassResourceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceUri, storageClassName, properties);
-        return this.client.<StorageClassResourceInner, StorageClassResourceInner>getLroResult(response,
-            StorageClassResourceInner.class, StorageClassResourceInner.class, Context.NONE);
+        return beginUpdate(resourceUri, storageClassName, properties, Context.NONE);
     }
 
-    /**
-     * Update a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StorageClass resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassResourceInner>, StorageClassResourceInner> beginUpdate(String resourceUri,
         String storageClassName, StorageClassResourceUpdate properties, Context context) {
@@ -585,39 +490,18 @@ public final class StorageClassClientImpl implements StorageClassClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassResourceInner update(String resourceUri, String storageClassName,
         StorageClassResourceUpdate properties) {
-        return beginUpdate(resourceUri, storageClassName, properties).getFinalResult();
+        return update(resourceUri, storageClassName, properties, Context.NONE);
     }
 
-    /**
-     * Update a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageClassResourceInner update(String resourceUri, String storageClassName,
         StorageClassResourceUpdate properties, Context context) {
-        return beginUpdate(resourceUri, storageClassName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceUri, storageClassName, properties, context));
     }
 
     /**
@@ -650,8 +534,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri, String storageClassName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, storageClassName,
-            Context.NONE);
+        return deleteWithResponse(resourceUri, storageClassName, Context.NONE);
     }
 
     /**
@@ -688,33 +571,13 @@ public final class StorageClassClientImpl implements StorageClassClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String storageClassName) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri, storageClassName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, storageClassName, Context.NONE);
     }
 
-    /**
-     * Delete a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String storageClassName,
         Context context) {
@@ -737,33 +600,16 @@ public final class StorageClassClientImpl implements StorageClassClient {
         return beginDeleteAsync(resourceUri, storageClassName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String storageClassName) {
-        beginDelete(resourceUri, storageClassName).getFinalResult();
+        delete(resourceUri, storageClassName, Context.NONE);
     }
 
-    /**
-     * Delete a StorageClassResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param storageClassName The name of the the storage class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String storageClassName, Context context) {
-        beginDelete(resourceUri, storageClassName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, storageClassName, context));
     }
 
     /**
@@ -812,11 +658,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageClassResourceInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<StorageClassResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -838,30 +680,13 @@ public final class StorageClassClientImpl implements StorageClassClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StorageClassResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageClassResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageClassResourceInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List StorageClassResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageClassResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageClassResourceInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -898,11 +723,7 @@ public final class StorageClassClientImpl implements StorageClassClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageClassResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageClassResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

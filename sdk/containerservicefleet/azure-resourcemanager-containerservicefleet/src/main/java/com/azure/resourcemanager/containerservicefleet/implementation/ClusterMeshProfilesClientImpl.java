@@ -230,18 +230,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ClusterMeshProfile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterMeshProfileInner> getWithResponse(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, Context context) {
@@ -250,17 +239,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
             resourceGroupName, fleetName, clusterMeshProfileName, accept, context);
     }
 
-    /**
-     * Get a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ClusterMeshProfile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMeshProfileInner get(String resourceGroupName, String fleetName, String clusterMeshProfileName) {
         return getWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, Context.NONE).getValue();
@@ -310,11 +289,8 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, ClusterMeshProfileInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, clusterMeshProfileName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -410,55 +386,24 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      * mesh.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String clusterMeshProfileName, ClusterMeshProfileInner resource,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, clusterMeshProfileName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<ClusterMeshProfileInner, ClusterMeshProfileInner>getLroResult(response,
-            ClusterMeshProfileInner.class, ClusterMeshProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a cluster mesh profile stores the general information about the
-     * mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String clusterMeshProfileName, ClusterMeshProfileInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, clusterMeshProfileName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<ClusterMeshProfileInner, ClusterMeshProfileInner>getLroResult(response,
-            ClusterMeshProfileInner.class, ClusterMeshProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a cluster mesh profile stores the general information about the
-     * mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String clusterMeshProfileName, ClusterMeshProfileInner resource,
@@ -513,48 +458,23 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster mesh profile stores the general information about the mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMeshProfileInner createOrUpdate(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, ClusterMeshProfileInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster mesh profile stores the general information about the mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMeshProfileInner createOrUpdate(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, ClusterMeshProfileInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, fleetName, clusterMeshProfileName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, fleetName,
+            clusterMeshProfileName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -592,9 +512,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, clusterMeshProfileName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
     /**
@@ -672,46 +590,20 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String clusterMeshProfileName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, String ifMatch, Context context) {
@@ -757,38 +649,19 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String clusterMeshProfileName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch).getFinalResult();
+        delete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ClusterMeshProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String clusterMeshProfileName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, context));
     }
 
     /**
@@ -842,12 +715,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMeshProfileInner> listByFleetSinglePage(String resourceGroupName, String fleetName) {
-        final String accept = "application/json";
-        Response<ClusterMeshProfileListResult> res
-            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetSinglePage(resourceGroupName, fleetName, Context.NONE);
     }
 
     /**
@@ -872,33 +740,13 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ClusterMeshProfile resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ClusterMeshProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMeshProfileInner> listByFleet(String resourceGroupName, String fleetName) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName),
-            nextLink -> listByFleetNextSinglePage(nextLink));
+        return listByFleet(resourceGroupName, fleetName, Context.NONE);
     }
 
-    /**
-     * List ClusterMeshProfile resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ClusterMeshProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMeshProfileInner> listByFleet(String resourceGroupName, String fleetName,
         Context context) {
@@ -945,10 +793,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> applyWithResponse(String resourceGroupName, String fleetName,
         String clusterMeshProfileName, String ifMatch) {
-        final String accept = "application/json";
-        return service.applySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, clusterMeshProfileName, accept,
-            Context.NONE);
+        return applyWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
     /**
@@ -1033,50 +878,20 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      * mesh.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginApply(String resourceGroupName,
-        String fleetName, String clusterMeshProfileName, String ifMatch) {
-        Response<BinaryData> response
-            = applyWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch);
-        return this.client.<ClusterMeshProfileInner, ClusterMeshProfileInner>getLroResult(response,
-            ClusterMeshProfileInner.class, ClusterMeshProfileInner.class, Context.NONE);
+    private SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner>
+        beginApply(String resourceGroupName, String fleetName, String clusterMeshProfileName, String ifMatch) {
+        return beginApply(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Applies the cluster mesh profile to selected fleet members.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a cluster mesh profile stores the general information about the
-     * mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginApply(String resourceGroupName,
         String fleetName, String clusterMeshProfileName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = applyWithResponse(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch);
-        return this.client.<ClusterMeshProfileInner, ClusterMeshProfileInner>getLroResult(response,
-            ClusterMeshProfileInner.class, ClusterMeshProfileInner.class, Context.NONE);
+        return beginApply(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Applies the cluster mesh profile to selected fleet members.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a cluster mesh profile stores the general information about the
-     * mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMeshProfileInner>, ClusterMeshProfileInner> beginApply(String resourceGroupName,
         String fleetName, String clusterMeshProfileName, String ifMatch, Context context) {
@@ -1126,40 +941,19 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Applies the cluster mesh profile to selected fleet members.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster mesh profile stores the general information about the mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMeshProfileInner apply(String resourceGroupName, String fleetName, String clusterMeshProfileName) {
         final String ifMatch = null;
-        return beginApply(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch).getFinalResult();
+        return apply(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Applies the cluster mesh profile to selected fleet members.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param clusterMeshProfileName The name of the ClusterMeshProfile resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster mesh profile stores the general information about the mesh.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMeshProfileInner apply(String resourceGroupName, String fleetName, String clusterMeshProfileName,
         String ifMatch, Context context) {
-        return beginApply(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginApply(resourceGroupName, fleetName, clusterMeshProfileName, ifMatch, context));
     }
 
     /**
@@ -1193,11 +987,7 @@ public final class ClusterMeshProfilesClientImpl implements ClusterMeshProfilesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMeshProfileInner> listByFleetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterMeshProfileListResult> res
-            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

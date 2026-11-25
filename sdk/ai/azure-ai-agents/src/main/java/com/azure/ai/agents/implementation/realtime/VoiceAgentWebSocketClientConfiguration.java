@@ -20,6 +20,7 @@ public final class VoiceAgentWebSocketClientConfiguration {
     private final String userAgent;
     private final HttpHeaders headers;
     private final ProxyOptions proxyOptions;
+    private final String previewFeatures;
 
     /**
      * Creates the connection configuration.
@@ -30,15 +31,17 @@ public final class VoiceAgentWebSocketClientConfiguration {
      * @param userAgent the SDK user agent.
      * @param headers safe additional handshake headers.
      * @param proxyOptions proxy settings loaded from configuration.
+     * @param previewFeatures the preview feature header value, or {@code null} for no preview opt-in.
      */
     public VoiceAgentWebSocketClientConfiguration(URI endpoint, TokenCredential credential, String apiVersion,
-        String userAgent, HttpHeaders headers, ProxyOptions proxyOptions) {
+        String userAgent, HttpHeaders headers, ProxyOptions proxyOptions, String previewFeatures) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null.");
         this.userAgent = Objects.requireNonNull(userAgent, "'userAgent' cannot be null.");
         this.headers = headers;
         this.proxyOptions = proxyOptions;
+        this.previewFeatures = previewFeatures;
     }
 
     /**
@@ -80,7 +83,7 @@ public final class VoiceAgentWebSocketClientConfiguration {
     /**
      * Gets safe additional headers.
      *
-    * @return safe additional headers, or {@code null}.
+     * @return safe additional headers, or {@code null}.
      */
     public HttpHeaders getHeaders() {
         return headers;
@@ -93,5 +96,14 @@ public final class VoiceAgentWebSocketClientConfiguration {
      */
     public ProxyOptions getProxyOptions() {
         return proxyOptions;
+    }
+
+    /**
+     * Gets the preview feature header value.
+     *
+     * @return the preview feature header value, or {@code null} for no preview opt-in.
+     */
+    public String getPreviewFeatures() {
+        return previewFeatures;
     }
 }

@@ -28,9 +28,7 @@ public final class SourceControlOperationsImpl implements SourceControlOperation
 
     public PagedIterable<Repo> listRepositories(String resourceGroupName, String workspaceName,
         RepositoryAccessProperties repositoryAccess) {
-        PagedIterable<RepoInner> inner
-            = this.serviceClient().listRepositories(resourceGroupName, workspaceName, repositoryAccess);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RepoImpl(inner1, this.manager()));
+        return this.listRepositories(resourceGroupName, workspaceName, repositoryAccess, Context.NONE);
     }
 
     public PagedIterable<Repo> listRepositories(String resourceGroupName, String workspaceName,

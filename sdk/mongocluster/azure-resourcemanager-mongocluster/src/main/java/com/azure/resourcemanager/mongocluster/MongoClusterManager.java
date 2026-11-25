@@ -50,8 +50,8 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to MongoClusterManager.
- * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for
- * MongoDB vCore resources including clusters and firewall rules.
+ * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure DocumentDB
+ * resources including clusters and firewall rules.
  */
 public final class MongoClusterManager {
     private Operations operations;

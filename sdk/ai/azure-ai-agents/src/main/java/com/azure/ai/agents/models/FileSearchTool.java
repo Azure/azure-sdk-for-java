@@ -37,6 +37,12 @@ public final class FileSearchTool extends Tool {
     private final List<String> vectorStoreIds;
 
     /*
+     * The maximum number of results to return. This number should be between 1 and 50 inclusive.
+     */
+    @Generated
+    private Long maxResults;
+
+    /*
      * Ranking options for search.
      */
     @Generated
@@ -47,6 +53,24 @@ public final class FileSearchTool extends Tool {
      */
     @Generated
     private BinaryData filters;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
 
     /**
      * Creates an instance of FileSearchTool class.
@@ -80,111 +104,6 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
-     * Get the rankingOptions property: Ranking options for search.
-     *
-     * @return the rankingOptions value.
-     */
-    @Generated
-    public RankingOptions getRankingOptions() {
-        return this.rankingOptions;
-    }
-
-    /**
-     * Set the rankingOptions property: Ranking options for search.
-     *
-     * @param rankingOptions the rankingOptions value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setRankingOptions(RankingOptions rankingOptions) {
-        this.rankingOptions = rankingOptions;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds,
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("max_num_results", this.maxResults);
-        jsonWriter.writeJsonField("ranking_options", this.rankingOptions);
-        if (this.filters != null) {
-            jsonWriter.writeFieldName("filters");
-            this.filters.writeTo(jsonWriter);
-        }
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of FileSearchTool from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of FileSearchTool if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FileSearchTool.
-     */
-    @Generated
-    public static FileSearchTool fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<String> vectorStoreIds = null;
-            ToolType type = ToolType.FILE_SEARCH;
-            Long maxResults = null;
-            RankingOptions rankingOptions = null;
-            BinaryData filters = null;
-            String name = null;
-            String description = null;
-            Map<String, ToolConfig> toolConfigs = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("vector_store_ids".equals(fieldName)) {
-                    vectorStoreIds = reader.readArray(reader1 -> reader1.getString());
-                } else if ("type".equals(fieldName)) {
-                    type = ToolType.fromString(reader.getString());
-                } else if ("max_num_results".equals(fieldName)) {
-                    maxResults = reader.getNullable(JsonReader::getLong);
-                } else if ("ranking_options".equals(fieldName)) {
-                    rankingOptions = RankingOptions.fromJson(reader);
-                } else if ("filters".equals(fieldName)) {
-                    filters = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            FileSearchTool deserializedFileSearchTool = new FileSearchTool(vectorStoreIds);
-            deserializedFileSearchTool.type = type;
-            deserializedFileSearchTool.maxResults = maxResults;
-            deserializedFileSearchTool.rankingOptions = rankingOptions;
-            deserializedFileSearchTool.filters = filters;
-            deserializedFileSearchTool.name = name;
-            deserializedFileSearchTool.description = description;
-            deserializedFileSearchTool.toolConfigs = toolConfigs;
-            return deserializedFileSearchTool;
-        });
-    }
-
-    /*
-     * The maximum number of results to return. This number should be between 1 and 50 inclusive.
-     */
-    @Generated
-    private Long maxResults;
-
-    /**
      * Get the maxResults property: The maximum number of results to return. This number should be between 1 and 50
      * inclusive.
      *
@@ -205,6 +124,28 @@ public final class FileSearchTool extends Tool {
     @Generated
     public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
+        return this;
+    }
+
+    /**
+     * Get the rankingOptions property: Ranking options for search.
+     *
+     * @return the rankingOptions value.
+     */
+    @Generated
+    public RankingOptions getRankingOptions() {
+        return this.rankingOptions;
+    }
+
+    /**
+     * Set the rankingOptions property: Ranking options for search.
+     *
+     * @param rankingOptions the rankingOptions value to set.
+     * @return the FileSearchTool object itself.
+     */
+    @Generated
+    public FileSearchTool setRankingOptions(RankingOptions rankingOptions) {
+        this.rankingOptions = rankingOptions;
         return this;
     }
 
@@ -320,24 +261,6 @@ public final class FileSearchTool extends Tool {
         return null;
     }
 
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String description;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
     /**
      * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
@@ -402,5 +325,82 @@ public final class FileSearchTool extends Tool {
     public FileSearchTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("max_num_results", this.maxResults);
+        jsonWriter.writeJsonField("ranking_options", this.rankingOptions);
+        if (this.filters != null) {
+            jsonWriter.writeFieldName("filters");
+            this.filters.writeTo(jsonWriter);
+        }
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileSearchTool from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileSearchTool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileSearchTool.
+     */
+    @Generated
+    public static FileSearchTool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<String> vectorStoreIds = null;
+            ToolType type = ToolType.FILE_SEARCH;
+            Long maxResults = null;
+            RankingOptions rankingOptions = null;
+            BinaryData filters = null;
+            String name = null;
+            String description = null;
+            Map<String, ToolConfig> toolConfigs = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("vector_store_ids".equals(fieldName)) {
+                    vectorStoreIds = reader.readArray(reader1 -> reader1.getString());
+                } else if ("type".equals(fieldName)) {
+                    type = ToolType.fromString(reader.getString());
+                } else if ("max_num_results".equals(fieldName)) {
+                    maxResults = reader.getNullable(JsonReader::getLong);
+                } else if ("ranking_options".equals(fieldName)) {
+                    rankingOptions = RankingOptions.fromJson(reader);
+                } else if ("filters".equals(fieldName)) {
+                    filters = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FileSearchTool deserializedFileSearchTool = new FileSearchTool(vectorStoreIds);
+            deserializedFileSearchTool.type = type;
+            deserializedFileSearchTool.maxResults = maxResults;
+            deserializedFileSearchTool.rankingOptions = rankingOptions;
+            deserializedFileSearchTool.filters = filters;
+            deserializedFileSearchTool.name = name;
+            deserializedFileSearchTool.description = description;
+            deserializedFileSearchTool.toolConfigs = toolConfigs;
+            return deserializedFileSearchTool;
+        });
     }
 }

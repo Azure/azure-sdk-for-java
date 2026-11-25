@@ -411,18 +411,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FabricCapacity along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricCapacityInner> getByResourceGroupWithResponse(String resourceGroupName, String capacityName,
         Context context) {
@@ -431,17 +420,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
     }
 
-    /**
-     * Get a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FabricCapacity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricCapacityInner getByResourceGroup(String resourceGroupName, String capacityName) {
         return getByResourceGroupWithResponse(resourceGroupName, capacityName, Context.NONE).getValue();
@@ -486,11 +465,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String capacityName,
         FabricCapacityInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, capacityName, resource, Context.NONE);
     }
 
     /**
@@ -536,39 +511,14 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             FabricCapacityInner.class, FabricCapacityInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricCapacityInner>, FabricCapacityInner>
         beginCreateOrUpdate(String resourceGroupName, String capacityName, FabricCapacityInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, capacityName, resource);
-        return this.client.<FabricCapacityInner, FabricCapacityInner>getLroResult(response, FabricCapacityInner.class,
-            FabricCapacityInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, capacityName, resource, Context.NONE);
     }
 
-    /**
-     * Create a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricCapacityInner>, FabricCapacityInner> beginCreateOrUpdate(
         String resourceGroupName, String capacityName, FabricCapacityInner resource, Context context) {
@@ -596,41 +546,19 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricCapacityInner createOrUpdate(String resourceGroupName, String capacityName,
         FabricCapacityInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, capacityName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, capacityName, resource, Context.NONE);
     }
 
-    /**
-     * Create a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricCapacityInner createOrUpdate(String resourceGroupName, String capacityName,
         FabricCapacityInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, capacityName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, capacityName, resource, context));
     }
 
     /**
@@ -670,11 +598,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String capacityName,
         FabricCapacityUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, capacityName, properties, Context.NONE);
     }
 
     /**
@@ -719,39 +643,14 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             FabricCapacityInner.class, FabricCapacityInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricCapacityInner>, FabricCapacityInner> beginUpdate(String resourceGroupName,
         String capacityName, FabricCapacityUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, capacityName, properties);
-        return this.client.<FabricCapacityInner, FabricCapacityInner>getLroResult(response, FabricCapacityInner.class,
-            FabricCapacityInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, capacityName, properties, Context.NONE);
     }
 
-    /**
-     * Update a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricCapacityInner>, FabricCapacityInner> beginUpdate(String resourceGroupName,
         String capacityName, FabricCapacityUpdate properties, Context context) {
@@ -779,40 +678,17 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricCapacityInner update(String resourceGroupName, String capacityName, FabricCapacityUpdate properties) {
-        return beginUpdate(resourceGroupName, capacityName, properties).getFinalResult();
+        return update(resourceGroupName, capacityName, properties, Context.NONE);
     }
 
-    /**
-     * Update a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricCapacityInner update(String resourceGroupName, String capacityName, FabricCapacityUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, capacityName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, capacityName, properties, context));
     }
 
     /**
@@ -847,8 +723,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String capacityName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -887,35 +762,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, capacityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * Delete a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityName,
         Context context) {
@@ -939,35 +792,16 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         return beginDeleteAsync(resourceGroupName, capacityName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String capacityName) {
-        beginDelete(resourceGroupName, capacityName).getFinalResult();
+        delete(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * Delete a FabricCapacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String capacityName, Context context) {
-        beginDelete(resourceGroupName, capacityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, capacityName, context));
     }
 
     /**
@@ -1017,11 +851,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<FabricCapacityListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1044,31 +874,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FabricCapacity resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricCapacity list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricCapacityInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List FabricCapacity resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricCapacity list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricCapacityInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1116,11 +928,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<FabricCapacityListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1141,27 +949,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FabricCapacity resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricCapacity list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricCapacityInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List FabricCapacity resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricCapacity list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricCapacityInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1200,8 +994,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String resourceGroupName, String capacityName) {
-        return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
+        return resumeWithResponse(resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1240,35 +1033,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             this.client.getContext());
     }
 
-    /**
-     * Resume operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String capacityName) {
-        Response<BinaryData> response = resumeWithResponse(resourceGroupName, capacityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResume(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * Resume operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String capacityName,
         Context context) {
@@ -1292,35 +1063,16 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         return beginResumeAsync(resourceGroupName, capacityName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resume operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String resourceGroupName, String capacityName) {
-        beginResume(resourceGroupName, capacityName).getFinalResult();
+        resume(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * Resume operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String resourceGroupName, String capacityName, Context context) {
-        beginResume(resourceGroupName, capacityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginResume(resourceGroupName, capacityName, context));
     }
 
     /**
@@ -1355,8 +1107,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendWithResponse(String resourceGroupName, String capacityName) {
-        return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
+        return suspendWithResponse(resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1395,35 +1146,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             this.client.getContext());
     }
 
-    /**
-     * Suspend operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String capacityName) {
-        Response<BinaryData> response = suspendWithResponse(resourceGroupName, capacityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSuspend(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * Suspend operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String capacityName,
         Context context) {
@@ -1447,35 +1176,16 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         return beginSuspendAsync(resourceGroupName, capacityName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Suspend operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspend(String resourceGroupName, String capacityName) {
-        beginSuspend(resourceGroupName, capacityName).getFinalResult();
+        suspend(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * Suspend operation of the specified Fabric capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspend(String resourceGroupName, String capacityName, Context context) {
-        beginSuspend(resourceGroupName, capacityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginSuspend(resourceGroupName, capacityName, context));
     }
 
     /**
@@ -1516,17 +1226,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         return checkNameAvailabilityWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements local CheckNameAvailability operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String location,
         CheckNameAvailabilityRequest body, Context context) {
@@ -1536,16 +1236,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             this.client.getSubscriptionId(), location, contentType, accept, body, context);
     }
 
-    /**
-     * Implements local CheckNameAvailability operations.
-     * 
-     * @param location The name of the Azure region.
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(String location,
         CheckNameAvailabilityRequest body) {
@@ -1609,12 +1300,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForExistingResourceInner> listSkusForCapacitySinglePage(String resourceGroupName,
         String capacityName) {
-        final String accept = "application/json";
-        Response<RpSkuEnumerationForExistingResourceResult> res
-            = service.listSkusForCapacitySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusForCapacitySinglePage(resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1640,38 +1326,14 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List eligible SKUs for a Microsoft Fabric resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RpSkuDetailsForExistingResourceInner> listSkusForCapacity(String resourceGroupName,
         String capacityName) {
-        return new PagedIterable<>(() -> listSkusForCapacitySinglePage(resourceGroupName, capacityName),
-            nextLink -> listSkusForCapacityNextSinglePage(nextLink));
+        return listSkusForCapacity(resourceGroupName, capacityName, Context.NONE);
     }
 
-    /**
-     * List eligible SKUs for a Microsoft Fabric resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RpSkuDetailsForExistingResourceInner> listSkusForCapacity(String resourceGroupName,
         String capacityName, Context context) {
@@ -1720,11 +1382,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForNewResourceInner> listSkusSinglePage() {
-        final String accept = "application/json";
-        Response<RpSkuEnumerationForNewResourceResult> res = service.listSkusSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusSinglePage(Context.NONE);
     }
 
     /**
@@ -1745,29 +1403,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List eligible SKUs for Microsoft Fabric resource provider.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RpSkuDetailsForNewResourceInner> listSkus() {
-        return new PagedIterable<>(() -> listSkusSinglePage(), nextLink -> listSkusNextSinglePage(nextLink));
+        return listSkus(Context.NONE);
     }
 
-    /**
-     * List eligible SKUs for Microsoft Fabric resource provider.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RpSkuDetailsForNewResourceInner> listSkus(Context context) {
         return new PagedIterable<>(() -> listSkusSinglePage(context),
@@ -1821,11 +1463,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listUsagesSinglePage(String location) {
-        final String accept = "application/json";
-        Response<PagedQuota> res = service.listUsagesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listUsagesSinglePage(location, Context.NONE);
     }
 
     /**
@@ -1847,31 +1485,13 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the current consumption and limit in this location for the provided subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> listUsages(String location) {
-        return new PagedIterable<>(() -> listUsagesSinglePage(location),
-            nextLink -> listUsagesNextSinglePage(nextLink));
+        return listUsages(location, Context.NONE);
     }
 
-    /**
-     * List the current consumption and limit in this location for the provided subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> listUsages(String location, Context context) {
         return new PagedIterable<>(() -> listUsagesSinglePage(location, context),
@@ -1910,11 +1530,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FabricCapacityListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1968,11 +1584,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FabricCapacityListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2027,11 +1639,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForExistingResourceInner> listSkusForCapacityNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RpSkuEnumerationForExistingResourceResult> res
-            = service.listSkusForCapacityNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusForCapacityNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2085,11 +1693,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForNewResourceInner> listSkusNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RpSkuEnumerationForNewResourceResult> res
-            = service.listSkusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2142,11 +1746,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listUsagesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PagedQuota> res
-            = service.listUsagesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listUsagesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

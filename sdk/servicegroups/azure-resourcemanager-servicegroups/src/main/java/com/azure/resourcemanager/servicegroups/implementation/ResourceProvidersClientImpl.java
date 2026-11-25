@@ -149,10 +149,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateServiceGroupWithResponse(String serviceGroupName,
         ServiceGroupInner createServiceGroupRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateServiceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            serviceGroupName, contentType, accept, createServiceGroupRequest, Context.NONE);
+        return createOrUpdateServiceGroupWithResponse(serviceGroupName, createServiceGroupRequest, Context.NONE);
     }
 
     /**
@@ -194,36 +191,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             ServiceGroupInner.class, ServiceGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param createServiceGroupRequest ServiceGroup creation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceGroupInner>, ServiceGroupInner>
         beginCreateOrUpdateServiceGroup(String serviceGroupName, ServiceGroupInner createServiceGroupRequest) {
-        Response<BinaryData> response
-            = createOrUpdateServiceGroupWithResponse(serviceGroupName, createServiceGroupRequest);
-        return this.client.<ServiceGroupInner, ServiceGroupInner>getLroResult(response, ServiceGroupInner.class,
-            ServiceGroupInner.class, Context.NONE);
+        return beginCreateOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest, Context.NONE);
     }
 
-    /**
-     * Create or Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param createServiceGroupRequest ServiceGroup creation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceGroupInner>, ServiceGroupInner> beginCreateOrUpdateServiceGroup(
         String serviceGroupName, ServiceGroupInner createServiceGroupRequest, Context context) {
@@ -250,37 +225,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param createServiceGroupRequest ServiceGroup creation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGroupInner createOrUpdateServiceGroup(String serviceGroupName,
         ServiceGroupInner createServiceGroupRequest) {
-        return beginCreateOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest).getFinalResult();
+        return createOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest, Context.NONE);
     }
 
-    /**
-     * Create or Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param createServiceGroupRequest ServiceGroup creation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGroupInner createOrUpdateServiceGroup(String serviceGroupName,
         ServiceGroupInner createServiceGroupRequest, Context context) {
-        return beginCreateOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdateServiceGroup(serviceGroupName, createServiceGroupRequest, context));
     }
 
     /**
@@ -317,10 +274,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateServiceGroupWithResponse(String serviceGroupName,
         ServiceGroupInner updateServiceGroupRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateServiceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(), serviceGroupName,
-            contentType, accept, updateServiceGroupRequest, Context.NONE);
+        return updateServiceGroupWithResponse(serviceGroupName, updateServiceGroupRequest, Context.NONE);
     }
 
     /**
@@ -362,35 +316,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             ServiceGroupInner.class, ServiceGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param updateServiceGroupRequest ServiceGroup update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceGroupInner>, ServiceGroupInner> beginUpdateServiceGroup(String serviceGroupName,
         ServiceGroupInner updateServiceGroupRequest) {
-        Response<BinaryData> response = updateServiceGroupWithResponse(serviceGroupName, updateServiceGroupRequest);
-        return this.client.<ServiceGroupInner, ServiceGroupInner>getLroResult(response, ServiceGroupInner.class,
-            ServiceGroupInner.class, Context.NONE);
+        return beginUpdateServiceGroup(serviceGroupName, updateServiceGroupRequest, Context.NONE);
     }
 
-    /**
-     * Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param updateServiceGroupRequest ServiceGroup update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceGroupInner>, ServiceGroupInner> beginUpdateServiceGroup(String serviceGroupName,
         ServiceGroupInner updateServiceGroupRequest, Context context) {
@@ -417,36 +350,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param updateServiceGroupRequest ServiceGroup update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGroupInner updateServiceGroup(String serviceGroupName, ServiceGroupInner updateServiceGroupRequest) {
-        return beginUpdateServiceGroup(serviceGroupName, updateServiceGroupRequest).getFinalResult();
+        return updateServiceGroup(serviceGroupName, updateServiceGroupRequest, Context.NONE);
     }
 
-    /**
-     * Update a serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param updateServiceGroupRequest ServiceGroup update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the serviceGroup details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGroupInner updateServiceGroup(String serviceGroupName, ServiceGroupInner updateServiceGroupRequest,
         Context context) {
-        return beginUpdateServiceGroup(serviceGroupName, updateServiceGroupRequest, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateServiceGroup(serviceGroupName, updateServiceGroupRequest, context));
     }
 
     /**
@@ -477,8 +392,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteServiceGroupWithResponse(String serviceGroupName) {
-        return service.deleteServiceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(), serviceGroupName,
-            Context.NONE);
+        return deleteServiceGroupWithResponse(serviceGroupName, Context.NONE);
     }
 
     /**
@@ -513,31 +427,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a ServiceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteServiceGroup(String serviceGroupName) {
-        Response<BinaryData> response = deleteServiceGroupWithResponse(serviceGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteServiceGroup(serviceGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a ServiceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteServiceGroup(String serviceGroupName, Context context) {
         Response<BinaryData> response = deleteServiceGroupWithResponse(serviceGroupName, context);
@@ -558,30 +454,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return beginDeleteServiceGroupAsync(serviceGroupName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ServiceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteServiceGroup(String serviceGroupName) {
-        beginDeleteServiceGroup(serviceGroupName).getFinalResult();
+        deleteServiceGroup(serviceGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a ServiceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteServiceGroup(String serviceGroupName, Context context) {
-        beginDeleteServiceGroup(serviceGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteServiceGroup(serviceGroupName, context));
     }
 }

@@ -160,12 +160,7 @@ public final class PaymentHsmClusterPrivateLinkResourcesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByPaymentHsmClusterSinglePage(String resourceGroupName,
         String paymentHsmClusterName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByPaymentHsmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPaymentHsmClusterSinglePage(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
     /**
@@ -191,38 +186,14 @@ public final class PaymentHsmClusterPrivateLinkResourcesClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the private link resources supported for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Payment Hsm Cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByPaymentHsmCluster(String resourceGroupName,
         String paymentHsmClusterName) {
-        return new PagedIterable<>(() -> listByPaymentHsmClusterSinglePage(resourceGroupName, paymentHsmClusterName),
-            nextLink -> listByPaymentHsmClusterNextSinglePage(nextLink));
+        return listByPaymentHsmCluster(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
-    /**
-     * Gets the private link resources supported for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Payment Hsm Cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByPaymentHsmCluster(String resourceGroupName,
         String paymentHsmClusterName, Context context) {
@@ -263,11 +234,7 @@ public final class PaymentHsmClusterPrivateLinkResourcesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByPaymentHsmClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByPaymentHsmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPaymentHsmClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

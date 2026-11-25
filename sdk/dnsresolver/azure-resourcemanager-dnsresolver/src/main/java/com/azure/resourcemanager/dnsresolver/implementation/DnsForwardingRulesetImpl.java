@@ -110,11 +110,7 @@ public final class DnsForwardingRulesetImpl
     }
 
     public DnsForwardingRuleset create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsForwardingRulesets()
-            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsForwardingRuleset create(Context context) {
@@ -140,10 +136,7 @@ public final class DnsForwardingRulesetImpl
     }
 
     public DnsForwardingRuleset apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsForwardingRulesets()
-            .update(resourceGroupName, dnsForwardingRulesetName, updateParameters, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsForwardingRuleset apply(Context context) {
@@ -166,11 +159,7 @@ public final class DnsForwardingRulesetImpl
     }
 
     public DnsForwardingRuleset refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsForwardingRulesets()
-            .getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsForwardingRuleset refresh(Context context) {

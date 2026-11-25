@@ -224,18 +224,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceDiscoveredAsset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceDiscoveredAssetInner> getWithResponse(String resourceGroupName, String namespaceName,
         String discoveredAssetName, Context context) {
@@ -244,17 +233,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             resourceGroupName, namespaceName, discoveredAssetName, accept, context);
     }
 
-    /**
-     * Get a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceDiscoveredAsset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredAssetInner get(String resourceGroupName, String namespaceName,
         String discoveredAssetName) {
@@ -300,11 +279,8 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String namespaceName,
         String discoveredAssetName, NamespaceDiscoveredAssetInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, discoveredAssetName, contentType, accept,
-            resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, namespaceName, discoveredAssetName, resource,
+            Context.NONE);
     }
 
     /**
@@ -353,41 +329,15 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             this.client.getContext());
     }
 
-    /**
-     * Create a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredAssetInner>, NamespaceDiscoveredAssetInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String discoveredAssetName,
         NamespaceDiscoveredAssetInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, namespaceName, discoveredAssetName, resource);
-        return this.client.<NamespaceDiscoveredAssetInner, NamespaceDiscoveredAssetInner>getLroResult(response,
-            NamespaceDiscoveredAssetInner.class, NamespaceDiscoveredAssetInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, namespaceName, discoveredAssetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredAssetInner>, NamespaceDiscoveredAssetInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String discoveredAssetName,
@@ -417,42 +367,19 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredAssetInner createOrReplace(String resourceGroupName, String namespaceName,
         String discoveredAssetName, NamespaceDiscoveredAssetInner resource) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, discoveredAssetName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, namespaceName, discoveredAssetName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredAssetInner createOrReplace(String resourceGroupName, String namespaceName,
         String discoveredAssetName, NamespaceDiscoveredAssetInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, discoveredAssetName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, namespaceName, discoveredAssetName, resource, context));
     }
 
     /**
@@ -494,11 +421,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName,
         String discoveredAssetName, NamespaceDiscoveredAssetUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, discoveredAssetName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, discoveredAssetName, properties, Context.NONE);
     }
 
     /**
@@ -547,41 +470,15 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             this.client.getContext());
     }
 
-    /**
-     * Update a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredAssetInner>, NamespaceDiscoveredAssetInner> beginUpdate(
         String resourceGroupName, String namespaceName, String discoveredAssetName,
         NamespaceDiscoveredAssetUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, namespaceName, discoveredAssetName, properties);
-        return this.client.<NamespaceDiscoveredAssetInner, NamespaceDiscoveredAssetInner>getLroResult(response,
-            NamespaceDiscoveredAssetInner.class, NamespaceDiscoveredAssetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, discoveredAssetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDiscoveredAssetInner>, NamespaceDiscoveredAssetInner> beginUpdate(
         String resourceGroupName, String namespaceName, String discoveredAssetName,
@@ -611,41 +508,19 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredAssetInner update(String resourceGroupName, String namespaceName,
         String discoveredAssetName, NamespaceDiscoveredAssetUpdate properties) {
-        return beginUpdate(resourceGroupName, namespaceName, discoveredAssetName, properties).getFinalResult();
+        return update(resourceGroupName, namespaceName, discoveredAssetName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return discovered asset definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDiscoveredAssetInner update(String resourceGroupName, String namespaceName,
         String discoveredAssetName, NamespaceDiscoveredAssetUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, discoveredAssetName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, namespaceName, discoveredAssetName, properties, context));
     }
 
     /**
@@ -682,8 +557,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String discoveredAssetName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, discoveredAssetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, discoveredAssetName, Context.NONE);
     }
 
     /**
@@ -725,36 +599,14 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             this.client.getContext());
     }
 
-    /**
-     * Delete a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String discoveredAssetName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, discoveredAssetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, discoveredAssetName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String discoveredAssetName, Context context) {
@@ -780,35 +632,17 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String discoveredAssetName) {
-        beginDelete(resourceGroupName, namespaceName, discoveredAssetName).getFinalResult();
+        delete(resourceGroupName, namespaceName, discoveredAssetName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceDiscoveredAsset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param discoveredAssetName The name of the discovered asset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String discoveredAssetName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, discoveredAssetName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, discoveredAssetName, context));
     }
 
     /**
@@ -864,12 +698,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceDiscoveredAssetInner> listByResourceGroupSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<NamespaceDiscoveredAssetListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -894,36 +723,14 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NamespaceDiscoveredAsset resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceDiscoveredAsset list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceDiscoveredAssetInner> listByResourceGroup(String resourceGroupName,
         String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List NamespaceDiscoveredAsset resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceDiscoveredAsset list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceDiscoveredAssetInner> listByResourceGroup(String resourceGroupName,
         String namespaceName, Context context) {
@@ -963,11 +770,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceDiscoveredAssetInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NamespaceDiscoveredAssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

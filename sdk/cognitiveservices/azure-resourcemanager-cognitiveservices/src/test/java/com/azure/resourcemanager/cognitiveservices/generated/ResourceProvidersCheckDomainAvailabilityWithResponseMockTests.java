@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
     @Test
     public void testCheckDomainAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isSubdomainAvailable\":false,\"reason\":\"cvbzwgwhgkgsoa\",\"subdomainName\":\"orssatfyb\",\"type\":\"ufdmxuq\",\"kind\":\"qna\"}";
+            = "{\"isSubdomainAvailable\":true,\"reason\":\"cikswhcamwu\",\"subdomainName\":\"fxkcgsfcmvhad\",\"type\":\"batvyrk\",\"kind\":\"qkqwsyjtvjko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainAvailability response = manager.resourceProviders()
-            .checkDomainAvailabilityWithResponse(new CheckDomainAvailabilityParameter().withSubdomainName("faofd")
-                .withType("phtnc")
-                .withKind("hjobzrfprizdcq"), com.azure.core.util.Context.NONE)
+            .checkDomainAvailabilityWithResponse(new CheckDomainAvailabilityParameter().withSubdomainName("cdmwk")
+                .withType("upf")
+                .withKind("ldqdzauiunyevdyz"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.isSubdomainAvailable());
-        Assertions.assertEquals("cvbzwgwhgkgsoa", response.reason());
-        Assertions.assertEquals("orssatfyb", response.subdomainName());
-        Assertions.assertEquals("ufdmxuq", response.type());
-        Assertions.assertEquals("qna", response.kind());
+        Assertions.assertTrue(response.isSubdomainAvailable());
+        Assertions.assertEquals("cikswhcamwu", response.reason());
+        Assertions.assertEquals("fxkcgsfcmvhad", response.subdomainName());
+        Assertions.assertEquals("batvyrk", response.type());
+        Assertions.assertEquals("qkqwsyjtvjko", response.kind());
     }
 }

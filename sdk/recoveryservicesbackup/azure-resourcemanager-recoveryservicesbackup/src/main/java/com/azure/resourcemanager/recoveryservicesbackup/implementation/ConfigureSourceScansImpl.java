@@ -25,7 +25,7 @@ public final class ConfigureSourceScansImpl implements ConfigureSourceScans {
 
     public void execute(String resourceGroupName, String vaultName, String fabricName, String containerName,
         String protectedItemName, ProtectedItemConfigureSourceScanRequest body) {
-        this.serviceClient().execute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body);
+        this.execute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body, Context.NONE);
     }
 
     public void execute(String resourceGroupName, String vaultName, String fabricName, String containerName,

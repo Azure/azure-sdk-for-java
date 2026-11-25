@@ -79,17 +79,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             @BodyParam("application/json") DatabaseAutomaticTuningInner parameters, Context context);
     }
 
-    /**
-     * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName) {
@@ -157,17 +147,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             resourceGroupName, serverName, databaseName, accept, context);
     }
 
-    /**
-     * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseAutomaticTuningInner> getAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -175,52 +155,20 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseAutomaticTuningInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
     }
 
-    /**
-     * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseAutomaticTuningInner get(String resourceGroupName, String serverName, String databaseName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
     }
 
-    /**
-     * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The requested automatic tuning resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseAutomaticTuningInner>> updateWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
@@ -302,18 +250,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             resourceGroupName, serverName, databaseName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The requested automatic tuning resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseAutomaticTuningInner> updateAsync(String resourceGroupName, String serverName,
         String databaseName, DatabaseAutomaticTuningInner parameters) {
@@ -321,37 +258,14 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The requested automatic tuning resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseAutomaticTuningInner> updateWithResponse(String resourceGroupName, String serverName,
         String databaseName, DatabaseAutomaticTuningInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The requested automatic tuning resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseAutomaticTuningInner update(String resourceGroupName, String serverName, String databaseName,
         DatabaseAutomaticTuningInner parameters) {

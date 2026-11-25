@@ -158,20 +158,7 @@ public final class ExtensionMetadataV2sClientImpl implements ExtensionMetadataV2
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Extension Metadata based on location, publisher, extensionType and version.
-     * 
-     * @param location The location of the Extension being received.
-     * @param publisher The publisher of the Extension being received.
-     * @param extensionType The extensionType of the Extension being received.
-     * @param version The version of the Extension being received.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension Metadata based on location, publisher, extensionType and version along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionValueV2Inner> getWithResponse(String location, String publisher, String extensionType,
         String version, Context context) {
@@ -180,18 +167,7 @@ public final class ExtensionMetadataV2sClientImpl implements ExtensionMetadataV2
             extensionType, version, accept, context);
     }
 
-    /**
-     * Gets an Extension Metadata based on location, publisher, extensionType and version.
-     * 
-     * @param location The location of the Extension being received.
-     * @param publisher The publisher of the Extension being received.
-     * @param extensionType The extensionType of the Extension being received.
-     * @param version The version of the Extension being received.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension Metadata based on location, publisher, extensionType and version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionValueV2Inner get(String location, String publisher, String extensionType, String version) {
         return getWithResponse(location, publisher, extensionType, version, Context.NONE).getValue();
@@ -253,11 +229,7 @@ public final class ExtensionMetadataV2sClientImpl implements ExtensionMetadataV2
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtensionValueV2Inner> listSinglePage(String location, String publisher,
         String extensionType) {
-        final String accept = "application/json";
-        Response<ExtensionValueListResultV2> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), location, publisher, extensionType, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, publisher, extensionType, Context.NONE);
     }
 
     /**
@@ -282,37 +254,13 @@ public final class ExtensionMetadataV2sClientImpl implements ExtensionMetadataV2
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Extension versions based on location, publisher, extensionType.
-     * 
-     * @param location The location of the Extension being received.
-     * @param publisher The publisher of the Extension being received.
-     * @param extensionType The extensionType of the Extension being received.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Extension versions based on location, publisher, extensionType as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionValueV2Inner> list(String location, String publisher, String extensionType) {
-        return new PagedIterable<>(() -> listSinglePage(location, publisher, extensionType),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(location, publisher, extensionType, Context.NONE);
     }
 
-    /**
-     * Gets all Extension versions based on location, publisher, extensionType.
-     * 
-     * @param location The location of the Extension being received.
-     * @param publisher The publisher of the Extension being received.
-     * @param extensionType The extensionType of the Extension being received.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Extension versions based on location, publisher, extensionType as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionValueV2Inner> list(String location, String publisher, String extensionType,
         Context context) {
@@ -350,11 +298,7 @@ public final class ExtensionMetadataV2sClientImpl implements ExtensionMetadataV2
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtensionValueV2Inner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExtensionValueListResultV2> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

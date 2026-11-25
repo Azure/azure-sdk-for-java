@@ -240,18 +240,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of a DNS security rule for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS security rule for a DNS resolver policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsSecurityRuleInner> getWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, Context context) {
@@ -260,17 +249,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
             resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, accept, context);
     }
 
-    /**
-     * Gets properties of a DNS security rule for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS security rule for a DNS resolver policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsSecurityRuleInner get(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName) {
@@ -325,11 +304,8 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, DnsSecurityRuleInner parameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch,
-            ifNoneMatch, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -427,56 +403,25 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      * @return the {@link SyncPoller} for polling of describes a DNS security rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName,
         DnsSecurityRuleInner parameters, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsSecurityRuleName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsSecurityRuleInner, DnsSecurityRuleInner>getLroResult(response,
-            DnsSecurityRuleInner.class, DnsSecurityRuleInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS security rule for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName,
         DnsSecurityRuleInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsSecurityRuleName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsSecurityRuleInner, DnsSecurityRuleInner>getLroResult(response,
-            DnsSecurityRuleInner.class, DnsSecurityRuleInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS security rule for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName,
@@ -531,50 +476,23 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
             ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a DNS security rule for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsSecurityRuleInner createOrUpdate(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, DnsSecurityRuleInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS security rule for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsSecurityRuleInner createOrUpdate(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, DnsSecurityRuleInner parameters, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName,
+            dnsSecurityRuleName, parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -620,11 +538,8 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, DnsSecurityRulePatch parameters, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch,
-            contentType, accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -714,51 +629,22 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      * @return the {@link SyncPoller} for polling of describes a DNS security rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginUpdate(String resourceGroupName,
         String dnsResolverPolicyName, String dnsSecurityRuleName, DnsSecurityRulePatch parameters, String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch);
-        return this.client.<DnsSecurityRuleInner, DnsSecurityRuleInner>getLroResult(response,
-            DnsSecurityRuleInner.class, DnsSecurityRuleInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates a DNS security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginUpdate(String resourceGroupName,
         String dnsResolverPolicyName, String dnsSecurityRuleName, DnsSecurityRulePatch parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch);
-        return this.client.<DnsSecurityRuleInner, DnsSecurityRuleInner>getLroResult(response,
-            DnsSecurityRuleInner.class, DnsSecurityRuleInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Updates a DNS security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginUpdate(String resourceGroupName,
         String dnsResolverPolicyName, String dnsSecurityRuleName, DnsSecurityRulePatch parameters, String ifMatch,
@@ -812,46 +698,20 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a DNS security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsSecurityRuleInner update(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, DnsSecurityRulePatch parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch)
-            .getFinalResult();
+        return update(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsSecurityRuleInner update(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, DnsSecurityRulePatch parameters, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch, context));
     }
 
     /**
@@ -893,9 +753,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, Context.NONE);
     }
 
     /**
@@ -977,47 +835,20 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, String ifMatch, Context context) {
@@ -1064,39 +895,19 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch).getFinalResult();
+        delete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsSecurityRuleName The name of the DNS security rule.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName,
         String ifMatch, Context context) {
-        beginDelete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, context));
     }
 
     /**
@@ -1172,12 +983,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsSecurityRuleInner> listSinglePage(String resourceGroupName, String dnsResolverPolicyName,
         Integer top) {
-        final String accept = "application/json";
-        Response<DnsSecurityRuleListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, dnsResolverPolicyName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, dnsResolverPolicyName, top, Context.NONE);
     }
 
     /**
@@ -1203,35 +1009,14 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS security rules for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsSecurityRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsSecurityRuleInner> list(String resourceGroupName, String dnsResolverPolicyName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, dnsResolverPolicyName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, dnsResolverPolicyName, top, Context.NONE);
     }
 
-    /**
-     * Lists DNS security rules for a DNS resolver policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsSecurityRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsSecurityRuleInner> list(String resourceGroupName, String dnsResolverPolicyName, Integer top,
         Context context) {
@@ -1269,11 +1054,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsSecurityRuleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsSecurityRuleListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

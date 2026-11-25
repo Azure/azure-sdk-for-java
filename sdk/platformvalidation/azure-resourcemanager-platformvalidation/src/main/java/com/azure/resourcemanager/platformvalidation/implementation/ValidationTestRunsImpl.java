@@ -51,10 +51,8 @@ public final class ValidationTestRunsImpl implements ValidationTestRuns {
 
     public PagedIterable<ValidationTestRun> listByExecutionPlanRun(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName) {
-        PagedIterable<ValidationTestRunInner> inner = this.serviceClient()
-            .listByExecutionPlanRun(resourceGroupName, cloudValidationName, validationExecutionPlanName,
-                executionPlanRunName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ValidationTestRunImpl(inner1, this.manager()));
+        return this.listByExecutionPlanRun(resourceGroupName, cloudValidationName, validationExecutionPlanName,
+            executionPlanRunName, Context.NONE);
     }
 
     public PagedIterable<ValidationTestRun> listByExecutionPlanRun(String resourceGroupName, String cloudValidationName,

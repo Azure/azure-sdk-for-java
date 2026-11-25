@@ -163,18 +163,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StandbyVirtualMachineResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param standbyVirtualMachineName Name of the standby virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachineResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyVirtualMachineResourceInner> getWithResponse(String resourceGroupName,
         String standbyVirtualMachinePoolName, String standbyVirtualMachineName, Context context) {
@@ -183,17 +172,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             resourceGroupName, standbyVirtualMachinePoolName, standbyVirtualMachineName, accept, context);
     }
 
-    /**
-     * Get a StandbyVirtualMachineResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param standbyVirtualMachineName Name of the standby virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachineResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyVirtualMachineResourceInner get(String resourceGroupName, String standbyVirtualMachinePoolName,
         String standbyVirtualMachineName) {
@@ -259,12 +238,8 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResourceSinglePage(
         String resourceGroupName, String standbyVirtualMachinePoolName) {
-        final String accept = "application/json";
-        Response<StandbyVirtualMachineResourceListResult> res = service.listByStandbyVirtualMachinePoolResourceSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            standbyVirtualMachinePoolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStandbyVirtualMachinePoolResourceSinglePage(resourceGroupName, standbyVirtualMachinePoolName,
+            Context.NONE);
     }
 
     /**
@@ -289,37 +264,14 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachineResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachineResourceInner>
         listByStandbyVirtualMachinePoolResource(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        return new PagedIterable<>(
-            () -> listByStandbyVirtualMachinePoolResourceSinglePage(resourceGroupName, standbyVirtualMachinePoolName),
-            nextLink -> listByStandbyVirtualMachinePoolResourceNextSinglePage(nextLink));
+        return listByStandbyVirtualMachinePoolResource(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
-    /**
-     * List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachineResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResource(
         String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
@@ -362,11 +314,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyVirtualMachineResourceInner>
         listByStandbyVirtualMachinePoolResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StandbyVirtualMachineResourceListResult> res = service
-            .listByStandbyVirtualMachinePoolResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStandbyVirtualMachinePoolResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

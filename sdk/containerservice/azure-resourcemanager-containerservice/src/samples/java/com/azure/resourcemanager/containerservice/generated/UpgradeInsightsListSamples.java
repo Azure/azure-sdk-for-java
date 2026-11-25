@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class UpgradeInsightsListSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersListUpgradeInsights.json
+     * x-ms-original-file: 2026-09-02-preview/ManagedClustersListUpgradeInsights.json
      */
     /**
      * Sample code: List the stored upgrade insights for a managed cluster.

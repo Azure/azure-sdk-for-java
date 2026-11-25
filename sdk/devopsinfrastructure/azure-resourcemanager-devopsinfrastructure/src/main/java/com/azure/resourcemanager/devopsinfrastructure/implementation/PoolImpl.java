@@ -90,10 +90,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .createOrUpdate(resourceGroupName, poolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Pool create(Context context) {
@@ -115,10 +112,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .update(resourceGroupName, poolName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Pool apply(Context context) {
@@ -140,11 +134,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPools()
-            .getByResourceGroupWithResponse(resourceGroupName, poolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Pool refresh(Context context) {

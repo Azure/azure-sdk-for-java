@@ -160,18 +160,7 @@ public final class EdgeMachineNetworkAdaptersClientImpl implements EdgeMachineNe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific network adapter on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific network adapter on an Edge Machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineNetworkAdapterInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String networkAdapterName, Context context) {
@@ -180,17 +169,7 @@ public final class EdgeMachineNetworkAdaptersClientImpl implements EdgeMachineNe
             resourceGroupName, edgeMachineName, networkAdapterName, accept, context);
     }
 
-    /**
-     * Get a specific network adapter on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param networkAdapterName The name of the EdgeMachineNetworkAdapter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific network adapter on an Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineNetworkAdapterInner get(String resourceGroupName, String edgeMachineName,
         String networkAdapterName) {
@@ -249,12 +228,7 @@ public final class EdgeMachineNetworkAdaptersClientImpl implements EdgeMachineNe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineNetworkAdapterInner> listSinglePage(String resourceGroupName,
         String edgeMachineName) {
-        final String accept = "application/json";
-        Response<EdgeMachineNetworkAdapterListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, edgeMachineName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -279,35 +253,13 @@ public final class EdgeMachineNetworkAdaptersClientImpl implements EdgeMachineNe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all network adapters on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineNetworkAdapter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineNetworkAdapterInner> list(String resourceGroupName, String edgeMachineName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, edgeMachineName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * List all network adapters on an Edge Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineNetworkAdapter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineNetworkAdapterInner> list(String resourceGroupName, String edgeMachineName,
         Context context) {
@@ -345,11 +297,7 @@ public final class EdgeMachineNetworkAdaptersClientImpl implements EdgeMachineNe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineNetworkAdapterInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineNetworkAdapterListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

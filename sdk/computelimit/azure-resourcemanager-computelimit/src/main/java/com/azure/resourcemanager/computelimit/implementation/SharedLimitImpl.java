@@ -19,6 +19,12 @@ public final class SharedLimitImpl implements SharedLimit, SharedLimit.Definitio
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimits/{name}",
+            "location");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimits/{name}",
+            "name");
     }
 
     public String id() {
@@ -59,11 +65,7 @@ public final class SharedLimitImpl implements SharedLimit, SharedLimit.Definitio
     }
 
     public SharedLimit create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedLimits()
-            .createWithResponse(location, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SharedLimit create(Context context) {
@@ -81,9 +83,7 @@ public final class SharedLimitImpl implements SharedLimit, SharedLimit.Definitio
     }
 
     public SharedLimit refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getSharedLimits().getWithResponse(location, name, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SharedLimit refresh(Context context) {

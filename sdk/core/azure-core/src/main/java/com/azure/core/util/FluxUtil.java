@@ -40,6 +40,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -320,42 +321,46 @@ public final class FluxUtil {
             });
         }
 
-        return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
+        return Flux.defer(() -> {
+            // Reads go into one array reused for the subscription and each emission copies out only the bytes read,
+            // so consumers retaining the emitted buffers don't retain a chunkSize array for every partial read.
             byte[] buffer = new byte[chunkSize];
 
-            try {
-                int readCount;
-                do {
-                    readCount = stream.read(buffer, 0, chunkSize);
-                } while (readCount == 0);
+            return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
+                try {
+                    int readCount;
+                    do {
+                        readCount = stream.read(buffer, 0, chunkSize);
+                    } while (readCount == 0);
 
-                if (readCount == -1) {
-                    sink.complete();
-                    return stream;
-                }
-
-                int offset = readCount;
-                while (offset < chunkSize) {
-                    // Availability is only a batching hint; zero ends coalescing, not the stream.
-                    int available = stream.available();
-                    if (available <= 0) {
-                        break;
+                    if (readCount == -1) {
+                        sink.complete();
+                        return stream;
                     }
 
-                    readCount = stream.read(buffer, offset, Math.min(available, chunkSize - offset));
-                    if (readCount <= 0) {
-                        break;
+                    int offset = readCount;
+                    while (offset < chunkSize) {
+                        // Availability is only a batching hint; zero ends coalescing, not the stream.
+                        int available = stream.available();
+                        if (available <= 0) {
+                            break;
+                        }
+
+                        readCount = stream.read(buffer, offset, Math.min(available, chunkSize - offset));
+                        if (readCount <= 0) {
+                            break;
+                        }
+
+                        offset += readCount;
                     }
 
-                    offset += readCount;
+                    sink.next(ByteBuffer.wrap(Arrays.copyOf(buffer, offset)));
+                } catch (IOException ex) {
+                    sink.error(ex);
                 }
 
-                sink.next(ByteBuffer.wrap(buffer, 0, offset));
-            } catch (IOException ex) {
-                sink.error(ex);
-            }
-
-            return stream;
+                return stream;
+            });
         }).filter(ByteBuffer::hasRemaining);
     }
 

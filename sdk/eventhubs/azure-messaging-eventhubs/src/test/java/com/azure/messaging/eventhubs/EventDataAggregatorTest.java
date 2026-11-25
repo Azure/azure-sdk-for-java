@@ -11,13 +11,18 @@ import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.Buffere
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.MonoSink;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.test.scheduler.VirtualTimeScheduler;
 import reactor.util.context.Context;
 
 import java.time.Duration;
@@ -32,8 +37,11 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
+@Isolated
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventDataAggregatorTest {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregatorTest.class);
 
@@ -202,6 +210,151 @@ public class EventDataAggregatorTest {
             assertEquals(b, batch);
             assertEquals(2, batchEvents.size());
         }).thenCancel().verify();
+    }
+
+    @Test
+    public void batchDeadlineIsNotExtendedByContinuousArrivals() {
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+
+        StepVerifier.withVirtualTime(() -> timedAggregator(publisher, 1024 * 1024))
+            .then(() -> publisher.next(event1))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event2))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event3))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event1))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event2))
+            .expectNoEvent(Duration.ofMillis(49))
+            .thenAwait(Duration.ofMillis(1))
+            .assertNext(b -> assertEquals(Arrays.asList(event1, event2, event3, event1, event2), b.getEvents()))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event3))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event1))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event2))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event3))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event1))
+            .expectNoEvent(Duration.ofMillis(49))
+            .thenAwait(Duration.ofMillis(1))
+            .assertNext(b -> assertEquals(Arrays.asList(event3, event1, event2, event3, event1), b.getEvents()))
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void batchDeadlineStartsWithFirstEventAfterIdle() {
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+
+        StepVerifier.withVirtualTime(() -> timedAggregator(publisher, 1024 * 1024))
+            .then(() -> publisher.next(event1))
+            .thenAwait(Duration.ofMillis(250))
+            .assertNext(b -> assertEquals(Arrays.asList(event1), b.getEvents()))
+            .expectNoEvent(Duration.ofMillis(625))
+            .then(() -> publisher.next(event2))
+            .expectNoEvent(Duration.ofMillis(100))
+            .then(() -> publisher.next(event3))
+            .expectNoEvent(Duration.ofMillis(149))
+            .thenAwait(Duration.ofMillis(1))
+            .assertNext(b -> assertEquals(Arrays.asList(event2, event3), b.getEvents()))
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void batchDeadlineStartsWithFirstEventAfterFlush() {
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+
+        StepVerifier.withVirtualTime(() -> timedAggregator(publisher, 1024 * 1024))
+            .then(() -> publisher.next(event1))
+            .expectNoEvent(Duration.ofMillis(100))
+            .then(() -> publisher.next(new FlushSignal(new NoopMonoSink())))
+            .assertNext(b -> assertEquals(Arrays.asList(event1), b.getEvents()))
+            .then(() -> publisher.next(new FlushSignal(new NoopMonoSink())))
+            .expectNext(EventDataBatch.EMPTY)
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event2))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event3))
+            .expectNoEvent(Duration.ofMillis(199))
+            .thenAwait(Duration.ofMillis(1))
+            .assertNext(b -> assertEquals(Arrays.asList(event2, event3), b.getEvents()))
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void batchDeadlineStartsWithSizeRolloverEvent() {
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventData first = new EventData(new byte[600]);
+        final EventData second = new EventData(new byte[600]);
+
+        StepVerifier.withVirtualTime(() -> timedAggregator(publisher, 1024))
+            .then(() -> publisher.next(first))
+            .expectNoEvent(Duration.ofMillis(100))
+            .then(() -> publisher.next(second))
+            .assertNext(b -> assertEquals(Arrays.asList(first), b.getEvents()))
+            .expectNoEvent(Duration.ofMillis(50))
+            .then(() -> publisher.next(event3))
+            .expectNoEvent(Duration.ofMillis(199))
+            .thenAwait(Duration.ofMillis(1))
+            .assertNext(b -> assertEquals(Arrays.asList(second, event3), b.getEvents()))
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void batchDeadlineIgnoresTickFromFlushedBatch() {
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final List<EventDataBatch> published = new ArrayList<>();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofMillis(250));
+        final ClientLogger logger = Mockito.spy(LOGGER);
+        final VirtualTimeScheduler clock = VirtualTimeScheduler.getOrSet();
+        final EventDataAggregator.EventDataAggregatorMain subscriber
+            = new EventDataAggregator.EventDataAggregatorMain(new BaseSubscriber<EventDataBatch>() {
+                @Override
+                protected void hookOnNext(EventDataBatch value) {
+                    published.add(value);
+                }
+            }, NAMESPACE, options, () -> new EventDataBatch(1024 * 1024, PARTITION_ID, null, null,
+                EventHubsProducerInstrumentation.NOOP_INSTANCE), PARTITION_ID, logger);
+
+        try {
+            publisher.flux().subscribe(subscriber);
+            publisher.next(event1);
+            final AtomicBoolean replaceBatch = new AtomicBoolean(true);
+            doAnswer(invocation -> {
+                // Replace the batch after the old tick is selected, before it acquires the batch lock.
+                if (replaceBatch.compareAndSet(true, false)) {
+                    publisher.next(new FlushSignal(new NoopMonoSink()), event2);
+                }
+                return invocation.callRealMethod();
+            }).when(logger).atVerbose();
+
+            clock.advanceTimeBy(Duration.ofMillis(250));
+            assertEquals(1, published.size());
+            assertEquals(Arrays.asList(event1), published.get(0).getEvents());
+            clock.advanceTimeBy(Duration.ofMillis(249));
+            assertEquals(1, published.size());
+            clock.advanceTimeBy(Duration.ofMillis(1));
+            assertEquals(2, published.size());
+            assertEquals(Arrays.asList(event2), published.get(1).getEvents());
+        } finally {
+            subscriber.cancel();
+            VirtualTimeScheduler.reset();
+        }
+    }
+
+    private static EventDataAggregator timedAggregator(TestPublisher<EventData> publisher, int maxBatchSize) {
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofMillis(250));
+        return new EventDataAggregator(publisher.flux(), () -> new EventDataBatch(maxBatchSize, PARTITION_ID, null,
+            null, EventHubsProducerInstrumentation.NOOP_INSTANCE), NAMESPACE, options, PARTITION_ID);
     }
 
     /**

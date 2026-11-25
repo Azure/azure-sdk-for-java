@@ -89,7 +89,7 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
     }
 
     public void delete(String resourceGroupName, String labName, String virtualMachineName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, virtualMachineName, name);
+        this.deleteWithResponse(resourceGroupName, labName, virtualMachineName, name, Context.NONE);
     }
 
     public PagedIterable<Schedule> list(String resourceGroupName, String labName, String virtualMachineName) {
@@ -105,7 +105,7 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
     }
 
     public void execute(String resourceGroupName, String labName, String virtualMachineName, String name) {
-        this.serviceClient().execute(resourceGroupName, labName, virtualMachineName, name);
+        this.execute(resourceGroupName, labName, virtualMachineName, name, Context.NONE);
     }
 
     public void execute(String resourceGroupName, String labName, String virtualMachineName, String name,

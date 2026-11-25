@@ -25,37 +25,6 @@ public final class ImageGenToolModel extends ExpandableStringEnum<ImageGenToolMo
     public static final ImageGenToolModel GPT_IMAGE_1_MINI = fromString("gpt-image-1-mini");
 
     /**
-     * Creates a new instance of ImageGenToolModel value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public ImageGenToolModel() {
-    }
-
-    /**
-     * Creates or finds a ImageGenToolModel from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding ImageGenToolModel.
-     */
-    @Generated
-    public static ImageGenToolModel fromString(String name) {
-        return fromString(name, ImageGenToolModel.class);
-    }
-
-    /**
-     * Gets known ImageGenToolModel values.
-     *
-     * @return known ImageGenToolModel values.
-     */
-    @Generated
-    public static Collection<ImageGenToolModel> values() {
-        return values(ImageGenToolModel.class);
-    }
-
-    /**
      * Static value gpt-image-1.5 for ImageGenToolModel.
      */
     @Generated
@@ -97,4 +66,35 @@ public final class ImageGenToolModel extends ExpandableStringEnum<ImageGenToolMo
      */
     @Generated
     public static final ImageGenToolModel GPT_IMAGE_2_5_FLARE_2026_09_08 = fromString("gpt-image-2.5-flare-2026-09-08");
+
+    /**
+     * Creates a new instance of ImageGenToolModel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public ImageGenToolModel() {
+    }
+
+    /**
+     * Creates or finds a ImageGenToolModel from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ImageGenToolModel.
+     */
+    @Generated
+    public static ImageGenToolModel fromString(String name) {
+        return fromString(name, ImageGenToolModel.class);
+    }
+
+    /**
+     * Gets known ImageGenToolModel values.
+     *
+     * @return known ImageGenToolModel values.
+     */
+    @Generated
+    public static Collection<ImageGenToolModel> values() {
+        return values(ImageGenToolModel.class);
+    }
 }

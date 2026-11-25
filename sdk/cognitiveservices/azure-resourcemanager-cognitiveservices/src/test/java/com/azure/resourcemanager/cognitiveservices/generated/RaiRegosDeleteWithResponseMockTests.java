@@ -28,7 +28,8 @@ public final class RaiRegosDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.raiRegos()
-            .deleteWithResponse("pbadjzeul", "gf", "ogtqscj", "vqerqxkomwdzpzl", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("giknrlugseiqb", "oqjfeamzkuxdgpks", "otbunvnjqldr", "qvcugusqlxlx",
+                com.azure.core.util.Context.NONE);
 
     }
 }

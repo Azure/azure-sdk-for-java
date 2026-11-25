@@ -152,20 +152,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create confluent environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param body Confluent Environment resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about environment name, metadata and environment id of an environment along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SCEnvironmentRecordInner> createOrUpdateWithResponse(String resourceGroupName,
         String organizationName, String environmentId, SCEnvironmentRecordInner body, Context context) {
@@ -174,17 +161,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, accept, body, context);
     }
 
-    /**
-     * Create confluent environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about environment name, metadata and environment id of an environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SCEnvironmentRecordInner createOrUpdate(String resourceGroupName, String organizationName,
         String environmentId) {
@@ -227,8 +204,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String environmentId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, environmentId, Context.NONE);
     }
 
     /**
@@ -270,36 +246,14 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete confluent environment by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, organizationName, environmentId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, environmentId, Context.NONE);
     }
 
-    /**
-     * Delete confluent environment by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, Context context) {
@@ -324,34 +278,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete confluent environment by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId) {
-        beginDelete(resourceGroupName, organizationName, environmentId).getFinalResult();
+        delete(resourceGroupName, organizationName, environmentId, Context.NONE);
     }
 
-    /**
-     * Delete confluent environment by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, Context context) {
-        beginDelete(resourceGroupName, organizationName, environmentId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, organizationName, environmentId, context));
     }
 }

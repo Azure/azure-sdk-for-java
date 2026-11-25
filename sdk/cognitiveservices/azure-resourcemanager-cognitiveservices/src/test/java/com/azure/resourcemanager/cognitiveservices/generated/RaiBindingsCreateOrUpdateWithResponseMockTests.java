@@ -24,7 +24,7 @@ public final class RaiBindingsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"boundResourceId\":\"eagbgacnqpjuyt\",\"targetPolicyName\":\"udeylpbybki\"},\"etag\":\"oifm\",\"tags\":{\"au\":\"pwdj\",\"ttuhaaax\":\"fshznu\",\"xstowagehxuihwes\":\"dcdjmdkqtxfrmbe\"},\"id\":\"jaqgblkkn\",\"name\":\"ypmte\",\"type\":\"spsaneyvaerpiob\"}";
+            = "{\"properties\":{\"boundResourceId\":\"ajokbxxcdk\",\"targetPolicyName\":\"xjwtkftgzljue\"},\"etag\":\"ewsj\",\"tags\":{\"dmakks\":\"mlbxjhgvtepvrun\",\"ocft\":\"rnaxkczkwohdigey\",\"baktvxer\":\"amodw\",\"af\":\"wuzvrnnbeg\"},\"id\":\"nmtojxg\",\"name\":\"ofmazhkqqs\",\"type\":\"knaqszbwgp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,17 @@ public final class RaiBindingsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBinding response = manager.raiBindings()
-            .define("lfl")
-            .withExistingAccount("sxjbjkewrigl", "qtrefe")
-            .withTags(mapOf("h", "jr", "agwviqehmdqvaoli", "gsjbi", "m", "xdfsfvkjc", "rkd", "rsvxphtjnhptj"))
-            .withProperties(
-                new RaiBindingProperties().withBoundResourceId("jffzwncvdefxonzt").withTargetPolicyName("cjptnn"))
-            .withIfMatch("rgyzcslazp")
-            .withIfNoneMatch("kqoyimxpggk")
+            .define("rmh")
+            .withExistingAccount("zihirqvvketyd", "aqoktssgvqxer")
+            .withTags(mapOf("igdrqgzetboyz", "ernnkqpkayqiv"))
+            .withProperties(new RaiBindingProperties().withBoundResourceId("aqgbb").withTargetPolicyName("lvihylrxsi"))
+            .withIfMatch("ii")
+            .withIfNoneMatch("wibdtpljo")
             .create();
 
-        Assertions.assertEquals("eagbgacnqpjuyt", response.properties().boundResourceId());
-        Assertions.assertEquals("udeylpbybki", response.properties().targetPolicyName());
-        Assertions.assertEquals("pwdj", response.tags().get("au"));
+        Assertions.assertEquals("ajokbxxcdk", response.properties().boundResourceId());
+        Assertions.assertEquals("xjwtkftgzljue", response.properties().targetPolicyName());
+        Assertions.assertEquals("mlbxjhgvtepvrun", response.tags().get("dmakks"));
     }
 
     // Use "Map.of" if available

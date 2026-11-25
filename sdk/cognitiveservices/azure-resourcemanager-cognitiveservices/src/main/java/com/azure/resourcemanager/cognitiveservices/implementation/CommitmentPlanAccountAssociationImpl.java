@@ -76,11 +76,7 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
     }
 
     public CommitmentPlanAccountAssociation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .createOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommitmentPlanAccountAssociation create(Context context) {
@@ -103,11 +99,7 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
     }
 
     public CommitmentPlanAccountAssociation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .createOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommitmentPlanAccountAssociation apply(Context context) {
@@ -134,12 +126,7 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
     }
 
     public CommitmentPlanAccountAssociation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .getAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommitmentPlanAccountAssociation refresh(Context context) {

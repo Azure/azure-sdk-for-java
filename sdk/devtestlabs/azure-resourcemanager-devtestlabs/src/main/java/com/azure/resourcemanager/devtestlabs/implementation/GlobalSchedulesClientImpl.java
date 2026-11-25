@@ -290,18 +290,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduleInner> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
         Context context) {
@@ -310,16 +299,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             this.client.getSubscriptionId(), resourceGroupName, name, expand, accept, context);
     }
 
-    /**
-     * Get schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner getByResourceGroup(String resourceGroupName, String name) {
         final String expand = null;
@@ -365,18 +345,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or replace an existing schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String name,
         ScheduleInner schedule, Context context) {
@@ -386,17 +355,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, schedule, context);
     }
 
-    /**
-     * Create or replace an existing schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner createOrUpdate(String resourceGroupName, String name, ScheduleInner schedule) {
         return createOrUpdateWithResponse(resourceGroupName, name, schedule, Context.NONE).getValue();
@@ -441,18 +400,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduleInner> updateWithResponse(String resourceGroupName, String name, ScheduleFragment schedule,
         Context context) {
@@ -462,17 +410,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, schedule, context);
     }
 
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param schedule A schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner update(String resourceGroupName, String name, ScheduleFragment schedule) {
         return updateWithResponse(resourceGroupName, name, schedule, Context.NONE).getValue();
@@ -511,32 +449,14 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
         return deleteWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
-    /**
-     * Delete schedule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
         deleteWithResponse(resourceGroupName, name, Context.NONE);
@@ -625,12 +545,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduleInner> listByResourceGroupSinglePage(String resourceGroupName, String expand,
         String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<ScheduleList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -658,39 +573,17 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List schedules in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> listByResourceGroup(String resourceGroupName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, expand, filter, top, orderby),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List schedules in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> listByResourceGroup(String resourceGroupName, String expand, String filter,
         Integer top, String orderby, Context context) {
@@ -773,11 +666,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduleInner> listSinglePage(String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<ScheduleList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -803,36 +692,17 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List schedules in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> list() {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listSinglePage(expand, filter, top, orderby),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List schedules in a subscription.
-     * 
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> list(String expand, String filter, Integer top, String orderby,
         Context context) {
@@ -870,8 +740,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> executeWithResponse(String resourceGroupName, String name) {
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, Context.NONE);
+        return executeWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -908,33 +777,13 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name) {
-        Response<BinaryData> response = executeWithResponse(resourceGroupName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginExecute(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name, Context context) {
         Response<BinaryData> response = executeWithResponse(resourceGroupName, name, context);
@@ -956,33 +805,16 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
         return beginExecuteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String resourceGroupName, String name) {
-        beginExecute(resourceGroupName, name).getFinalResult();
+        execute(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Execute a schedule. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String resourceGroupName, String name, Context context) {
-        beginExecute(resourceGroupName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginExecute(resourceGroupName, name, context));
     }
 
     /**
@@ -1019,10 +851,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> retargetWithResponse(String resourceGroupName, String name,
         RetargetScheduleProperties retargetScheduleProperties) {
-        final String contentType = "application/json";
-        return service.retargetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, retargetScheduleProperties,
-            Context.NONE);
+        return retargetWithResponse(resourceGroupName, name, retargetScheduleProperties, Context.NONE);
     }
 
     /**
@@ -1065,36 +894,14 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates a schedule's target resource Id. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetarget(String resourceGroupName, String name,
         RetargetScheduleProperties retargetScheduleProperties) {
-        Response<BinaryData> response = retargetWithResponse(resourceGroupName, name, retargetScheduleProperties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRetarget(resourceGroupName, name, retargetScheduleProperties, Context.NONE);
     }
 
-    /**
-     * Updates a schedule's target resource Id. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetarget(String resourceGroupName, String name,
         RetargetScheduleProperties retargetScheduleProperties, Context context) {
@@ -1121,36 +928,18 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a schedule's target resource Id. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void retarget(String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties) {
-        beginRetarget(resourceGroupName, name, retargetScheduleProperties).getFinalResult();
+        retarget(resourceGroupName, name, retargetScheduleProperties, Context.NONE);
     }
 
-    /**
-     * Updates a schedule's target resource Id. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the Schedule.
-     * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void retarget(String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties,
         Context context) {
-        beginRetarget(resourceGroupName, name, retargetScheduleProperties, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginRetarget(resourceGroupName, name, retargetScheduleProperties, context));
     }
 
     /**
@@ -1185,11 +974,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduleInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduleList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1243,11 +1028,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduleInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduleList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

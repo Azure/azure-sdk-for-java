@@ -53,7 +53,7 @@ public final class ScenarioConfigurationsImpl implements ScenarioConfigurations 
 
     public void delete(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+        this.delete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String scenarioName,
@@ -63,9 +63,7 @@ public final class ScenarioConfigurationsImpl implements ScenarioConfigurations 
 
     public PagedIterable<ScenarioConfiguration> listAll(String resourceGroupName, String workspaceName,
         String scenarioName) {
-        PagedIterable<ScenarioConfigurationInner> inner
-            = this.serviceClient().listAll(resourceGroupName, workspaceName, scenarioName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScenarioConfigurationImpl(inner1, this.manager()));
+        return this.listAll(resourceGroupName, workspaceName, scenarioName, Context.NONE);
     }
 
     public PagedIterable<ScenarioConfiguration> listAll(String resourceGroupName, String workspaceName,
@@ -77,13 +75,7 @@ public final class ScenarioConfigurationsImpl implements ScenarioConfigurations 
 
     public ScenarioRun execute(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        ScenarioRunInner inner
-            = this.serviceClient().execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
-        if (inner != null) {
-            return new ScenarioRunImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
     public ScenarioRun execute(String resourceGroupName, String workspaceName, String scenarioName,
@@ -99,7 +91,7 @@ public final class ScenarioConfigurationsImpl implements ScenarioConfigurations 
 
     public Validation validate(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        return this.serviceClient().validate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+        return this.validate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
     }
 
     public Validation validate(String resourceGroupName, String workspaceName, String scenarioName,
@@ -122,132 +114,42 @@ public final class ScenarioConfigurationsImpl implements ScenarioConfigurations 
     }
 
     public ScenarioConfiguration getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String scenarioName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioName");
-        if (scenarioName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scenarios'.", id)));
-        }
-        String scenarioConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioConfigurationName");
-        if (scenarioConfigurationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ScenarioConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String scenarioName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "workspaceName", "workspaces", LOGGER);
+        String scenarioName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioName");
-        if (scenarioName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scenarios'.", id)));
-        }
-        String scenarioConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "scenarioName", "scenarios", LOGGER);
+        String scenarioConfigurationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioConfigurationName");
-        if (scenarioConfigurationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
-        }
+            "scenarioConfigurationName", "configurations", LOGGER);
         return this.getWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String scenarioName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioName");
-        if (scenarioName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scenarios'.", id)));
-        }
-        String scenarioConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioConfigurationName");
-        if (scenarioConfigurationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
-        }
-        this.delete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String scenarioName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "workspaceName", "workspaces", LOGGER);
+        String scenarioName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioName");
-        if (scenarioName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scenarios'.", id)));
-        }
-        String scenarioConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "scenarioName", "scenarios", LOGGER);
+        String scenarioConfigurationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
-            "scenarioConfigurationName");
-        if (scenarioConfigurationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
-        }
+            "scenarioConfigurationName", "configurations", LOGGER);
         this.delete(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
     }
 

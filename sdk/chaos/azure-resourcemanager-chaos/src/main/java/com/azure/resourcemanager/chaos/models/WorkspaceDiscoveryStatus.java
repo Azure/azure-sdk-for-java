@@ -32,6 +32,12 @@ public final class WorkspaceDiscoveryStatus extends ExpandableStringEnum<Workspa
     public static final WorkspaceDiscoveryStatus SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Discovery produced an admissible result with an observed coverage shortfall. This status does not itself block
+     * scenario runs or evaluations; consumers requiring established coverage must also check completeness.
+     */
+    public static final WorkspaceDiscoveryStatus PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
+
+    /**
      * The discovery failed.
      */
     public static final WorkspaceDiscoveryStatus FAILED = fromString("Failed");

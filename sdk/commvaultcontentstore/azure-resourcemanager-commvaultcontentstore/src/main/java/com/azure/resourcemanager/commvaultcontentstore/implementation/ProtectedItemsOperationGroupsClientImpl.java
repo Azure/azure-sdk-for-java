@@ -110,17 +110,7 @@ public final class ProtectedItemsOperationGroupsClientImpl implements ProtectedI
         return countByProtectionGroupsWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the count of protected items for provided CCA resource IDs across subscriptions.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of protected items for provided CCA resource IDs across subscriptions along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CountProtectedItemsResponseInner>
         countByProtectionGroupsWithResponse(CountProtectedItemsRequest body, Context context) {
@@ -130,15 +120,7 @@ public final class ProtectedItemsOperationGroupsClientImpl implements ProtectedI
             accept, body, context);
     }
 
-    /**
-     * Gets the count of protected items for provided CCA resource IDs across subscriptions.
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of protected items for provided CCA resource IDs across subscriptions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountProtectedItemsResponseInner countByProtectionGroups(CountProtectedItemsRequest body) {
         return countByProtectionGroupsWithResponse(body, Context.NONE).getValue();

@@ -66,10 +66,7 @@ public final class DataflowEndpointResourceImpl
     }
 
     public DataflowEndpointResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowEndpoints()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowEndpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataflowEndpointResource create(Context context) {
@@ -91,10 +88,7 @@ public final class DataflowEndpointResourceImpl
     }
 
     public DataflowEndpointResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowEndpoints()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowEndpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataflowEndpointResource apply(Context context) {
@@ -120,11 +114,7 @@ public final class DataflowEndpointResourceImpl
     }
 
     public DataflowEndpointResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowEndpoints()
-            .getWithResponse(resourceGroupName, instanceName, dataflowEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataflowEndpointResource refresh(Context context) {

@@ -52,13 +52,7 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
 
     public ConfigTemplateVersion createVersion(String resourceGroupName, String configTemplateName,
         ConfigTemplateVersionWithUpdateTypeInner body) {
-        ConfigTemplateVersionInner inner
-            = this.serviceClient().createVersion(resourceGroupName, configTemplateName, body);
-        if (inner != null) {
-            return new ConfigTemplateVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createVersion(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
     public ConfigTemplateVersion createVersion(String resourceGroupName, String configTemplateName,
@@ -92,7 +86,7 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String configTemplateName) {
-        this.serviceClient().delete(resourceGroupName, configTemplateName);
+        this.delete(resourceGroupName, configTemplateName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String configTemplateName, Context context) {
@@ -100,8 +94,7 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
     }
 
     public PagedIterable<ConfigTemplate> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ConfigTemplateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ConfigTemplate> listByResourceGroup(String resourceGroupName, Context context) {
@@ -110,8 +103,7 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
     }
 
     public PagedIterable<ConfigTemplate> list() {
-        PagedIterable<ConfigTemplateInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ConfigTemplate> list(Context context) {
@@ -120,74 +112,30 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
     }
 
     public ConfigTemplate getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, configTemplateName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ConfigTemplate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
+            "configTemplateName", "configTemplates", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, configTemplateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
-        this.delete(resourceGroupName, configTemplateName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
-            "configTemplateName");
-        if (configTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
-        }
+            "configTemplateName", "configTemplates", LOGGER);
         this.delete(resourceGroupName, configTemplateName, context);
     }
 

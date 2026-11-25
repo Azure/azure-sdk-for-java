@@ -138,18 +138,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         return getWithResponseAsync(scope, diagnosticsResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param diagnosticsResourceName Unique resource name for insight resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticResourceInner> getWithResponse(String scope, String diagnosticsResourceName,
         Context context) {
@@ -158,16 +147,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             accept, context);
     }
 
-    /**
-     * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param diagnosticsResourceName Unique resource name for insight resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticResourceInner get(String scope, String diagnosticsResourceName) {
         return getWithResponse(scope, diagnosticsResourceName, Context.NONE).getValue();
@@ -212,9 +192,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String scope, String diagnosticsResourceName,
         DiagnosticResourceInner diagnosticResourceRequest) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
-            diagnosticsResourceName, accept, diagnosticResourceRequest, Context.NONE);
+        return createWithResponse(scope, diagnosticsResourceName, diagnosticResourceRequest, Context.NONE);
     }
 
     /**
@@ -299,48 +277,20 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link SyncPoller} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
+    private SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
         String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest) {
-        Response<BinaryData> response = createWithResponse(scope, diagnosticsResourceName, diagnosticResourceRequest);
-        return this.client.<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(response,
-            DiagnosticResourceInner.class, DiagnosticResourceInner.class, Context.NONE);
+        return beginCreate(scope, diagnosticsResourceName, diagnosticResourceRequest, Context.NONE);
     }
 
-    /**
-     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
-     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
-     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param diagnosticsResourceName Unique resource name for insight resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
         String diagnosticsResourceName) {
         final DiagnosticResourceInner diagnosticResourceRequest = null;
-        Response<BinaryData> response = createWithResponse(scope, diagnosticsResourceName, diagnosticResourceRequest);
-        return this.client.<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(response,
-            DiagnosticResourceInner.class, DiagnosticResourceInner.class, Context.NONE);
+        return beginCreate(scope, diagnosticsResourceName, diagnosticResourceRequest, Context.NONE);
     }
 
-    /**
-     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
-     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
-     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param diagnosticsResourceName Unique resource name for insight resources.
-     * @param diagnosticResourceRequest The required request body for this insightResource invocation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
         String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest, Context context) {
@@ -389,41 +339,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
-     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
-     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param diagnosticsResourceName Unique resource name for insight resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticResourceInner create(String scope, String diagnosticsResourceName) {
         final DiagnosticResourceInner diagnosticResourceRequest = null;
-        return beginCreate(scope, diagnosticsResourceName, diagnosticResourceRequest).getFinalResult();
+        return create(scope, diagnosticsResourceName, diagnosticResourceRequest, Context.NONE);
     }
 
-    /**
-     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
-     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
-     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param diagnosticsResourceName Unique resource name for insight resources.
-     * @param diagnosticResourceRequest The required request body for this insightResource invocation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticResourceInner create(String scope, String diagnosticsResourceName,
         DiagnosticResourceInner diagnosticResourceRequest, Context context) {
-        return beginCreate(scope, diagnosticsResourceName, diagnosticResourceRequest, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(scope, diagnosticsResourceName, diagnosticResourceRequest, context));
     }
 }

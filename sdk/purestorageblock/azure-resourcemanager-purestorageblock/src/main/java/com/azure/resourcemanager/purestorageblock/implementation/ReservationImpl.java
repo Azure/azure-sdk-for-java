@@ -91,10 +91,7 @@ public final class ReservationImpl implements Reservation, Reservation.Definitio
     }
 
     public Reservation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReservations()
-            .create(resourceGroupName, reservationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Reservation create(Context context) {
@@ -116,10 +113,7 @@ public final class ReservationImpl implements Reservation, Reservation.Definitio
     }
 
     public Reservation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReservations()
-            .update(resourceGroupName, reservationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Reservation apply(Context context) {
@@ -142,11 +136,7 @@ public final class ReservationImpl implements Reservation, Reservation.Definitio
     }
 
     public Reservation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReservations()
-            .getByResourceGroupWithResponse(resourceGroupName, reservationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Reservation refresh(Context context) {

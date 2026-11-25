@@ -52,6 +52,21 @@ public final class MigrationProvisioningState extends ExpandableStringEnum<Migra
     public static final MigrationProvisioningState CANCELLATION_FAILED = fromString("CancellationFailed");
 
     /**
+     * The migrated endpoint is being unlinked from the cluster.
+     */
+    public static final MigrationProvisioningState UNLINKING = fromString("Unlinking");
+
+    /**
+     * The migrated endpoint has been unlinked from the cluster.
+     */
+    public static final MigrationProvisioningState UNLINKED = fromString("Unlinked");
+
+    /**
+     * Unlinking the migrated endpoint from the cluster has failed.
+     */
+    public static final MigrationProvisioningState UNLINK_FAILED = fromString("UnlinkFailed");
+
+    /**
      * Creates a new instance of MigrationProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

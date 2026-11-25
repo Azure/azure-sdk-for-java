@@ -10,7 +10,8 @@ import com.azure.resourcemanager.chaos.models.EntraIdentity;
 public final class EntraIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntraIdentity model = BinaryData.fromString("{\"objectId\":\"yn\",\"tenantId\":\"nlqwzdvpiwhx\"}")
-            .toObject(EntraIdentity.class);
+        EntraIdentity model
+            = BinaryData.fromString("{\"objectId\":\"mjlxrrilozapeewc\",\"tenantId\":\"pxlktwkuziycsl\"}")
+                .toObject(EntraIdentity.class);
     }
 }

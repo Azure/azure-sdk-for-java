@@ -32,17 +32,23 @@ public final class WorkspaceEvaluationStatus extends ExpandableStringEnum<Worksp
     public static final WorkspaceEvaluationStatus SUCCEEDED = fromString("Succeeded");
 
     /**
-     * The evaluation partially succeeded — some scenarios succeeded while others failed.
+     * Unless cancellation won terminal settlement, at least one template applicability test completed and at least one
+     * failed or was canceled. Discovery completeness does not determine this processing status. The first terminal
+     * settlement is authoritative; a later cancellation does not replace it.
      */
     public static final WorkspaceEvaluationStatus PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
 
     /**
-     * The evaluation failed.
+     * No template applicability test completed and at least one failed, unless cancellation won terminal settlement.
+     * The accepted resource snapshot and discovery result reference remain present; an admission failure creates no
+     * evaluation result.
      */
     public static final WorkspaceEvaluationStatus FAILED = fromString("Failed");
 
     /**
-     * The evaluation was canceled.
+     * Cancellation won terminal settlement, or all admitted template tests were canceled. Previously recorded outcomes
+     * may remain. A later callback cannot replace this terminal result, and cancellation cannot replace an already
+     * settled result.
      */
     public static final WorkspaceEvaluationStatus CANCELED = fromString("Canceled");
 

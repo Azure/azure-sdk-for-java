@@ -50,13 +50,11 @@ public final class TrustedHostSubscriptionsImpl implements TrustedHostSubscripti
     }
 
     public void deleteByResourceGroup(String location, String hostSubscriptionId) {
-        this.serviceClient().delete(location, hostSubscriptionId);
+        this.deleteByResourceGroupWithResponse(location, hostSubscriptionId, Context.NONE);
     }
 
     public PagedIterable<TrustedHostSubscription> listBySubscriptionLocationResource(String location) {
-        PagedIterable<TrustedHostSubscriptionInner> inner
-            = this.serviceClient().listBySubscriptionLocationResource(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TrustedHostSubscriptionImpl(inner1, this.manager()));
+        return this.listBySubscriptionLocationResource(location, Context.NONE);
     }
 
     public PagedIterable<TrustedHostSubscription> listBySubscriptionLocationResource(String location, Context context) {
@@ -66,74 +64,30 @@ public final class TrustedHostSubscriptionsImpl implements TrustedHostSubscripti
     }
 
     public TrustedHostSubscription getById(String id) {
-        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "location");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String hostSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "hostSubscriptionId");
-        if (hostSubscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'trustedHostSubscriptions'.", id)));
-        }
-        return this.getWithResponse(location, hostSubscriptionId, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<TrustedHostSubscription> getByIdWithResponse(String id, Context context) {
-        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "location");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String hostSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "location", "locations", LOGGER);
+        String hostSubscriptionId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "hostSubscriptionId");
-        if (hostSubscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'trustedHostSubscriptions'.", id)));
-        }
+            "hostSubscriptionId", "trustedHostSubscriptions", LOGGER);
         return this.getWithResponse(location, hostSubscriptionId, context);
     }
 
     public void deleteById(String id) {
-        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "location");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String hostSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "hostSubscriptionId");
-        if (hostSubscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'trustedHostSubscriptions'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(location, hostSubscriptionId, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "location");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String hostSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "location", "locations", LOGGER);
+        String hostSubscriptionId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}",
-            "hostSubscriptionId");
-        if (hostSubscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'trustedHostSubscriptions'.", id)));
-        }
+            "hostSubscriptionId", "trustedHostSubscriptions", LOGGER);
         return this.deleteByResourceGroupWithResponse(location, hostSubscriptionId, context);
     }
 

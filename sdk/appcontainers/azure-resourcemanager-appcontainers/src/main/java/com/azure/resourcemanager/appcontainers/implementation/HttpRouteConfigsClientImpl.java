@@ -238,22 +238,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified Http Route Config.
-     * 
-     * Get the specified Managed Http Route Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param httpRouteName Name of the Http Route Config.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Http Route Config.
-     * 
-     * Get the specified Managed Http Route Config along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HttpRouteConfigInner> getWithResponse(String resourceGroupName, String environmentName,
         String httpRouteName, Context context) {
@@ -262,21 +247,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             resourceGroupName, environmentName, httpRouteName, accept, context);
     }
 
-    /**
-     * Get the specified Http Route Config.
-     * 
-     * Get the specified Managed Http Route Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param httpRouteName Name of the Http Route Config.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Http Route Config.
-     * 
-     * Get the specified Managed Http Route Config.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HttpRouteConfigInner get(String resourceGroupName, String environmentName, String httpRouteName) {
         return getWithResponse(resourceGroupName, environmentName, httpRouteName, Context.NONE).getValue();
@@ -326,20 +297,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             httpRouteConfigEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Update a Http Route Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param httpRouteName Name of the Http Route Config.
-     * @param httpRouteConfigEnvelope Http Route config to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of host names and http request routing rules for a Container App Environment along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HttpRouteConfigInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String httpRouteName, HttpRouteConfigInner httpRouteConfigEnvelope, Context context) {
@@ -349,17 +307,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             httpRouteConfigEnvelope, context);
     }
 
-    /**
-     * Create or Update a Http Route Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param httpRouteName Name of the Http Route Config.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of host names and http request routing rules for a Container App Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HttpRouteConfigInner createOrUpdate(String resourceGroupName, String environmentName, String httpRouteName) {
         final HttpRouteConfigInner httpRouteConfigEnvelope = null;
@@ -416,22 +364,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update tags of a Http Route Config object
-     * 
-     * Patches an http route config resource. Only patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @param httpRouteConfigEnvelope Properties of http route config that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of host names and http request routing rules for a Container App Environment along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HttpRouteConfigInner> updateWithResponse(String resourceGroupName, String environmentName,
         String httpRouteName, HttpRouteConfigInner httpRouteConfigEnvelope, Context context) {
@@ -442,20 +375,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             httpRouteConfigEnvelope, context);
     }
 
-    /**
-     * Update tags of a Http Route Config object
-     * 
-     * Patches an http route config resource. Only patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @param httpRouteConfigEnvelope Properties of http route config that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of host names and http request routing rules for a Container App Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HttpRouteConfigInner update(String resourceGroupName, String environmentName, String httpRouteName,
         HttpRouteConfigInner httpRouteConfigEnvelope) {
@@ -501,8 +421,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName,
         String httpRouteName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, httpRouteName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, environmentName, httpRouteName, Context.NONE);
     }
 
     /**
@@ -548,40 +467,14 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Http Route Config.
-     * 
-     * Deletes the specified Managed Http Route.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String httpRouteName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, environmentName, httpRouteName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, environmentName, httpRouteName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Http Route Config.
-     * 
-     * Deletes the specified Managed Http Route.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String httpRouteName, Context context) {
@@ -608,39 +501,16 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Http Route Config.
-     * 
-     * Deletes the specified Managed Http Route.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String httpRouteName) {
-        beginDelete(resourceGroupName, environmentName, httpRouteName).getFinalResult();
+        delete(resourceGroupName, environmentName, httpRouteName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Http Route Config.
-     * 
-     * Deletes the specified Managed Http Route.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String httpRouteName, Context context) {
-        beginDelete(resourceGroupName, environmentName, httpRouteName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, environmentName, httpRouteName, context));
     }
 
     /**
@@ -700,12 +570,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HttpRouteConfigInner> listSinglePage(String resourceGroupName, String environmentName) {
-        final String accept = "application/json";
-        Response<HttpRouteConfigCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -732,37 +597,13 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the Http Route Configs in a given managed environment.
-     * 
-     * Get the Managed Http Routes in a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of rule based Http Route Config resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HttpRouteConfigInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * List the Http Route Configs in a given managed environment.
-     * 
-     * Get the Managed Http Routes in a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of rule based Http Route Config resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HttpRouteConfigInner> list(String resourceGroupName, String environmentName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, context),
@@ -803,11 +644,7 @@ public final class HttpRouteConfigsClientImpl implements HttpRouteConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HttpRouteConfigInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HttpRouteConfigCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

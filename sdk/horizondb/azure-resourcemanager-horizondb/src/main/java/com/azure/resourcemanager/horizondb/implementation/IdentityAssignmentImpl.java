@@ -19,6 +19,18 @@ public final class IdentityAssignmentImpl implements IdentityAssignment, Identit
         com.azure.resourcemanager.horizondb.HorizonDbManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "clusterName");
+        this.destinationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "destinationName");
+        this.assignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "assignmentName");
     }
 
     public String id() {
@@ -70,11 +82,7 @@ public final class IdentityAssignmentImpl implements IdentityAssignment, Identit
     }
 
     public IdentityAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityAssignments()
-            .createOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IdentityAssignment create(Context context) {
@@ -92,11 +100,7 @@ public final class IdentityAssignmentImpl implements IdentityAssignment, Identit
     }
 
     public IdentityAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityAssignments()
-            .getWithResponse(resourceGroupName, clusterName, destinationName, assignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IdentityAssignment refresh(Context context) {

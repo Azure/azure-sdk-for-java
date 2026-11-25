@@ -206,18 +206,7 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AkriConnectorTemplateResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AkriConnectorTemplateResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName, Context context) {
@@ -226,17 +215,7 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             resourceGroupName, instanceName, akriConnectorTemplateName, accept, context);
     }
 
-    /**
-     * Get a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AkriConnectorTemplateResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AkriConnectorTemplateResourceInner get(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName) {
@@ -282,11 +261,8 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName, AkriConnectorTemplateResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, akriConnectorTemplateName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, resource,
+            Context.NONE);
     }
 
     /**
@@ -335,41 +311,15 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             AkriConnectorTemplateResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of akriConnectorTemplate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AkriConnectorTemplateResourceInner>, AkriConnectorTemplateResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instanceName, String akriConnectorTemplateName,
             AkriConnectorTemplateResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, resource);
-        return this.client.<AkriConnectorTemplateResourceInner, AkriConnectorTemplateResourceInner>getLroResult(
-            response, AkriConnectorTemplateResourceInner.class, AkriConnectorTemplateResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, resource, Context.NONE);
     }
 
-    /**
-     * Create a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of akriConnectorTemplate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AkriConnectorTemplateResourceInner>, AkriConnectorTemplateResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instanceName, String akriConnectorTemplateName,
@@ -399,43 +349,19 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return akriConnectorTemplate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AkriConnectorTemplateResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName, AkriConnectorTemplateResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, resource, Context.NONE);
     }
 
-    /**
-     * Create a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return akriConnectorTemplate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AkriConnectorTemplateResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName, AkriConnectorTemplateResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, resource, context));
     }
 
     /**
@@ -472,8 +398,7 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, akriConnectorTemplateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, Context.NONE);
     }
 
     /**
@@ -515,36 +440,14 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             this.client.getContext());
     }
 
-    /**
-     * Delete a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, instanceName, akriConnectorTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName, Context context) {
@@ -570,36 +473,18 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String akriConnectorTemplateName) {
-        beginDelete(resourceGroupName, instanceName, akriConnectorTemplateName).getFinalResult();
+        delete(resourceGroupName, instanceName, akriConnectorTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a AkriConnectorTemplateResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param akriConnectorTemplateName Name of AkriConnectorTemplate resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String akriConnectorTemplateName,
         Context context) {
-        beginDelete(resourceGroupName, instanceName, akriConnectorTemplateName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, instanceName, akriConnectorTemplateName, context));
     }
 
     /**
@@ -657,12 +542,7 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AkriConnectorTemplateResourceInner> listByInstanceResourceSinglePage(String resourceGroupName,
         String instanceName) {
-        final String accept = "application/json";
-        Response<AkriConnectorTemplateResourceListResult> res
-            = service.listByInstanceResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByInstanceResourceSinglePage(resourceGroupName, instanceName, Context.NONE);
     }
 
     /**
@@ -687,36 +567,14 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AkriConnectorTemplateResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AkriConnectorTemplateResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AkriConnectorTemplateResourceInner> listByInstanceResource(String resourceGroupName,
         String instanceName) {
-        return new PagedIterable<>(() -> listByInstanceResourceSinglePage(resourceGroupName, instanceName),
-            nextLink -> listByInstanceResourceNextSinglePage(nextLink));
+        return listByInstanceResource(resourceGroupName, instanceName, Context.NONE);
     }
 
-    /**
-     * List AkriConnectorTemplateResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AkriConnectorTemplateResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AkriConnectorTemplateResourceInner> listByInstanceResource(String resourceGroupName,
         String instanceName, Context context) {
@@ -757,11 +615,7 @@ public final class AkriConnectorTemplatesClientImpl implements AkriConnectorTemp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AkriConnectorTemplateResourceInner> listByInstanceResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AkriConnectorTemplateResourceListResult> res
-            = service.listByInstanceResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByInstanceResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

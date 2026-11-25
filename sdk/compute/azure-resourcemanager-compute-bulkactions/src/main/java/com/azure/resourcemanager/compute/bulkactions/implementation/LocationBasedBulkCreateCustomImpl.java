@@ -104,10 +104,7 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
     }
 
     public LocationBasedBulkCreateCustom create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom create(Context context) {
@@ -129,10 +126,7 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
     }
 
     public LocationBasedBulkCreateCustom apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom apply(Context context) {
@@ -158,11 +152,7 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
     }
 
     public LocationBasedBulkCreateCustom refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreateCustoms()
-            .getWithResponse(resourceGroupName, location, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocationBasedBulkCreateCustom refresh(Context context) {

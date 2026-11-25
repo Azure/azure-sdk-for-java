@@ -255,17 +255,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements an IP Community GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Community resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpCommunityInner> getByResourceGroupWithResponse(String resourceGroupName, String ipCommunityName,
         Context context) {
@@ -274,16 +264,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             this.client.getSubscriptionId(), resourceGroupName, ipCommunityName, accept, context);
     }
 
-    /**
-     * Implements an IP Community GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner getByResourceGroup(String resourceGroupName, String ipCommunityName) {
         return getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, Context.NONE).getValue();
@@ -325,11 +306,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String ipCommunityName,
         IpCommunityInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ipCommunityName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, ipCommunityName, body, Context.NONE);
     }
 
     /**
@@ -372,37 +349,14 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             IpCommunityInner.class, IpCommunityInner.class, this.client.getContext());
     }
 
-    /**
-     * Implements an IP Community PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(String resourceGroupName,
         String ipCommunityName, IpCommunityInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, ipCommunityName, body);
-        return this.client.<IpCommunityInner, IpCommunityInner>getLroResult(response, IpCommunityInner.class,
-            IpCommunityInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, ipCommunityName, body, Context.NONE);
     }
 
-    /**
-     * Implements an IP Community PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(String resourceGroupName,
         String ipCommunityName, IpCommunityInner body, Context context) {
@@ -429,38 +383,17 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements an IP Community PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner create(String resourceGroupName, String ipCommunityName, IpCommunityInner body) {
-        return beginCreate(resourceGroupName, ipCommunityName, body).getFinalResult();
+        return create(resourceGroupName, ipCommunityName, body, Context.NONE);
     }
 
-    /**
-     * Implements an IP Community PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner create(String resourceGroupName, String ipCommunityName, IpCommunityInner body,
         Context context) {
-        return beginCreate(resourceGroupName, ipCommunityName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, ipCommunityName, body, context));
     }
 
     /**
@@ -499,11 +432,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String ipCommunityName,
         IpCommunityPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ipCommunityName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, ipCommunityName, body, Context.NONE);
     }
 
     /**
@@ -546,37 +475,14 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             IpCommunityInner.class, IpCommunityInner.class, this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the IP Community resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body IP Community properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(String resourceGroupName,
         String ipCommunityName, IpCommunityPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, ipCommunityName, body);
-        return this.client.<IpCommunityInner, IpCommunityInner>getLroResult(response, IpCommunityInner.class,
-            IpCommunityInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, ipCommunityName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the IP Community resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body IP Community properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(String resourceGroupName,
         String ipCommunityName, IpCommunityPatch body, Context context) {
@@ -603,38 +509,17 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the IP Community resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body IP Community properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner update(String resourceGroupName, String ipCommunityName, IpCommunityPatch body) {
-        return beginUpdate(resourceGroupName, ipCommunityName, body).getFinalResult();
+        return update(resourceGroupName, ipCommunityName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the IP Community resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param body IP Community properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Community resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner update(String resourceGroupName, String ipCommunityName, IpCommunityPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, ipCommunityName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, ipCommunityName, body, context));
     }
 
     /**
@@ -667,8 +552,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String ipCommunityName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ipCommunityName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, ipCommunityName, Context.NONE);
     }
 
     /**
@@ -705,33 +589,13 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Implements IP Community DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipCommunityName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, ipCommunityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, ipCommunityName, Context.NONE);
     }
 
-    /**
-     * Implements IP Community DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipCommunityName,
         Context context) {
@@ -755,33 +619,16 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements IP Community DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ipCommunityName) {
-        beginDelete(resourceGroupName, ipCommunityName).getFinalResult();
+        delete(resourceGroupName, ipCommunityName, Context.NONE);
     }
 
-    /**
-     * Implements IP Community DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipCommunityName Name of the IP Community.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ipCommunityName, Context context) {
-        beginDelete(resourceGroupName, ipCommunityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, ipCommunityName, context));
     }
 
     /**
@@ -831,11 +678,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpCommunityInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<IpCommunitiesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -857,31 +700,13 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements IP Communities list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpCommunity items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Implements IP Communities list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpCommunity items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -929,11 +754,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpCommunityInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<IpCommunitiesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -954,27 +775,13 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements IP Communities list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpCommunity items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Implements IP Communities list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpCommunity items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1013,11 +820,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpCommunityInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IpCommunitiesListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1071,11 +874,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpCommunityInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IpCommunitiesListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
