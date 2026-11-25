@@ -169,14 +169,25 @@ steps:
             if (-not (Test-Path -LiteralPath $pomPath -PathType Leaf)) {
               continue
             }
+            if ((Get-Item -LiteralPath $pomPath -Force).LinkType) {
+              throw "Symbolic links are not allowed for the package POM."
+            }
             $pom = [xml](Get-Content -LiteralPath $pomPath -Raw)
             $artifact = $pom.SelectSingleNode(
               "/*[local-name()='project']/*[local-name()='artifactId']").InnerText.Trim()
             $version = $pom.SelectSingleNode(
               "/*[local-name()='project']/*[local-name()='version']").InnerText.Trim()
+            $groupNode = $pom.SelectSingleNode(
+              "/*[local-name()='project']/*[local-name()='groupId']")
+            if (-not $groupNode) {
+              $groupNode = $pom.SelectSingleNode(
+                "/*[local-name()='project']/*[local-name()='parent']/*[local-name()='groupId']")
+            }
+            $group = if ($groupNode) { $groupNode.InnerText.Trim() } else { '' }
             if ($artifact -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]*$' -or
                 $artifact.StartsWith('azure-resourcemanager-', [StringComparison]::Ordinal) -or
-                $version -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]*$') {
+                $version -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]*$' -or
+                $group -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]*$') {
               continue
             }
             $packageRoot = Split-Path -Parent $pomPath
@@ -202,6 +213,13 @@ steps:
               throw "No main sources were found for $artifact."
             }
             New-Item -ItemType Directory -Path $sourcesJarDirectory -Force | Out-Null
+            $mavenMetadataRoot = Join-Path $sourcesJarDirectory "$artifact-maven-metadata"
+            $mavenMetadataDirectory = Join-Path $mavenMetadataRoot "META-INF/maven/$group/$artifact"
+            New-Item -ItemType Directory -Path $mavenMetadataDirectory -Force | Out-Null
+            Copy-Item -LiteralPath $pomPath -Destination (Join-Path $mavenMetadataDirectory 'pom.xml')
+            $jarArguments += @(
+              '-C', $mavenMetadataRoot, "META-INF/maven/$group/$artifact/pom.xml"
+            )
             & jar @jarArguments
             if ($LASTEXITCODE -ne 0) {
               throw "Sources JAR creation failed with exit code $LASTEXITCODE."
