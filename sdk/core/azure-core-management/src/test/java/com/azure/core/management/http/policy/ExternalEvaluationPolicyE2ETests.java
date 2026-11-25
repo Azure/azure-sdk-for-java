@@ -5,38 +5,32 @@ package com.azure.core.management.http.policy;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.absent;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.matching;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.put;
-import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -78,123 +72,112 @@ public class ExternalEvaluationPolicyE2ETests {
     private static final String API_VERSION = "2026-04-01";
 
     @Test
-    public void endToEndAcquireAndRetry() throws Exception {
-        // The manager's Configurable pipeline adds a BearerTokenAuthenticationPolicy, which requires HTTPS, so the
-        // mock service is served over TLS and the clients trust its self-signed certificate.
-        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort().dynamicHttpsPort());
-        server.start();
-        try {
-            String endpoint = "https://localhost:" + server.httpsPort();
-            HttpClient httpClient = trustAllHttpClient();
+    public void endToEndAcquireAndRetry() {
+        String endpoint = "https://management.azure.com";
+        String operationUrl = endpoint + STORAGE_PATH + "?api-version=" + API_VERSION;
+        String acquireUrl = endpoint + ACQUIRE_PATH + "?api-version=2026-07-01";
+        String expectedAcquireBody = "{\"operation\":{\"uri\":\"" + operationUrl
+            + "\",\"httpMethod\":\"PUT\",\"content\":" + EXPECTED_REQUEST_BODY + "}}";
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        StorageManager storageManager = StorageManager.configure()
+            .withHttpClient(httpClient)
+            .withExternalEvaluation()
+            .authenticate(credential(), profile(endpoint));
 
-            // The exact UTF-8 acquire request body includes the guarded request body verbatim.
-            String expectedAcquireBody = "{\"operation\":{\"uri\":\"" + endpoint + STORAGE_PATH + "?api-version="
-                + API_VERSION + "\",\"httpMethod\":\"PUT\",\"content\":" + EXPECTED_REQUEST_BODY + "}}";
+        StorageAccountInner result = storageManager.serviceClient()
+            .getResourceProviders()
+            .create(RESOURCE_GROUP, ACCOUNT_NAME,
+                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                    .withKind(Kind.STORAGE_V2)
+                    .withLocation("eastus"));
 
-            // Guarded operation is denied when the external evaluation header is absent. The mock service asserts the
-            // method (PUT), the exact URL path, and the exact request body.
-            server.stubFor(put(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent())
-                .withRequestBody(equalTo(EXPECTED_REQUEST_BODY))
-                .willReturn(
-                    aResponse().withStatus(403).withHeader("Content-Type", "application/json").withBody(DENY_BODY)));
+        assertNotNull(result);
+        assertEquals(ACCOUNT_NAME, result.name());
+        assertEquals(3, httpClient.requests.size());
+        assertRequest(httpClient.requests.get(0), HttpMethod.PUT, operationUrl, null, EXPECTED_REQUEST_BODY);
+        assertRequest(httpClient.requests.get(1), HttpMethod.POST, acquireUrl, null, expectedAcquireBody);
+        assertRequest(httpClient.requests.get(2), HttpMethod.PUT, operationUrl, POLICY_TOKEN_VALUE,
+            EXPECTED_REQUEST_BODY);
+    }
 
-            // Guarded operation succeeds once the acquired policy token is applied. The retried request must carry the
-            // token header and a byte-for-byte identical body, so the mock service asserts on the exact body again.
-            server.stubFor(put(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, matching(".+"))
-                .withRequestBody(equalTo(EXPECTED_REQUEST_BODY))
-                .willReturn(
-                    aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(STORAGE_BODY)));
+    @Test
+    public void externalEvaluationIsDisabledByDefault() {
+        String endpoint = "https://management.azure.com";
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        StorageManager storageManager
+            = StorageManager.configure().withHttpClient(httpClient).authenticate(credential(), profile(endpoint));
 
-            // The acquirePolicyToken API issues the token. The mock service asserts the exact UTF-8 request body: the
-            // operation echoed to it must match the guarded request byte-for-byte (uri, method, and content).
-            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH)).withQueryParam("api-version", equalTo("2026-07-01"))
-                .withRequestBody(equalTo(expectedAcquireBody))
-                .willReturn(
-                    aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(ACQUIRE_BODY)));
-
-            Map<String, String> endpoints = new HashMap<>();
-            endpoints.put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(), endpoint);
-            endpoints.put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(), endpoint);
-            endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
-            AzureProfile profile = new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
-
-            // External evaluation is explicitly enabled on the generated manager. A dummy credential is enough
-            // because the mock service does not assert on the Authorization header.
-            TokenCredential credential
-                = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
-            StorageManager storageManager = StorageManager.configure()
-                .withHttpClient(httpClient)
-                .withExternalEvaluation()
-                .authenticate(credential, profile);
-
-            StorageAccountInner result = storageManager.serviceClient()
+        assertThrows(ManagementException.class,
+            () -> storageManager.serviceClient()
                 .getResourceProviders()
                 .create(RESOURCE_GROUP, ACCOUNT_NAME,
                     new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_LRS))
                         .withKind(Kind.STORAGE_V2)
-                        .withLocation("eastus"));
+                        .withLocation("eastus")));
 
-            assertNotNull(result);
-            assertEquals(ACCOUNT_NAME, result.name());
-            // The guarded operation is sent twice against the exact URL and method, each carrying the exact same body:
-            // once denied (no token header) and once retried with the acquired token.
-            server.verify(2,
-                putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
-            server.verify(1, putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent())
-                .withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
-            server.verify(1,
-                putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, equalTo(POLICY_TOKEN_VALUE))
-                    .withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
-            // The token is acquired exactly once, with the operation echoing the guarded request verbatim.
-            server.verify(1,
-                postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)).withQueryParam("api-version", equalTo("2026-07-01"))
-                    .withRequestBody(equalTo(expectedAcquireBody)));
-        } finally {
-            server.stop();
+        assertEquals(1, httpClient.requests.size());
+        assertRequest(httpClient.requests.get(0), HttpMethod.PUT,
+            endpoint + STORAGE_PATH + "?api-version=" + API_VERSION, null, EXPECTED_REQUEST_BODY);
+    }
+
+    private static TokenCredential credential() {
+        return request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
+    }
+
+    private static AzureProfile profile(String endpoint) {
+        Map<String, String> endpoints = new HashMap<>();
+        endpoints.put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(), endpoint);
+        endpoints.put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(), endpoint);
+        endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
+        return new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
+    }
+
+    private static void assertRequest(CapturedRequest request, HttpMethod method, String url, String token,
+        String body) {
+        assertEquals(method, request.method);
+        assertEquals(url, request.url);
+        assertEquals(token, request.token);
+        assertEquals(body, request.body);
+    }
+
+    private static final class RecordingHttpClient implements HttpClient {
+        private final List<CapturedRequest> requests = new ArrayList<>();
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            String token = request.getHeaders().getValue(HttpHeaderName.fromString(EE_HEADER));
+            String body = request.getBodyAsBinaryData() == null ? null : request.getBodyAsBinaryData().toString();
+            requests.add(new CapturedRequest(request.getHttpMethod(), request.getUrl().toString(), token, body));
+
+            if (request.getHttpMethod() == HttpMethod.POST && request.getUrl().getPath().equals(ACQUIRE_PATH)) {
+                return response(request, 200, ACQUIRE_BODY);
+            }
+            if (request.getHttpMethod() == HttpMethod.PUT && token == null) {
+                return response(request, 403, DENY_BODY);
+            }
+            if (request.getHttpMethod() == HttpMethod.PUT && POLICY_TOKEN_VALUE.equals(token)) {
+                return response(request, 200, STORAGE_BODY);
+            }
+            return response(request, 500, "{}");
+        }
+
+        private static Mono<HttpResponse> response(HttpRequest request, int statusCode, String body) {
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            return Mono.just(new MockHttpResponse(request, statusCode, headers, body.getBytes(StandardCharsets.UTF_8)));
         }
     }
 
-    @Test
-    public void externalEvaluationIsDisabledByDefault() throws Exception {
-        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort().dynamicHttpsPort());
-        server.start();
-        try {
-            String endpoint = "https://localhost:" + server.httpsPort();
-            server.stubFor(put(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent())
-                .willReturn(
-                    aResponse().withStatus(403).withHeader("Content-Type", "application/json").withBody(DENY_BODY)));
+    private static final class CapturedRequest {
+        private final HttpMethod method;
+        private final String url;
+        private final String token;
+        private final String body;
 
-            Map<String, String> endpoints = new HashMap<>();
-            endpoints.put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(), endpoint);
-            endpoints.put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(), endpoint);
-            endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
-            AzureProfile profile = new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
-            TokenCredential credential
-                = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
-            StorageManager storageManager
-                = StorageManager.configure().withHttpClient(trustAllHttpClient()).authenticate(credential, profile);
-
-            assertThrows(ManagementException.class,
-                () -> storageManager.serviceClient()
-                    .getResourceProviders()
-                    .create(RESOURCE_GROUP, ACCOUNT_NAME,
-                        new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_LRS))
-                            .withKind(Kind.STORAGE_V2)
-                            .withLocation("eastus")));
-
-            server.verify(1, putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent()));
-            server.verify(0, postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)));
-        } finally {
-            server.stop();
+        private CapturedRequest(HttpMethod method, String url, String token, String body) {
+            this.method = method;
+            this.url = url;
+            this.token = token;
+            this.body = body;
         }
-    }
-
-    // Builds a Netty HTTP client that trusts any certificate, so the clients can talk to the self-signed HTTPS mock.
-    private static HttpClient trustAllHttpClient() throws Exception {
-        SslContext sslContext
-            = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
-        reactor.netty.http.client.HttpClient reactorClient
-            = reactor.netty.http.client.HttpClient.create().secure(spec -> spec.sslContext(sslContext));
-        return new NettyAsyncHttpClientBuilder(reactorClient).build();
     }
 }
