@@ -13,9 +13,9 @@ public final class LogCaptureConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCaptureConfigurationProperties model = BinaryData
-            .fromString("{\"state\":\"Enabled\",\"retentionDays\":1297052787,\"provisioningState\":\"InProgress\"}")
+            .fromString("{\"state\":\"Enabled\",\"retentionDays\":325722678,\"provisioningState\":\"Failed\"}")
             .toObject(LogCaptureConfigurationProperties.class);
         Assertions.assertEquals(LogCaptureState.ENABLED, model.state());
-        Assertions.assertEquals(1297052787, model.retentionDays());
+        Assertions.assertEquals(325722678, model.retentionDays());
     }
 }

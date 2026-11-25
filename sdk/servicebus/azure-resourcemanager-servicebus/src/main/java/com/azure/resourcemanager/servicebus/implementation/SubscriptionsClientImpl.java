@@ -114,19 +114,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Returns a subscription description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBSubscriptionInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName) {
@@ -205,18 +193,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             resourceGroupName, namespaceName, topicName, subscriptionName, accept, context);
     }
 
-    /**
-     * Returns a subscription description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBSubscriptionInner> getAsync(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName) {
@@ -224,57 +201,21 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a subscription description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBSubscriptionInner> getWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, context).block();
     }
 
-    /**
-     * Returns a subscription description for the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBSubscriptionInner get(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName) {
         return getWithResponse(resourceGroupName, namespaceName, topicName, subscriptionName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a topic subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to create a subscription resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBSubscriptionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String namespaceName, String topicName, String subscriptionName, SBSubscriptionInner parameters) {
@@ -368,19 +309,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             accept, parameters, context);
     }
 
-    /**
-     * Creates a topic subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to create a subscription resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBSubscriptionInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, SBSubscriptionInner parameters) {
@@ -388,20 +317,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a topic subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to create a subscription resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBSubscriptionInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName, SBSubscriptionInner parameters, Context context) {
@@ -409,19 +325,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             parameters, context).block();
     }
 
-    /**
-     * Creates a topic subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to create a subscription resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBSubscriptionInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, SBSubscriptionInner parameters) {
@@ -429,18 +333,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a subscription from the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         String topicName, String subscriptionName) {
@@ -514,18 +407,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             resourceGroupName, namespaceName, topicName, subscriptionName, context);
     }
 
-    /**
-     * Deletes a subscription from the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName) {
@@ -533,36 +415,14 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a subscription from the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String topicName,
         String subscriptionName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, context).block();
     }
 
-    /**
-     * Deletes a subscription from the specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
         deleteWithResponse(resourceGroupName, namespaceName, topicName, subscriptionName, Context.NONE);
@@ -662,21 +522,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all the subscriptions under a specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SBSubscription list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBSubscriptionInner> listByTopicAsync(String resourceGroupName, String namespaceName,
         String topicName, Integer skip, Integer top) {
@@ -684,17 +530,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             nextLink -> listByTopicNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List all the subscriptions under a specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SBSubscription list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBSubscriptionInner> listByTopicAsync(String resourceGroupName, String namespaceName,
         String topicName) {
@@ -728,17 +564,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             nextLink -> listByTopicNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all the subscriptions under a specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SBSubscription list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBSubscriptionInner> listByTopic(String resourceGroupName, String namespaceName,
         String topicName) {
@@ -747,22 +573,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         return new PagedIterable<>(listByTopicAsync(resourceGroupName, namespaceName, topicName, skip, top));
     }
 
-    /**
-     * List all the subscriptions under a specified topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SBSubscription list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBSubscriptionInner> listByTopic(String resourceGroupName, String namespaceName,
         String topicName, Integer skip, Integer top, Context context) {

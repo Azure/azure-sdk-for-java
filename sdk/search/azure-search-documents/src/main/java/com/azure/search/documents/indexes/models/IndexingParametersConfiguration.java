@@ -656,6 +656,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
         jsonWriter.writeStringField("executionEnvironment",
             this.executionEnvironment == null ? null : this.executionEnvironment.toString());
         jsonWriter.writeStringField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeBooleanField("refreshAllAcls", this.refreshAllAcls);
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -729,6 +730,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                         = IndexerExecutionEnvironment.fromString(reader.getString());
                 } else if ("queryTimeout".equals(fieldName)) {
                     deserializedIndexingParametersConfiguration.queryTimeout = reader.getString();
+                } else if ("refreshAllAcls".equals(fieldName)) {
+                    deserializedIndexingParametersConfiguration.refreshAllAcls
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
@@ -739,5 +743,44 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
             deserializedIndexingParametersConfiguration.additionalProperties = additionalProperties;
             return deserializedIndexingParametersConfiguration;
         });
+    }
+
+    /*
+     * For ADLS Gen2 data sources that ingest permissions, indicates whether the indexer refreshes the access control
+     * lists of documents whose content has not changed. Changing a file's permissions does not change its last-modified
+     * time, so without this the index keeps serving stale permissions. The refresh runs at most once every 24 hours,
+     * and only updates permission metadata: content and enriched fields are left as they are. Set to false to disable.
+     */
+    @Generated
+    private Boolean refreshAllAcls;
+
+    /**
+     * Get the refreshAllAcls property: For ADLS Gen2 data sources that ingest permissions, indicates whether the
+     * indexer refreshes the access control lists of documents whose content has not changed. Changing a file's
+     * permissions does not change its last-modified time, so without this the index keeps serving stale permissions.
+     * The refresh runs at most once every 24 hours, and only updates permission metadata: content and enriched fields
+     * are left as they are. Set to false to disable.
+     *
+     * @return the refreshAllAcls value.
+     */
+    @Generated
+    public Boolean isRefreshAllAcls() {
+        return this.refreshAllAcls;
+    }
+
+    /**
+     * Set the refreshAllAcls property: For ADLS Gen2 data sources that ingest permissions, indicates whether the
+     * indexer refreshes the access control lists of documents whose content has not changed. Changing a file's
+     * permissions does not change its last-modified time, so without this the index keeps serving stale permissions.
+     * The refresh runs at most once every 24 hours, and only updates permission metadata: content and enriched fields
+     * are left as they are. Set to false to disable.
+     *
+     * @param refreshAllAcls the refreshAllAcls value to set.
+     * @return the IndexingParametersConfiguration object itself.
+     */
+    @Generated
+    public IndexingParametersConfiguration setRefreshAllAcls(Boolean refreshAllAcls) {
+        this.refreshAllAcls = refreshAllAcls;
+        return this;
     }
 }

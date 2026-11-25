@@ -60,10 +60,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsers()
-            .createOrUpdate(resourceGroupName, mongoClusterName, userName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public User create(Context context) {
@@ -84,10 +81,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsers()
-            .createOrUpdate(resourceGroupName, mongoClusterName, userName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public User apply(Context context) {
@@ -112,11 +106,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUsers()
-            .getWithResponse(resourceGroupName, mongoClusterName, userName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public User refresh(Context context) {

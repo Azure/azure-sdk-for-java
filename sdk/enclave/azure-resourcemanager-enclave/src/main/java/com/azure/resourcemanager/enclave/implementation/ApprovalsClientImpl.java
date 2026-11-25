@@ -241,17 +241,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
         return getWithResponseAsync(resourceUri, approvalName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ApprovalResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApprovalResourceInner> getWithResponse(String resourceUri, String approvalName, Context context) {
         final String accept = "application/json";
@@ -259,16 +249,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             accept, context);
     }
 
-    /**
-     * Get a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ApprovalResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalResourceInner get(String resourceUri, String approvalName) {
         return getWithResponse(resourceUri, approvalName, Context.NONE).getValue();
@@ -310,10 +291,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String approvalName,
         ApprovalResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            approvalName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, approvalName, resource, Context.NONE);
     }
 
     /**
@@ -357,37 +335,14 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalResourceInner>, ApprovalResourceInner> beginCreateOrUpdate(String resourceUri,
         String approvalName, ApprovalResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, approvalName, resource);
-        return this.client.<ApprovalResourceInner, ApprovalResourceInner>getLroResult(response,
-            ApprovalResourceInner.class, ApprovalResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, approvalName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalResourceInner>, ApprovalResourceInner> beginCreateOrUpdate(String resourceUri,
         String approvalName, ApprovalResourceInner resource, Context context) {
@@ -414,39 +369,18 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalResourceInner createOrUpdate(String resourceUri, String approvalName,
         ApprovalResourceInner resource) {
-        return beginCreateOrUpdate(resourceUri, approvalName, resource).getFinalResult();
+        return createOrUpdate(resourceUri, approvalName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalResourceInner createOrUpdate(String resourceUri, String approvalName, ApprovalResourceInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceUri, approvalName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, approvalName, resource, context));
     }
 
     /**
@@ -496,11 +430,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApprovalResourceInner> listByParentSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<ApprovalResourceListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -522,31 +452,13 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ApprovalResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApprovalResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApprovalResourceInner> listByParent(String resourceUri) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceUri, Context.NONE);
     }
 
-    /**
-     * List ApprovalResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApprovalResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApprovalResourceInner> listByParent(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(resourceUri, context),
@@ -589,10 +501,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceUri, String approvalName,
         ApprovalPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, approvalName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceUri, approvalName, properties, Context.NONE);
     }
 
     /**
@@ -636,37 +545,14 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalResourceInner>, ApprovalResourceInner> beginUpdate(String resourceUri,
         String approvalName, ApprovalPatchModel properties) {
-        Response<BinaryData> response = updateWithResponse(resourceUri, approvalName, properties);
-        return this.client.<ApprovalResourceInner, ApprovalResourceInner>getLroResult(response,
-            ApprovalResourceInner.class, ApprovalResourceInner.class, Context.NONE);
+        return beginUpdate(resourceUri, approvalName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalResourceInner>, ApprovalResourceInner> beginUpdate(String resourceUri,
         String approvalName, ApprovalPatchModel properties, Context context) {
@@ -693,38 +579,17 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalResourceInner update(String resourceUri, String approvalName, ApprovalPatchModel properties) {
-        return beginUpdate(resourceUri, approvalName, properties).getFinalResult();
+        return update(resourceUri, approvalName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return approval Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalResourceInner update(String resourceUri, String approvalName, ApprovalPatchModel properties,
         Context context) {
-        return beginUpdate(resourceUri, approvalName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceUri, approvalName, properties, context));
     }
 
     /**
@@ -757,8 +622,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri, String approvalName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, approvalName,
-            Context.NONE);
+        return deleteWithResponse(resourceUri, approvalName, Context.NONE);
     }
 
     /**
@@ -795,33 +659,13 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String approvalName) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri, approvalName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, approvalName, Context.NONE);
     }
 
-    /**
-     * Delete a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String approvalName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceUri, approvalName, context);
@@ -843,33 +687,16 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
         return beginDeleteAsync(resourceUri, approvalName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String approvalName) {
-        beginDelete(resourceUri, approvalName).getFinalResult();
+        delete(resourceUri, approvalName, Context.NONE);
     }
 
-    /**
-     * Delete a ApprovalResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String approvalName, Context context) {
-        beginDelete(resourceUri, approvalName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, approvalName, context));
     }
 
     /**
@@ -909,10 +736,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> notifyInitiatorWithResponse(String resourceUri, String approvalName,
         ApprovalActionRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.notifyInitiatorSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            approvalName, contentType, accept, body, Context.NONE);
+        return notifyInitiatorWithResponse(resourceUri, approvalName, body, Context.NONE);
     }
 
     /**
@@ -956,37 +780,14 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             this.client.getContext());
     }
 
-    /**
-     * Upon receiving approval or rejection from approver, this facilitates actions on approval resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner>
         beginNotifyInitiator(String resourceUri, String approvalName, ApprovalActionRequest body) {
-        Response<BinaryData> response = notifyInitiatorWithResponse(resourceUri, approvalName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginNotifyInitiator(resourceUri, approvalName, body, Context.NONE);
     }
 
-    /**
-     * Upon receiving approval or rejection from approver, this facilitates actions on approval resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner>
         beginNotifyInitiator(String resourceUri, String approvalName, ApprovalActionRequest body, Context context) {
@@ -1013,39 +814,18 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upon receiving approval or rejection from approver, this facilitates actions on approval resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner notifyInitiator(String resourceUri, String approvalName,
         ApprovalActionRequest body) {
-        return beginNotifyInitiator(resourceUri, approvalName, body).getFinalResult();
+        return notifyInitiator(resourceUri, approvalName, body, Context.NONE);
     }
 
-    /**
-     * Upon receiving approval or rejection from approver, this facilitates actions on approval resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param approvalName The name of the approvals resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner notifyInitiator(String resourceUri, String approvalName,
         ApprovalActionRequest body, Context context) {
-        return beginNotifyInitiator(resourceUri, approvalName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginNotifyInitiator(resourceUri, approvalName, body, context));
     }
 
     /**
@@ -1079,11 +859,7 @@ public final class ApprovalsClientImpl implements ApprovalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApprovalResourceInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApprovalResourceListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

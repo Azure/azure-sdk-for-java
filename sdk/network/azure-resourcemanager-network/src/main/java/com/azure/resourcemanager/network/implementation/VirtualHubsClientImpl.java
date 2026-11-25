@@ -183,16 +183,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualHubInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualHubName) {
@@ -211,7 +202,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -248,72 +239,34 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, virtualHubName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualHubInner> getByResourceGroupAsync(String resourceGroupName, String virtualHubName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualHubName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualHubInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualHubName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualHubName, context).block();
     }
 
-    /**
-     * Retrieves the details of a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHubInner getByResourceGroup(String resourceGroupName, String virtualHubName) {
         return getByResourceGroupWithResponse(resourceGroupName, virtualHubName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualHubName, VirtualHubInner virtualHubParameters) {
@@ -338,7 +291,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -384,7 +337,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -392,17 +345,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             resourceGroupName, virtualHubName, contentType, accept, virtualHubParameters, context);
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String virtualHubName, VirtualHubInner virtualHubParameters) {
@@ -434,35 +377,14 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             VirtualHubInner.class, VirtualHubInner.class, context);
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, VirtualHubInner virtualHubParameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters).getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
@@ -470,17 +392,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualHubInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
         VirtualHubInner virtualHubParameters) {
@@ -507,52 +419,21 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHubInner createOrUpdate(String resourceGroupName, String virtualHubName,
         VirtualHubInner virtualHubParameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters).block();
     }
 
-    /**
-     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHubInner createOrUpdate(String resourceGroupName, String virtualHubName,
         VirtualHubInner virtualHubParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters, context).block();
     }
 
-    /**
-     * Updates VirtualHub tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualHubInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualHubName,
         TagsObject virtualHubParameters) {
@@ -577,7 +458,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -623,7 +504,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -631,17 +512,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             resourceGroupName, virtualHubName, contentType, accept, virtualHubParameters, context);
     }
 
-    /**
-     * Updates VirtualHub tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualHubInner> updateTagsAsync(String resourceGroupName, String virtualHubName,
         TagsObject virtualHubParameters) {
@@ -649,51 +520,21 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates VirtualHub tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualHubInner> updateTagsWithResponse(String resourceGroupName, String virtualHubName,
         TagsObject virtualHubParameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters, context).block();
     }
 
-    /**
-     * Updates VirtualHub tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHubInner updateTags(String resourceGroupName, String virtualHubName,
         TagsObject virtualHubParameters) {
         return updateTagsWithResponse(resourceGroupName, virtualHubName, virtualHubParameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName) {
         if (this.client.getEndpoint() == null) {
@@ -711,7 +552,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualHubName, context))
@@ -747,22 +588,13 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, context);
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName);
@@ -790,48 +622,20 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             context);
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName).last()
@@ -855,30 +659,13 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName) {
         deleteAsync(resourceGroupName, virtualHubName).block();
     }
 
-    /**
-     * Deletes a VirtualHub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, Context context) {
         deleteAsync(resourceGroupName, virtualHubName, context).block();
@@ -908,7 +695,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -944,7 +731,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -954,15 +741,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VirtualHubs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualHubs as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualHubInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -985,30 +764,13 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VirtualHubs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualHubs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHubInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the VirtualHubs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualHubs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHubInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1032,7 +794,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1062,7 +824,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1070,13 +832,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VirtualHubs in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualHubs as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualHubInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1097,44 +853,19 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VirtualHubs in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualHubs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHubInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the VirtualHubs in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VirtualHubs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHubInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getEffectiveVirtualHubRoutesWithResponseAsync(String resourceGroupName,
         String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
@@ -1156,7 +887,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEffectiveVirtualHubRoutes(this.client.getEndpoint(), apiVersion,
@@ -1199,7 +930,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getEffectiveVirtualHubRoutes(this.client.getEndpoint(), apiVersion,
@@ -1207,18 +938,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             context);
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the effective routes configured for the Virtual Hub resource or the
-     * specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
         beginGetEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName,
@@ -1230,17 +950,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             VirtualHubEffectiveRouteListInner.class, this.client.getContext());
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the effective routes configured for the Virtual Hub resource or the
-     * specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
         beginGetEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName) {
@@ -1277,17 +987,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             VirtualHubEffectiveRouteListInner.class, context);
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the effective routes configured for the Virtual Hub resource or the
-     * specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
         beginGetEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName) {
@@ -1296,19 +996,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the effective routes configured for the Virtual Hub resource or the
-     * specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
         beginGetEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName,
@@ -1319,18 +1007,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
         String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
@@ -1339,17 +1016,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
         String virtualHubName) {
@@ -1379,16 +1046,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHubEffectiveRouteListInner getEffectiveVirtualHubRoutes(String resourceGroupName,
         String virtualHubName) {
@@ -1396,18 +1054,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         return getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters).block();
     }
 
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHubEffectiveRouteListInner getEffectiveVirtualHubRoutes(String resourceGroupName,
         String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters, Context context) {
@@ -1415,18 +1062,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .block();
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getInboundRoutesWithResponseAsync(String resourceGroupName,
         String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
@@ -1451,7 +1087,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1498,7 +1134,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1506,18 +1142,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             resourceGroupName, virtualHubName, contentType, accept, getInboundRoutesParameters, context);
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the inbound routes configured for the Virtual Hub on a particular
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
         beginGetInboundRoutesAsync(String resourceGroupName, String virtualHubName,
@@ -1554,18 +1179,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             context);
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the inbound routes configured for the Virtual Hub on a particular
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
         beginGetInboundRoutes(String resourceGroupName, String virtualHubName,
@@ -1574,19 +1188,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the inbound routes configured for the Virtual Hub on a particular
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
         beginGetInboundRoutes(String resourceGroupName, String virtualHubName,
@@ -1595,18 +1197,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveRouteMapRouteListInner> getInboundRoutesAsync(String resourceGroupName, String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters) {
@@ -1634,53 +1225,21 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveRouteMapRouteListInner getInboundRoutes(String resourceGroupName, String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters) {
         return getInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters).block();
     }
 
-    /**
-     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveRouteMapRouteListInner getInboundRoutes(String resourceGroupName, String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters, Context context) {
         return getInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters, context).block();
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getOutboundRoutesWithResponseAsync(String resourceGroupName,
         String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
@@ -1705,7 +1264,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1752,7 +1311,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1760,18 +1319,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             resourceGroupName, virtualHubName, contentType, accept, getOutboundRoutesParameters, context);
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the outbound routes configured for the Virtual Hub on a particular
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
         beginGetOutboundRoutesAsync(String resourceGroupName, String virtualHubName,
@@ -1808,18 +1356,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             context);
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the outbound routes configured for the Virtual Hub on a particular
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
         beginGetOutboundRoutes(String resourceGroupName, String virtualHubName,
@@ -1828,19 +1365,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the outbound routes configured for the Virtual Hub on a particular
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
         beginGetOutboundRoutes(String resourceGroupName, String virtualHubName,
@@ -1849,18 +1374,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .getSyncPoller();
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveRouteMapRouteListInner> getOutboundRoutesAsync(String resourceGroupName, String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters) {
@@ -1889,35 +1403,14 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveRouteMapRouteListInner getOutboundRoutes(String resourceGroupName, String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters) {
         return getOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters).block();
     }
 
-    /**
-     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveRouteMapRouteListInner getOutboundRoutes(String resourceGroupName, String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters, Context context) {

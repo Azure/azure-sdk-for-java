@@ -93,10 +93,7 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
     }
 
     public MongoCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMongoClusters()
-            .createOrUpdate(resourceGroupName, mongoClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MongoCluster create(Context context) {
@@ -118,10 +115,7 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
     }
 
     public MongoCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMongoClusters()
-            .update(resourceGroupName, mongoClusterName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MongoCluster apply(Context context) {
@@ -144,11 +138,7 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
     }
 
     public MongoCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMongoClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, mongoClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MongoCluster refresh(Context context) {

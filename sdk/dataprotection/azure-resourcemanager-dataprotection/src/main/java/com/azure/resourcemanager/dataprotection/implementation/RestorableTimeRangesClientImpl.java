@@ -125,19 +125,7 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The find operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(String resourceGroupName,
         String vaultName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters,
@@ -148,18 +136,7 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
             resourceGroupName, vaultName, backupInstanceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * The find operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupFindRestorableTimeRangesResponseResourceInner find(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters) {

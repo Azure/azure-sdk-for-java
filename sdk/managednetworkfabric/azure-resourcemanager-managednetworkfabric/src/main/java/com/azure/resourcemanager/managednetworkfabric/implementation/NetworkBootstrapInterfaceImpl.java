@@ -114,11 +114,7 @@ public final class NetworkBootstrapInterfaceImpl
     }
 
     public NetworkBootstrapInterface create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkBootstrapInterfaces()
-            .create(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkBootstrapInterface create(Context context) {
@@ -142,11 +138,7 @@ public final class NetworkBootstrapInterfaceImpl
     }
 
     public NetworkBootstrapInterface apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkBootstrapInterfaces()
-            .update(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, updateBody,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkBootstrapInterface apply(Context context) {
@@ -172,11 +164,7 @@ public final class NetworkBootstrapInterfaceImpl
     }
 
     public NetworkBootstrapInterface refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkBootstrapInterfaces()
-            .getWithResponse(resourceGroupName, networkBootstrapDeviceName, networkBootstrapInterfaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkBootstrapInterface refresh(Context context) {

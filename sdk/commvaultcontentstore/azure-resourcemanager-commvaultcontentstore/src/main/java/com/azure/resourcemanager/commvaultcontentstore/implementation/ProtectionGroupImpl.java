@@ -66,10 +66,7 @@ public final class ProtectionGroupImpl implements ProtectionGroup, ProtectionGro
     }
 
     public ProtectionGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionGroups()
-            .createOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionGroup create(Context context) {
@@ -91,10 +88,7 @@ public final class ProtectionGroupImpl implements ProtectionGroup, ProtectionGro
     }
 
     public ProtectionGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionGroups()
-            .createOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectionGroup apply(Context context) {
@@ -120,11 +114,7 @@ public final class ProtectionGroupImpl implements ProtectionGroup, ProtectionGro
     }
 
     public ProtectionGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionGroups()
-            .getWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionGroup refresh(Context context) {

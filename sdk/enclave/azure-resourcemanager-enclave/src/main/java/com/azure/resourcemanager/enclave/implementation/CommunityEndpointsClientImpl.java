@@ -302,18 +302,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CommunityEndpointResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityEndpointResourceInner> getWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName, Context context) {
@@ -322,17 +311,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             resourceGroupName, communityName, communityEndpointName, accept, context);
     }
 
-    /**
-     * Get a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CommunityEndpointResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner get(String resourceGroupName, String communityName,
         String communityEndpointName) {
@@ -378,11 +357,8 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName, CommunityEndpointResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, communityEndpointName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, communityName, communityEndpointName, resource,
+            Context.NONE);
     }
 
     /**
@@ -431,41 +407,15 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             this.client.getContext());
     }
 
-    /**
-     * Create a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, String communityEndpointName,
         CommunityEndpointResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, communityName, communityEndpointName, resource);
-        return this.client.<CommunityEndpointResourceInner, CommunityEndpointResourceInner>getLroResult(response,
-            CommunityEndpointResourceInner.class, CommunityEndpointResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, communityName, communityEndpointName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, String communityEndpointName,
@@ -495,42 +445,19 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner createOrUpdate(String resourceGroupName, String communityName,
         String communityEndpointName, CommunityEndpointResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, communityEndpointName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, communityName, communityEndpointName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner createOrUpdate(String resourceGroupName, String communityName,
         String communityEndpointName, CommunityEndpointResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, communityEndpointName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, communityName, communityEndpointName, resource, context));
     }
 
     /**
@@ -572,11 +499,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName, CommunityEndpointPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, communityEndpointName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, communityName, communityEndpointName, properties, Context.NONE);
     }
 
     /**
@@ -625,41 +548,15 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             this.client.getContext());
     }
 
-    /**
-     * Update a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner> beginUpdate(
         String resourceGroupName, String communityName, String communityEndpointName,
         CommunityEndpointPatchModel properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, communityName, communityEndpointName, properties);
-        return this.client.<CommunityEndpointResourceInner, CommunityEndpointResourceInner>getLroResult(response,
-            CommunityEndpointResourceInner.class, CommunityEndpointResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, communityName, communityEndpointName, properties, Context.NONE);
     }
 
-    /**
-     * Update a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner> beginUpdate(
         String resourceGroupName, String communityName, String communityEndpointName,
@@ -689,42 +586,19 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner update(String resourceGroupName, String communityName,
         String communityEndpointName, CommunityEndpointPatchModel properties) {
-        return beginUpdate(resourceGroupName, communityName, communityEndpointName, properties).getFinalResult();
+        return update(resourceGroupName, communityName, communityEndpointName, properties, Context.NONE);
     }
 
-    /**
-     * Update a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner update(String resourceGroupName, String communityName,
         String communityEndpointName, CommunityEndpointPatchModel properties, Context context) {
-        return beginUpdate(resourceGroupName, communityName, communityEndpointName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, communityName, communityEndpointName, properties, context));
     }
 
     /**
@@ -761,8 +635,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, communityEndpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
     /**
@@ -804,36 +677,14 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         String communityEndpointName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, communityName, communityEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         String communityEndpointName, Context context) {
@@ -859,35 +710,17 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, String communityEndpointName) {
-        beginDelete(resourceGroupName, communityName, communityEndpointName).getFinalResult();
+        delete(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a CommunityEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, String communityEndpointName, Context context) {
-        beginDelete(resourceGroupName, communityName, communityEndpointName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, communityName, communityEndpointName, context));
     }
 
     /**
@@ -944,12 +777,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityEndpointResourceInner> listByCommunityResourceSinglePage(String resourceGroupName,
         String communityName) {
-        final String accept = "application/json";
-        Response<CommunityEndpointResourceListResult> res
-            = service.listByCommunityResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, communityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCommunityResourceSinglePage(resourceGroupName, communityName, Context.NONE);
     }
 
     /**
@@ -974,36 +802,14 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CommunityEndpointResource resources by CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityEndpointResourceInner> listByCommunityResource(String resourceGroupName,
         String communityName) {
-        return new PagedIterable<>(() -> listByCommunityResourceSinglePage(resourceGroupName, communityName),
-            nextLink -> listByCommunityResourceNextSinglePage(nextLink));
+        return listByCommunityResource(resourceGroupName, communityName, Context.NONE);
     }
 
-    /**
-     * List CommunityEndpointResource resources by CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityEndpointResourceInner> listByCommunityResource(String resourceGroupName,
         String communityName, Context context) {
@@ -1059,11 +865,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityEndpointResourceInner> listBySubscriptionSinglePage(String communityName) {
-        final String accept = "application/json";
-        Response<CommunityEndpointResourceListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), communityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(communityName, Context.NONE);
     }
 
     /**
@@ -1086,33 +888,13 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CommunityEndpointResource resources by subscription ID.
-     * 
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityEndpointResourceInner> listBySubscription(String communityName) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(communityName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(communityName, Context.NONE);
     }
 
-    /**
-     * List CommunityEndpointResource resources by subscription ID.
-     * 
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommunityEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityEndpointResourceInner> listBySubscription(String communityName, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(communityName, context),
@@ -1159,11 +941,8 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalCreationWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalCallbackRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.handleApprovalCreationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, communityEndpointName, contentType,
-            accept, body, Context.NONE);
+        return handleApprovalCreationWithResponse(resourceGroupName, communityName, communityEndpointName, body,
+            Context.NONE);
     }
 
     /**
@@ -1212,40 +991,14 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             this.client.getContext());
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
         String resourceGroupName, String communityName, String communityEndpointName, ApprovalCallbackRequest body) {
-        Response<BinaryData> response
-            = handleApprovalCreationWithResponse(resourceGroupName, communityName, communityEndpointName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginHandleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
         String resourceGroupName, String communityName, String communityEndpointName, ApprovalCallbackRequest body,
@@ -1275,43 +1028,19 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalCallbackRequest body) {
-        return beginHandleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body)
-            .getFinalResult();
+        return handleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalCallbackRequest body, Context context) {
-        return beginHandleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginHandleApprovalCreation(resourceGroupName, communityName, communityEndpointName, body, context));
     }
 
     /**
@@ -1354,11 +1083,8 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalDeletionWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalDeletionCallbackRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.handleApprovalDeletionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, communityEndpointName, contentType,
-            accept, body, Context.NONE);
+        return handleApprovalDeletionWithResponse(resourceGroupName, communityName, communityEndpointName, body,
+            Context.NONE);
     }
 
     /**
@@ -1407,41 +1133,15 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             this.client.getContext());
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
         String resourceGroupName, String communityName, String communityEndpointName,
         ApprovalDeletionCallbackRequest body) {
-        Response<BinaryData> response
-            = handleApprovalDeletionWithResponse(resourceGroupName, communityName, communityEndpointName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginHandleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
         String resourceGroupName, String communityName, String communityEndpointName,
@@ -1471,43 +1171,19 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalDeletionCallbackRequest body) {
-        return beginHandleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body)
-            .getFinalResult();
+        return handleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalDeletionCallbackRequest body, Context context) {
-        return beginHandleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginHandleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, context));
     }
 
     /**
@@ -1543,11 +1219,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityEndpointResourceInner> listByCommunityResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CommunityEndpointResourceListResult> res
-            = service.listByCommunityResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCommunityResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1602,11 +1274,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommunityEndpointResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CommunityEndpointResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

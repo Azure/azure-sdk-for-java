@@ -268,11 +268,15 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.getSnapshotWithResponse(Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(snapshotResponseMock);
         when(snapshotResponseMock.getValue()).thenReturn(snapshot);
-        when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenReturn(settingsMock);
+        when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any(), Mockito.isNull(), Mockito.any()))
+            .thenReturn(settingsMock);
 
         assertEquals(configurations, client.listSettingSnapshot("SnapshotName", contextMock));
+        verify(clientMock).listConfigurationSettingsForSnapshot(Mockito.eq("SnapshotName"), Mockito.isNull(),
+            Mockito.same(contextMock));
 
-        when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenThrow(exceptionMock);
+        when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any(), Mockito.isNull(), Mockito.any()))
+            .thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class,

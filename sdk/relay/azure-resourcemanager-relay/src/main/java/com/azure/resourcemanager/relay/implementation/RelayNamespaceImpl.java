@@ -134,10 +134,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
     }
 
     public RelayNamespace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .createOrUpdate(resourceGroupName, namespaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RelayNamespace create(Context context) {
@@ -159,11 +156,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
     }
 
     public RelayNamespace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RelayNamespace apply(Context context) {
@@ -186,11 +179,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
     }
 
     public RelayNamespace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RelayNamespace refresh(Context context) {

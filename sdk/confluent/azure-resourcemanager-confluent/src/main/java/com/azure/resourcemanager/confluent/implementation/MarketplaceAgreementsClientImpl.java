@@ -154,11 +154,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfluentAgreementResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ConfluentAgreementResourceListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -179,27 +175,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Confluent marketplace agreements in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfluentAgreementResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Confluent marketplace agreements in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfluentAgreementResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -237,16 +219,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         return createWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create Confluent Marketplace agreement in the subscription.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfluentAgreementResourceInner> createWithResponse(ConfluentAgreementResourceInner body,
         Context context) {
@@ -255,13 +228,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
             this.client.getSubscriptionId(), accept, body, context);
     }
 
-    /**
-     * Create Confluent Marketplace agreement in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfluentAgreementResourceInner create() {
         final ConfluentAgreementResourceInner body = null;
@@ -301,11 +268,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfluentAgreementResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfluentAgreementResourceListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

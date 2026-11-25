@@ -168,22 +168,7 @@ public final class ContainerAppsFunctionsClientImpl implements ContainerAppsFunc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific function of a Container App from the latest Revision.
-     * 
-     * Gets the details of a specific function from the latest Container App revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param functionName Name of the Function.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific function of a Container App from the latest Revision.
-     * 
-     * Gets the details of a specific function from the latest Container App revision along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppsFunctionInner> getWithResponse(String resourceGroupName, String containerAppName,
         String functionName, Context context) {
@@ -192,21 +177,7 @@ public final class ContainerAppsFunctionsClientImpl implements ContainerAppsFunc
             resourceGroupName, containerAppName, functionName, accept, context);
     }
 
-    /**
-     * Get a specific function of a Container App from the latest Revision.
-     * 
-     * Gets the details of a specific function from the latest Container App revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param functionName Name of the Function.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific function of a Container App from the latest Revision.
-     * 
-     * Gets the details of a specific function from the latest Container App revision.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsFunctionInner get(String resourceGroupName, String containerAppName, String functionName) {
         return getWithResponse(resourceGroupName, containerAppName, functionName, Context.NONE).getValue();
@@ -270,12 +241,7 @@ public final class ContainerAppsFunctionsClientImpl implements ContainerAppsFunc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsFunctionInner> listSinglePage(String resourceGroupName,
         String containerAppName) {
-        final String accept = "application/json";
-        Response<ContainerAppsFunctionCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -302,37 +268,13 @@ public final class ContainerAppsFunctionsClientImpl implements ContainerAppsFunc
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the functions for a given Container App from the latest Revision.
-     * 
-     * Lists the functions available in the latest revision of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Functions collection ARM resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsFunctionInner> list(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, containerAppName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * List the functions for a given Container App from the latest Revision.
-     * 
-     * Lists the functions available in the latest revision of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Functions collection ARM resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsFunctionInner> list(String resourceGroupName, String containerAppName,
         Context context) {
@@ -374,11 +316,7 @@ public final class ContainerAppsFunctionsClientImpl implements ContainerAppsFunc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainerAppsFunctionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppsFunctionCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

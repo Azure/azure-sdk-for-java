@@ -48,12 +48,7 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
     }
 
     public ProviderRegistration createOrUpdate(String providerNamespace, ProviderRegistrationInner properties) {
-        ProviderRegistrationInner inner = this.serviceClient().createOrUpdate(providerNamespace, properties);
-        if (inner != null) {
-            return new ProviderRegistrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(providerNamespace, properties, Context.NONE);
     }
 
     public ProviderRegistration createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
@@ -71,12 +66,11 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
     }
 
     public void delete(String providerNamespace) {
-        this.serviceClient().delete(providerNamespace);
+        this.deleteWithResponse(providerNamespace, Context.NONE);
     }
 
     public PagedIterable<ProviderRegistration> list() {
-        PagedIterable<ProviderRegistrationInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderRegistrationImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ProviderRegistration> list(Context context) {

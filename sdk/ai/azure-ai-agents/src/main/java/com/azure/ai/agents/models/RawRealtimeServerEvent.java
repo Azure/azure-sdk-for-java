@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.models;
 
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
@@ -12,7 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 
 /** A server event whose complete JSON payload is retained for forward compatibility. */
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RawRealtimeServerEvent extends RealtimeServerEvent {
     private final BinaryData rawEvent;
     private final RealtimeServerEventType type;

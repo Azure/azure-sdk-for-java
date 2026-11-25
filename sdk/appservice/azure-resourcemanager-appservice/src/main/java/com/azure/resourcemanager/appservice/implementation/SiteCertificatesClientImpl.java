@@ -179,18 +179,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a certificate belonging to a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate belonging to a given site along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName, String name,
         String certificateName) {
@@ -261,69 +250,27 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             resourceGroupName, name, certificateName, accept, context);
     }
 
-    /**
-     * Get a certificate belonging to a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate belonging to a given site on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> getAsync(String resourceGroupName, String name, String certificateName) {
         return getWithResponseAsync(resourceGroupName, name, certificateName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a certificate belonging to a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate belonging to a given site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> getWithResponse(String resourceGroupName, String name, String certificateName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, name, certificateName, context).block();
     }
 
-    /**
-     * Get a certificate belonging to a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate belonging to a given site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner get(String resourceGroupName, String name, String certificateName) {
         return getWithResponse(resourceGroupName, name, certificateName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
         String certificateName, CertificateInner certificateEnvelope) {
@@ -410,18 +357,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             certificateEnvelope, context);
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> createOrUpdateAsync(String resourceGroupName, String name, String certificateName,
         CertificateInner certificateEnvelope) {
@@ -429,19 +365,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> createOrUpdateWithResponse(String resourceGroupName, String name,
         String certificateName, CertificateInner certificateEnvelope, Context context) {
@@ -449,18 +373,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .block();
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner createOrUpdate(String resourceGroupName, String name, String certificateName,
         CertificateInner certificateEnvelope) {
@@ -468,18 +381,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .getValue();
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName, String name,
         String certificateName, CertificatePatchResource certificateEnvelope) {
@@ -565,18 +467,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             resourceGroupName, name, certificateName, contentType, accept, certificateEnvelope, context);
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> updateAsync(String resourceGroupName, String name, String certificateName,
         CertificatePatchResource certificateEnvelope) {
@@ -584,37 +475,14 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> updateWithResponse(String resourceGroupName, String name, String certificateName,
         CertificatePatchResource certificateEnvelope, Context context) {
         return updateWithResponseAsync(resourceGroupName, name, certificateName, certificateEnvelope, context).block();
     }
 
-    /**
-     * Create or update a certificate under a given site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner update(String resourceGroupName, String name, String certificateName,
         CertificatePatchResource certificateEnvelope) {
@@ -622,17 +490,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .getValue();
     }
 
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName) {
         if (this.client.getEndpoint() == null) {
@@ -699,50 +557,20 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             resourceGroupName, name, certificateName, context);
     }
 
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name, String certificateName) {
         return deleteWithResponseAsync(resourceGroupName, name, certificateName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String name, String certificateName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, name, certificateName, context).block();
     }
 
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, String certificateName) {
         deleteWithResponse(resourceGroupName, name, certificateName, Context.NONE);
@@ -824,16 +652,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all certificates in a resource group under a site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all certificates in a resource group under a site as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateInner> listAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name),
@@ -857,51 +676,19 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all certificates in a resource group under a site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all certificates in a resource group under a site as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> list(String resourceGroupName, String name) {
         return new PagedIterable<>(listAsync(resourceGroupName, name));
     }
 
-    /**
-     * Get all certificates in a resource group under a site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all certificates in a resource group under a site as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> list(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Get a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate for a given site and deployment slot along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> getSlotWithResponseAsync(String resourceGroupName, String name, String slot,
         String certificateName) {
@@ -980,19 +767,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             resourceGroupName, name, slot, certificateName, accept, context);
     }
 
-    /**
-     * Get a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate for a given site and deployment slot on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> getSlotAsync(String resourceGroupName, String name, String slot,
         String certificateName) {
@@ -1000,58 +775,20 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate for a given site and deployment slot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> getSlotWithResponse(String resourceGroupName, String name, String slot,
         String certificateName, Context context) {
         return getSlotWithResponseAsync(resourceGroupName, name, slot, certificateName, context).block();
     }
 
-    /**
-     * Get a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate for a given site and deployment slot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner getSlot(String resourceGroupName, String name, String slot, String certificateName) {
         return getSlotWithResponse(resourceGroupName, name, slot, certificateName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a certificate in a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> createOrUpdateSlotWithResponseAsync(String resourceGroupName, String name,
         String slot, String certificateName, CertificateInner certificateEnvelope) {
@@ -1146,20 +883,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             certificateEnvelope, context);
     }
 
-    /**
-     * Create or update a certificate in a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot,
         String certificateName, CertificateInner certificateEnvelope) {
@@ -1167,21 +891,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a certificate in a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> createOrUpdateSlotWithResponse(String resourceGroupName, String name, String slot,
         String certificateName, CertificateInner certificateEnvelope, Context context) {
@@ -1189,20 +899,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             context).block();
     }
 
-    /**
-     * Create or update a certificate in a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner createOrUpdateSlot(String resourceGroupName, String name, String slot,
         String certificateName, CertificateInner certificateEnvelope) {
@@ -1210,20 +907,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a certificate for a site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> updateSlotWithResponseAsync(String resourceGroupName, String name,
         String slot, String certificateName, CertificatePatchResource certificateEnvelope) {
@@ -1318,20 +1002,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             certificateEnvelope, context);
     }
 
-    /**
-     * Create or update a certificate for a site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> updateSlotAsync(String resourceGroupName, String name, String slot,
         String certificateName, CertificatePatchResource certificateEnvelope) {
@@ -1339,21 +1010,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a certificate for a site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> updateSlotWithResponse(String resourceGroupName, String name, String slot,
         String certificateName, CertificatePatchResource certificateEnvelope, Context context) {
@@ -1361,20 +1018,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .block();
     }
 
-    /**
-     * Create or update a certificate for a site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner updateSlot(String resourceGroupName, String name, String slot, String certificateName,
         CertificatePatchResource certificateEnvelope) {
@@ -1382,19 +1026,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             .getValue();
     }
 
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
         String certificateName) {
@@ -1470,57 +1102,21 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, context);
     }
 
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, String certificateName) {
         return deleteSlotWithResponseAsync(resourceGroupName, name, slot, certificateName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSlotWithResponse(String resourceGroupName, String name, String slot,
         String certificateName, Context context) {
         return deleteSlotWithResponseAsync(resourceGroupName, name, slot, certificateName, context).block();
     }
 
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSlot(String resourceGroupName, String name, String slot, String certificateName) {
         deleteSlotWithResponse(resourceGroupName, name, slot, certificateName, Context.NONE);
@@ -1613,19 +1209,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all certificates in a resource group for a given site and a deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all certificates in a resource group for a given site and a deployment slot as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateInner> listSlotAsync(String resourceGroupName, String name, String slot) {
         return new PagedFlux<>(() -> listSlotSinglePageAsync(resourceGroupName, name, slot),
@@ -1653,38 +1237,13 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             nextLink -> listSlotNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all certificates in a resource group for a given site and a deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all certificates in a resource group for a given site and a deployment slot as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> listSlot(String resourceGroupName, String name, String slot) {
         return new PagedIterable<>(listSlotAsync(resourceGroupName, name, slot));
     }
 
-    /**
-     * Get all certificates in a resource group for a given site and a deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all certificates in a resource group for a given site and a deployment slot as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> listSlot(String resourceGroupName, String name, String slot,
         Context context) {

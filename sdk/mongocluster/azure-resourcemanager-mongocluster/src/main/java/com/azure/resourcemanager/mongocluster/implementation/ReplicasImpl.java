@@ -26,8 +26,7 @@ public final class ReplicasImpl implements Replicas {
     }
 
     public PagedIterable<Replica> listByParent(String resourceGroupName, String mongoClusterName) {
-        PagedIterable<ReplicaInner> inner = this.serviceClient().listByParent(resourceGroupName, mongoClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     public PagedIterable<Replica> listByParent(String resourceGroupName, String mongoClusterName, Context context) {

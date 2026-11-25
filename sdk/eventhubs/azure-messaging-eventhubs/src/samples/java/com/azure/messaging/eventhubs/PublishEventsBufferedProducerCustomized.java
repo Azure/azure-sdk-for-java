@@ -42,10 +42,8 @@ public class PublishEventsBufferedProducerCustomized {
             .onSendBatchSucceeded(succeededContext -> onSuccess(succeededContext))
             .onSendBatchFailed(failedContext -> onFailed(failedContext))
 
-            // This sets the maximum number of events in the partition queue before publishing.  Coupled with
-            // maxWaitTime below, it means that the producer will publish when either condition below is met:
-            // * 150 messages are in queue, OR
-            // * 30 seconds have elapsed
+            // Buffer up to 150 events per partition. Publish each batch when it is full or when 30 seconds
+            // elapse after its first event is added. Later events do not restart this wait.
             // The default values are listed in the buffered producer builder's constructor.
             .maxEventBufferLengthPerPartition(150)
             .maxWaitTime(Duration.ofSeconds(30))

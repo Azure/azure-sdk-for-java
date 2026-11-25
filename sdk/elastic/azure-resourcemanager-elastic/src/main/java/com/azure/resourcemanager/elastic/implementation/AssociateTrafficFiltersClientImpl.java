@@ -113,8 +113,7 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> associateWithResponse(String resourceGroupName, String monitorName, String rulesetId) {
-        return service.associateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, Context.NONE);
+        return associateWithResponse(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
     /**
@@ -185,41 +184,19 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName,
+    private SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName,
         String rulesetId) {
-        Response<BinaryData> response = associateWithResponse(resourceGroupName, monitorName, rulesetId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAssociate(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
-    /**
-     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        Response<BinaryData> response = associateWithResponse(resourceGroupName, monitorName, rulesetId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAssociate(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
-    /**
-     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param rulesetId Ruleset Id of the filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName,
         String rulesetId, Context context) {
@@ -261,34 +238,16 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void associate(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        beginAssociate(resourceGroupName, monitorName, rulesetId).getFinalResult();
+        associate(resourceGroupName, monitorName, rulesetId, Context.NONE);
     }
 
-    /**
-     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param rulesetId Ruleset Id of the filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void associate(String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        beginAssociate(resourceGroupName, monitorName, rulesetId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginAssociate(resourceGroupName, monitorName, rulesetId, context));
     }
 }

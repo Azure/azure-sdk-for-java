@@ -222,20 +222,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @param expand Specify the $expand query. Example: 'properties($select=description)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> getWithResponse(String resourceGroupName, String labName, String policySetName,
         String name, String expand, Context context) {
@@ -244,18 +231,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             resourceGroupName, labName, policySetName, name, expand, accept, context);
     }
 
-    /**
-     * Get policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner get(String resourceGroupName, String labName, String policySetName, String name) {
         final String expand = null;
@@ -307,20 +283,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or replace an existing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @param policy A Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> createOrUpdateWithResponse(String resourceGroupName, String labName,
         String policySetName, String name, PolicyInner policy, Context context) {
@@ -331,19 +294,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             policy, context);
     }
 
-    /**
-     * Create or replace an existing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @param policy A Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner createOrUpdate(String resourceGroupName, String labName, String policySetName, String name,
         PolicyInner policy) {
@@ -396,20 +347,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of policies. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @param policy A Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> updateWithResponse(String resourceGroupName, String labName, String policySetName,
         String name, PolicyFragment policy, Context context) {
@@ -420,19 +358,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             policy, context);
     }
 
-    /**
-     * Allows modifying tags of policies. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @param policy A Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner update(String resourceGroupName, String labName, String policySetName, String name,
         PolicyFragment policy) {
@@ -478,19 +404,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String policySetName,
         String name, Context context) {
@@ -498,17 +412,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getSubscriptionId(), resourceGroupName, labName, policySetName, name, context);
     }
 
-    /**
-     * Delete policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param name The name of the Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String policySetName, String name) {
         deleteWithResponse(resourceGroupName, labName, policySetName, name, Context.NONE);
@@ -606,12 +510,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyInner> listSinglePage(String resourceGroupName, String labName, String policySetName,
         String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<PolicyList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, policySetName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, policySetName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -641,44 +540,17 @@ public final class PoliciesClientImpl implements PoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List policies in a given policy set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyInner> list(String resourceGroupName, String labName, String policySetName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, policySetName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, policySetName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List policies in a given policy set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName labs.
-     * @param policySetName policysets.
-     * @param expand Specify the $expand query. Example: 'properties($select=description)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyInner> list(String resourceGroupName, String labName, String policySetName,
         String expand, String filter, Integer top, String orderby, Context context) {
@@ -717,10 +589,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -3,18 +3,25 @@
 
 package com.azure.messaging.webpubsub.chat;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 abstract class ChatServiceClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ChatServiceClientTestBase.class);
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("WPS_CHAT_CONNECTION_STRING",
             "Endpoint=https://testendpoint.webpubsubdev.azure.com;AccessKey=LoremIpsumDolorSitAmetConsectetur;Version=1.0;");
@@ -36,6 +43,12 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
                 Collections.singletonList(new TestProxySanitizer("https://(?<host>[^/]+[.]webpubsub[.]azure[.]com)",
                     "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("host")));
         }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            // Standard sanitizers remove these volatile headers from recordings.
+            interceptorManager.addMatchers(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization", "x-ms-client-request-id"))
+                    .setComparingBodies(true));
+        }
 
         HttpClient httpClient
             = getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(HttpClient.createDefault()));
@@ -52,9 +65,7 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
         asyncClient = builder.buildAsyncClient();
 
         WebPubSubChatServiceClientBuilder entraBuilder = new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT)
-            .credential(getTestMode() == TestMode.PLAYBACK
-                ? new MockTokenCredential()
-                : new DefaultAzureCredentialBuilder().build())
+            .credential(getIdentityTestCredential(getTestMode(), Configuration.getGlobalConfiguration()))
             .hub(HUB)
             .httpClient(httpClient);
         if (getTestMode() == TestMode.RECORD) {
@@ -64,11 +75,28 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
         entraAsyncClient = entraBuilder.buildAsyncClient();
     }
 
+    static TokenCredential getIdentityTestCredential(TestMode mode, Configuration config) {
+        if (mode == TestMode.PLAYBACK) {
+            return new MockTokenCredential();
+        }
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)) {
+            return new AzurePipelinesCredentialBuilder().configuration(config)
+                .serviceConnectionId(serviceConnectionId)
+                .clientId(config.get("AZURESUBSCRIPTION_CLIENT_ID"))
+                .tenantId(config.get("AZURESUBSCRIPTION_TENANT_ID"))
+                .systemAccessToken(config.get("SYSTEM_ACCESSTOKEN"))
+                .build();
+        }
+        return new DefaultAzureCredentialBuilder().configuration(config).build();
+    }
+
     protected static void cleanup(Runnable cleanup) {
         try {
             cleanup.run();
-        } catch (RuntimeException ignored) {
-            // Preserve the original test failure while making a best effort to remove live resources.
+        } catch (RuntimeException exception) {
+            LOGGER.warning("Failed to clean up live test resources.", exception);
         }
     }
 }

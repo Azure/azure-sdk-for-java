@@ -34,6 +34,7 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -450,6 +451,8 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link PageBlobItem} containing information about the page blob. If {@link Response}'s status code is 201, a new
      * page blob was successfully created. If status code is 409, a page blob already existed at this location.
+     * @throws BlobStorageException If the blob could not be created for any other reason, for example when a blob of a
+     * different type already exists at this location (status code 409, error code InvalidBlobType).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout,
@@ -460,7 +463,7 @@ public final class PageBlobClient extends BlobClientBase {
         try {
             return createWithResponse(options, timeout, context);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409) {
+            if (ModelHelper.isConflictWithErrorCode(e, BlobErrorCode.BLOB_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {

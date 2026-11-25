@@ -85,10 +85,7 @@ public final class ManagedDashboardImpl
     }
 
     public ManagedDashboard create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedDashboards()
-            .create(resourceGroupName, dashboardName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedDashboard create(Context context) {
@@ -110,11 +107,7 @@ public final class ManagedDashboardImpl
     }
 
     public ManagedDashboard apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedDashboards()
-            .updateWithResponse(resourceGroupName, dashboardName, updateRequestBodyParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedDashboard apply(Context context) {
@@ -138,11 +131,7 @@ public final class ManagedDashboardImpl
     }
 
     public ManagedDashboard refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedDashboards()
-            .getByResourceGroupWithResponse(resourceGroupName, dashboardName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedDashboard refresh(Context context) {

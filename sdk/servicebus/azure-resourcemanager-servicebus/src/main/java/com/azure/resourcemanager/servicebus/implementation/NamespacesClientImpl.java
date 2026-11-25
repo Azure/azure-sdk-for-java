@@ -105,9 +105,9 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             @BodyParam("application/json") SBNamespaceInner parameters, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<SBNamespaceInner>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -274,17 +274,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a description for the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified namespace along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBNamespaceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String namespaceName) {
@@ -346,66 +336,27 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
     }
 
-    /**
-     * Gets a description for the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified namespace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBNamespaceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, namespaceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a description for the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBNamespaceInner> getByResourceGroupWithResponse(String resourceGroupName, String namespaceName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, namespaceName, context).block();
     }
 
-    /**
-     * Gets a description for the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBNamespaceInner getByResourceGroup(String resourceGroupName, String namespaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String namespaceName, SBNamespaceInner parameters) {
@@ -482,18 +433,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             context);
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String namespaceName, SBNamespaceInner parameters) {
@@ -526,55 +466,21 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             SBNamespaceInner.class, SBNamespaceInner.class, context);
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, SBNamespaceInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, SBNamespaceInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBNamespaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         SBNamespaceInner parameters) {
@@ -602,57 +508,23 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBNamespaceInner createOrUpdate(String resourceGroupName, String namespaceName,
         SBNamespaceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, namespaceName, parameters).block();
     }
 
-    /**
-     * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
-     * operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBNamespaceInner createOrUpdate(String resourceGroupName, String namespaceName, SBNamespaceInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, namespaceName, parameters, context).block();
     }
 
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+    public Mono<Response<SBNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -697,7 +569,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
      * @return description of a namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+    private Mono<Response<SBNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -726,172 +598,29 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             resourceGroupName, namespaceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdateAsync(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, namespaceName, parameters);
-        return this.client.<SBNamespaceInner, SBNamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SBNamespaceInner.class, SBNamespaceInner.class, this.client.getContext());
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdateAsync(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, namespaceName, parameters, context);
-        return this.client.<SBNamespaceInner, SBNamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SBNamespaceInner.class, SBNamespaceInner.class, context);
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters) {
-        return this.beginUpdateAsync(resourceGroupName, namespaceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, namespaceName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBNamespaceInner> updateAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, namespaceName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, namespaceName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SBNamespaceInner> updateAsync(String resourceGroupName, String namespaceName,
+    public Response<SBNamespaceInner> updateWithResponse(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, namespaceName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, namespaceName, parameters, context).block();
     }
 
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBNamespaceInner update(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, namespaceName, parameters).block();
+        return updateWithResponse(resourceGroupName, namespaceName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SBNamespaceInner update(String resourceGroupName, String namespaceName,
-        SBNamespaceUpdateParameters parameters, Context context) {
-        return updateAsync(resourceGroupName, namespaceName, parameters, context).block();
-    }
-
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName) {
         if (this.client.getEndpoint() == null) {
@@ -949,16 +678,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             resourceGroupName, namespaceName, context);
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, namespaceName);
@@ -986,48 +706,20 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             context);
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName) {
         return this.beginDeleteAsync(resourceGroupName, namespaceName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, namespaceName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName) {
         return beginDeleteAsync(resourceGroupName, namespaceName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1050,30 +742,13 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName) {
         deleteAsync(resourceGroupName, namespaceName).block();
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, Context context) {
         deleteAsync(resourceGroupName, namespaceName, context).block();
@@ -1147,15 +822,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the available namespaces within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available namespaces within a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBNamespaceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1178,30 +845,13 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the available namespaces within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available namespaces within a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBNamespaceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets the available namespaces within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available namespaces within a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBNamespaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1263,14 +913,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the available namespaces within the subscription, irrespective of the resource groups.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the available namespaces within the subscription, irrespective of the resource groups as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBNamespaceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1292,45 +935,19 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the available namespaces within the subscription, irrespective of the resource groups.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the available namespaces within the subscription, irrespective of the resource groups as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBNamespaceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the available namespaces within the subscription, irrespective of the resource groups.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the available namespaces within the subscription, irrespective of the resource groups as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBNamespaceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String namespaceName,
         FailOver parameters) {
@@ -1402,17 +1019,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             resourceGroupName, namespaceName, contentType, parameters, context);
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailOver>, FailOver> beginFailoverAsync(String resourceGroupName, String namespaceName,
         FailOver parameters) {
@@ -1443,52 +1050,21 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             FailOver.class, context);
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailOver>, FailOver> beginFailover(String resourceGroupName, String namespaceName,
         FailOver parameters) {
         return this.beginFailoverAsync(resourceGroupName, namespaceName, parameters).getSyncPoller();
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailOver>, FailOver> beginFailover(String resourceGroupName, String namespaceName,
         FailOver parameters, Context context) {
         return this.beginFailoverAsync(resourceGroupName, namespaceName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailOver> failoverAsync(String resourceGroupName, String namespaceName, FailOver parameters) {
         return beginFailoverAsync(resourceGroupName, namespaceName, parameters).last()
@@ -1514,49 +1090,19 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailOver failover(String resourceGroupName, String namespaceName, FailOver parameters) {
         return failoverAsync(resourceGroupName, namespaceName, parameters).block();
     }
 
-    /**
-     * GeoDR Failover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailOver failover(String resourceGroupName, String namespaceName, FailOver parameters, Context context) {
         return failoverAsync(resourceGroupName, namespaceName, parameters, context).block();
     }
 
-    /**
-     * Gets NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkRuleSet for a Namespace along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkRuleSetInner>> getNetworkRuleSetWithResponseAsync(String resourceGroupName,
         String namespaceName) {
@@ -1617,66 +1163,27 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
     }
 
-    /**
-     * Gets NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkRuleSet for a Namespace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkRuleSetInner> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
         return getNetworkRuleSetWithResponseAsync(resourceGroupName, namespaceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkRuleSet for a Namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkRuleSetInner> getNetworkRuleSetWithResponse(String resourceGroupName, String namespaceName,
         Context context) {
         return getNetworkRuleSetWithResponseAsync(resourceGroupName, namespaceName, context).block();
     }
 
-    /**
-     * Gets NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkRuleSet for a Namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRuleSetInner getNetworkRuleSet(String resourceGroupName, String namespaceName) {
         return getNetworkRuleSetWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters The Namespace IpFilterRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of NetworkRuleSet resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkRuleSetInner>> createOrUpdateNetworkRuleSetWithResponseAsync(String resourceGroupName,
         String namespaceName, NetworkRuleSetInner parameters) {
@@ -1753,17 +1260,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             context);
     }
 
-    /**
-     * Create or update NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters The Namespace IpFilterRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of NetworkRuleSet resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkRuleSetInner> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName,
         NetworkRuleSetInner parameters) {
@@ -1771,18 +1268,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters The Namespace IpFilterRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of NetworkRuleSet resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkRuleSetInner> createOrUpdateNetworkRuleSetWithResponse(String resourceGroupName,
         String namespaceName, NetworkRuleSetInner parameters, Context context) {
@@ -1790,17 +1276,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .block();
     }
 
-    /**
-     * Create or update NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters The Namespace IpFilterRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of NetworkRuleSet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRuleSetInner createOrUpdateNetworkRuleSet(String resourceGroupName, String namespaceName,
         NetworkRuleSetInner parameters) {
@@ -1885,16 +1361,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets list of NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRuleSet for a Namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkRuleSetInner> listNetworkRuleSetsAsync(String resourceGroupName, String namespaceName) {
         return new PagedFlux<>(() -> listNetworkRuleSetsSinglePageAsync(resourceGroupName, namespaceName),
@@ -1919,50 +1386,20 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             nextLink -> listNetworkRuleSetsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets list of NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRuleSet for a Namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRuleSetInner> listNetworkRuleSets(String resourceGroupName, String namespaceName) {
         return new PagedIterable<>(listNetworkRuleSetsAsync(resourceGroupName, namespaceName));
     }
 
-    /**
-     * Gets list of NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRuleSet for a Namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRuleSetInner> listNetworkRuleSets(String resourceGroupName, String namespaceName,
         Context context) {
         return new PagedIterable<>(listNetworkRuleSetsAsync(resourceGroupName, namespaceName, context));
     }
 
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(String resourceGroupName,
         String namespaceName, String authorizationRuleName) {
@@ -2034,17 +1471,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, authorizationRuleName, accept, context);
     }
 
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -2052,18 +1479,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String authorizationRuleName, Context context) {
@@ -2071,17 +1487,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .block();
     }
 
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBAuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -2089,19 +1495,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .getValue();
     }
 
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName,
@@ -2189,18 +1583,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName,
         String namespaceName, String authorizationRuleName, SBAuthorizationRuleInner parameters) {
@@ -2208,19 +1591,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String authorizationRuleName, SBAuthorizationRuleInner parameters, Context context) {
@@ -2228,18 +1599,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             parameters, context).block();
     }
 
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName,
         String authorizationRuleName, SBAuthorizationRuleInner parameters) {
@@ -2247,17 +1607,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a namespace authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -2326,17 +1676,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, authorizationRuleName, context);
     }
 
-    /**
-     * Deletes a namespace authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -2344,18 +1684,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a namespace authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
         String authorizationRuleName, Context context) {
@@ -2363,16 +1692,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             context).block();
     }
 
-    /**
-     * Deletes a namespace authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE);
@@ -2456,16 +1776,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the authorization rules for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(String resourceGroupName,
         String namespaceName) {
@@ -2491,51 +1802,21 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             nextLink -> listAuthorizationRulesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the authorization rules for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
         String namespaceName) {
         return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName));
     }
 
-    /**
-     * Gets the authorization rules for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
         String namespaceName, Context context) {
         return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, context));
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -2605,17 +1886,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             resourceGroupName, namespaceName, authorizationRuleName, accept, context);
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -2623,53 +1894,20 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName,
         String authorizationRuleName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, context).block();
     }
 
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         return listKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE).getValue();
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(String resourceGroupName,
         String namespaceName, String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
@@ -2755,18 +1993,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             accept, parameters, context);
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
@@ -2774,19 +2001,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters, Context context) {
@@ -2794,18 +2009,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             context).block();
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate the authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String authorizationRuleName,
         RegenerateAccessKeyParameters parameters) {
@@ -2813,16 +2017,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             Context.NONE).getValue();
     }
 
-    /**
-     * Check the give namespace name availability.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityResultInner>>
         checkNameAvailabilityWithResponseAsync(CheckNameAvailability parameters) {
@@ -2881,45 +2076,20 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Check the give namespace name availability.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(CheckNameAvailability parameters) {
         return checkNameAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the give namespace name availability.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner>
         checkNameAvailabilityWithResponse(CheckNameAvailability parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(parameters, context).block();
     }
 
-    /**
-     * Check the give namespace name availability.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(CheckNameAvailability parameters) {
         return checkNameAvailabilityWithResponse(parameters, Context.NONE).getValue();

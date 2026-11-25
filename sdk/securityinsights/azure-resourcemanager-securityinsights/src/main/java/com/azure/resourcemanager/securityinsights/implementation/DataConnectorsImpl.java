@@ -70,12 +70,11 @@ public final class DataConnectorsImpl implements DataConnectors {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String dataConnectorId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, dataConnectorId);
+        this.deleteWithResponse(resourceGroupName, workspaceName, dataConnectorId, Context.NONE);
     }
 
     public PagedIterable<DataConnector> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<DataConnectorInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectorImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<DataConnector> list(String resourceGroupName, String workspaceName, Context context) {
@@ -91,7 +90,7 @@ public final class DataConnectorsImpl implements DataConnectors {
 
     public void connect(String resourceGroupName, String workspaceName, String dataConnectorId,
         DataConnectorConnectBody connectBody) {
-        this.serviceClient().connect(resourceGroupName, workspaceName, dataConnectorId, connectBody);
+        this.connectWithResponse(resourceGroupName, workspaceName, dataConnectorId, connectBody, Context.NONE);
     }
 
     public Response<Void> disconnectWithResponse(String resourceGroupName, String workspaceName, String dataConnectorId,
@@ -100,7 +99,7 @@ public final class DataConnectorsImpl implements DataConnectors {
     }
 
     public void disconnect(String resourceGroupName, String workspaceName, String dataConnectorId) {
-        this.serviceClient().disconnect(resourceGroupName, workspaceName, dataConnectorId);
+        this.disconnectWithResponse(resourceGroupName, workspaceName, dataConnectorId, Context.NONE);
     }
 
     private DataConnectorsClient serviceClient() {

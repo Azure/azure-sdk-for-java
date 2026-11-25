@@ -10,7 +10,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputItem;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,7 +28,6 @@ public class MemoryStoresTests extends ClientTestBase {
 
     private static final Duration POLL_TIMEOUT = Duration.ofSeconds(30);
 
-    @Disabled("Paging behavior changed; the test may need to be re-recorded.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicMemoryStoresCrud(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -78,6 +76,7 @@ public class MemoryStoresTests extends ClientTestBase {
                 found = true;
                 assertEquals(updatedStore.getId(), store.getId());
                 assertEquals(updatedDescription, store.getDescription());
+                break;
             }
         }
         assertTrue(found, "Created memory store not found in list.");

@@ -69,12 +69,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, endpointName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Endpoint create(Context context) {
@@ -97,11 +92,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .updateWithResponse(resourceGroupName, storageMoverName, endpointName, updateEndpointParam, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Endpoint apply(Context context) {
@@ -127,11 +118,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .getWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Endpoint refresh(Context context) {

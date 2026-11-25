@@ -130,20 +130,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OriginGroupInner>> getWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String originGroupName) {
@@ -223,19 +210,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             resourceGroupName, profileName, endpointName, originGroupName, accept, context);
     }
 
-    /**
-     * Gets an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OriginGroupInner> getAsync(String resourceGroupName, String profileName, String endpointName,
         String originGroupName) {
@@ -243,60 +218,21 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OriginGroupInner> getWithResponse(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, context).block();
     }
 
-    /**
-     * Gets an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OriginGroupInner get(String resourceGroupName, String profileName, String endpointName,
         String originGroupName) {
         return getWithResponse(resourceGroupName, profileName, endpointName, originGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String originGroupName, OriginGroupInner originGroup) {
@@ -389,21 +325,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             resourceGroupName, profileName, endpointName, originGroupName, contentType, accept, originGroup, context);
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
-     * origins when the content cannot be served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(String resourceGroupName,
         String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup) {
@@ -440,21 +362,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             OriginGroupInner.class, OriginGroupInner.class, context);
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     * origins when the content cannot be served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(String resourceGroupName,
         String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup) {
@@ -462,22 +370,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     * origins when the content cannot be served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(String resourceGroupName,
         String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup,
@@ -487,21 +380,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OriginGroupInner> createAsync(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupInner originGroup) {
@@ -533,64 +412,21 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OriginGroupInner create(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupInner originGroup) {
         return createAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup).block();
     }
 
-    /**
-     * Creates a new origin group within the specified endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OriginGroupInner create(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupInner originGroup, Context context) {
         return createAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context).block();
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties) {
@@ -687,21 +523,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             originGroupUpdateProperties, context);
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
-     * origins when the content cannot be served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(String resourceGroupName,
         String profileName, String endpointName, String originGroupName,
@@ -739,21 +561,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             OriginGroupInner.class, OriginGroupInner.class, context);
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     * origins when the content cannot be served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(String resourceGroupName,
         String profileName, String endpointName, String originGroupName,
@@ -764,22 +572,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     * origins when the content cannot be served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(String resourceGroupName,
         String profileName, String endpointName, String originGroupName,
@@ -790,21 +583,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OriginGroupInner> updateAsync(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties) {
@@ -835,21 +614,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             originGroupUpdateProperties, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OriginGroupInner update(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties) {
@@ -857,22 +622,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .block();
     }
 
-    /**
-     * Updates an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     * served from CDN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OriginGroupInner update(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties, Context context) {
@@ -880,19 +630,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             context).block();
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
         String endpointName, String originGroupName) {
@@ -967,19 +705,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             resourceGroupName, profileName, endpointName, originGroupName, context);
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
         String endpointName, String originGroupName) {
@@ -1013,39 +739,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             context);
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String endpointName, String originGroupName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String endpointName, String originGroupName, Context context) {
@@ -1053,19 +754,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName,
         String originGroupName) {
@@ -1094,36 +783,13 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String endpointName, String originGroupName) {
         deleteAsync(resourceGroupName, profileName, endpointName, originGroupName).block();
     }
 
-    /**
-     * Deletes an existing origin group within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String endpointName, String originGroupName,
         Context context) {
@@ -1217,18 +883,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the existing origin groups within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OriginGroup list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OriginGroupInner> listByEndpointAsync(String resourceGroupName, String profileName,
         String endpointName) {
@@ -1257,37 +912,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             nextLink -> listByEndpointNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the existing origin groups within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OriginGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OriginGroupInner> listByEndpoint(String resourceGroupName, String profileName,
         String endpointName) {
         return new PagedIterable<>(listByEndpointAsync(resourceGroupName, profileName, endpointName));
     }
 
-    /**
-     * Lists all of the existing origin groups within an endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OriginGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OriginGroupInner> listByEndpoint(String resourceGroupName, String profileName,
         String endpointName, Context context) {

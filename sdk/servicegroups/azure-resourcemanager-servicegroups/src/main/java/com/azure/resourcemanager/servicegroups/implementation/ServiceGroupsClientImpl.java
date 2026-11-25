@@ -106,16 +106,7 @@ public final class ServiceGroupsClientImpl implements ServiceGroupsClient {
         return getWithResponseAsync(serviceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the details of the serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceGroupInner> getWithResponse(String serviceGroupName, Context context) {
         final String accept = "application/json";
@@ -123,15 +114,7 @@ public final class ServiceGroupsClientImpl implements ServiceGroupsClient {
             context);
     }
 
-    /**
-     * Get the details of the serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGroupInner get(String serviceGroupName) {
         return getWithResponse(serviceGroupName, Context.NONE).getValue();

@@ -96,7 +96,7 @@ public interface Server {
      * 
      * @return the version value.
      */
-    PostgresMajorVersion version();
+    String version();
 
     /**
      * Gets the minorVersion property: Minor version of PostgreSQL database engine.
@@ -437,7 +437,7 @@ public interface Server {
              * @param version Major version of PostgreSQL database engine.
              * @return the next definition stage.
              */
-            WithCreate withVersion(PostgresMajorVersion version);
+            WithCreate withVersion(String version);
         }
 
         /**
@@ -721,7 +721,7 @@ public interface Server {
              * @param version Major version of PostgreSQL database engine.
              * @return the next definition stage.
              */
-            Update withVersion(PostgresMajorVersion version);
+            Update withVersion(String version);
         }
 
         /**

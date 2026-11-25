@@ -259,20 +259,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get details of the specified snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, Context context) {
@@ -311,19 +298,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             resourceGroupName, accountName, poolName, volumeName, snapshotName, accept, context);
     }
 
-    /**
-     * Get details of the specified snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName) {
@@ -403,46 +378,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, SnapshotInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (snapshotName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, snapshotName,
-            contentType, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, body,
+            Context.NONE);
     }
 
     /**
@@ -528,44 +465,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             SnapshotInner.class, SnapshotInner.class, this.client.getContext());
     }
 
-    /**
-     * Create the specified snapshot within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Snapshot object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of snapshot of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String snapshotName, SnapshotInner body) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
-        return this.client.<SnapshotInner, SnapshotInner>getLroResult(response, SnapshotInner.class,
-            SnapshotInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Create the specified snapshot within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Snapshot object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of snapshot of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String snapshotName, SnapshotInner body,
@@ -597,46 +504,19 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create the specified snapshot within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Snapshot object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, SnapshotInner body) {
-        return beginCreate(resourceGroupName, accountName, poolName, volumeName, snapshotName, body).getFinalResult();
+        return create(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Create the specified snapshot within the given volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Snapshot object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, SnapshotInner body, Context context) {
-        return beginCreate(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context));
     }
 
     /**
@@ -702,39 +582,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (snapshotName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, snapshotName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE);
     }
 
     /**
@@ -811,41 +659,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE);
     }
 
-    /**
-     * Delete snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, Context context) {
@@ -874,41 +695,19 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName) {
-        beginDelete(resourceGroupName, accountName, poolName, volumeName, snapshotName).getFinalResult();
+        delete(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE);
     }
 
-    /**
-     * Delete snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, Context context) {
-        beginDelete(resourceGroupName, accountName, poolName, volumeName, snapshotName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, poolName, volumeName, snapshotName, context));
     }
 
     /**
@@ -990,38 +789,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listSinglePage(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SnapshotsList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
     /**
@@ -1073,38 +841,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all snapshots associated with the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> list(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName, volumeName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
-    /**
-     * List all snapshots associated with the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> list(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
@@ -1183,45 +927,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreFilesWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, SnapshotRestoreFiles body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (snapshotName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        return service.restoreFilesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, snapshotName,
-            contentType, body, Context.NONE);
+        return restoreFilesWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, body,
+            Context.NONE);
     }
 
     /**
@@ -1306,43 +1013,15 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             this.client.getContext());
     }
 
-    /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Restore payload supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(String resourceGroupName, String accountName,
         String poolName, String volumeName, String snapshotName, SnapshotRestoreFiles body) {
-        Response<BinaryData> response
-            = restoreFilesWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body,
+            Context.NONE);
     }
 
-    /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Restore payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(String resourceGroupName, String accountName,
         String poolName, String volumeName, String snapshotName, SnapshotRestoreFiles body, Context context) {
@@ -1372,44 +1051,19 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Restore payload supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, SnapshotRestoreFiles body) {
-        beginRestoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body).getFinalResult();
+        restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param body Restore payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, SnapshotRestoreFiles body, Context context) {
-        beginRestoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginRestoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context));
     }
 
     /**
@@ -1448,19 +1102,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SnapshotsList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -146,18 +146,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a log capture configuration for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a log capture configuration for a HorizonDB cluster along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogCaptureConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName, String logCaptureConfigurationName) {
@@ -169,17 +158,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a log capture configuration for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a log capture configuration for a HorizonDB cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogCaptureConfigurationInner> getAsync(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName) {
@@ -187,18 +166,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a log capture configuration for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a log capture configuration for a HorizonDB cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogCaptureConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, Context context) {
@@ -207,36 +175,14 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             resourceGroupName, clusterName, logCaptureConfigurationName, accept, context);
     }
 
-    /**
-     * Gets a log capture configuration for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a log capture configuration for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogCaptureConfigurationInner get(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName) {
         return getWithResponse(resourceGroupName, clusterName, logCaptureConfigurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a predefined log capture configuration created by the service for a HorizonDB cluster along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, LogCaptureConfigurationForPatchUpdate properties) {
@@ -265,11 +211,8 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, LogCaptureConfigurationForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, logCaptureConfigurationName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, logCaptureConfigurationName, properties,
+            Context.NONE);
     }
 
     /**
@@ -296,19 +239,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             accept, properties, context);
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a predefined log capture configuration created by the service for a
-     * HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogCaptureConfigurationInner>, LogCaptureConfigurationInner> beginUpdateAsync(
         String resourceGroupName, String clusterName, String logCaptureConfigurationName,
@@ -320,43 +251,15 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             this.client.getContext());
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a predefined log capture configuration created by the service for a
-     * HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogCaptureConfigurationInner>, LogCaptureConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String logCaptureConfigurationName,
         LogCaptureConfigurationForPatchUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, clusterName, logCaptureConfigurationName, properties);
-        return this.client.<LogCaptureConfigurationInner, LogCaptureConfigurationInner>getLroResult(response,
-            LogCaptureConfigurationInner.class, LogCaptureConfigurationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, logCaptureConfigurationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a predefined log capture configuration created by the service for a
-     * HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogCaptureConfigurationInner>, LogCaptureConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String logCaptureConfigurationName,
@@ -367,19 +270,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             LogCaptureConfigurationInner.class, LogCaptureConfigurationInner.class, context);
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a predefined log capture configuration created by the service for a HorizonDB cluster on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogCaptureConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, LogCaptureConfigurationForPatchUpdate properties) {
@@ -387,42 +278,19 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a predefined log capture configuration created by the service for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogCaptureConfigurationInner update(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, LogCaptureConfigurationForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, logCaptureConfigurationName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, logCaptureConfigurationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a log capture configuration. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logCaptureConfigurationName The name of the LogCaptureConfiguration.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a predefined log capture configuration created by the service for a HorizonDB cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogCaptureConfigurationInner update(String resourceGroupName, String clusterName,
         String logCaptureConfigurationName, LogCaptureConfigurationForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, logCaptureConfigurationName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, clusterName, logCaptureConfigurationName, properties, context));
     }
 
     /**
@@ -448,16 +316,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the log capture configurations for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogCaptureConfiguration list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LogCaptureConfigurationInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -476,12 +335,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogCaptureConfigurationInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<LogCaptureConfigurationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -506,35 +360,13 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the log capture configurations for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogCaptureConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogCaptureConfigurationInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists the log capture configurations for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogCaptureConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogCaptureConfigurationInner> list(String resourceGroupName, String clusterName,
         Context context) {
@@ -572,11 +404,7 @@ public final class LogCaptureConfigurationsClientImpl implements LogCaptureConfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogCaptureConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LogCaptureConfigurationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

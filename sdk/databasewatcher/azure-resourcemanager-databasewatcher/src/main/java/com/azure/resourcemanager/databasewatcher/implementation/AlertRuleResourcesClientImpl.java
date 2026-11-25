@@ -196,18 +196,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AlertRuleResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param alertRuleResourceName The alert rule proxy resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AlertRuleResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertRuleResourceInner> getWithResponse(String resourceGroupName, String watcherName,
         String alertRuleResourceName, Context context) {
@@ -216,17 +205,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             resourceGroupName, watcherName, alertRuleResourceName, accept, context);
     }
 
-    /**
-     * Get a AlertRuleResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param alertRuleResourceName The alert rule proxy resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AlertRuleResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertRuleResourceInner get(String resourceGroupName, String watcherName, String alertRuleResourceName) {
         return getWithResponse(resourceGroupName, watcherName, alertRuleResourceName, Context.NONE).getValue();
@@ -277,20 +256,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a AlertRuleResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param alertRuleResourceName The alert rule proxy resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertRuleResourceInner> createOrUpdateWithResponse(String resourceGroupName, String watcherName,
         String alertRuleResourceName, AlertRuleResourceInner resource, Context context) {
@@ -301,18 +267,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             resource, context);
     }
 
-    /**
-     * Create a AlertRuleResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param alertRuleResourceName The alert rule proxy resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertRuleResourceInner createOrUpdate(String resourceGroupName, String watcherName,
         String alertRuleResourceName, AlertRuleResourceInner resource) {
@@ -357,18 +312,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a AlertRuleResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param alertRuleResourceName The alert rule proxy resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String watcherName, String alertRuleResourceName,
         Context context) {
@@ -376,16 +320,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             this.client.getSubscriptionId(), resourceGroupName, watcherName, alertRuleResourceName, context);
     }
 
-    /**
-     * Delete a AlertRuleResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param alertRuleResourceName The alert rule proxy resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName, String alertRuleResourceName) {
         deleteWithResponse(resourceGroupName, watcherName, alertRuleResourceName, Context.NONE);
@@ -442,12 +377,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleResourceInner> listByParentSinglePage(String resourceGroupName, String watcherName) {
-        final String accept = "application/json";
-        Response<AlertRuleResourceListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -472,33 +402,13 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AlertRuleResource resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AlertRuleResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleResourceInner> listByParent(String resourceGroupName, String watcherName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, watcherName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * List AlertRuleResource resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AlertRuleResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleResourceInner> listByParent(String resourceGroupName, String watcherName,
         Context context) {
@@ -537,11 +447,7 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleResourceInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AlertRuleResourceListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

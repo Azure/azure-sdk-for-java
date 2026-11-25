@@ -46,13 +46,7 @@ public final class TransparentDataEncryptionsImpl implements TransparentDataEncr
 
     public TransparentDataEncryption createOrReplace(String resourceGroupName, String schedulerName,
         TransparentDataEncryptionInner resource) {
-        TransparentDataEncryptionInner inner
-            = this.serviceClient().createOrReplace(resourceGroupName, schedulerName, resource);
-        if (inner != null) {
-            return new TransparentDataEncryptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     public TransparentDataEncryption createOrReplace(String resourceGroupName, String schedulerName,
@@ -67,7 +61,7 @@ public final class TransparentDataEncryptionsImpl implements TransparentDataEncr
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String schedulerName) {
-        this.serviceClient().delete(resourceGroupName, schedulerName);
+        this.delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schedulerName, Context context) {
@@ -75,9 +69,7 @@ public final class TransparentDataEncryptionsImpl implements TransparentDataEncr
     }
 
     public PagedIterable<TransparentDataEncryption> listByScheduler(String resourceGroupName, String schedulerName) {
-        PagedIterable<TransparentDataEncryptionInner> inner
-            = this.serviceClient().listByScheduler(resourceGroupName, schedulerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransparentDataEncryptionImpl(inner1, this.manager()));
+        return this.listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public PagedIterable<TransparentDataEncryption> listByScheduler(String resourceGroupName, String schedulerName,

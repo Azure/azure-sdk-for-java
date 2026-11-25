@@ -91,18 +91,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database advisor along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdvisorInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String advisorName) {
@@ -176,18 +165,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             resourceGroupName, serverName, databaseName, advisorName, accept, context);
     }
 
-    /**
-     * Gets a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database advisor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvisorInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String advisorName) {
@@ -195,56 +173,20 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database advisor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvisorInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
         String advisorName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, advisorName, context).block();
     }
 
-    /**
-     * Gets a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database advisor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvisorInner get(String resourceGroupName, String serverName, String databaseName, String advisorName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, advisorName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param parameters The requested advisor resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdvisorInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String advisorName, AdvisorInner parameters) {
@@ -334,19 +276,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             resourceGroupName, serverName, databaseName, advisorName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param parameters The requested advisor resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvisorInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
         String advisorName, AdvisorInner parameters) {
@@ -354,20 +284,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param parameters The requested advisor resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvisorInner> updateWithResponse(String resourceGroupName, String serverName, String databaseName,
         String advisorName, AdvisorInner parameters, Context context) {
@@ -375,19 +292,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             .block();
     }
 
-    /**
-     * Updates a database advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param parameters The requested advisor resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvisorInner update(String resourceGroupName, String serverName, String databaseName, String advisorName,
         AdvisorInner parameters) {
@@ -395,18 +300,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             .getValue();
     }
 
-    /**
-     * Gets a list of database advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database advisors along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<AdvisorInner>>> listByDatabaseWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, String expand) {
@@ -475,17 +369,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             this.client.getSubscriptionId(), resourceGroupName, serverName, databaseName, expand, accept, context);
     }
 
-    /**
-     * Gets a list of database advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database advisors on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<AdvisorInner>> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -494,36 +378,14 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of database advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database advisors along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<AdvisorInner>> listByDatabaseWithResponse(String resourceGroupName, String serverName,
         String databaseName, String expand, Context context) {
         return listByDatabaseWithResponseAsync(resourceGroupName, serverName, databaseName, expand, context).block();
     }
 
-    /**
-     * Gets a list of database advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database advisors.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<AdvisorInner> listByDatabase(String resourceGroupName, String serverName, String databaseName) {
         final String expand = null;

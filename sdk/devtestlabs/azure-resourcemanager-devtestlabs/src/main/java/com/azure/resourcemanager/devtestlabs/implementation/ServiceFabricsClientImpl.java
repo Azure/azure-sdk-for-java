@@ -288,20 +288,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get service fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service fabric along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceFabricInner> getWithResponse(String resourceGroupName, String labName, String userName,
         String name, String expand, Context context) {
@@ -310,18 +297,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             resourceGroupName, labName, userName, name, expand, accept, context);
     }
 
-    /**
-     * Get service fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceFabricInner get(String resourceGroupName, String labName, String userName, String name) {
         final String expand = null;
@@ -369,11 +345,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String labName, String userName,
         String name, ServiceFabricInner serviceFabric) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, contentType, accept,
-            serviceFabric, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, labName, userName, name, serviceFabric, Context.NONE);
     }
 
     /**
@@ -422,42 +394,14 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             ServiceFabricInner.class, ServiceFabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param serviceFabric A Service Fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Service Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceFabricInner>, ServiceFabricInner> beginCreateOrUpdate(String resourceGroupName,
         String labName, String userName, String name, ServiceFabricInner serviceFabric) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, labName, userName, name, serviceFabric);
-        return this.client.<ServiceFabricInner, ServiceFabricInner>getLroResult(response, ServiceFabricInner.class,
-            ServiceFabricInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, serviceFabric, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param serviceFabric A Service Fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Service Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceFabricInner>, ServiceFabricInner> beginCreateOrUpdate(String resourceGroupName,
         String labName, String userName, String name, ServiceFabricInner serviceFabric, Context context) {
@@ -487,43 +431,19 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param serviceFabric A Service Fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceFabricInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         ServiceFabricInner serviceFabric) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, serviceFabric).getFinalResult();
+        return createOrUpdate(resourceGroupName, labName, userName, name, serviceFabric, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param serviceFabric A Service Fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceFabricInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         ServiceFabricInner serviceFabric, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, serviceFabric, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, labName, userName, name, serviceFabric, context));
     }
 
     /**
@@ -571,20 +491,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of service fabrics. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param serviceFabric A Service Fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceFabricInner> updateWithResponse(String resourceGroupName, String labName, String userName,
         String name, ServiceFabricFragment serviceFabric, Context context) {
@@ -595,19 +502,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             serviceFabric, context);
     }
 
-    /**
-     * Allows modifying tags of service fabrics. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param serviceFabric A Service Fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceFabricInner update(String resourceGroupName, String labName, String userName, String name,
         ServiceFabricFragment serviceFabric) {
@@ -650,8 +545,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String labName, String userName,
         String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
     /**
@@ -694,38 +588,14 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String userName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, labName, userName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Delete service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String userName,
         String name, Context context) {
@@ -751,37 +621,16 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name) {
-        beginDelete(resourceGroupName, labName, userName, name).getFinalResult();
+        delete(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Delete service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name, Context context) {
-        beginDelete(resourceGroupName, labName, userName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, labName, userName, name, context));
     }
 
     /**
@@ -876,12 +725,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceFabricInner> listSinglePage(String resourceGroupName, String labName, String userName,
         String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<ServiceFabricList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, userName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -911,44 +755,17 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List service fabrics in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceFabricInner> list(String resourceGroupName, String labName, String userName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List service fabrics in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceFabricInner> list(String resourceGroupName, String labName, String userName,
         String expand, String filter, Integer top, String orderby, Context context) {
@@ -1000,19 +817,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the applicable start/stop schedules, if any.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicableScheduleInner> listApplicableSchedulesWithResponse(String resourceGroupName,
         String labName, String userName, String name, Context context) {
@@ -1021,18 +826,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, accept, context);
     }
 
-    /**
-     * Lists the applicable start/stop schedules, if any.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicableScheduleInner listApplicableSchedules(String resourceGroupName, String labName, String userName,
         String name) {
@@ -1075,8 +869,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String labName, String userName,
         String name) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, Context.NONE);
+        return startWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
     /**
@@ -1119,38 +912,14 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             this.client.getContext());
     }
 
-    /**
-     * Start a service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String labName, String userName,
         String name) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, labName, userName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Start a service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String labName, String userName,
         String name, Context context) {
@@ -1176,37 +945,16 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start a service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String labName, String userName, String name) {
-        beginStart(resourceGroupName, labName, userName, name).getFinalResult();
+        start(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Start a service fabric. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String labName, String userName, String name, Context context) {
-        beginStart(resourceGroupName, labName, userName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, labName, userName, name, context));
     }
 
     /**
@@ -1245,8 +993,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String labName, String userName,
         String name) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, labName, userName, name, Context.NONE);
+        return stopWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
     /**
@@ -1289,38 +1036,14 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             this.client.getContext());
     }
 
-    /**
-     * Stop a service fabric This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String labName, String userName,
         String name) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, labName, userName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Stop a service fabric This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String labName, String userName,
         String name, Context context) {
@@ -1346,37 +1069,16 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stop a service fabric This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String labName, String userName, String name) {
-        beginStop(resourceGroupName, labName, userName, name).getFinalResult();
+        stop(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Stop a service fabric This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String labName, String userName, String name, Context context) {
-        beginStop(resourceGroupName, labName, userName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceGroupName, labName, userName, name, context));
     }
 
     /**
@@ -1409,11 +1111,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceFabricInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ServiceFabricList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

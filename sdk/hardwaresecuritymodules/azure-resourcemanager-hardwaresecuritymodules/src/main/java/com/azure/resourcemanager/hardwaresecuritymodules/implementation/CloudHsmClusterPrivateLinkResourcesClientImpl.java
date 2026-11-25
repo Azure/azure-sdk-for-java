@@ -158,12 +158,7 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterSinglePage(String resourceGroupName,
         String cloudHsmClusterName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByCloudHsmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudHsmClusterSinglePage(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
     /**
@@ -189,38 +184,14 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the private link resources supported for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByCloudHsmCluster(String resourceGroupName,
         String cloudHsmClusterName) {
-        return new PagedIterable<>(() -> listByCloudHsmClusterSinglePage(resourceGroupName, cloudHsmClusterName),
-            nextLink -> listByCloudHsmClusterNextSinglePage(nextLink));
+        return listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
-    /**
-     * Gets the private link resources supported for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByCloudHsmCluster(String resourceGroupName,
         String cloudHsmClusterName, Context context) {
@@ -261,11 +232,7 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByCloudHsmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudHsmClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

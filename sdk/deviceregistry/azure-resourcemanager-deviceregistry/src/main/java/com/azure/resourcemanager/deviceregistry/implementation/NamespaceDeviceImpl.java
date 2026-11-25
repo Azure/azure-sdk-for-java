@@ -98,10 +98,7 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
     }
 
     public NamespaceDevice create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceDevices()
-            .createOrReplace(resourceGroupName, namespaceName, deviceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NamespaceDevice create(Context context) {
@@ -123,10 +120,7 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
     }
 
     public NamespaceDevice apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceDevices()
-            .update(resourceGroupName, namespaceName, deviceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NamespaceDevice apply(Context context) {
@@ -152,11 +146,7 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
     }
 
     public NamespaceDevice refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceDevices()
-            .getWithResponse(resourceGroupName, namespaceName, deviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NamespaceDevice refresh(Context context) {

@@ -85,7 +85,7 @@ public final class GroupQuotasImpl implements GroupQuotas {
     }
 
     public void deleteByResourceGroup(String managementGroupId, String groupQuotaName) {
-        this.serviceClient().delete(managementGroupId, groupQuotaName);
+        this.delete(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     public void delete(String managementGroupId, String groupQuotaName, Context context) {
@@ -93,8 +93,7 @@ public final class GroupQuotasImpl implements GroupQuotas {
     }
 
     public PagedIterable<GroupQuotasEntity> list(String managementGroupId) {
-        PagedIterable<GroupQuotasEntityInner> inner = this.serviceClient().list(managementGroupId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupQuotasEntityImpl(inner1, this.manager()));
+        return this.list(managementGroupId, Context.NONE);
     }
 
     public PagedIterable<GroupQuotasEntity> list(String managementGroupId, Context context) {

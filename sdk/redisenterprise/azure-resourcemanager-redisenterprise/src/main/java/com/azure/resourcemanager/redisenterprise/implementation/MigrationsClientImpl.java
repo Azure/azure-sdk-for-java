@@ -36,6 +36,7 @@ import com.azure.resourcemanager.redisenterprise.fluent.MigrationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationValidationResponseInner;
 import com.azure.resourcemanager.redisenterprise.implementation.models.MigrationList;
+import com.azure.resourcemanager.redisenterprise.models.MigrationUndoRequest;
 import com.azure.resourcemanager.redisenterprise.models.MigrationValidationRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -131,16 +132,34 @@ public final class MigrationsClientImpl implements MigrationsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> undo(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            Context context);
+            @BodyParam("application/json") MigrationUndoRequest body, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> undoSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @BodyParam("application/json") MigrationUndoRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/unlinkMigratedEndpoint")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> unlinkMigratedEndpoint(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/unlinkMigratedEndpoint")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> unlinkMigratedEndpointSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             Context context);
@@ -215,18 +234,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a migration in a Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a migration in a Redis Enterprise cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationInner> getWithResponse(String resourceGroupName, String clusterName, Context context) {
         final String accept = "application/json";
@@ -234,17 +242,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets information about a migration in a Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a migration in a Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -288,11 +286,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName,
         MigrationInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+        return startWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -338,41 +332,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
             MigrationInner.class, MigrationInner.class, this.client.getContext());
     }
 
-    /**
-     * Starts a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param parameters Parameters supplied to start a migration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the current migration operation on a Redis Enterprise
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationInner>, MigrationInner> beginStart(String resourceGroupName,
         String clusterName, MigrationInner parameters) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<MigrationInner, MigrationInner>getLroResult(response, MigrationInner.class,
-            MigrationInner.class, Context.NONE);
+        return beginStart(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param parameters Parameters supplied to start a migration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the current migration operation on a Redis Enterprise
-     * cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationInner>, MigrationInner> beginStart(String resourceGroupName,
         String clusterName, MigrationInner parameters, Context context) {
@@ -400,40 +367,17 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param parameters Parameters supplied to start a migration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the current migration operation on a Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner start(String resourceGroupName, String clusterName, MigrationInner parameters) {
-        return beginStart(resourceGroupName, clusterName, parameters).getFinalResult();
+        return start(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param parameters Parameters supplied to start a migration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the current migration operation on a Redis Enterprise cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner start(String resourceGroupName, String clusterName, MigrationInner parameters,
         Context context) {
-        return beginStart(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStart(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -490,11 +434,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<MigrationList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -519,37 +459,13 @@ public final class MigrationsClientImpl implements MigrationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about all migrations attempts in a Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all migrations attempts in a Redis Enterprise cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Gets information about all migrations attempts in a Redis Enterprise cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all migrations attempts in a Redis Enterprise cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
@@ -562,16 +478,18 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param body Parameters supplied to undo a migration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String clusterName) {
+    private Mono<Response<Flux<ByteBuffer>>> undoWithResponseAsync(String resourceGroupName, String clusterName,
+        MigrationUndoRequest body) {
         return FluxUtil
-            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
+            .withContext(context -> service.undo(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -581,15 +499,16 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param body Parameters supplied to undo a migration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String clusterName) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+    private Response<BinaryData> undoWithResponse(String resourceGroupName, String clusterName,
+        MigrationUndoRequest body) {
+        return undoWithResponse(resourceGroupName, clusterName, body, Context.NONE);
     }
 
     /**
@@ -598,6 +517,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param body Parameters supplied to undo a migration operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -605,9 +525,30 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String clusterName, Context context) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
+    private Response<BinaryData> undoWithResponse(String resourceGroupName, String clusterName,
+        MigrationUndoRequest body, Context context) {
+        return service.undoSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, body, context);
+    }
+
+    /**
+     * Cancel or rollback the migration operation in a Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param body Parameters supplied to undo a migration operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUndoAsync(String resourceGroupName, String clusterName,
+        MigrationUndoRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = undoWithResponseAsync(resourceGroupName, clusterName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -622,8 +563,9 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String clusterName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, clusterName);
+    private PollerFlux<PollResult<Void>, Void> beginUndoAsync(String resourceGroupName, String clusterName) {
+        final MigrationUndoRequest body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = undoWithResponseAsync(resourceGroupName, clusterName, body);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -634,15 +576,31 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param body Parameters supplied to undo a migration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    private SyncPoller<PollResult<Void>, Void> beginUndo(String resourceGroupName, String clusterName,
+        MigrationUndoRequest body) {
+        return beginUndo(resourceGroupName, clusterName, body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUndo(String resourceGroupName, String clusterName) {
+        final MigrationUndoRequest body = null;
+        return beginUndo(resourceGroupName, clusterName, body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUndo(String resourceGroupName, String clusterName,
+        MigrationUndoRequest body, Context context) {
+        Response<BinaryData> response = undoWithResponse(resourceGroupName, clusterName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -651,17 +609,16 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param context The context to associate with this operation.
+     * @param body Parameters supplied to undo a migration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String clusterName,
-        Context context) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, clusterName, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> undoAsync(String resourceGroupName, String clusterName, MigrationUndoRequest body) {
+        return beginUndoAsync(resourceGroupName, clusterName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -676,12 +633,28 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(String resourceGroupName, String clusterName) {
-        return beginCancelAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> undoAsync(String resourceGroupName, String clusterName) {
+        final MigrationUndoRequest body = null;
+        return beginUndoAsync(resourceGroupName, clusterName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void undo(String resourceGroupName, String clusterName) {
+        final MigrationUndoRequest body = null;
+        undo(resourceGroupName, clusterName, body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void undo(String resourceGroupName, String clusterName, MigrationUndoRequest body, Context context) {
+        this.client.getLroFinalResultOrError(beginUndo(resourceGroupName, clusterName, body, context));
     }
 
     /**
-     * Cancel or rollback the migration operation in a Redis Enterprise cluster.
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
@@ -689,14 +662,37 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String clusterName) {
-        beginCancel(resourceGroupName, clusterName).getFinalResult();
+    private Mono<Response<Flux<ByteBuffer>>> unlinkMigratedEndpointWithResponseAsync(String resourceGroupName,
+        String clusterName) {
+        return FluxUtil
+            .withContext(context -> service.unlinkMigratedEndpoint(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Cancel or rollback the migration operation in a Redis Enterprise cluster.
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> unlinkMigratedEndpointWithResponse(String resourceGroupName, String clusterName) {
+        return unlinkMigratedEndpointWithResponse(resourceGroupName, clusterName, Context.NONE);
+    }
+
+    /**
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
@@ -705,10 +701,78 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String clusterName, Context context) {
-        beginCancel(resourceGroupName, clusterName, context).getFinalResult();
+    private Response<BinaryData> unlinkMigratedEndpointWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
+        return service.unlinkMigratedEndpointSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
+    }
+
+    /**
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUnlinkMigratedEndpointAsync(String resourceGroupName,
+        String clusterName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = unlinkMigratedEndpointWithResponseAsync(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUnlinkMigratedEndpoint(String resourceGroupName,
+        String clusterName) {
+        return beginUnlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUnlinkMigratedEndpoint(String resourceGroupName, String clusterName,
+        Context context) {
+        Response<BinaryData> response = unlinkMigratedEndpointWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Unlinks the migrated endpoint from the Azure Managed Redis cluster that was migrated from Azure Cache for Redis,
+     * removing the source cache endpoint that was redirected to this cluster during migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> unlinkMigratedEndpointAsync(String resourceGroupName, String clusterName) {
+        return beginUnlinkMigratedEndpointAsync(resourceGroupName, clusterName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName) {
+        unlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context) {
+        this.client.getLroFinalResultOrError(beginUnlinkMigratedEndpoint(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -754,19 +818,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates if a source Azure Cache for Redis resource can be migrated to a target Azure Managed Redis resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param body Parameters supplied to validate a migration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for migration validation operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationValidationResponseInner> validateWithResponse(String resourceGroupName, String clusterName,
         MigrationValidationRequest body, Context context) {
@@ -776,18 +828,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, body, context);
     }
 
-    /**
-     * Validates if a source Azure Cache for Redis resource can be migrated to a target Azure Managed Redis resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param body Parameters supplied to validate a migration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for migration validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationValidationResponseInner validate(String resourceGroupName, String clusterName,
         MigrationValidationRequest body) {
@@ -824,10 +865,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MigrationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

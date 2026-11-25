@@ -204,18 +204,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified EncryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified EncryptionScope associated with the Cognitive Services account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EncryptionScopeInner> getWithResponse(String resourceGroupName, String accountName,
         String encryptionScopeName, Context context) {
@@ -224,17 +213,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             resourceGroupName, accountName, encryptionScopeName, accept, context);
     }
 
-    /**
-     * Gets the specified EncryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified EncryptionScope associated with the Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptionScopeInner get(String resourceGroupName, String accountName, String encryptionScopeName) {
         return getWithResponse(resourceGroupName, accountName, encryptionScopeName, Context.NONE).getValue();
@@ -283,19 +262,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the state of specified encryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @param encryptionScope The encryptionScope properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services EncryptionScope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EncryptionScopeInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String encryptionScopeName, EncryptionScopeInner encryptionScope, Context context) {
@@ -306,18 +273,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             encryptionScope, context);
     }
 
-    /**
-     * Update the state of specified encryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @param encryptionScope The encryptionScope properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services EncryptionScope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptionScopeInner createOrUpdate(String resourceGroupName, String accountName, String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
@@ -359,8 +315,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String encryptionScopeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, encryptionScopeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, encryptionScopeName, Context.NONE);
     }
 
     /**
@@ -402,36 +357,14 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified encryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String encryptionScopeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, encryptionScopeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, encryptionScopeName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified encryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String encryptionScopeName, Context context) {
@@ -457,35 +390,16 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified encryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String encryptionScopeName) {
-        beginDelete(resourceGroupName, accountName, encryptionScopeName).getFinalResult();
+        delete(resourceGroupName, accountName, encryptionScopeName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified encryptionScope associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param encryptionScopeName The name of the encryptionScope associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String encryptionScopeName, Context context) {
-        beginDelete(resourceGroupName, accountName, encryptionScopeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, encryptionScopeName, context));
     }
 
     /**
@@ -540,12 +454,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EncryptionScopeInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<EncryptionScopeListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -570,35 +479,13 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the content filters associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content filters associated with the Azure OpenAI account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionScopeInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the content filters associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content filters associated with the Azure OpenAI account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionScopeInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -635,11 +522,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EncryptionScopeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EncryptionScopeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

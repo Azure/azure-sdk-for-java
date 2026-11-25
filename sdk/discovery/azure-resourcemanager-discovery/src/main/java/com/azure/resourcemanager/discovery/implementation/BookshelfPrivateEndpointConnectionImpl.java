@@ -62,11 +62,7 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
     }
 
     public BookshelfPrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelfPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BookshelfPrivateEndpointConnection create(Context context) {
@@ -89,11 +85,7 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
     }
 
     public BookshelfPrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelfPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BookshelfPrivateEndpointConnection apply(Context context) {
@@ -120,11 +112,7 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
     }
 
     public BookshelfPrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelfPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BookshelfPrivateEndpointConnection refresh(Context context) {

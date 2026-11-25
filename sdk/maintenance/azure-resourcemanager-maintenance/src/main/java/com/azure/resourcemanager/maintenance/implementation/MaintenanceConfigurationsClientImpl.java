@@ -207,17 +207,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -226,16 +216,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Get Configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -283,18 +264,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Update configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param configuration The configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
         String resourceName, MaintenanceConfigurationInner configuration, Context context) {
@@ -305,17 +275,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             context);
     }
 
-    /**
-     * Create or Update configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param configuration The configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner createOrUpdate(String resourceGroupName, String resourceName,
         MaintenanceConfigurationInner configuration) {
@@ -364,18 +324,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Patch configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param configuration The configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> updateWithResponse(String resourceGroupName, String resourceName,
         MaintenanceConfigurationInner configuration, Context context) {
@@ -386,17 +335,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             context);
     }
 
-    /**
-     * Patch configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param configuration The configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner update(String resourceGroupName, String resourceName,
         MaintenanceConfigurationInner configuration) {
@@ -440,17 +379,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Delete Configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> deleteWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -459,16 +388,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Delete Configuration record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the MaintenanceConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner delete(String resourceGroupName, String resourceName) {
         return deleteWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -514,11 +434,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceConfigurationInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ListMaintenanceConfigurationsResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -539,27 +455,13 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Configuration records within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get Configuration records within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -595,11 +497,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListMaintenanceConfigurationsResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -268,18 +268,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a UpdateRun along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateRunInner> getWithResponse(String resourceGroupName, String fleetName, String updateRunName,
         Context context) {
@@ -288,17 +277,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             resourceGroupName, fleetName, updateRunName, accept, context);
     }
 
-    /**
-     * Get a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a UpdateRun.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner get(String resourceGroupName, String fleetName, String updateRunName) {
         return getWithResponse(resourceGroupName, fleetName, updateRunName, Context.NONE).getValue();
@@ -348,11 +327,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String fleetName,
         String updateRunName, UpdateRunInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, updateRunName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -444,54 +420,23 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
         String fleetName, String updateRunName, UpdateRunInner resource, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
         String fleetName, String updateRunName, UpdateRunInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
         String fleetName, String updateRunName, UpdateRunInner resource, String ifMatch, String ifNoneMatch,
@@ -548,47 +493,22 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner createOrUpdate(String resourceGroupName, String fleetName, String updateRunName,
         UpdateRunInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner createOrUpdate(String resourceGroupName, String fleetName, String updateRunName,
         UpdateRunInner resource, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -627,8 +547,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName, String updateRunName,
         String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
     /**
@@ -706,44 +625,20 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateRunName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateRunName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateRunName, String ifMatch, Context context) {
@@ -788,38 +683,19 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String updateRunName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, fleetName, updateRunName, ifMatch).getFinalResult();
+        delete(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, fleetName, updateRunName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, fleetName, updateRunName, ifMatch, context));
     }
 
     /**
@@ -899,12 +775,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateRunInner> listByFleetSinglePage(String resourceGroupName, String fleetName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<UpdateRunListResult> res
-            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -931,37 +802,15 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List UpdateRun resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpdateRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateRunInner> listByFleet(String resourceGroupName, String fleetName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken),
-            nextLink -> listByFleetNextSinglePage(nextLink));
+        return listByFleet(resourceGroupName, fleetName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List UpdateRun resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param top The number of result items to return.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpdateRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateRunInner> listByFleet(String resourceGroupName, String fleetName, Integer top,
         String skipToken, Context context) {
@@ -1007,10 +856,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String fleetName, String updateRunName,
         String ifMatch) {
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, accept,
-            Context.NONE);
+        return startWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
     /**
@@ -1092,48 +938,20 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
-        String updateRunName, String ifMatch) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+    private SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName,
+        String fleetName, String updateRunName, String ifMatch) {
+        return beginStart(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Starts an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
         String updateRunName) {
         final String ifMatch = null;
-        Response<BinaryData> response = startWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginStart(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Starts an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
         String updateRunName, String ifMatch, Context context) {
@@ -1182,40 +1000,19 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName) {
         final String ifMatch = null;
-        return beginStart(resourceGroupName, fleetName, updateRunName, ifMatch).getFinalResult();
+        return start(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Starts an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
         Context context) {
-        return beginStart(resourceGroupName, fleetName, updateRunName, ifMatch, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginStart(resourceGroupName, fleetName, updateRunName, ifMatch, context));
     }
 
     /**
@@ -1256,9 +1053,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String fleetName, String updateRunName,
         String ifMatch) {
-        final String accept = "application/json";
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, ifMatch, fleetName, updateRunName, accept, Context.NONE);
+        return stopWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
     /**
@@ -1340,48 +1135,20 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
         String updateRunName, String ifMatch) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginStop(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Stops an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
         String updateRunName) {
         final String ifMatch = null;
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, fleetName, updateRunName, ifMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginStop(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Stops an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
         String updateRunName, String ifMatch, Context context) {
@@ -1429,40 +1196,19 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName) {
         final String ifMatch = null;
-        return beginStop(resourceGroupName, fleetName, updateRunName, ifMatch).getFinalResult();
+        return stop(resourceGroupName, fleetName, updateRunName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Stops an UpdateRun.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
         Context context) {
-        return beginStop(resourceGroupName, fleetName, updateRunName, ifMatch, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginStop(resourceGroupName, fleetName, updateRunName, ifMatch, context));
     }
 
     /**
@@ -1507,10 +1253,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> skipWithResponse(String resourceGroupName, String fleetName, String updateRunName,
         SkipProperties body, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.skipSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, ifMatch, fleetName, updateRunName, contentType, accept, body, Context.NONE);
+        return skipWithResponse(resourceGroupName, fleetName, updateRunName, body, ifMatch, Context.NONE);
     }
 
     /**
@@ -1597,50 +1340,20 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
         String updateRunName, SkipProperties body, String ifMatch) {
-        Response<BinaryData> response = skipWithResponse(resourceGroupName, fleetName, updateRunName, body, ifMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginSkip(resourceGroupName, fleetName, updateRunName, body, ifMatch, Context.NONE);
     }
 
-    /**
-     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
         String updateRunName, SkipProperties body) {
         final String ifMatch = null;
-        Response<BinaryData> response = skipWithResponse(resourceGroupName, fleetName, updateRunName, body, ifMatch);
-        return this.client.<UpdateRunInner, UpdateRunInner>getLroResult(response, UpdateRunInner.class,
-            UpdateRunInner.class, Context.NONE);
+        return beginSkip(resourceGroupName, fleetName, updateRunName, body, ifMatch, Context.NONE);
     }
 
-    /**
-     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param body The content of the action request.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     * of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
         String updateRunName, SkipProperties body, String ifMatch, Context context) {
@@ -1692,42 +1405,19 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body) {
         final String ifMatch = null;
-        return beginSkip(resourceGroupName, fleetName, updateRunName, body, ifMatch).getFinalResult();
+        return skip(resourceGroupName, fleetName, updateRunName, body, ifMatch, Context.NONE);
     }
 
-    /**
-     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param updateRunName The name of the UpdateRun resource.
-     * @param body The content of the action request.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a multi-stage process to perform update operations across members of a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body,
         String ifMatch, Context context) {
-        return beginSkip(resourceGroupName, fleetName, updateRunName, body, ifMatch, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginSkip(resourceGroupName, fleetName, updateRunName, body, ifMatch, context));
     }
 
     /**
@@ -1761,11 +1451,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateRunInner> listByFleetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UpdateRunListResult> res
-            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

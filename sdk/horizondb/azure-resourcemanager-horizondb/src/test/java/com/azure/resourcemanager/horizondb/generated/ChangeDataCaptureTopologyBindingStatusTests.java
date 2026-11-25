@@ -11,7 +11,7 @@ public final class ChangeDataCaptureTopologyBindingStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCaptureTopologyBindingStatus model = BinaryData.fromString(
-            "{\"state\":\"Active\",\"generation\":8357004354243931890,\"activeClusterResourceId\":\"tvcof\",\"replacementConfigurationResourceId\":\"f\"}")
+            "{\"state\":\"Conflict\",\"generation\":6202574228806194299,\"activeClusterResourceId\":\"qek\",\"replacementConfigurationResourceId\":\"nkhtjsyingw\"}")
             .toObject(ChangeDataCaptureTopologyBindingStatus.class);
     }
 }

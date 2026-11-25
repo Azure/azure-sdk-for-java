@@ -205,16 +205,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
         return getWithResponseAsync(managedOpsName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the information of the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information of the ManagedOps instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedOpInner> getWithResponse(String managedOpsName, Context context) {
         final String accept = "application/json";
@@ -222,15 +213,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
             managedOpsName, accept, context);
     }
 
-    /**
-     * Gets the information of the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information of the ManagedOps instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedOpInner get(String managedOpsName) {
         return getWithResponse(managedOpsName, Context.NONE).getValue();
@@ -269,10 +252,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String managedOpsName, ManagedOpInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), managedOpsName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(managedOpsName, resource, Context.NONE);
     }
 
     /**
@@ -313,35 +293,14 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
             ManagedOpInner.class, ManagedOpInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedOpInner>, ManagedOpInner> beginCreateOrUpdate(String managedOpsName,
         ManagedOpInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(managedOpsName, resource);
-        return this.client.<ManagedOpInner, ManagedOpInner>getLroResult(response, ManagedOpInner.class,
-            ManagedOpInner.class, Context.NONE);
+        return beginCreateOrUpdate(managedOpsName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedOpInner>, ManagedOpInner> beginCreateOrUpdate(String managedOpsName,
         ManagedOpInner resource, Context context) {
@@ -365,35 +324,16 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
         return beginCreateOrUpdateAsync(managedOpsName, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedOpInner createOrUpdate(String managedOpsName, ManagedOpInner resource) {
-        return beginCreateOrUpdate(managedOpsName, resource).getFinalResult();
+        return createOrUpdate(managedOpsName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedOpInner createOrUpdate(String managedOpsName, ManagedOpInner resource, Context context) {
-        return beginCreateOrUpdate(managedOpsName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(managedOpsName, resource, context));
     }
 
     /**
@@ -436,11 +376,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedOpInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ManagedOpListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -461,27 +397,13 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all ManagedOps instances in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedOp list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedOpInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all ManagedOps instances in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedOp list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedOpInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -520,10 +442,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managedOpsName, ManagedOpUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), managedOpsName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(managedOpsName, properties, Context.NONE);
     }
 
     /**
@@ -564,35 +483,14 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
             ManagedOpInner.class, ManagedOpInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the ManagedOps instance with the supplied fields.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedOpInner>, ManagedOpInner> beginUpdate(String managedOpsName,
         ManagedOpUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(managedOpsName, properties);
-        return this.client.<ManagedOpInner, ManagedOpInner>getLroResult(response, ManagedOpInner.class,
-            ManagedOpInner.class, Context.NONE);
+        return beginUpdate(managedOpsName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the ManagedOps instance with the supplied fields.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedOpInner>, ManagedOpInner> beginUpdate(String managedOpsName,
         ManagedOpUpdate properties, Context context) {
@@ -616,35 +514,16 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
         return beginUpdateAsync(managedOpsName, properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the ManagedOps instance with the supplied fields.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedOpInner update(String managedOpsName, ManagedOpUpdate properties) {
-        return beginUpdate(managedOpsName, properties).getFinalResult();
+        return update(managedOpsName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the ManagedOps instance with the supplied fields.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Operations resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedOpInner update(String managedOpsName, ManagedOpUpdate properties, Context context) {
-        return beginUpdate(managedOpsName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(managedOpsName, properties, context));
     }
 
     /**
@@ -675,8 +554,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String managedOpsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), managedOpsName, Context.NONE);
+        return deleteWithResponse(managedOpsName, Context.NONE);
     }
 
     /**
@@ -711,31 +589,13 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String managedOpsName) {
-        Response<BinaryData> response = deleteWithResponse(managedOpsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(managedOpsName, Context.NONE);
     }
 
-    /**
-     * Deletes the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String managedOpsName, Context context) {
         Response<BinaryData> response = deleteWithResponse(managedOpsName, context);
@@ -756,31 +616,16 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
         return beginDeleteAsync(managedOpsName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String managedOpsName) {
-        beginDelete(managedOpsName).getFinalResult();
+        delete(managedOpsName, Context.NONE);
     }
 
-    /**
-     * Deletes the ManagedOps instance.
-     * 
-     * @param managedOpsName Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String managedOpsName, Context context) {
-        beginDelete(managedOpsName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(managedOpsName, context));
     }
 
     /**
@@ -813,11 +658,7 @@ public final class ManagedOpsClientImpl implements ManagedOpsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedOpInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedOpListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

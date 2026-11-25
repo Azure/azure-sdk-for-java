@@ -259,20 +259,7 @@ public final class VolumesClientImpl implements VolumesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeInner> getWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, Context context) {
@@ -281,19 +268,7 @@ public final class VolumesClientImpl implements VolumesClient {
             resourceGroupName, storagePoolName, volumeGroupName, volumeName, accept, context);
     }
 
-    /**
-     * Get a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner get(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String volumeName) {
@@ -344,11 +319,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, VolumeInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, volumeName,
-            contentType, accept, resource, Context.NONE);
+        return createWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource,
+            Context.NONE);
     }
 
     /**
@@ -399,44 +371,14 @@ public final class VolumesClientImpl implements VolumesClient {
             VolumeInner.class, VolumeInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, String volumeName, VolumeInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource);
-        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource, Context.NONE);
     }
 
-    /**
-     * Create a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, String volumeName, VolumeInner resource, Context context) {
@@ -467,46 +409,19 @@ public final class VolumesClientImpl implements VolumesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner create(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String volumeName, VolumeInner resource) {
-        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource).getFinalResult();
+        return create(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource, Context.NONE);
     }
 
-    /**
-     * Create a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner create(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String volumeName, VolumeInner resource, Context context) {
-        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, resource, context));
     }
 
     /**
@@ -552,11 +467,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, VolumeUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, volumeName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties,
+            Context.NONE);
     }
 
     /**
@@ -607,44 +519,14 @@ public final class VolumesClientImpl implements VolumesClient {
             VolumeInner.class, VolumeInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, String volumeName, VolumeUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties);
-        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties, Context.NONE);
     }
 
-    /**
-     * Update a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, String volumeName, VolumeUpdate properties, Context context) {
@@ -675,47 +557,19 @@ public final class VolumesClientImpl implements VolumesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner update(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String volumeName, VolumeUpdate properties) {
-        return beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties)
-            .getFinalResult();
+        return update(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties, Context.NONE);
     }
 
-    /**
-     * Update a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Volume resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner update(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String volumeName, VolumeUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, volumeName, properties, context));
     }
 
     /**
@@ -755,9 +609,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, volumeName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, Context.NONE);
     }
 
     /**
@@ -803,41 +655,14 @@ public final class VolumesClientImpl implements VolumesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storagePoolName, volumeGroupName, volumeName, Context.NONE);
     }
 
-    /**
-     * Delete a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, Context context) {
@@ -866,40 +691,18 @@ public final class VolumesClientImpl implements VolumesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, String volumeName) {
-        beginDelete(resourceGroupName, storagePoolName, volumeGroupName, volumeName).getFinalResult();
+        delete(resourceGroupName, storagePoolName, volumeGroupName, volumeName, Context.NONE);
     }
 
-    /**
-     * Delete a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, String volumeName,
         Context context) {
-        beginDelete(resourceGroupName, storagePoolName, volumeGroupName, volumeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storagePoolName, volumeGroupName, volumeName, context));
     }
 
     /**
@@ -959,12 +762,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeInner> listByVolumeGroupSinglePage(String resourceGroupName, String storagePoolName,
         String volumeGroupName) {
-        final String accept = "application/json";
-        Response<VolumeListResult> res = service.listByVolumeGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storagePoolName,
-            volumeGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeGroupSinglePage(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE);
     }
 
     /**
@@ -990,37 +788,14 @@ public final class VolumesClientImpl implements VolumesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List volumes by volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Volume list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String storagePoolName,
         String volumeGroupName) {
-        return new PagedIterable<>(
-            () -> listByVolumeGroupSinglePage(resourceGroupName, storagePoolName, volumeGroupName),
-            nextLink -> listByVolumeGroupNextSinglePage(nextLink));
+        return listByVolumeGroup(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE);
     }
 
-    /**
-     * List volumes by volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Volume list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String storagePoolName,
         String volumeGroupName, Context context) {
@@ -1071,10 +846,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> overwriteWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, VolumeOverwriteRequest body) {
-        final String contentType = "application/json";
-        return service.overwriteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, volumeName,
-            contentType, body, Context.NONE);
+        return overwriteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body,
+            Context.NONE);
     }
 
     /**
@@ -1124,43 +897,14 @@ public final class VolumesClientImpl implements VolumesClient {
             this.client.getContext());
     }
 
-    /**
-     * Overwrites the content of a volume from another volume or a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginOverwrite(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, VolumeOverwriteRequest body) {
-        Response<BinaryData> response
-            = overwriteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body, Context.NONE);
     }
 
-    /**
-     * Overwrites the content of a volume from another volume or a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginOverwrite(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String volumeName, VolumeOverwriteRequest body, Context context) {
@@ -1190,43 +934,19 @@ public final class VolumesClientImpl implements VolumesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Overwrites the content of a volume from another volume or a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void overwrite(String resourceGroupName, String storagePoolName, String volumeGroupName, String volumeName,
         VolumeOverwriteRequest body) {
-        beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body).getFinalResult();
+        overwrite(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body, Context.NONE);
     }
 
-    /**
-     * Overwrites the content of a volume from another volume or a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param volumeName Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters
-     * may appear in list and get responses for system-generated volumes.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void overwrite(String resourceGroupName, String storagePoolName, String volumeGroupName, String volumeName,
         VolumeOverwriteRequest body, Context context) {
-        beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, volumeName, body, context));
     }
 
     /**
@@ -1260,11 +980,7 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeInner> listByVolumeGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VolumeListResult> res
-            = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -182,12 +182,7 @@ public final class ConnectedPartnerResourcesClientImpl implements ConnectedPartn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectedPartnerResourcesListFormatInner> listSinglePage(String resourceGroupName,
         String monitorName, String body) {
-        final String accept = "application/json";
-        Response<ConnectedPartnerResourcesListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, accept, body, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -215,39 +210,14 @@ public final class ConnectedPartnerResourcesClientImpl implements ConnectedPartn
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of all active deployments that are associated with the marketplace subscription linked to the given monitor.
-     * 
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all active newrelic deployments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedPartnerResourcesListFormatInner> list(String resourceGroupName, String monitorName) {
         final String body = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName, body),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * List of all active deployments that are associated with the marketplace subscription linked to the given monitor.
-     * 
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param body Email Id of the user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all active newrelic deployments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedPartnerResourcesListFormatInner> list(String resourceGroupName, String monitorName,
         String body, Context context) {
@@ -290,11 +260,7 @@ public final class ConnectedPartnerResourcesClientImpl implements ConnectedPartn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectedPartnerResourcesListFormatInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectedPartnerResourcesListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

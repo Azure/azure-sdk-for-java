@@ -27,7 +27,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public void upgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters) {
-        this.serviceClient().upgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters);
+        this.upgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters, Context.NONE);
     }
 
     public void upgradeExtensions(String resourceGroupName, String machineName,
@@ -37,13 +37,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public SetupExtensionRequest setupExtensions(String resourceGroupName, String machineName,
         SetupExtensionRequestInner extensions) {
-        SetupExtensionRequestInner inner
-            = this.serviceClient().setupExtensions(resourceGroupName, machineName, extensions);
-        if (inner != null) {
-            return new SetupExtensionRequestImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.setupExtensions(resourceGroupName, machineName, extensions, Context.NONE);
     }
 
     public SetupExtensionRequest setupExtensions(String resourceGroupName, String machineName,

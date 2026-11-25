@@ -72,11 +72,7 @@ public final class SolutionVersionImpl implements SolutionVersion, SolutionVersi
     }
 
     public SolutionVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionVersions()
-            .createOrUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SolutionVersion create(Context context) {
@@ -99,10 +95,7 @@ public final class SolutionVersionImpl implements SolutionVersion, SolutionVersi
     }
 
     public SolutionVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionVersions()
-            .update(resourceGroupName, targetName, solutionName, solutionVersionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SolutionVersion apply(Context context) {
@@ -131,11 +124,7 @@ public final class SolutionVersionImpl implements SolutionVersion, SolutionVersi
     }
 
     public SolutionVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutionVersions()
-            .getWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SolutionVersion refresh(Context context) {

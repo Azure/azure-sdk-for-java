@@ -47,7 +47,7 @@ public final class NeighborGroupsImpl implements NeighborGroups {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String neighborGroupName) {
-        this.serviceClient().delete(resourceGroupName, neighborGroupName);
+        this.delete(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String neighborGroupName, Context context) {
@@ -55,8 +55,7 @@ public final class NeighborGroupsImpl implements NeighborGroups {
     }
 
     public PagedIterable<NeighborGroup> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NeighborGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NeighborGroup> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class NeighborGroupsImpl implements NeighborGroups {
     }
 
     public PagedIterable<NeighborGroup> list() {
-        PagedIterable<NeighborGroupInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NeighborGroup> list(Context context) {
@@ -75,12 +73,7 @@ public final class NeighborGroupsImpl implements NeighborGroups {
     }
 
     public NeighborGroupResyncResponse resync(String resourceGroupName, String neighborGroupName) {
-        NeighborGroupResyncResponseInner inner = this.serviceClient().resync(resourceGroupName, neighborGroupName);
-        if (inner != null) {
-            return new NeighborGroupResyncResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resync(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
     public NeighborGroupResyncResponse resync(String resourceGroupName, String neighborGroupName, Context context) {
@@ -94,74 +87,30 @@ public final class NeighborGroupsImpl implements NeighborGroups {
     }
 
     public NeighborGroup getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String neighborGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "neighborGroupName");
-        if (neighborGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NeighborGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String neighborGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String neighborGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "neighborGroupName");
-        if (neighborGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
-        }
+            "neighborGroupName", "neighborGroups", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String neighborGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "neighborGroupName");
-        if (neighborGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
-        }
-        this.delete(resourceGroupName, neighborGroupName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String neighborGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String neighborGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}",
-            "neighborGroupName");
-        if (neighborGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
-        }
+            "neighborGroupName", "neighborGroups", LOGGER);
         this.delete(resourceGroupName, neighborGroupName, context);
     }
 

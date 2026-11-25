@@ -49,7 +49,7 @@ public final class ManagedClustersImpl implements ManagedClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
-        this.serviceClient().delete(resourceGroupName, clusterName);
+        this.delete(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, Context context) {
@@ -57,8 +57,7 @@ public final class ManagedClustersImpl implements ManagedClusters {
     }
 
     public PagedIterable<ManagedCluster> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ManagedClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedClusterImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ManagedCluster> listByResourceGroup(String resourceGroupName, Context context) {
@@ -67,8 +66,7 @@ public final class ManagedClustersImpl implements ManagedClusters {
     }
 
     public PagedIterable<ManagedCluster> list() {
-        PagedIterable<ManagedClusterInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedClusterImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ManagedCluster> list(Context context) {
@@ -96,9 +94,7 @@ public final class ManagedClustersImpl implements ManagedClusters {
     }
 
     public PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName) {
-        PagedIterable<FaultSimulationInner> inner
-            = this.serviceClient().listFaultSimulation(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FaultSimulationImpl(inner1, this.manager()));
+        return this.listFaultSimulation(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName,
@@ -110,13 +106,7 @@ public final class ManagedClustersImpl implements ManagedClusters {
 
     public FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
-        FaultSimulationInner inner
-            = this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, parameters);
-        if (inner != null) {
-            return new FaultSimulationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.startFaultSimulation(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     public FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName,
@@ -132,13 +122,7 @@ public final class ManagedClustersImpl implements ManagedClusters {
 
     public FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters) {
-        FaultSimulationInner inner
-            = this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, parameters);
-        if (inner != null) {
-            return new FaultSimulationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.stopFaultSimulation(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     public FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName,
@@ -153,74 +137,30 @@ public final class ManagedClustersImpl implements ManagedClusters {
     }
 
     public ManagedCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManagedCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
-        }
+            "clusterName", "managedClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
-        }
-        this.delete(resourceGroupName, clusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
-        }
+            "clusterName", "managedClusters", LOGGER);
         this.delete(resourceGroupName, clusterName, context);
     }
 

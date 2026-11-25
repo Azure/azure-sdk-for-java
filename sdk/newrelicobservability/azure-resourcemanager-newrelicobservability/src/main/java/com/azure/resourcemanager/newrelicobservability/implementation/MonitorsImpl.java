@@ -69,7 +69,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public void delete(String resourceGroupName, String monitorName, String userEmail) {
-        this.serviceClient().delete(resourceGroupName, monitorName, userEmail);
+        this.delete(resourceGroupName, monitorName, userEmail, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String monitorName, String userEmail, Context context) {
@@ -77,8 +77,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<NewRelicMonitorResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NewRelicMonitorResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NewRelicMonitorResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NewRelicMonitorResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -88,8 +87,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<NewRelicMonitorResource> list() {
-        PagedIterable<NewRelicMonitorResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NewRelicMonitorResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NewRelicMonitorResource> list(Context context) {
@@ -135,9 +133,7 @@ public final class MonitorsImpl implements Monitors {
 
     public PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName,
         AppServicesGetRequest request) {
-        PagedIterable<AppServiceInfoInner> inner
-            = this.serviceClient().listAppServices(resourceGroupName, monitorName, request);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
+        return this.listAppServices(resourceGroupName, monitorName, request, Context.NONE);
     }
 
     public PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName,
@@ -171,8 +167,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request) {
-        PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName, request);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
+        return this.listHosts(resourceGroupName, monitorName, request, Context.NONE);
     }
 
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request,
@@ -188,13 +183,11 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public void refreshIngestionKey(String resourceGroupName, String monitorName) {
-        this.serviceClient().refreshIngestionKey(resourceGroupName, monitorName);
+        this.refreshIngestionKeyWithResponse(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoredResourceInner> inner
-            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+        return this.listMonitoredResources(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
@@ -205,9 +198,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName) {
-        PagedIterable<LinkedResourceInner> inner
-            = this.serviceClient().listLinkedResources(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedResourceImpl(inner1, this.manager()));
+        return this.listLinkedResources(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName,
@@ -252,12 +243,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public NewRelicMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
-        NewRelicMonitorResourceInner inner = this.serviceClient().linkSaaS(resourceGroupName, monitorName, body);
-        if (inner != null) {
-            return new NewRelicMonitorResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.linkSaaS(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     public NewRelicMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body,
@@ -292,38 +278,16 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public NewRelicMonitorResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}",
-            "monitorName");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NewRelicMonitorResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}",
-            "monitorName");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
+            "monitorName", "monitors", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
     }
 

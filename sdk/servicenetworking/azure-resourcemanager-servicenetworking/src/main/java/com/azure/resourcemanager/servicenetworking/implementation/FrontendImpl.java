@@ -88,10 +88,7 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontendsInterfaces()
-            .createOrUpdate(resourceGroupName, trafficControllerName, frontendName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Frontend create(Context context) {
@@ -113,11 +110,7 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontendsInterfaces()
-            .updateWithResponse(resourceGroupName, trafficControllerName, frontendName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Frontend apply(Context context) {
@@ -144,11 +137,7 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontendsInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, frontendName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Frontend refresh(Context context) {

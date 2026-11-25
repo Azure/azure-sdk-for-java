@@ -241,25 +241,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Service Fabric service resource.
-     * 
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
-     * application resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric service resource.
-     * 
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
-     * application resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String clusterName,
         String applicationName, String serviceName, Context context) {
@@ -268,24 +250,7 @@ public final class ServicesClientImpl implements ServicesClient {
             resourceGroupName, clusterName, applicationName, serviceName, accept, context);
     }
 
-    /**
-     * Gets a Service Fabric service resource.
-     * 
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
-     * application resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric service resource.
-     * 
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
-     * application resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner get(String resourceGroupName, String clusterName, String applicationName,
         String serviceName) {
@@ -337,11 +302,8 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, String serviceName, ServiceResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, serviceName, contentType,
-            accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, applicationName, serviceName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -395,47 +357,16 @@ public final class ServicesClientImpl implements ServicesClient {
             ServiceResourceInner.class, ServiceResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Service Fabric service resource.
-     * 
-     * Create or update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String applicationName, String serviceName,
         ServiceResourceInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, clusterName, applicationName, serviceName, parameters);
-        return this.client.<ServiceResourceInner, ServiceResourceInner>getLroResult(response,
-            ServiceResourceInner.class, ServiceResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a Service Fabric service resource.
-     * 
-     * Create or update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String applicationName, String serviceName,
@@ -468,49 +399,19 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Service Fabric service resource.
-     * 
-     * Create or update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner createOrUpdate(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Service Fabric service resource.
-     * 
-     * Create or update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner createOrUpdate(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters, context));
     }
 
     /**
@@ -558,11 +459,8 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, String serviceName, ServiceResourceUpdate parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, serviceName, contentType,
-            accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, applicationName, serviceName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -616,46 +514,14 @@ public final class ServicesClientImpl implements ServicesClient {
             ServiceResourceInner.class, ServiceResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a Service Fabric service resource.
-     * 
-     * Update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource for patch operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(String resourceGroupName,
         String clusterName, String applicationName, String serviceName, ServiceResourceUpdate parameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, clusterName, applicationName, serviceName, parameters);
-        return this.client.<ServiceResourceInner, ServiceResourceInner>getLroResult(response,
-            ServiceResourceInner.class, ServiceResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates a Service Fabric service resource.
-     * 
-     * Update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource for patch operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(String resourceGroupName,
         String clusterName, String applicationName, String serviceName, ServiceResourceUpdate parameters,
@@ -688,48 +554,19 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a Service Fabric service resource.
-     * 
-     * Update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource for patch operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceUpdate parameters) {
-        return beginUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters).getFinalResult();
+        return update(resourceGroupName, clusterName, applicationName, serviceName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates a Service Fabric service resource.
-     * 
-     * Update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource for patch operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceUpdate parameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, clusterName, applicationName, serviceName, parameters, context));
     }
 
     /**
@@ -772,9 +609,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationName, String serviceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, serviceName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE);
     }
 
     /**
@@ -822,43 +657,14 @@ public final class ServicesClientImpl implements ServicesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Service Fabric service resource.
-     * 
-     * Delete a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String applicationName, String serviceName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, applicationName, serviceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE);
     }
 
-    /**
-     * Deletes a Service Fabric service resource.
-     * 
-     * Delete a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String applicationName, String serviceName, Context context) {
@@ -888,42 +694,18 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Service Fabric service resource.
-     * 
-     * Delete a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName) {
-        beginDelete(resourceGroupName, clusterName, applicationName, serviceName).getFinalResult();
+        delete(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE);
     }
 
-    /**
-     * Deletes a Service Fabric service resource.
-     * 
-     * Delete a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName,
         Context context) {
-        beginDelete(resourceGroupName, clusterName, applicationName, serviceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterName, applicationName, serviceName, context));
     }
 
     /**
@@ -996,11 +778,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceResourceInner> listSinglePage(String resourceGroupName, String clusterName,
         String applicationName) {
-        final String accept = "application/json";
-        Response<ServiceResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -1030,46 +808,14 @@ public final class ServicesClientImpl implements ServicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of service resources created in the specified Service Fabric application resource.
-     * 
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service resources created in the specified Service Fabric application resource.
-     * 
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource
-     * as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceResourceInner> list(String resourceGroupName, String clusterName,
         String applicationName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, applicationName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
-    /**
-     * Gets the list of service resources created in the specified Service Fabric application resource.
-     * 
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service resources created in the specified Service Fabric application resource.
-     * 
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource
-     * as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceResourceInner> list(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
@@ -1116,11 +862,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ServiceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

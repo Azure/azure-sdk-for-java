@@ -53,11 +53,7 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServices()
-            .createOrUpdateWithResponse(resourceUri, serviceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceResource create(Context context) {
@@ -80,11 +76,7 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServices()
-            .createOrUpdateWithResponse(resourceUri, serviceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceResource apply(Context context) {
@@ -106,11 +98,7 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServices()
-            .getWithResponse(resourceUri, serviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceResource refresh(Context context) {

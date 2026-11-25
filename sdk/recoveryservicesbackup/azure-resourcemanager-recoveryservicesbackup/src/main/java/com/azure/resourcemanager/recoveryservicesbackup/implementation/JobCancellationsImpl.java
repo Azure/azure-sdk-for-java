@@ -29,7 +29,7 @@ public final class JobCancellationsImpl implements JobCancellations {
     }
 
     public void trigger(String vaultName, String resourceGroupName, String jobName) {
-        this.serviceClient().trigger(vaultName, resourceGroupName, jobName);
+        this.triggerWithResponse(vaultName, resourceGroupName, jobName, Context.NONE);
     }
 
     private JobCancellationsClient serviceClient() {

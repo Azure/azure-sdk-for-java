@@ -129,11 +129,7 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArtifactSources()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ArtifactSource create(Context context) {
@@ -156,11 +152,7 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArtifactSources()
-            .updateWithResponse(resourceGroupName, labName, name, updateArtifactSource, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ArtifactSource apply(Context context) {
@@ -187,12 +179,7 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getArtifactSources()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ArtifactSource refresh(Context context) {

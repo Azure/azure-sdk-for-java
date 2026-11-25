@@ -37,6 +37,7 @@ import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -63,6 +64,9 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * <p> Please refer to the
  * <a href=https://docs.microsoft.com/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
+ *
+ * <p>Layout-aware routing is not supported for client-side encrypted downloads. Downloads use the client's configured
+ * endpoint and log a warning when {@link LayoutAwareRouting#ENABLED} is requested.</p>
  *
  * <p>
  * This client is instantiated through {@link EncryptedBlobClientBuilder}

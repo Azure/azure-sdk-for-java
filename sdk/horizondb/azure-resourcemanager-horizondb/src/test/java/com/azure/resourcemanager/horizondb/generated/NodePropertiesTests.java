@@ -10,7 +10,7 @@ import com.azure.resourcemanager.horizondb.models.NodeProperties;
 public final class NodePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeProperties model = BinaryData.fromString("{\"role\":\"Unassigned\",\"availabilityZone\":\"jorwkqnyhgbij\"}")
+        NodeProperties model = BinaryData.fromString("{\"role\":\"ReadWrite\",\"availabilityZone\":\"jl\"}")
             .toObject(NodeProperties.class);
     }
 }

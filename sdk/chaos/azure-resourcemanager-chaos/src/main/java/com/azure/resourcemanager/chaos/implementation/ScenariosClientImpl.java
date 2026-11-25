@@ -89,7 +89,8 @@ public final class ScenariosClientImpl implements ScenariosClient {
         Mono<Response<ScenarioInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("scenarioName") String scenarioName, @HeaderParam("Content-Type") String contentType,
+            @PathParam("scenarioName") String scenarioName, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ScenarioInner resource,
             Context context);
 
@@ -99,7 +100,8 @@ public final class ScenariosClientImpl implements ScenariosClient {
         Response<ScenarioInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("scenarioName") String scenarioName, @HeaderParam("Content-Type") String contentType,
+            @PathParam("scenarioName") String scenarioName, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ScenarioInner resource,
             Context context);
 
@@ -192,18 +194,7 @@ public final class ScenariosClientImpl implements ScenariosClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a scenario.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScenarioInner> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         Context context) {
@@ -212,17 +203,7 @@ public final class ScenariosClientImpl implements ScenariosClient {
             resourceGroupName, workspaceName, scenarioName, accept, context);
     }
 
-    /**
-     * Get a scenario.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioInner get(String resourceGroupName, String workspaceName, String scenarioName) {
         return getWithResponse(resourceGroupName, workspaceName, scenarioName, Context.NONE).getValue();
@@ -235,6 +216,16 @@ public final class ScenariosClientImpl implements ScenariosClient {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -242,13 +233,13 @@ public final class ScenariosClientImpl implements ScenariosClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScenarioInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String workspaceName, String scenarioName, ScenarioInner resource) {
+        String workspaceName, String scenarioName, ScenarioInner resource, String ifNoneMatch, String ifMatch) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, contentType, accept,
-                resource, context))
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, ifNoneMatch, ifMatch,
+                contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -267,50 +258,31 @@ public final class ScenariosClientImpl implements ScenariosClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScenarioInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, String scenarioName,
         ScenarioInner resource) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, scenarioName, resource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, scenarioName, resource, ifNoneMatch,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a scenario.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents the scenario along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScenarioInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, ScenarioInner resource, Context context) {
+        String scenarioName, ScenarioInner resource, String ifNoneMatch, String ifMatch, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, contentType, accept,
-            resource, context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, ifNoneMatch, ifMatch,
+            contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update a scenario.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents the scenario.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioInner createOrUpdate(String resourceGroupName, String workspaceName, String scenarioName,
         ScenarioInner resource) {
-        return createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName, resource, Context.NONE)
-            .getValue();
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName, resource, ifNoneMatch,
+            ifMatch, Context.NONE).getValue();
     }
 
     /**
@@ -349,18 +321,7 @@ public final class ScenariosClientImpl implements ScenariosClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, scenarioName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a scenario.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         Context context) {
@@ -368,16 +329,7 @@ public final class ScenariosClientImpl implements ScenariosClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, context);
     }
 
-    /**
-     * Delete a scenario.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String scenarioName) {
         deleteWithResponse(resourceGroupName, workspaceName, scenarioName, Context.NONE);
@@ -432,11 +384,7 @@ public final class ScenariosClientImpl implements ScenariosClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioInner> listAllSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<ScenarioListResult> res = service.listAllSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -460,33 +408,13 @@ public final class ScenariosClientImpl implements ScenariosClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of scenarios.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scenarios as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioInner> listAll(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listAllSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listAllNextSinglePage(nextLink));
+        return listAll(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Get a list of scenarios.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scenarios as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioInner> listAll(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listAllSinglePage(resourceGroupName, workspaceName, context),
@@ -523,11 +451,7 @@ public final class ScenariosClientImpl implements ScenariosClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScenarioListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -26,8 +26,7 @@ public final class CapabilitiesByLocationsImpl implements CapabilitiesByLocation
     }
 
     public PagedIterable<Capability> list(String locationName) {
-        PagedIterable<CapabilityInner> inner = this.serviceClient().list(locationName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CapabilityImpl(inner1, this.manager()));
+        return this.list(locationName, Context.NONE);
     }
 
     public PagedIterable<Capability> list(String locationName, Context context) {

@@ -52,11 +52,6 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
      */
     private String gatewayEndpoint;
 
-    /*
-     * The authentication type used for the connected registry to sync with its parent.
-     */
-    private AuthType authType;
-
     /**
      * Creates an instance of SyncProperties class.
      */
@@ -171,26 +166,6 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
     }
 
     /**
-     * Get the authType property: The authentication type used for the connected registry to sync with its parent.
-     * 
-     * @return the authType value.
-     */
-    public AuthType authType() {
-        return this.authType;
-    }
-
-    /**
-     * Set the authType property: The authentication type used for the connected registry to sync with its parent.
-     * 
-     * @param authType the authType value to set.
-     * @return the SyncProperties object itself.
-     */
-    public SyncProperties withAuthType(AuthType authType) {
-        this.authType = authType;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -214,7 +189,6 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
         jsonWriter.writeStringField("tokenId", this.tokenId);
         jsonWriter.writeStringField("schedule", this.schedule);
         jsonWriter.writeStringField("syncWindow", CoreUtils.durationToStringWithDays(this.syncWindow));
-        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -249,8 +223,6 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("gatewayEndpoint".equals(fieldName)) {
                     deserializedSyncProperties.gatewayEndpoint = reader.getString();
-                } else if ("authType".equals(fieldName)) {
-                    deserializedSyncProperties.authType = AuthType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

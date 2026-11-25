@@ -69,10 +69,7 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
     }
 
     public CustomDomain create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubCustomDomains()
-            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomDomain create(Context context) {
@@ -93,10 +90,7 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
     }
 
     public CustomDomain apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubCustomDomains()
-            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomDomain apply(Context context) {
@@ -122,11 +116,7 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
     }
 
     public CustomDomain refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubCustomDomains()
-            .getWithResponse(resourceGroupName, resourceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomDomain refresh(Context context) {

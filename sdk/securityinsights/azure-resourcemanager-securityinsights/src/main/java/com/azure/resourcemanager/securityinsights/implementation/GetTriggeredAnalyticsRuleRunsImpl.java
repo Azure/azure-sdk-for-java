@@ -26,9 +26,7 @@ public final class GetTriggeredAnalyticsRuleRunsImpl implements GetTriggeredAnal
     }
 
     public PagedIterable<TriggeredAnalyticsRuleRun> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<TriggeredAnalyticsRuleRunInner> inner
-            = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TriggeredAnalyticsRuleRunImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<TriggeredAnalyticsRuleRun> list(String resourceGroupName, String workspaceName,

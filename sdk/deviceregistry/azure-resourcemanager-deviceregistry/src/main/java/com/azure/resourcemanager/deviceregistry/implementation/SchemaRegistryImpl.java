@@ -90,10 +90,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
     }
 
     public SchemaRegistry create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaRegistries()
-            .createOrReplace(resourceGroupName, schemaRegistryName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SchemaRegistry create(Context context) {
@@ -115,10 +112,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
     }
 
     public SchemaRegistry apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaRegistries()
-            .update(resourceGroupName, schemaRegistryName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SchemaRegistry apply(Context context) {
@@ -141,11 +135,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
     }
 
     public SchemaRegistry refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaRegistries()
-            .getByResourceGroupWithResponse(resourceGroupName, schemaRegistryName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SchemaRegistry refresh(Context context) {

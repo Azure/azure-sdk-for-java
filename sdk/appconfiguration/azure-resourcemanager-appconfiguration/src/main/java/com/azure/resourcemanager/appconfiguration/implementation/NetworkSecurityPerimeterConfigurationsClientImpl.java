@@ -196,19 +196,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified network security perimeter configuration associated with the configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param networkSecurityPerimeterConfigurationName The name of the NetworkSecurityPerimeterConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security perimeter configuration associated with the configuration store along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterConfigurationInner> getWithResponse(String resourceGroupName,
         String configStoreName, String networkSecurityPerimeterConfigurationName, Context context) {
@@ -217,17 +205,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName, accept, context);
     }
 
-    /**
-     * Gets the specified network security perimeter configuration associated with the configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param networkSecurityPerimeterConfigurationName The name of the NetworkSecurityPerimeterConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security perimeter configuration associated with the configuration store.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterConfigurationInner get(String resourceGroupName, String configStoreName,
         String networkSecurityPerimeterConfigurationName) {
@@ -291,12 +269,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner>
         listByConfigurationStoreSinglePage(String resourceGroupName, String configStoreName) {
-        final String accept = "application/json";
-        Response<NetworkSecurityPerimeterConfigurationListResult> res
-            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, configStoreName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, Context.NONE);
     }
 
     /**
@@ -321,36 +294,14 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all network security perimeter configurations for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeterConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName) {
-        return new PagedIterable<>(() -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName),
-            nextLink -> listByConfigurationStoreNextSinglePage(nextLink));
+        return listByConfigurationStore(resourceGroupName, configStoreName, Context.NONE);
     }
 
-    /**
-     * Lists all network security perimeter configurations for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeterConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName, Context context) {
@@ -396,10 +347,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reconcileWithResponse(String resourceGroupName, String configStoreName,
         String networkSecurityPerimeterConfigurationName) {
-        final String accept = "application/json";
-        return service.reconcileSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName,
-            networkSecurityPerimeterConfigurationName, accept, Context.NONE);
+        return reconcileWithResponse(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName,
+            Context.NONE);
     }
 
     /**
@@ -443,37 +392,15 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Forces a refresh of the specified network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param networkSecurityPerimeterConfigurationName The name of the NetworkSecurityPerimeterConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network security perimeter (NSP) configuration resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReconcile(String resourceGroupName, String configStoreName,
         String networkSecurityPerimeterConfigurationName) {
-        Response<BinaryData> response
-            = reconcileWithResponse(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReconcile(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName,
+            Context.NONE);
     }
 
-    /**
-     * Forces a refresh of the specified network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param networkSecurityPerimeterConfigurationName The name of the NetworkSecurityPerimeterConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network security perimeter (NSP) configuration resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReconcile(String resourceGroupName, String configStoreName,
         String networkSecurityPerimeterConfigurationName, Context context) {
@@ -500,38 +427,19 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Forces a refresh of the specified network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param networkSecurityPerimeterConfigurationName The name of the NetworkSecurityPerimeterConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reconcile(String resourceGroupName, String configStoreName,
         String networkSecurityPerimeterConfigurationName) {
-        beginReconcile(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName).getFinalResult();
+        reconcile(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName, Context.NONE);
     }
 
-    /**
-     * Forces a refresh of the specified network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param networkSecurityPerimeterConfigurationName The name of the NetworkSecurityPerimeterConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reconcile(String resourceGroupName, String configStoreName,
         String networkSecurityPerimeterConfigurationName, Context context) {
-        beginReconcile(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginReconcile(resourceGroupName, configStoreName, networkSecurityPerimeterConfigurationName, context));
     }
 
     /**
@@ -569,11 +477,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner>
         listByConfigurationStoreNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkSecurityPerimeterConfigurationListResult> res
-            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

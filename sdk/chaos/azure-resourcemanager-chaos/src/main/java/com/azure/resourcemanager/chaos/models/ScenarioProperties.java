@@ -24,11 +24,24 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
 
     /*
      * Resource ID of the template version this scenario was created from (optional).
+     * The ID has the form
+     * `/providers/Microsoft.Chaos/scenarioTemplates/{scenarioTemplateName}/versions/{version}`.
+     * This property retains its existing string representation for compatibility
+     * with earlier API versions and SDKs.
+     * 
+     * A scenario's structure comes from exactly one of two mutually exclusive sources.
+     * When `createdFrom` is supplied on create, the referenced template version is the
+     * authoritative source for the scenario's structure; inline `parameters` and
+     * `actions` are not used. When `createdFrom` is absent, the structure comes from
+     * the inline `parameters` and `actions` supplied in the request.
+     * Supplying neither source is rejected by request validation.
      */
     private String createdFrom;
 
     /*
-     * Version of the scenario.
+     * Version of the scenario, supplied by the author. Defaults to `1.0` when not
+     * supplied on create. This is the scenario's own version and is independent of
+     * the version of any template it was created from.
      */
     private String version;
 
@@ -46,6 +59,19 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
      * Array of actions that define the scenario's orchestration.
      */
     private List<ScenarioAction> actions;
+
+    /*
+     * Scenario-wide default for how a scenario run reacts when one of its actions fails.
+     * An action that does not supply its own `failureBehavior` inherits this value; when
+     * neither is supplied the effective behavior is `Stop`.
+     * 
+     * Not used when `createdFrom` is supplied, for the same reason as `parameters` and
+     * `actions`: the referenced template version is then the authoritative source for the
+     * scenario's structure, and it supplies this policy too. A value sent in the request is
+     * ignored in that case — on create the referenced template's policy is used, and on update
+     * the policy of the already persisted template is preserved.
+     */
+    private FailureBehavior failureBehavior;
 
     /*
      * The recommendation information for this scenario.
@@ -69,6 +95,17 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
 
     /**
      * Get the createdFrom property: Resource ID of the template version this scenario was created from (optional).
+     * The ID has the form
+     * `/providers/Microsoft.Chaos/scenarioTemplates/{scenarioTemplateName}/versions/{version}`.
+     * This property retains its existing string representation for compatibility
+     * with earlier API versions and SDKs.
+     * 
+     * A scenario's structure comes from exactly one of two mutually exclusive sources.
+     * When `createdFrom` is supplied on create, the referenced template version is the
+     * authoritative source for the scenario's structure; inline `parameters` and
+     * `actions` are not used. When `createdFrom` is absent, the structure comes from
+     * the inline `parameters` and `actions` supplied in the request.
+     * Supplying neither source is rejected by request validation.
      * 
      * @return the createdFrom value.
      */
@@ -77,12 +114,49 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
     }
 
     /**
-     * Get the version property: Version of the scenario.
+     * Set the createdFrom property: Resource ID of the template version this scenario was created from (optional).
+     * The ID has the form
+     * `/providers/Microsoft.Chaos/scenarioTemplates/{scenarioTemplateName}/versions/{version}`.
+     * This property retains its existing string representation for compatibility
+     * with earlier API versions and SDKs.
+     * 
+     * A scenario's structure comes from exactly one of two mutually exclusive sources.
+     * When `createdFrom` is supplied on create, the referenced template version is the
+     * authoritative source for the scenario's structure; inline `parameters` and
+     * `actions` are not used. When `createdFrom` is absent, the structure comes from
+     * the inline `parameters` and `actions` supplied in the request.
+     * Supplying neither source is rejected by request validation.
+     * 
+     * @param createdFrom the createdFrom value to set.
+     * @return the ScenarioProperties object itself.
+     */
+    public ScenarioProperties withCreatedFrom(String createdFrom) {
+        this.createdFrom = createdFrom;
+        return this;
+    }
+
+    /**
+     * Get the version property: Version of the scenario, supplied by the author. Defaults to `1.0` when not
+     * supplied on create. This is the scenario's own version and is independent of
+     * the version of any template it was created from.
      * 
      * @return the version value.
      */
     public String version() {
         return this.version;
+    }
+
+    /**
+     * Set the version property: Version of the scenario, supplied by the author. Defaults to `1.0` when not
+     * supplied on create. This is the scenario's own version and is independent of
+     * the version of any template it was created from.
+     * 
+     * @param version the version value to set.
+     * @return the ScenarioProperties object itself.
+     */
+    public ScenarioProperties withVersion(String version) {
+        this.version = version;
+        return this;
     }
 
     /**
@@ -146,6 +220,44 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
     }
 
     /**
+     * Get the failureBehavior property: Scenario-wide default for how a scenario run reacts when one of its actions
+     * fails.
+     * An action that does not supply its own `failureBehavior` inherits this value; when
+     * neither is supplied the effective behavior is `Stop`.
+     * 
+     * Not used when `createdFrom` is supplied, for the same reason as `parameters` and
+     * `actions`: the referenced template version is then the authoritative source for the
+     * scenario's structure, and it supplies this policy too. A value sent in the request is
+     * ignored in that case — on create the referenced template's policy is used, and on update
+     * the policy of the already persisted template is preserved.
+     * 
+     * @return the failureBehavior value.
+     */
+    public FailureBehavior failureBehavior() {
+        return this.failureBehavior;
+    }
+
+    /**
+     * Set the failureBehavior property: Scenario-wide default for how a scenario run reacts when one of its actions
+     * fails.
+     * An action that does not supply its own `failureBehavior` inherits this value; when
+     * neither is supplied the effective behavior is `Stop`.
+     * 
+     * Not used when `createdFrom` is supplied, for the same reason as `parameters` and
+     * `actions`: the referenced template version is then the authoritative source for the
+     * scenario's structure, and it supplies this policy too. A value sent in the request is
+     * ignored in that case — on create the referenced template's policy is used, and on update
+     * the policy of the already persisted template is preserved.
+     * 
+     * @param failureBehavior the failureBehavior value to set.
+     * @return the ScenarioProperties object itself.
+     */
+    public ScenarioProperties withFailureBehavior(FailureBehavior failureBehavior) {
+        this.failureBehavior = failureBehavior;
+        return this;
+    }
+
+    /**
      * Get the recommendation property: The recommendation information for this scenario.
      * 
      * @return the recommendation value.
@@ -160,9 +272,13 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdFrom", this.createdFrom);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("failureBehavior",
+            this.failureBehavior == null ? null : this.failureBehavior.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -172,7 +288,6 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
      * @param jsonReader The JsonReader being read.
      * @return An instance of ScenarioProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScenarioProperties.
      */
     public static ScenarioProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -182,14 +297,7 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("parameters".equals(fieldName)) {
-                    List<ScenarioParameter> parameters
-                        = reader.readArray(reader1 -> ScenarioParameter.fromJson(reader1));
-                    deserializedScenarioProperties.parameters = parameters;
-                } else if ("actions".equals(fieldName)) {
-                    List<ScenarioAction> actions = reader.readArray(reader1 -> ScenarioAction.fromJson(reader1));
-                    deserializedScenarioProperties.actions = actions;
-                } else if ("provisioningState".equals(fieldName)) {
+                if ("provisioningState".equals(fieldName)) {
                     deserializedScenarioProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("createdFrom".equals(fieldName)) {
                     deserializedScenarioProperties.createdFrom = reader.getString();
@@ -197,6 +305,15 @@ public final class ScenarioProperties implements JsonSerializable<ScenarioProper
                     deserializedScenarioProperties.version = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedScenarioProperties.description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ScenarioParameter> parameters
+                        = reader.readArray(reader1 -> ScenarioParameter.fromJson(reader1));
+                    deserializedScenarioProperties.parameters = parameters;
+                } else if ("actions".equals(fieldName)) {
+                    List<ScenarioAction> actions = reader.readArray(reader1 -> ScenarioAction.fromJson(reader1));
+                    deserializedScenarioProperties.actions = actions;
+                } else if ("failureBehavior".equals(fieldName)) {
+                    deserializedScenarioProperties.failureBehavior = FailureBehavior.fromString(reader.getString());
                 } else if ("recommendation".equals(fieldName)) {
                     deserializedScenarioProperties.recommendation = Recommendation.fromJson(reader);
                 } else {

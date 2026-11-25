@@ -255,17 +255,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a marketplace gallery image along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MarketplaceGalleryImageInner> getByResourceGroupWithResponse(String resourceGroupName,
         String marketplaceGalleryImageName, Context context) {
@@ -274,16 +264,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             this.client.getSubscriptionId(), resourceGroupName, marketplaceGalleryImageName, accept, context);
     }
 
-    /**
-     * Gets a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a marketplace gallery image.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceGalleryImageInner getByResourceGroup(String resourceGroupName,
         String marketplaceGalleryImageName) {
@@ -330,11 +311,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String marketplaceGalleryImageName, MarketplaceGalleryImageInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, marketplaceGalleryImageName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, marketplaceGalleryImageName, resource, Context.NONE);
     }
 
     /**
@@ -382,40 +359,14 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a marketplace gallery image. Please note some properties can be set only during
-     * marketplace gallery image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MarketplaceGalleryImageInner>, MarketplaceGalleryImageInner> beginCreateOrUpdate(
         String resourceGroupName, String marketplaceGalleryImageName, MarketplaceGalleryImageInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, marketplaceGalleryImageName, resource);
-        return this.client.<MarketplaceGalleryImageInner, MarketplaceGalleryImageInner>getLroResult(response,
-            MarketplaceGalleryImageInner.class, MarketplaceGalleryImageInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, marketplaceGalleryImageName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a marketplace gallery image. Please note some properties can be set only during
-     * marketplace gallery image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MarketplaceGalleryImageInner>, MarketplaceGalleryImageInner> beginCreateOrUpdate(
         String resourceGroupName, String marketplaceGalleryImageName, MarketplaceGalleryImageInner resource,
@@ -445,41 +396,19 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a marketplace gallery image. Please note some properties can be set only during
-     * marketplace gallery image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceGalleryImageInner createOrUpdate(String resourceGroupName, String marketplaceGalleryImageName,
         MarketplaceGalleryImageInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, marketplaceGalleryImageName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, marketplaceGalleryImageName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a marketplace gallery image. Please note some properties can be set only during
-     * marketplace gallery image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceGalleryImageInner createOrUpdate(String resourceGroupName, String marketplaceGalleryImageName,
         MarketplaceGalleryImageInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, marketplaceGalleryImageName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, marketplaceGalleryImageName, resource, context));
     }
 
     /**
@@ -520,11 +449,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String marketplaceGalleryImageName,
         MarketplaceGalleryImageTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, marketplaceGalleryImageName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, marketplaceGalleryImageName, properties, Context.NONE);
     }
 
     /**
@@ -570,37 +495,14 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             this.client.getContext());
     }
 
-    /**
-     * The operation to update a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MarketplaceGalleryImageInner>, MarketplaceGalleryImageInner> beginUpdate(
         String resourceGroupName, String marketplaceGalleryImageName, MarketplaceGalleryImageTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, marketplaceGalleryImageName, properties);
-        return this.client.<MarketplaceGalleryImageInner, MarketplaceGalleryImageInner>getLroResult(response,
-            MarketplaceGalleryImageInner.class, MarketplaceGalleryImageInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, marketplaceGalleryImageName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MarketplaceGalleryImageInner>, MarketplaceGalleryImageInner> beginUpdate(
         String resourceGroupName, String marketplaceGalleryImageName, MarketplaceGalleryImageTagsUpdate properties,
@@ -629,39 +531,19 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceGalleryImageInner update(String resourceGroupName, String marketplaceGalleryImageName,
         MarketplaceGalleryImageTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, marketplaceGalleryImageName, properties).getFinalResult();
+        return update(resourceGroupName, marketplaceGalleryImageName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the marketplace gallery image resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceGalleryImageInner update(String resourceGroupName, String marketplaceGalleryImageName,
         MarketplaceGalleryImageTagsUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, marketplaceGalleryImageName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, marketplaceGalleryImageName, properties, context));
     }
 
     /**
@@ -695,8 +577,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String marketplaceGalleryImageName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, marketplaceGalleryImageName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, marketplaceGalleryImageName, Context.NONE);
     }
 
     /**
@@ -735,34 +616,14 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String marketplaceGalleryImageName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, marketplaceGalleryImageName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, marketplaceGalleryImageName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String marketplaceGalleryImageName,
         Context context) {
@@ -786,33 +647,16 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String marketplaceGalleryImageName) {
-        beginDelete(resourceGroupName, marketplaceGalleryImageName).getFinalResult();
+        delete(resourceGroupName, marketplaceGalleryImageName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a marketplace gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param marketplaceGalleryImageName Name of the marketplace gallery image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String marketplaceGalleryImageName, Context context) {
-        beginDelete(resourceGroupName, marketplaceGalleryImageName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, marketplaceGalleryImageName, context));
     }
 
     /**
@@ -866,11 +710,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarketplaceGalleryImageInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<MarketplaceGalleryImageListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -894,35 +734,13 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the marketplace gallery images in the specified resource group. Use the nextLink property in the
-     * response to get the next page of marketplace gallery images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MarketplaceGalleryImage list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarketplaceGalleryImageInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the marketplace gallery images in the specified resource group. Use the nextLink property in the
-     * response to get the next page of marketplace gallery images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MarketplaceGalleryImage list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarketplaceGalleryImageInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -972,11 +790,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarketplaceGalleryImageInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<MarketplaceGalleryImageListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -998,31 +812,13 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the marketplace gallery images in the specified subscription. Use the nextLink property in the
-     * response to get the next page of marketplace gallery images.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MarketplaceGalleryImage list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarketplaceGalleryImageInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the marketplace gallery images in the specified subscription. Use the nextLink property in the
-     * response to get the next page of marketplace gallery images.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MarketplaceGalleryImage list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarketplaceGalleryImageInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1060,11 +856,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarketplaceGalleryImageInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MarketplaceGalleryImageListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1118,11 +910,7 @@ public final class MarketplaceGalleryImagesClientImpl implements MarketplaceGall
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarketplaceGalleryImageInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MarketplaceGalleryImageListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

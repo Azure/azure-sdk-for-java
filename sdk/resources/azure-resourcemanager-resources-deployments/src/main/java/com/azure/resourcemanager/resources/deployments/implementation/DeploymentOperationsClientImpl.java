@@ -359,18 +359,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentOperationInner> getAtScopeWithResponse(String scope, String deploymentName,
         String operationId, Context context) {
@@ -379,17 +368,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             operationId, accept, context);
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtScope(String scope, String deploymentName, String operationId) {
         return getAtScopeWithResponse(scope, deploymentName, operationId, Context.NONE).getValue();
@@ -467,11 +446,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtScopeSinglePage(String scope, String deploymentName,
         Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res = service.listAtScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), scope, deploymentName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtScopeSinglePage(scope, deploymentName, top, Context.NONE);
     }
 
     /**
@@ -496,35 +471,14 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtScopeSinglePage(scope, deploymentName, top),
-            nextLink -> listAtScopeNextSinglePage(nextLink));
+        return listAtScope(scope, deploymentName, top, Context.NONE);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName, Integer top,
         Context context) {
@@ -568,17 +522,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentOperationInner> getAtTenantScopeWithResponse(String deploymentName, String operationId,
         Context context) {
@@ -587,16 +531,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             operationId, accept, context);
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtTenantScope(String deploymentName, String operationId) {
         return getAtTenantScopeWithResponse(deploymentName, operationId, Context.NONE).getValue();
@@ -669,11 +604,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtTenantScopeSinglePage(String deploymentName, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res = service.listAtTenantScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), deploymentName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtTenantScopeSinglePage(deploymentName, top, Context.NONE);
     }
 
     /**
@@ -697,33 +628,14 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtTenantScopeSinglePage(deploymentName, top),
-            nextLink -> listAtTenantScopeNextSinglePage(nextLink));
+        return listAtTenantScope(deploymentName, top, Context.NONE);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top,
         Context context) {
@@ -770,18 +682,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentOperationInner> getAtManagementGroupScopeWithResponse(String groupId,
         String deploymentName, String operationId, Context context) {
@@ -790,17 +691,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             deploymentName, operationId, accept, context);
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtManagementGroupScope(String groupId, String deploymentName,
         String operationId) {
@@ -880,11 +771,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtManagementGroupScopeSinglePage(String groupId,
         String deploymentName, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res = service.listAtManagementGroupScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), groupId, deploymentName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtManagementGroupScopeSinglePage(groupId, deploymentName, top, Context.NONE);
     }
 
     /**
@@ -909,35 +796,14 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtManagementGroupScopeSinglePage(groupId, deploymentName, top),
-            nextLink -> listAtManagementGroupScopeNextSinglePage(nextLink));
+        return listAtManagementGroupScope(groupId, deploymentName, top, Context.NONE);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName,
         Integer top, Context context) {
@@ -982,17 +848,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentOperationInner> getAtSubscriptionScopeWithResponse(String deploymentName,
         String operationId, Context context) {
@@ -1001,16 +857,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             this.client.getSubscriptionId(), deploymentName, operationId, accept, context);
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtSubscriptionScope(String deploymentName, String operationId) {
         return getAtSubscriptionScopeWithResponse(deploymentName, operationId, Context.NONE).getValue();
@@ -1084,11 +931,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtSubscriptionScopeSinglePage(String deploymentName,
         Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res = service.listAtSubscriptionScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), deploymentName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtSubscriptionScopeSinglePage(deploymentName, top, Context.NONE);
     }
 
     /**
@@ -1112,33 +955,14 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtSubscriptionScopeSinglePage(deploymentName, top),
-            nextLink -> listAtSubscriptionScopeNextSinglePage(nextLink));
+        return listAtSubscriptionScope(deploymentName, top, Context.NONE);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName, Integer top,
         Context context) {
@@ -1185,18 +1009,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentOperationInner> getWithResponse(String resourceGroupName, String deploymentName,
         String operationId, Context context) {
@@ -1205,17 +1018,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             deploymentName, operationId, this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Gets a deployments operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
         return getWithResponse(resourceGroupName, deploymentName, operationId, Context.NONE).getValue();
@@ -1295,12 +1098,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listByResourceGroupSinglePage(String resourceGroupName,
         String deploymentName, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, deploymentName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, deploymentName, top, Context.NONE);
     }
 
     /**
@@ -1326,36 +1124,15 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName,
         String deploymentName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, deploymentName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, deploymentName, top, Context.NONE);
     }
 
-    /**
-     * Gets all deployments operations for a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName,
         Integer top, Context context) {
@@ -1394,11 +1171,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res
-            = service.listAtScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1451,11 +1224,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtTenantScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res
-            = service.listAtTenantScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtTenantScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1510,11 +1279,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtManagementGroupScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res
-            = service.listAtManagementGroupScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtManagementGroupScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1569,11 +1334,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listAtSubscriptionScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res
-            = service.listAtSubscriptionScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtSubscriptionScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1626,11 +1387,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentOperationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentOperationsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -130,19 +130,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database's transparent data encryption along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogicalDatabaseTransparentDataEncryptionInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, TransparentDataEncryptionName tdeName) {
@@ -218,18 +206,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             resourceGroupName, serverName, databaseName, tdeName, accept, context);
     }
 
-    /**
-     * Gets a logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database's transparent data encryption on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogicalDatabaseTransparentDataEncryptionInner> getAsync(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
@@ -237,57 +214,21 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database's transparent data encryption along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogicalDatabaseTransparentDataEncryptionInner> getWithResponse(String resourceGroupName,
         String serverName, String databaseName, TransparentDataEncryptionName tdeName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, tdeName, context).block();
     }
 
-    /**
-     * Gets a logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database's transparent data encryption.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner get(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, tdeName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName,
@@ -380,19 +321,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             parameters, context);
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -435,19 +364,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 LogicalDatabaseTransparentDataEncryptionInner.class, context);
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -457,20 +374,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .getSyncPoller();
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -481,19 +385,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .getSyncPoller();
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogicalDatabaseTransparentDataEncryptionInner> createOrUpdateAsync(String resourceGroupName,
         String serverName, String databaseName, TransparentDataEncryptionName tdeName,
@@ -525,19 +417,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName,
@@ -545,20 +425,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, tdeName, parameters).block();
     }
 
-    /**
-     * Updates a logical database's transparent data encryption configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param parameters The database transparent data encryption.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner createOrUpdate(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName,
@@ -652,18 +519,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of the logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the logical database's transparent data encryption as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LogicalDatabaseTransparentDataEncryptionInner> listByDatabaseAsync(String resourceGroupName,
         String serverName, String databaseName) {
@@ -692,56 +548,21 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of the logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the logical database's transparent data encryption as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogicalDatabaseTransparentDataEncryptionInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets a list of the logical database's transparent data encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the logical database's transparent data encryption as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogicalDatabaseTransparentDataEncryptionInner> listByDatabase(String resourceGroupName,
         String serverName, String databaseName, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
@@ -817,18 +638,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             resourceGroupName, serverName, databaseName, tdeName, accept, context);
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -869,18 +679,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 LogicalDatabaseTransparentDataEncryptionInner.class, context);
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -889,19 +688,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return this.beginResumeAsync(resourceGroupName, serverName, databaseName, tdeName).getSyncPoller();
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -910,18 +697,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return this.beginResumeAsync(resourceGroupName, serverName, databaseName, tdeName, context).getSyncPoller();
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogicalDatabaseTransparentDataEncryptionInner> resumeAsync(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
@@ -949,56 +725,21 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner resume(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
         return resumeAsync(resourceGroupName, serverName, databaseName, tdeName).block();
     }
 
-    /**
-     * Resume ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner resume(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName, Context context) {
         return resumeAsync(resourceGroupName, serverName, databaseName, tdeName, context).block();
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
@@ -1074,18 +815,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             resourceGroupName, serverName, databaseName, tdeName, accept, context);
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -1126,18 +856,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 LogicalDatabaseTransparentDataEncryptionInner.class, context);
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -1146,19 +865,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return this.beginSuspendAsync(resourceGroupName, serverName, databaseName, tdeName).getSyncPoller();
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LogicalDatabaseTransparentDataEncryptionInner>, LogicalDatabaseTransparentDataEncryptionInner>
@@ -1167,18 +874,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return this.beginSuspendAsync(resourceGroupName, serverName, databaseName, tdeName, context).getSyncPoller();
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogicalDatabaseTransparentDataEncryptionInner> suspendAsync(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
@@ -1206,37 +902,14 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner suspend(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName) {
         return suspendAsync(resourceGroupName, serverName, databaseName, tdeName).block();
     }
 
-    /**
-     * Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param tdeName The name of the transparent data encryption configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logical database transparent data encryption scan state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner suspend(String resourceGroupName, String serverName,
         String databaseName, TransparentDataEncryptionName tdeName, Context context) {

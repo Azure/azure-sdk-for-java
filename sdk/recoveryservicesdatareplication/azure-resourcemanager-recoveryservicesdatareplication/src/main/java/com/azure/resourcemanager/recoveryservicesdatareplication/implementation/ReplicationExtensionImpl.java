@@ -19,6 +19,15 @@ public final class ReplicationExtensionImpl implements ReplicationExtension, Rep
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}",
+            "vaultName");
+        this.replicationExtensionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}",
+            "replicationExtensionName");
     }
 
     public String id() {
@@ -62,10 +71,7 @@ public final class ReplicationExtensionImpl implements ReplicationExtension, Rep
     }
 
     public ReplicationExtension create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationExtensions()
-            .create(resourceGroupName, vaultName, replicationExtensionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ReplicationExtension create(Context context) {
@@ -83,11 +89,7 @@ public final class ReplicationExtensionImpl implements ReplicationExtension, Rep
     }
 
     public ReplicationExtension refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationExtensions()
-            .getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ReplicationExtension refresh(Context context) {

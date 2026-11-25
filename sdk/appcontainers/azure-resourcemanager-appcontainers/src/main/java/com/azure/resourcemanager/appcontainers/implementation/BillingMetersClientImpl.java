@@ -114,20 +114,7 @@ public final class BillingMetersClientImpl implements BillingMetersClient {
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get billing meters by location.
-     * 
-     * Get all billingMeters for a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return billing meters by location.
-     * 
-     * Get all billingMeters for a location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingMeterCollectionInner> getWithResponse(String location, Context context) {
         final String accept = "application/json";
@@ -135,19 +122,7 @@ public final class BillingMetersClientImpl implements BillingMetersClient {
             location, accept, context);
     }
 
-    /**
-     * Get billing meters by location.
-     * 
-     * Get all billingMeters for a location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return billing meters by location.
-     * 
-     * Get all billingMeters for a location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingMeterCollectionInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();

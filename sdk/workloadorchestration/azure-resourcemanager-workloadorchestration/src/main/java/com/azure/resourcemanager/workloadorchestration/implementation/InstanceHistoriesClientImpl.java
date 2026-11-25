@@ -165,20 +165,7 @@ public final class InstanceHistoriesClientImpl implements InstanceHistoriesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get InstanceHistory Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param instanceName Name of the instance.
-     * @param instanceHistoryName Name of the instance history.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instanceHistory Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InstanceHistoryInner> getWithResponse(String resourceGroupName, String targetName,
         String solutionName, String instanceName, String instanceHistoryName, Context context) {
@@ -187,19 +174,7 @@ public final class InstanceHistoriesClientImpl implements InstanceHistoriesClien
             resourceGroupName, targetName, solutionName, instanceName, instanceHistoryName, accept, context);
     }
 
-    /**
-     * Get InstanceHistory Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param instanceName Name of the instance.
-     * @param instanceHistoryName Name of the instance history.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instanceHistory Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstanceHistoryInner get(String resourceGroupName, String targetName, String solutionName,
         String instanceName, String instanceHistoryName) {
@@ -268,12 +243,7 @@ public final class InstanceHistoriesClientImpl implements InstanceHistoriesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InstanceHistoryInner> listByInstanceSinglePage(String resourceGroupName, String targetName,
         String solutionName, String instanceName) {
-        final String accept = "application/json";
-        Response<InstanceHistoryListResult> res = service.listByInstanceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, targetName, solutionName,
-            instanceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByInstanceSinglePage(resourceGroupName, targetName, solutionName, instanceName, Context.NONE);
     }
 
     /**
@@ -300,39 +270,14 @@ public final class InstanceHistoriesClientImpl implements InstanceHistoriesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List InstanceHistory Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param instanceName Name of the instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InstanceHistory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceHistoryInner> listByInstance(String resourceGroupName, String targetName,
         String solutionName, String instanceName) {
-        return new PagedIterable<>(
-            () -> listByInstanceSinglePage(resourceGroupName, targetName, solutionName, instanceName),
-            nextLink -> listByInstanceNextSinglePage(nextLink));
+        return listByInstance(resourceGroupName, targetName, solutionName, instanceName, Context.NONE);
     }
 
-    /**
-     * List InstanceHistory Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param instanceName Name of the instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InstanceHistory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceHistoryInner> listByInstance(String resourceGroupName, String targetName,
         String solutionName, String instanceName, Context context) {
@@ -372,11 +317,7 @@ public final class InstanceHistoriesClientImpl implements InstanceHistoriesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InstanceHistoryInner> listByInstanceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InstanceHistoryListResult> res
-            = service.listByInstanceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByInstanceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

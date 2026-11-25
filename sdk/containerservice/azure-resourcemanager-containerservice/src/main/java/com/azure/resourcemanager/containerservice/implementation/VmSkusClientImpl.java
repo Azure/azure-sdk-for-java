@@ -158,43 +158,14 @@ public final class VmSkusClientImpl implements VmSkusClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a
-     * best effort approach to provision the requested VM SKUs, but availability is not guaranteed.
-     * 
-     * @param location The name of the Azure region.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSkuInner> listAsync(String location, Boolean includeExtendedLocations) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, includeExtendedLocations),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a
-     * best effort approach to provision the requested VM SKUs, but availability is not guaranteed.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSkuInner> listAsync(String location) {
         final Boolean includeExtendedLocations = null;
@@ -225,44 +196,14 @@ public final class VmSkusClientImpl implements VmSkusClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a
-     * best effort approach to provision the requested VM SKUs, but availability is not guaranteed.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> list(String location) {
         final Boolean includeExtendedLocations = null;
         return new PagedIterable<>(listAsync(location, includeExtendedLocations));
     }
 
-    /**
-     * Gets the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a
-     * best effort approach to provision the requested VM SKUs, but availability is not guaranteed.
-     * 
-     * @param location The name of the Azure region.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of VM SKUs accepted by AKS.
-     * 
-     * Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> list(String location, Boolean includeExtendedLocations, Context context) {
         return new PagedIterable<>(listAsync(location, includeExtendedLocations, context));

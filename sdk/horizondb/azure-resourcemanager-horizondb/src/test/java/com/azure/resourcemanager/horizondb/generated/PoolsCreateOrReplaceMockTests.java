@@ -22,8 +22,6 @@ import com.azure.resourcemanager.horizondb.models.PoolProperties;
 import com.azure.resourcemanager.horizondb.models.ScheduledMaintenanceProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -32,7 +30,7 @@ public final class PoolsCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Restarting\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":1041320877,\"vCores\":1109693907},\"nodeCount\":851546423,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"jfutacoebj\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"PendingReboot\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"tags\":{\"kahzo\":\"wcpmguaadraufac\"},\"id\":\"jjziuxxpsh\",\"name\":\"eekulfgslqubkwd\",\"type\":\"enr\"}";
+            = "{\"properties\":{\"state\":\"Starting\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":725653183,\"vCores\":844813603},\"nodeCount\":1900106080,\"highAvailability\":{\"mode\":\"AnyZone\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"jgslordilmyww\",\"applyMethod\":\"Immediate\",\"syncStatus\":\"Applying\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dabg\",\"name\":\"vudtjuewbcihx\",\"type\":\"uwhcjyxccybv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -42,43 +40,27 @@ public final class PoolsCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Pool response = manager.pools()
-            .define("dyg")
-            .withExistingCluster("fwsrtawcoezbrhu", "skh")
-            .withTags(mapOf("vyvnqqyb", "zf", "yjkqabqgzslesjcb", "ryeu"))
+            .define("vscx")
+            .withExistingCluster("yiopi", "kqqfk")
             .withProperties(new PoolProperties()
                 .withComputeModel(new PoolComputeModel().withType(PoolComputeModelType.PROVISIONED)
                     .withComputeProcessor(ComputeProcessorType.AMD)
-                    .withComputeGeneration(2146938073)
-                    .withVCores(870237510))
-                .withNodeCount(280222728)
+                    .withComputeGeneration(2101179664)
+                    .withVCores(2021052492))
+                .withNodeCount(1428404319)
                 .withHighAvailability(new PoolHighAvailability().withMode(PoolHighAvailabilityMode.DISABLED))
-                .withParameterGroup(new PoolParameterGroupReference().withParameterGroupResourceId("vleo")
-                    .withApplyMethod(ParameterApplyMethod.PENDING_REBOOT))
+                .withParameterGroup(new PoolParameterGroupReference().withParameterGroupResourceId("xk")
+                    .withApplyMethod(ParameterApplyMethod.IMMEDIATE))
                 .withScheduledMaintenance(new ScheduledMaintenanceProperties()))
             .create();
 
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, response.properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, response.properties().computeModel().computeProcessor());
-        Assertions.assertEquals(1041320877, response.properties().computeModel().computeGeneration());
-        Assertions.assertEquals(1109693907, response.properties().computeModel().vCores());
-        Assertions.assertEquals(851546423, response.properties().nodeCount());
-        Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT,
-            response.properties().highAvailability().mode());
-        Assertions.assertEquals("jfutacoebj", response.properties().parameterGroup().parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT,
-            response.properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("wcpmguaadraufac", response.tags().get("kahzo"));
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals(725653183, response.properties().computeModel().computeGeneration());
+        Assertions.assertEquals(844813603, response.properties().computeModel().vCores());
+        Assertions.assertEquals(1900106080, response.properties().nodeCount());
+        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, response.properties().highAvailability().mode());
+        Assertions.assertEquals("jgslordilmyww", response.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, response.properties().parameterGroup().applyMethod());
     }
 }

@@ -98,10 +98,7 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkDnsService create(Context context) {
@@ -122,10 +119,7 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkDnsService apply(Context context) {
@@ -151,11 +145,7 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkDnsService refresh(Context context) {

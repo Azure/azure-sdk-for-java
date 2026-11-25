@@ -89,10 +89,7 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilter create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionExecutionFilters()
-            .create(resourceGroupName, edgeActionName, executionFilter, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeActionExecutionFilter create(Context context) {
@@ -115,10 +112,7 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilter apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionExecutionFilters()
-            .update(resourceGroupName, edgeActionName, executionFilter, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeActionExecutionFilter apply(Context context) {
@@ -144,11 +138,7 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilter refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionExecutionFilters()
-            .getWithResponse(resourceGroupName, edgeActionName, executionFilter, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeActionExecutionFilter refresh(Context context) {

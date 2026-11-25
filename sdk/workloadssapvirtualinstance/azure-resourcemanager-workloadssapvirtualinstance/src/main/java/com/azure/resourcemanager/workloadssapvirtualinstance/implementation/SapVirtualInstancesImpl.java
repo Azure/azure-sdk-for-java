@@ -62,7 +62,7 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String sapVirtualInstanceName) {
-        this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName);
+        this.delete(resourceGroupName, sapVirtualInstanceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String sapVirtualInstanceName, Context context) {
@@ -70,8 +70,7 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SapVirtualInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName, Context context) {
@@ -81,8 +80,7 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public PagedIterable<SapVirtualInstance> list() {
-        PagedIterable<SapVirtualInstanceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SapVirtualInstance> list(Context context) {
@@ -201,74 +199,30 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public SapVirtualInstance getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "sapVirtualInstanceName");
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SapVirtualInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sapVirtualInstanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "sapVirtualInstanceName");
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
-        }
+            "sapVirtualInstanceName", "sapVirtualInstances", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "sapVirtualInstanceName");
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
-        }
-        this.delete(resourceGroupName, sapVirtualInstanceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String sapVirtualInstanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}",
-            "sapVirtualInstanceName");
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
-        }
+            "sapVirtualInstanceName", "sapVirtualInstances", LOGGER);
         this.delete(resourceGroupName, sapVirtualInstanceName, context);
     }
 

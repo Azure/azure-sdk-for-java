@@ -12,24 +12,24 @@ public final class WorkbenchUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbenchUpdateProperties model = BinaryData.fromString(
-            "{\"targetClusterId\":\"ebhuhkslgwlokhu\",\"idleTimeBeforeShutdown\":\"ijyzcqypzqzufgsy\",\"instanceType\":\"jyvdwtfxptpqayam\",\"gpuCount\":480070787}")
+            "{\"targetClusterId\":\"ofgeoagf\",\"idleTimeBeforeShutdown\":\"ftnxodwxmdajwiy\",\"instanceType\":\"gsevmdm\",\"gpuCount\":1654770372}")
             .toObject(WorkbenchUpdateProperties.class);
-        Assertions.assertEquals("ebhuhkslgwlokhu", model.targetClusterId());
-        Assertions.assertEquals("ijyzcqypzqzufgsy", model.idleTimeBeforeShutdown());
-        Assertions.assertEquals("jyvdwtfxptpqayam", model.instanceType());
-        Assertions.assertEquals(480070787, model.gpuCount());
+        Assertions.assertEquals("ofgeoagf", model.targetClusterId());
+        Assertions.assertEquals("ftnxodwxmdajwiy", model.idleTimeBeforeShutdown());
+        Assertions.assertEquals("gsevmdm", model.instanceType());
+        Assertions.assertEquals(1654770372, model.gpuCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbenchUpdateProperties model = new WorkbenchUpdateProperties().withTargetClusterId("ebhuhkslgwlokhu")
-            .withIdleTimeBeforeShutdown("ijyzcqypzqzufgsy")
-            .withInstanceType("jyvdwtfxptpqayam")
-            .withGpuCount(480070787);
+        WorkbenchUpdateProperties model = new WorkbenchUpdateProperties().withTargetClusterId("ofgeoagf")
+            .withIdleTimeBeforeShutdown("ftnxodwxmdajwiy")
+            .withInstanceType("gsevmdm")
+            .withGpuCount(1654770372);
         model = BinaryData.fromObject(model).toObject(WorkbenchUpdateProperties.class);
-        Assertions.assertEquals("ebhuhkslgwlokhu", model.targetClusterId());
-        Assertions.assertEquals("ijyzcqypzqzufgsy", model.idleTimeBeforeShutdown());
-        Assertions.assertEquals("jyvdwtfxptpqayam", model.instanceType());
-        Assertions.assertEquals(480070787, model.gpuCount());
+        Assertions.assertEquals("ofgeoagf", model.targetClusterId());
+        Assertions.assertEquals("ftnxodwxmdajwiy", model.idleTimeBeforeShutdown());
+        Assertions.assertEquals("gsevmdm", model.instanceType());
+        Assertions.assertEquals(1654770372, model.gpuCount());
     }
 }

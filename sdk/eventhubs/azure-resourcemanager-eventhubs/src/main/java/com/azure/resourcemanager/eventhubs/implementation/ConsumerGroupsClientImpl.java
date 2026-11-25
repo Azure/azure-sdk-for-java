@@ -114,19 +114,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a description for the specified consumer group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified consumer group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConsumerGroupInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String consumerGroupName) {
@@ -205,18 +193,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             resourceGroupName, namespaceName, eventHubName, consumerGroupName, accept, context);
     }
 
-    /**
-     * Gets a description for the specified consumer group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified consumer group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConsumerGroupInner> getAsync(String resourceGroupName, String namespaceName, String eventHubName,
         String consumerGroupName) {
@@ -224,37 +201,14 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a description for the specified consumer group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified consumer group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConsumerGroupInner> getWithResponse(String resourceGroupName, String namespaceName,
         String eventHubName, String consumerGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, eventHubName, consumerGroupName, context).block();
     }
 
-    /**
-     * Gets a description for the specified consumer group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified consumer group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsumerGroupInner get(String resourceGroupName, String namespaceName, String eventHubName,
         String consumerGroupName) {
@@ -262,20 +216,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             .getValue();
     }
 
-    /**
-     * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @param parameters Parameters supplied to create or update a consumer group resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Consumer group operation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConsumerGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String namespaceName, String eventHubName, String consumerGroupName, ConsumerGroupInner parameters) {
@@ -369,19 +310,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @param parameters Parameters supplied to create or update a consumer group resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Consumer group operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConsumerGroupInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String consumerGroupName, ConsumerGroupInner parameters) {
@@ -389,20 +318,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @param parameters Parameters supplied to create or update a consumer group resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Consumer group operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConsumerGroupInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String eventHubName, String consumerGroupName, ConsumerGroupInner parameters, Context context) {
@@ -410,19 +326,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             parameters, context).block();
     }
 
-    /**
-     * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @param parameters Parameters supplied to create or update a consumer group resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Consumer group operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsumerGroupInner createOrUpdate(String resourceGroupName, String namespaceName, String eventHubName,
         String consumerGroupName, ConsumerGroupInner parameters) {
@@ -430,18 +334,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a consumer group from the specified Event Hub and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String consumerGroupName) {
@@ -517,18 +410,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             resourceGroupName, namespaceName, eventHubName, consumerGroupName, context);
     }
 
-    /**
-     * Deletes a consumer group from the specified Event Hub and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String eventHubName,
         String consumerGroupName) {
@@ -536,19 +418,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a consumer group from the specified Event Hub and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String eventHubName,
         String consumerGroupName, Context context) {
@@ -556,17 +426,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             .block();
     }
 
-    /**
-     * Deletes a consumer group from the specified Event Hub and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String eventHubName, String consumerGroupName) {
         deleteWithResponse(resourceGroupName, namespaceName, eventHubName, consumerGroupName, Context.NONE);
@@ -668,22 +528,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
-     * Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the consumer groups in a Namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConsumerGroupInner> listByEventHubAsync(String resourceGroupName, String namespaceName,
         String eventHubName, Integer skip, Integer top) {
@@ -692,18 +537,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             nextLink -> listByEventHubNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
-     * Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the consumer groups in a Namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConsumerGroupInner> listByEventHubAsync(String resourceGroupName, String namespaceName,
         String eventHubName) {
@@ -739,18 +573,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             nextLink -> listByEventHubNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
-     * Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the consumer groups in a Namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConsumerGroupInner> listByEventHub(String resourceGroupName, String namespaceName,
         String eventHubName) {
@@ -759,23 +582,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         return new PagedIterable<>(listByEventHubAsync(resourceGroupName, namespaceName, eventHubName, skip, top));
     }
 
-    /**
-     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
-     * Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     * point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the consumer groups in a Namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConsumerGroupInner> listByEventHub(String resourceGroupName, String namespaceName,
         String eventHubName, Integer skip, Integer top, Context context) {

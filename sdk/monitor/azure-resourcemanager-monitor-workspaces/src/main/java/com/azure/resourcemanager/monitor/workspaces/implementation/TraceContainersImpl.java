@@ -46,13 +46,7 @@ public final class TraceContainersImpl implements TraceContainers {
 
     public TraceContainerResource createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
         TraceContainerResourceInner resource) {
-        TraceContainerResourceInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource);
-        if (inner != null) {
-            return new TraceContainerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource, Context.NONE);
     }
 
     public TraceContainerResource createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
@@ -72,14 +66,12 @@ public final class TraceContainersImpl implements TraceContainers {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String azureMonitorWorkspaceName) {
-        this.serviceClient().delete(resourceGroupName, azureMonitorWorkspaceName);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     public PagedIterable<TraceContainerResource> listByAzureMonitorWorkspace(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        PagedIterable<TraceContainerResourceInner> inner
-            = this.serviceClient().listByAzureMonitorWorkspace(resourceGroupName, azureMonitorWorkspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TraceContainerResourceImpl(inner1, this.manager()));
+        return this.listByAzureMonitorWorkspace(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     public PagedIterable<TraceContainerResource> listByAzureMonitorWorkspace(String resourceGroupName,

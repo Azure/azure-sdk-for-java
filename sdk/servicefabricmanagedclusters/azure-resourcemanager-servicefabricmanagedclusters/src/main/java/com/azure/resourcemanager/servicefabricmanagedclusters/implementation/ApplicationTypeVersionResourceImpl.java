@@ -95,11 +95,7 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypeVersions()
-            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationTypeVersionResource create(Context context) {
@@ -122,12 +118,7 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypeVersions()
-            .updateWithResponse(resourceGroupName, clusterName, applicationTypeName, version, updateParameters,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApplicationTypeVersionResource apply(Context context) {
@@ -157,11 +148,7 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypeVersions()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationTypeVersionResource refresh(Context context) {

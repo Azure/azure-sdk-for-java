@@ -248,17 +248,7 @@ public final class InstancesClientImpl implements InstancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a InstanceResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InstanceResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String instancename,
         Context context) {
@@ -267,16 +257,7 @@ public final class InstancesClientImpl implements InstancesClient {
             this.client.getSubscriptionId(), resourceGroupName, instancename, accept, context);
     }
 
-    /**
-     * Get a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a InstanceResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstanceResourceInner getByResourceGroup(String resourceGroupName, String instancename) {
         return getByResourceGroupWithResponse(resourceGroupName, instancename, Context.NONE).getValue();
@@ -321,11 +302,7 @@ public final class InstancesClientImpl implements InstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instancename,
         InstanceResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instancename, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, instancename, resource, Context.NONE);
     }
 
     /**
@@ -372,39 +349,14 @@ public final class InstancesClientImpl implements InstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstanceResourceInner>, InstanceResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String instancename, InstanceResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, instancename, resource);
-        return this.client.<InstanceResourceInner, InstanceResourceInner>getLroResult(response,
-            InstanceResourceInner.class, InstanceResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, instancename, resource, Context.NONE);
     }
 
-    /**
-     * Create a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstanceResourceInner>, InstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instancename, InstanceResourceInner resource, Context context) {
@@ -432,39 +384,19 @@ public final class InstancesClientImpl implements InstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstanceResourceInner createOrUpdate(String resourceGroupName, String instancename,
         InstanceResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, instancename, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, instancename, resource, Context.NONE);
     }
 
-    /**
-     * Create a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstanceResourceInner createOrUpdate(String resourceGroupName, String instancename,
         InstanceResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, instancename, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, instancename, resource, context));
     }
 
     /**
@@ -508,19 +440,7 @@ public final class InstancesClientImpl implements InstancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InstanceResourceInner> updateWithResponse(String resourceGroupName, String instancename,
         InstanceResourceUpdate properties, Context context) {
@@ -530,17 +450,7 @@ public final class InstancesClientImpl implements InstancesClient {
             this.client.getSubscriptionId(), resourceGroupName, instancename, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstanceResourceInner update(String resourceGroupName, String instancename,
         InstanceResourceUpdate properties) {
@@ -577,8 +487,7 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instancename) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instancename, Context.NONE);
+        return deleteWithResponse(resourceGroupName, instancename, Context.NONE);
     }
 
     /**
@@ -615,33 +524,13 @@ public final class InstancesClientImpl implements InstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instancename) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, instancename);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, instancename, Context.NONE);
     }
 
-    /**
-     * Delete a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instancename,
         Context context) {
@@ -664,33 +553,16 @@ public final class InstancesClientImpl implements InstancesClient {
         return beginDeleteAsync(resourceGroupName, instancename).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instancename) {
-        beginDelete(resourceGroupName, instancename).getFinalResult();
+        delete(resourceGroupName, instancename, Context.NONE);
     }
 
-    /**
-     * Delete a InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancename Name of the Instance resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instancename, Context context) {
-        beginDelete(resourceGroupName, instancename, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, instancename, context));
     }
 
     /**
@@ -740,11 +612,7 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InstanceResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<InstanceResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -767,31 +635,13 @@ public final class InstancesClientImpl implements InstancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List InstanceResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InstanceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List InstanceResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InstanceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -839,11 +689,7 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InstanceResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<InstanceResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -864,27 +710,13 @@ public final class InstancesClientImpl implements InstancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List InstanceResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InstanceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List InstanceResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a InstanceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -923,11 +755,7 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InstanceResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InstanceResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -981,11 +809,7 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InstanceResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InstanceResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
