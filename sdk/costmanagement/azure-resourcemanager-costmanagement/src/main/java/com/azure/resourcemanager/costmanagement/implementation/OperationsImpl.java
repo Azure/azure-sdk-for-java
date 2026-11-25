@@ -26,8 +26,7 @@ public final class OperationsImpl implements Operations {
     }
 
     public PagedIterable<CostManagementOperation> list() {
-        PagedIterable<CostManagementOperationInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CostManagementOperationImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<CostManagementOperation> list(Context context) {

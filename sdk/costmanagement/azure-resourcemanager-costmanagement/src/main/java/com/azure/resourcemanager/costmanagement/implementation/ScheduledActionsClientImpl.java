@@ -327,31 +327,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return getWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the private scheduled action by name.
-     * 
-     * @param name Scheduled action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private scheduled action by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> getWithResponse(String name, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), name, accept, context);
     }
 
-    /**
-     * Get the private scheduled action by name.
-     * 
-     * @param name Scheduled action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private scheduled action by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner get(String name) {
         return getWithResponse(name, Context.NONE).getValue();
@@ -397,19 +380,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a private scheduled action.
-     * 
-     * @param name Scheduled action name.
-     * @param scheduledAction Scheduled action to be created or updated.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
-     * be specified to achieve optimistic concurrency.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled action definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> createOrUpdateWithResponse(String name, ScheduledActionInner scheduledAction,
         String ifMatch, Context context) {
@@ -419,16 +390,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             contentType, accept, scheduledAction, context);
     }
 
-    /**
-     * Create or update a private scheduled action.
-     * 
-     * @param name Scheduled action name.
-     * @param scheduledAction Scheduled action to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled action definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdate(String name, ScheduledActionInner scheduledAction) {
         final String ifMatch = null;
@@ -466,29 +428,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return deleteWithResponseAsync(name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a private scheduled action.
-     * 
-     * @param name Scheduled action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String name, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), name, context);
     }
 
-    /**
-     * Delete a private scheduled action.
-     * 
-     * @param name Scheduled action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String name) {
         deleteWithResponse(name, Context.NONE);
@@ -551,11 +497,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -577,29 +519,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all private scheduled actions.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled actions list result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter), nextLink -> listNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * List all private scheduled actions.
-     * 
-     * @param filter May be used to filter scheduled actions by properties/viewId. Supported operator is 'eq'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled actions list result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -636,29 +563,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return runWithResponseAsync(name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Processes a private scheduled action.
-     * 
-     * @param name Scheduled action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runWithResponse(String name, Context context) {
         return service.runSync(this.client.getEndpoint(), this.client.getApiVersion(), name, context);
     }
 
-    /**
-     * Processes a private scheduled action.
-     * 
-     * @param name Scheduled action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void run(String name) {
         runWithResponse(name, Context.NONE);
@@ -699,17 +610,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return getByScopeWithResponseAsync(scope, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the shared scheduled action from the given scope by name.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared scheduled action from the given scope by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> getByScopeWithResponse(String scope, String name, Context context) {
         final String accept = "application/json";
@@ -717,16 +618,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             context);
     }
 
-    /**
-     * Get the shared scheduled action from the given scope by name.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared scheduled action from the given scope by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner getByScope(String scope, String name) {
         return getByScopeWithResponse(scope, name, Context.NONE).getValue();
@@ -775,20 +667,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a shared scheduled action within the given scope.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @param scheduledAction Scheduled action to be created or updated.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
-     * be specified to achieve optimistic concurrency.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled action definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> createOrUpdateByScopeWithResponse(String scope, String name,
         ScheduledActionInner scheduledAction, String ifMatch, Context context) {
@@ -798,17 +677,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             ifMatch, contentType, accept, scheduledAction, context);
     }
 
-    /**
-     * Create or update a shared scheduled action within the given scope.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @param scheduledAction Scheduled action to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled action definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdateByScope(String scope, String name, ScheduledActionInner scheduledAction) {
         final String ifMatch = null;
@@ -848,31 +717,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return deleteByScopeWithResponseAsync(scope, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a scheduled action within the given scope.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByScopeWithResponse(String scope, String name, Context context) {
         return service.deleteByScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, name, context);
     }
 
-    /**
-     * Delete a scheduled action within the given scope.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByScope(String scope, String name) {
         deleteByScopeWithResponse(scope, name, Context.NONE);
@@ -943,11 +794,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByScopeSinglePage(String scope, String filter) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res = service.listByScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), scope, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByScopeSinglePage(scope, filter, Context.NONE);
     }
 
     /**
@@ -970,33 +817,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all shared scheduled actions within the given scope.
-     * 
-     * @param scope undefined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled actions list result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> listByScope(String scope) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByScopeSinglePage(scope, filter),
-            nextLink -> listByScopeNextSinglePage(nextLink));
+        return listByScope(scope, filter, Context.NONE);
     }
 
-    /**
-     * List all shared scheduled actions within the given scope.
-     * 
-     * @param scope undefined.
-     * @param filter May be used to filter scheduled actions by properties/viewId. Supported operator is 'eq'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scheduled actions list result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduledActionInner> listByScope(String scope, String filter, Context context) {
         return new PagedIterable<>(() -> listByScopeSinglePage(scope, filter, context),
@@ -1035,31 +863,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return runByScopeWithResponseAsync(scope, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Runs a shared scheduled action within the given scope.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runByScopeWithResponse(String scope, String name, Context context) {
         return service.runByScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, name, context);
     }
 
-    /**
-     * Runs a shared scheduled action within the given scope.
-     * 
-     * @param scope undefined.
-     * @param name Scheduled action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void runByScope(String scope, String name) {
         runByScopeWithResponse(scope, name, Context.NONE);
@@ -1101,16 +911,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks availability and correctness of the name for a scheduled action.
-     * 
-     * @param checkNameAvailabilityRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
@@ -1120,15 +921,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             accept, checkNameAvailabilityRequest, context);
     }
 
-    /**
-     * Checks availability and correctness of the name for a scheduled action.
-     * 
-     * @param checkNameAvailabilityRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner
         checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
@@ -1199,30 +992,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks availability and correctness of the name for a scheduled action within the given scope.
-     * 
-     * @param scope The scope associated with scheduled action operations. This includes
-     * 'subscriptions/{subscriptionId}' for subscription scope,
-     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     * EnrollmentAccount scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     * BillingProfile scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
-     * for External Billing Account scope and
-     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
-     * scope. Note: Insight Alerts are only available on subscription scope.
-     * @param checkNameAvailabilityRequest Scheduled action to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityByScopeWithResponse(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
@@ -1232,29 +1002,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             contentType, accept, checkNameAvailabilityRequest, context);
     }
 
-    /**
-     * Checks availability and correctness of the name for a scheduled action within the given scope.
-     * 
-     * @param scope The scope associated with scheduled action operations. This includes
-     * 'subscriptions/{subscriptionId}' for subscription scope,
-     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     * EnrollmentAccount scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     * BillingProfile scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
-     * for External Billing Account scope and
-     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
-     * scope. Note: Insight Alerts are only available on subscription scope.
-     * @param checkNameAvailabilityRequest Scheduled action to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailabilityByScope(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
@@ -1290,11 +1038,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1346,11 +1090,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScheduledActionListResult> res
-            = service.listByScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

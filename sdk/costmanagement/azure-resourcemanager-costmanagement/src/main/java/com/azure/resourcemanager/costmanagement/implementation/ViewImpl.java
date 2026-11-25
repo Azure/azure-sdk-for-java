@@ -138,11 +138,7 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     }
 
     public View create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getViews()
-            .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public View create(Context context) {
@@ -164,11 +160,7 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     }
 
     public View apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getViews()
-            .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public View apply(Context context) {
@@ -193,11 +185,7 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     }
 
     public View refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getViews()
-            .getByScopeWithResponse(scope, viewName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public View refresh(Context context) {

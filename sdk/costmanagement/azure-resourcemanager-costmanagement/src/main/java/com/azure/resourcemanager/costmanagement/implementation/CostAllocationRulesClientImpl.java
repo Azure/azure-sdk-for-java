@@ -208,19 +208,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
         return getWithResponseAsync(billingAccountId, ruleName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a cost allocation rule by rule name and billing account or enterprise enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param ruleName Cost allocation rule name. The name cannot include spaces or any non alphanumeric characters
-     * other than '_' and '-'. The max length is 260 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost allocation rule by rule name and billing account or enterprise enrollment along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CostAllocationRuleDefinitionInner> getWithResponse(String billingAccountId, String ruleName,
         Context context) {
@@ -229,17 +217,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
             accept, context);
     }
 
-    /**
-     * Get a cost allocation rule by rule name and billing account or enterprise enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param ruleName Cost allocation rule name. The name cannot include spaces or any non alphanumeric characters
-     * other than '_' and '-'. The max length is 260 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost allocation rule by rule name and billing account or enterprise enrollment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostAllocationRuleDefinitionInner get(String billingAccountId, String ruleName) {
         return getWithResponse(billingAccountId, ruleName, Context.NONE).getValue();
@@ -290,20 +268,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create/Update a rule to allocate cost between different resources within a billing account or enterprise
-     * enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param ruleName Cost allocation rule name. The name cannot include spaces or any non alphanumeric characters
-     * other than '_' and '-'. The max length is 260 characters.
-     * @param costAllocationRule Cost allocation rule to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cost allocation rule model definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CostAllocationRuleDefinitionInner> createOrUpdateWithResponse(String billingAccountId,
         String ruleName, CostAllocationRuleDefinitionInner costAllocationRule, Context context) {
@@ -313,19 +278,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
             ruleName, contentType, accept, costAllocationRule, context);
     }
 
-    /**
-     * Create/Update a rule to allocate cost between different resources within a billing account or enterprise
-     * enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param ruleName Cost allocation rule name. The name cannot include spaces or any non alphanumeric characters
-     * other than '_' and '-'. The max length is 260 characters.
-     * @param costAllocationRule Cost allocation rule to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cost allocation rule model definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostAllocationRuleDefinitionInner createOrUpdate(String billingAccountId, String ruleName,
         CostAllocationRuleDefinitionInner costAllocationRule) {
@@ -367,34 +320,14 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
         return deleteWithResponseAsync(billingAccountId, ruleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete cost allocation rule for billing account or enterprise enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param ruleName Cost allocation rule name. The name cannot include spaces or any non alphanumeric characters
-     * other than '_' and '-'. The max length is 260 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String billingAccountId, String ruleName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountId, ruleName,
             context);
     }
 
-    /**
-     * Delete cost allocation rule for billing account or enterprise enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param ruleName Cost allocation rule name. The name cannot include spaces or any non alphanumeric characters
-     * other than '_' and '-'. The max length is 260 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String billingAccountId, String ruleName) {
         deleteWithResponse(billingAccountId, ruleName, Context.NONE);
@@ -449,11 +382,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CostAllocationRuleDefinitionInner> listSinglePage(String billingAccountId) {
-        final String accept = "application/json";
-        Response<CostAllocationRuleList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(billingAccountId, Context.NONE);
     }
 
     /**
@@ -476,32 +405,13 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the list of all cost allocation rules for a billing account or enterprise enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all cost allocation rules for a billing account or enterprise enrollment as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CostAllocationRuleDefinitionInner> list(String billingAccountId) {
-        return new PagedIterable<>(() -> listSinglePage(billingAccountId), nextLink -> listNextSinglePage(nextLink));
+        return list(billingAccountId, Context.NONE);
     }
 
-    /**
-     * Get the list of all cost allocation rules for a billing account or enterprise enrollment.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all cost allocation rules for a billing account or enterprise enrollment as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CostAllocationRuleDefinitionInner> list(String billingAccountId, Context context) {
         return new PagedIterable<>(() -> listSinglePage(billingAccountId, context),
@@ -550,17 +460,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks availability and correctness of a name for a cost allocation rule.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param costAllocationRuleCheckNameAvailabilityRequest Cost allocation rule to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cost allocation rule check name availability response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CostAllocationRuleCheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
         String billingAccountId,
@@ -572,16 +472,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
             billingAccountId, contentType, accept, costAllocationRuleCheckNameAvailabilityRequest, context);
     }
 
-    /**
-     * Checks availability and correctness of a name for a cost allocation rule.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param costAllocationRuleCheckNameAvailabilityRequest Cost allocation rule to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cost allocation rule check name availability response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostAllocationRuleCheckNameAvailabilityResponseInner checkNameAvailability(String billingAccountId,
         CostAllocationRuleCheckNameAvailabilityRequest costAllocationRuleCheckNameAvailabilityRequest) {
@@ -620,11 +511,7 @@ public final class CostAllocationRulesClientImpl implements CostAllocationRulesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CostAllocationRuleDefinitionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CostAllocationRuleList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

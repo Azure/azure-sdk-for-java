@@ -131,11 +131,7 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
     }
 
     public Export create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExports()
-            .createOrUpdateWithResponse(scope, exportName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Export create(Context context) {
@@ -157,11 +153,7 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
     }
 
     public Export apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExports()
-            .createOrUpdateWithResponse(scope, exportName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Export apply(Context context) {
@@ -182,12 +174,7 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
     }
 
     public Export refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getExports()
-            .getWithResponse(scope, exportName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Export refresh(Context context) {

@@ -287,12 +287,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listByBillingAccountIdSinglePage(String billingAccountId,
         GrainParameter grainParameter, String filter) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listByBillingAccountIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                billingAccountId, grainParameter, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingAccountIdSinglePage(billingAccountId, grainParameter, filter, Context.NONE);
     }
 
     /**
@@ -319,37 +314,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
-     * and 'Monthly'.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listByBillingAccountId(String billingAccountId) {
         final GrainParameter grainParameter = null;
         final String filter = null;
-        return new PagedIterable<>(() -> listByBillingAccountIdSinglePage(billingAccountId, grainParameter, filter),
-            nextLink -> listByBillingAccountIdNextSinglePage(nextLink));
+        return listByBillingAccountId(billingAccountId, grainParameter, filter, Context.NONE);
     }
 
-    /**
-     * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
-     * and 'Monthly'.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param grainParameter Grain.
-     * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listByBillingAccountId(String billingAccountId,
         GrainParameter grainParameter, String filter, Context context) {
@@ -439,12 +412,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listByBillingProfileIdSinglePage(String billingAccountId,
         String billingProfileId, GrainParameter grainParameter, String filter) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listByBillingProfileIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                billingAccountId, billingProfileId, grainParameter, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileIdSinglePage(billingAccountId, billingProfileId, grainParameter, filter,
+            Context.NONE);
     }
 
     /**
@@ -471,39 +440,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Billing Profile ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(String billingAccountId,
         String billingProfileId) {
         final GrainParameter grainParameter = null;
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listByBillingProfileIdSinglePage(billingAccountId, billingProfileId, grainParameter, filter),
-            nextLink -> listByBillingProfileIdNextSinglePage(nextLink));
+        return listByBillingProfileId(billingAccountId, billingProfileId, grainParameter, filter, Context.NONE);
     }
 
-    /**
-     * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Billing Profile ID.
-     * @param grainParameter Grain.
-     * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(String billingAccountId,
         String billingProfileId, GrainParameter grainParameter, String filter, Context context) {
@@ -585,12 +531,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listBySavingsPlanOrderSinglePage(String savingsPlanOrderId,
         String filter, GrainParameter grainParameter) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listBySavingsPlanOrderSync(this.client.getEndpoint(), this.client.getApiVersion(), filter,
-                grainParameter, savingsPlanOrderId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySavingsPlanOrderSinglePage(savingsPlanOrderId, filter, grainParameter, Context.NONE);
     }
 
     /**
@@ -616,35 +557,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the savings plan utilization summaries for daily or monthly grain.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanOrder(String savingsPlanOrderId) {
         final String filter = null;
         final GrainParameter grainParameter = null;
-        return new PagedIterable<>(() -> listBySavingsPlanOrderSinglePage(savingsPlanOrderId, filter, grainParameter),
-            nextLink -> listBySavingsPlanOrderNextSinglePage(nextLink));
+        return listBySavingsPlanOrder(savingsPlanOrderId, filter, grainParameter, Context.NONE);
     }
 
-    /**
-     * Lists the savings plan utilization summaries for daily or monthly grain.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param filter Supports filtering by properties/usageDate.
-     * @param grainParameter Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanOrder(String savingsPlanOrderId,
         String filter, GrainParameter grainParameter, Context context) {
@@ -733,12 +654,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listBySavingsPlanIdSinglePage(String savingsPlanOrderId,
         String savingsPlanId, String filter, GrainParameter grainParameter) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listBySavingsPlanIdSync(this.client.getEndpoint(), this.client.getApiVersion(), filter,
-                grainParameter, savingsPlanOrderId, savingsPlanId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySavingsPlanIdSinglePage(savingsPlanOrderId, savingsPlanId, filter, grainParameter, Context.NONE);
     }
 
     /**
@@ -764,39 +680,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the savings plan utilization summaries for daily or monthly grain.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param savingsPlanId Savings plan ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(String savingsPlanOrderId,
         String savingsPlanId) {
         final String filter = null;
         final GrainParameter grainParameter = null;
-        return new PagedIterable<>(
-            () -> listBySavingsPlanIdSinglePage(savingsPlanOrderId, savingsPlanId, filter, grainParameter),
-            nextLink -> listBySavingsPlanIdNextSinglePage(nextLink));
+        return listBySavingsPlanId(savingsPlanOrderId, savingsPlanId, filter, grainParameter, Context.NONE);
     }
 
-    /**
-     * Lists the savings plan utilization summaries for daily or monthly grain.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param savingsPlanId Savings plan ID.
-     * @param filter Supports filtering by properties/usageDate.
-     * @param grainParameter Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(String savingsPlanOrderId,
         String savingsPlanId, String filter, GrainParameter grainParameter, Context context) {
@@ -838,11 +731,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listByBillingAccountIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listByBillingAccountIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingAccountIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -898,11 +787,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listByBillingProfileIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listByBillingProfileIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -958,11 +843,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listBySavingsPlanOrderNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listBySavingsPlanOrderNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySavingsPlanOrderNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1018,11 +899,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitUtilizationSummaryInner> listBySavingsPlanIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BenefitUtilizationSummariesListResult> res
-            = service.listBySavingsPlanIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySavingsPlanIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

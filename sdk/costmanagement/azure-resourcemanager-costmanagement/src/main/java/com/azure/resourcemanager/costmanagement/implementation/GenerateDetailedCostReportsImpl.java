@@ -27,12 +27,7 @@ public final class GenerateDetailedCostReportsImpl implements GenerateDetailedCo
 
     public GenerateDetailedCostReportOperationResult createOperation(String scope,
         GenerateDetailedCostReportDefinition parameters) {
-        GenerateDetailedCostReportOperationResultInner inner = this.serviceClient().createOperation(scope, parameters);
-        if (inner != null) {
-            return new GenerateDetailedCostReportOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOperation(scope, parameters, Context.NONE);
     }
 
     public GenerateDetailedCostReportOperationResult createOperation(String scope,

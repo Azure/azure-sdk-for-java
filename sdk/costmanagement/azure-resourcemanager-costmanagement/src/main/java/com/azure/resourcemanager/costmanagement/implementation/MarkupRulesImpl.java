@@ -69,12 +69,11 @@ public final class MarkupRulesImpl implements MarkupRules {
     }
 
     public void delete(String billingAccountId, String billingProfileId, String ruleName) {
-        this.serviceClient().delete(billingAccountId, billingProfileId, ruleName);
+        this.deleteWithResponse(billingAccountId, billingProfileId, ruleName, Context.NONE);
     }
 
     public PagedIterable<MarkupRule> list(String billingAccountId, String billingProfileId) {
-        PagedIterable<MarkupRuleInner> inner = this.serviceClient().list(billingAccountId, billingProfileId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MarkupRuleImpl(inner1, this.manager()));
+        return this.list(billingAccountId, billingProfileId, Context.NONE);
     }
 
     public PagedIterable<MarkupRule> list(String billingAccountId, String billingProfileId, Context context) {

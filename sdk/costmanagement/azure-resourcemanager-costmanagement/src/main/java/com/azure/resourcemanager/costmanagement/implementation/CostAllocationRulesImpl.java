@@ -71,13 +71,11 @@ public final class CostAllocationRulesImpl implements CostAllocationRules {
     }
 
     public void deleteByResourceGroup(String billingAccountId, String ruleName) {
-        this.serviceClient().delete(billingAccountId, ruleName);
+        this.deleteByResourceGroupWithResponse(billingAccountId, ruleName, Context.NONE);
     }
 
     public PagedIterable<CostAllocationRuleDefinition> list(String billingAccountId) {
-        PagedIterable<CostAllocationRuleDefinitionInner> inner = this.serviceClient().list(billingAccountId);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new CostAllocationRuleDefinitionImpl(inner1, this.manager()));
+        return this.list(billingAccountId, Context.NONE);
     }
 
     public PagedIterable<CostAllocationRuleDefinition> list(String billingAccountId, Context context) {

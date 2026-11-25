@@ -26,12 +26,7 @@ public final class GenerateCostDetailsReportsImpl implements GenerateCostDetails
     }
 
     public CostDetailsOperationResults getOperationResults(String scope, String operationId) {
-        CostDetailsOperationResultsInner inner = this.serviceClient().getOperationResults(scope, operationId);
-        if (inner != null) {
-            return new CostDetailsOperationResultsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.getOperationResults(scope, operationId, Context.NONE);
     }
 
     public CostDetailsOperationResults getOperationResults(String scope, String operationId, Context context) {
@@ -45,12 +40,7 @@ public final class GenerateCostDetailsReportsImpl implements GenerateCostDetails
 
     public CostDetailsOperationResults createOperation(String scope,
         GenerateCostDetailsReportRequestDefinition parameters) {
-        CostDetailsOperationResultsInner inner = this.serviceClient().createOperation(scope, parameters);
-        if (inner != null) {
-            return new CostDetailsOperationResultsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOperation(scope, parameters, Context.NONE);
     }
 
     public CostDetailsOperationResults createOperation(String scope,

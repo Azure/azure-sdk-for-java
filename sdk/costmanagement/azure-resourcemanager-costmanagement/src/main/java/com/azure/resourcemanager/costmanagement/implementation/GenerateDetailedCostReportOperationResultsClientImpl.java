@@ -117,9 +117,7 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getWithResponse(String operationId, String scope) {
-        final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, operationId, accept,
-            Context.NONE);
+        return getWithResponse(operationId, scope, Context.NONE);
     }
 
     /**
@@ -163,40 +161,15 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
                 GenerateDetailedCostReportOperationResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Gets the result of the specified operation. The link with this operationId is provided as a response header of
-     * the initial request.
-     * 
-     * @param operationId The target operation Id.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGet(String operationId, String scope) {
-        Response<BinaryData> response = getWithResponse(operationId, scope);
-        return this.client
-            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>getLroResult(
-                response, GenerateDetailedCostReportOperationResultInner.class,
-                GenerateDetailedCostReportOperationResultInner.class, Context.NONE);
+        return beginGet(operationId, scope, Context.NONE);
     }
 
-    /**
-     * Gets the result of the specified operation. The link with this operationId is provided as a response header of
-     * the initial request.
-     * 
-     * @param operationId The target operation Id.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
@@ -224,36 +197,15 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
         return beginGetAsync(operationId, scope).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the result of the specified operation. The link with this operationId is provided as a response header of
-     * the initial request.
-     * 
-     * @param operationId The target operation Id.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateDetailedCostReportOperationResultInner get(String operationId, String scope) {
-        return beginGet(operationId, scope).getFinalResult();
+        return get(operationId, scope, Context.NONE);
     }
 
-    /**
-     * Gets the result of the specified operation. The link with this operationId is provided as a response header of
-     * the initial request.
-     * 
-     * @param operationId The target operation Id.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateDetailedCostReportOperationResultInner get(String operationId, String scope, Context context) {
-        return beginGet(operationId, scope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginGet(operationId, scope, context));
     }
 }

@@ -29,13 +29,7 @@ public final class PriceSheetsImpl implements PriceSheets {
     }
 
     public DownloadUrl downloadByInvoice(String billingAccountName, String billingProfileName, String invoiceName) {
-        DownloadUrlInner inner
-            = this.serviceClient().downloadByInvoice(billingAccountName, billingProfileName, invoiceName);
-        if (inner != null) {
-            return new DownloadUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.downloadByInvoice(billingAccountName, billingProfileName, invoiceName, Context.NONE);
     }
 
     public DownloadUrl downloadByInvoice(String billingAccountName, String billingProfileName, String invoiceName,
@@ -50,13 +44,7 @@ public final class PriceSheetsImpl implements PriceSheets {
     }
 
     public PricesheetDownloadProperties downloadByBillingProfile(String billingAccountName, String billingProfileName) {
-        PricesheetDownloadPropertiesInner inner
-            = this.serviceClient().downloadByBillingProfile(billingAccountName, billingProfileName);
-        if (inner != null) {
-            return new PricesheetDownloadPropertiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.downloadByBillingProfile(billingAccountName, billingProfileName, Context.NONE);
     }
 
     public PricesheetDownloadProperties downloadByBillingProfile(String billingAccountName, String billingProfileName,
@@ -71,12 +59,7 @@ public final class PriceSheetsImpl implements PriceSheets {
     }
 
     public OperationStatus downloadByBillingAccount(String billingAccountId, String billingPeriodName) {
-        OperationStatusInner inner = this.serviceClient().downloadByBillingAccount(billingAccountId, billingPeriodName);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.downloadByBillingAccount(billingAccountId, billingPeriodName, Context.NONE);
     }
 
     public OperationStatus downloadByBillingAccount(String billingAccountId, String billingPeriodName,

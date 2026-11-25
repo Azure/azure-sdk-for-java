@@ -26,12 +26,7 @@ public final class GenerateDetailedCostReportOperationResultsImpl
     }
 
     public GenerateDetailedCostReportOperationResult get(String operationId, String scope) {
-        GenerateDetailedCostReportOperationResultInner inner = this.serviceClient().get(operationId, scope);
-        if (inner != null) {
-            return new GenerateDetailedCostReportOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.get(operationId, scope, Context.NONE);
     }
 
     public GenerateDetailedCostReportOperationResult get(String operationId, String scope, Context context) {

@@ -208,11 +208,7 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitRecommendationModelInner> listSinglePage(String billingScope, String filter,
         String orderby, String expand) {
-        final String accept = "application/json";
-        Response<BenefitRecommendationsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), filter, orderby, expand, billingScope, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(billingScope, filter, orderby, expand, Context.NONE);
     }
 
     /**
@@ -247,51 +243,16 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of recommendations for purchasing savings plan.
-     * 
-     * @param billingScope The scope associated with benefit recommendation operations. This includes
-     * '/subscriptions/{subscriptionId}/' for subscription scope,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
-     * profile scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitRecommendationModelInner> list(String billingScope) {
         final String filter = null;
         final String orderby = null;
         final String expand = null;
-        return new PagedIterable<>(() -> listSinglePage(billingScope, filter, orderby, expand),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(billingScope, filter, orderby, expand, Context.NONE);
     }
 
-    /**
-     * List of recommendations for purchasing savings plan.
-     * 
-     * @param billingScope The scope associated with benefit recommendation operations. This includes
-     * '/subscriptions/{subscriptionId}/' for subscription scope,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
-     * profile scope.
-     * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
-     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
-     * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     * results are in order by default. There is no need to use this clause.
-     * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BenefitRecommendationModelInner> list(String billingScope, String filter, String orderby,
         String expand, Context context) {
@@ -329,11 +290,7 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BenefitRecommendationModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BenefitRecommendationsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

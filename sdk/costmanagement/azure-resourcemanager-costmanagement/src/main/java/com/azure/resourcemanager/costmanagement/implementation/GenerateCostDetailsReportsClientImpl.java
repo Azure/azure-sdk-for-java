@@ -135,9 +135,7 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getOperationResultsWithResponse(String scope, String operationId) {
-        final String accept = "application/json";
-        return service.getOperationResultsSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
-            operationId, accept, Context.NONE);
+        return getOperationResultsWithResponse(scope, operationId, Context.NONE);
     }
 
     /**
@@ -181,39 +179,14 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
             CostDetailsOperationResultsInner.class, this.client.getContext());
     }
 
-    /**
-     * Get the result of the specified operation. This link is provided in the CostDetails creation request response
-     * Location header.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param operationId The target operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
         beginGetOperationResults(String scope, String operationId) {
-        Response<BinaryData> response = getOperationResultsWithResponse(scope, operationId);
-        return this.client.<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(response,
-            CostDetailsOperationResultsInner.class, CostDetailsOperationResultsInner.class, Context.NONE);
+        return beginGetOperationResults(scope, operationId, Context.NONE);
     }
 
-    /**
-     * Get the result of the specified operation. This link is provided in the CostDetails creation request response
-     * Location header.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param operationId The target operation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
         beginGetOperationResults(String scope, String operationId, Context context) {
@@ -239,39 +212,16 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         return beginGetOperationResultsAsync(scope, operationId).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get the result of the specified operation. This link is provided in the CostDetails creation request response
-     * Location header.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param operationId The target operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostDetailsOperationResultsInner getOperationResults(String scope, String operationId) {
-        return beginGetOperationResults(scope, operationId).getFinalResult();
+        return getOperationResults(scope, operationId, Context.NONE);
     }
 
-    /**
-     * Get the result of the specified operation. This link is provided in the CostDetails creation request response
-     * Location header.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param operationId The target operation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostDetailsOperationResultsInner getOperationResults(String scope, String operationId, Context context) {
-        return beginGetOperationResults(scope, operationId, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginGetOperationResults(scope, operationId, context));
     }
 
     /**
@@ -331,10 +281,7 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOperationWithResponse(String scope,
         GenerateCostDetailsReportRequestDefinition parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOperationSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, contentType,
-            accept, parameters, Context.NONE);
+        return createOperationWithResponse(scope, parameters, Context.NONE);
     }
 
     /**
@@ -398,57 +345,14 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
             CostDetailsOperationResultsInner.class, this.client.getContext());
     }
 
-    /**
-     * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
-     * report for the provided date range, billing period (Only enterprise customers) or Invoice Id asynchronously at a
-     * certain scope. The initial call to request a report will return a 202 with a 'Location' and 'Retry-After' header.
-     * The 'Location' header will provide the endpoint to poll to get the result of the report generation. The
-     * 'Retry-After' provides the duration to wait before polling for the generated report. A call to poll the report
-     * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
-     * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
-     * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
-     * in files ,see
-     * https://learn.microsoft.com/en-us/azure/cost-management-billing/automate/understand-usage-details-fields.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create cost details operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the long running operation for cost details Api.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
         beginCreateOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters) {
-        Response<BinaryData> response = createOperationWithResponse(scope, parameters);
-        return this.client.<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(response,
-            CostDetailsOperationResultsInner.class, CostDetailsOperationResultsInner.class, Context.NONE);
+        return beginCreateOperation(scope, parameters, Context.NONE);
     }
 
-    /**
-     * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
-     * report for the provided date range, billing period (Only enterprise customers) or Invoice Id asynchronously at a
-     * certain scope. The initial call to request a report will return a 202 with a 'Location' and 'Retry-After' header.
-     * The 'Location' header will provide the endpoint to poll to get the result of the report generation. The
-     * 'Retry-After' provides the duration to wait before polling for the generated report. A call to poll the report
-     * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
-     * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
-     * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
-     * in files ,see
-     * https://learn.microsoft.com/en-us/azure/cost-management-billing/automate/understand-usage-details-fields.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create cost details operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the long running operation for cost details Api.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
         beginCreateOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context) {
@@ -484,58 +388,17 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         return beginCreateOperationAsync(scope, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
-     * report for the provided date range, billing period (Only enterprise customers) or Invoice Id asynchronously at a
-     * certain scope. The initial call to request a report will return a 202 with a 'Location' and 'Retry-After' header.
-     * The 'Location' header will provide the endpoint to poll to get the result of the report generation. The
-     * 'Retry-After' provides the duration to wait before polling for the generated report. A call to poll the report
-     * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
-     * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
-     * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
-     * in files ,see
-     * https://learn.microsoft.com/en-us/azure/cost-management-billing/automate/understand-usage-details-fields.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create cost details operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the long running operation for cost details Api.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostDetailsOperationResultsInner createOperation(String scope,
         GenerateCostDetailsReportRequestDefinition parameters) {
-        return beginCreateOperation(scope, parameters).getFinalResult();
+        return createOperation(scope, parameters, Context.NONE);
     }
 
-    /**
-     * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
-     * report for the provided date range, billing period (Only enterprise customers) or Invoice Id asynchronously at a
-     * certain scope. The initial call to request a report will return a 202 with a 'Location' and 'Retry-After' header.
-     * The 'Location' header will provide the endpoint to poll to get the result of the report generation. The
-     * 'Retry-After' provides the duration to wait before polling for the generated report. A call to poll the report
-     * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
-     * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
-     * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
-     * in files ,see
-     * https://learn.microsoft.com/en-us/azure/cost-management-billing/automate/understand-usage-details-fields.
-     * 
-     * @param scope The ARM Resource ID for subscription, billing account, or other billing scopes.Currently Resource
-     * Group and Management Group are not supported. For details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create cost details operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the long running operation for cost details Api.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CostDetailsOperationResultsInner createOperation(String scope,
         GenerateCostDetailsReportRequestDefinition parameters, Context context) {
-        return beginCreateOperation(scope, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOperation(scope, parameters, context));
     }
 }

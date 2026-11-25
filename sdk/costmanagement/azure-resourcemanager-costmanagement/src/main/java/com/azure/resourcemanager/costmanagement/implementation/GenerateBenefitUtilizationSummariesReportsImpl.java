@@ -28,13 +28,7 @@ public final class GenerateBenefitUtilizationSummariesReportsImpl
 
     public BenefitUtilizationSummariesOperationStatus generateByBillingAccount(String billingAccountId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        BenefitUtilizationSummariesOperationStatusInner inner
-            = this.serviceClient().generateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest);
-        if (inner != null) {
-            return new BenefitUtilizationSummariesOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     public BenefitUtilizationSummariesOperationStatus generateByBillingAccount(String billingAccountId,
@@ -50,13 +44,8 @@ public final class GenerateBenefitUtilizationSummariesReportsImpl
 
     public BenefitUtilizationSummariesOperationStatus generateByBillingProfile(String billingAccountId,
         String billingProfileId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        BenefitUtilizationSummariesOperationStatusInner inner = this.serviceClient()
-            .generateByBillingProfile(billingAccountId, billingProfileId, benefitUtilizationSummariesRequest);
-        if (inner != null) {
-            return new BenefitUtilizationSummariesOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateByBillingProfile(billingAccountId, billingProfileId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
     public BenefitUtilizationSummariesOperationStatus generateByBillingProfile(String billingAccountId,
@@ -73,13 +62,7 @@ public final class GenerateBenefitUtilizationSummariesReportsImpl
 
     public BenefitUtilizationSummariesOperationStatus generateByReservationOrderId(String reservationOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        BenefitUtilizationSummariesOperationStatusInner inner
-            = this.serviceClient().generateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest);
-        if (inner != null) {
-            return new BenefitUtilizationSummariesOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     public BenefitUtilizationSummariesOperationStatus generateByReservationOrderId(String reservationOrderId,
@@ -95,13 +78,8 @@ public final class GenerateBenefitUtilizationSummariesReportsImpl
 
     public BenefitUtilizationSummariesOperationStatus generateByReservationId(String reservationOrderId,
         String reservationId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        BenefitUtilizationSummariesOperationStatusInner inner = this.serviceClient()
-            .generateByReservationId(reservationOrderId, reservationId, benefitUtilizationSummariesRequest);
-        if (inner != null) {
-            return new BenefitUtilizationSummariesOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateByReservationId(reservationOrderId, reservationId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
     public BenefitUtilizationSummariesOperationStatus generateByReservationId(String reservationOrderId,
@@ -117,13 +95,7 @@ public final class GenerateBenefitUtilizationSummariesReportsImpl
 
     public BenefitUtilizationSummariesOperationStatus generateBySavingsPlanOrderId(String savingsPlanOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        BenefitUtilizationSummariesOperationStatusInner inner
-            = this.serviceClient().generateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest);
-        if (inner != null) {
-            return new BenefitUtilizationSummariesOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     public BenefitUtilizationSummariesOperationStatus generateBySavingsPlanOrderId(String savingsPlanOrderId,
@@ -139,13 +111,8 @@ public final class GenerateBenefitUtilizationSummariesReportsImpl
 
     public BenefitUtilizationSummariesOperationStatus generateBySavingsPlanId(String savingsPlanOrderId,
         String savingsPlanId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        BenefitUtilizationSummariesOperationStatusInner inner = this.serviceClient()
-            .generateBySavingsPlanId(savingsPlanOrderId, savingsPlanId, benefitUtilizationSummariesRequest);
-        if (inner != null) {
-            return new BenefitUtilizationSummariesOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateBySavingsPlanId(savingsPlanOrderId, savingsPlanId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
     public BenefitUtilizationSummariesOperationStatus generateBySavingsPlanId(String savingsPlanOrderId,

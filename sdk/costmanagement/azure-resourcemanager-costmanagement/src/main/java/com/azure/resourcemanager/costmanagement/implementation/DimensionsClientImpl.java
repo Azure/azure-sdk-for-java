@@ -272,11 +272,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DimensionInner> listSinglePage(String scope, String filter, String expand, String skiptoken,
         Integer top) {
-        final String accept = "application/json";
-        Response<DimensionsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            scope, filter, expand, skiptoken, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scope, filter, expand, skiptoken, top, Context.NONE);
     }
 
     /**
@@ -318,65 +314,17 @@ public final class DimensionsClientImpl implements DimensionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the dimensions by the defined scope.
-     * 
-     * @param scope The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for
-     * subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     * scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     * for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for
-     * Management Group scope,
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     * billingProfile scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     * for invoiceSection scope, and
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> list(String scope) {
         final String filter = null;
         final String expand = null;
         final String skiptoken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(scope, filter, expand, skiptoken, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(scope, filter, expand, skiptoken, top, Context.NONE);
     }
 
-    /**
-     * Lists the dimensions by the defined scope.
-     * 
-     * @param scope The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for
-     * subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     * scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     * for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for
-     * Management Group scope,
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     * billingProfile scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     * for invoiceSection scope, and
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
-     * @param filter May be used to filter dimensions by properties/category, properties/usageStart,
-     * properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
-     * @param expand May be used to expand the properties/data within a dimension category. By default, data is not
-     * included when listing dimensions.
-     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N dimension data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> list(String scope, String filter, String expand, String skiptoken, Integer top,
         Context context) {
@@ -495,12 +443,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
     private PagedResponse<DimensionInner> byExternalCloudProviderTypeSinglePage(
         ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
         String expand, String skiptoken, Integer top) {
-        final String accept = "application/json";
-        Response<DimensionsListResult> res = service.byExternalCloudProviderTypeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken,
-            top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return byExternalCloudProviderTypeSinglePage(externalCloudProviderType, externalCloudProviderId, filter, expand,
+            skiptoken, top, Context.NONE);
     }
 
     /**
@@ -536,18 +480,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the dimensions by the external cloud provider type.
-     * 
-     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
-     * This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
-     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
-     * '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> byExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId) {
@@ -555,32 +488,11 @@ public final class DimensionsClientImpl implements DimensionsClient {
         final String expand = null;
         final String skiptoken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> byExternalCloudProviderTypeSinglePage(externalCloudProviderType,
-            externalCloudProviderId, filter, expand, skiptoken, top),
-            nextLink -> byExternalCloudProviderTypeNextSinglePage(nextLink));
+        return byExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, filter, expand,
+            skiptoken, top, Context.NONE);
     }
 
-    /**
-     * Lists the dimensions by the external cloud provider type.
-     * 
-     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
-     * This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
-     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
-     * '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
-     * @param filter May be used to filter dimensions by properties/category, properties/usageStart,
-     * properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
-     * @param expand May be used to expand the properties/data within a dimension category. By default, data is not
-     * included when listing dimensions.
-     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N dimension data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> byExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
@@ -620,11 +532,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DimensionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DimensionsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -675,11 +583,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DimensionInner> byExternalCloudProviderTypeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DimensionsListResult> res
-            = service.byExternalCloudProviderTypeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return byExternalCloudProviderTypeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

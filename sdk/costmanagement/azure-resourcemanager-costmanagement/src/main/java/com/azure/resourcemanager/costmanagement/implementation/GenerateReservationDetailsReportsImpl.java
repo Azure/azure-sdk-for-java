@@ -25,12 +25,7 @@ public final class GenerateReservationDetailsReportsImpl implements GenerateRese
     }
 
     public OperationStatus byBillingAccountId(String billingAccountId, String startDate, String endDate) {
-        OperationStatusInner inner = this.serviceClient().byBillingAccountId(billingAccountId, startDate, endDate);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.byBillingAccountId(billingAccountId, startDate, endDate, Context.NONE);
     }
 
     public OperationStatus byBillingAccountId(String billingAccountId, String startDate, String endDate,
@@ -46,13 +41,7 @@ public final class GenerateReservationDetailsReportsImpl implements GenerateRese
 
     public OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
         String endDate) {
-        OperationStatusInner inner
-            = this.serviceClient().byBillingProfileId(billingAccountId, billingProfileId, startDate, endDate);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.byBillingProfileId(billingAccountId, billingProfileId, startDate, endDate, Context.NONE);
     }
 
     public OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,

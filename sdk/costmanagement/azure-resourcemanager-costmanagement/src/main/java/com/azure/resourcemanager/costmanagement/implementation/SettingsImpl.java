@@ -66,7 +66,7 @@ public final class SettingsImpl implements Settings {
     }
 
     public void deleteByScope(String scope, SettingType type) {
-        this.serviceClient().deleteByScope(scope, type);
+        this.deleteByScopeWithResponse(scope, type, Context.NONE);
     }
 
     public Response<SettingsListResult> listWithResponse(String scope, Context context) {

@@ -220,10 +220,7 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateByBillingAccountWithResponse(String billingAccountId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateByBillingAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, contentType, accept, benefitUtilizationSummariesRequest, Context.NONE);
+        return generateByBillingAccountWithResponse(billingAccountId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     /**
@@ -271,42 +268,16 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
                 BenefitUtilizationSummariesOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account. This API supports
-     * only enrollment accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
         beginGenerateByBillingAccount(String billingAccountId,
             BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        Response<BinaryData> response
-            = generateByBillingAccountWithResponse(billingAccountId, benefitUtilizationSummariesRequest);
-        return this.client
-            .<BenefitUtilizationSummariesOperationStatusInner, BenefitUtilizationSummariesOperationStatusInner>getLroResult(
-                response, BenefitUtilizationSummariesOperationStatusInner.class,
-                BenefitUtilizationSummariesOperationStatusInner.class, Context.NONE);
+        return beginGenerateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account. This API supports
-     * only enrollment accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
@@ -338,40 +309,19 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account. This API supports
-     * only enrollment accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByBillingAccount(String billingAccountId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        return beginGenerateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest).getFinalResult();
+        return generateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account. This API supports
-     * only enrollment accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByBillingAccount(String billingAccountId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest, Context context) {
-        return beginGenerateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginGenerateByBillingAccount(billingAccountId, benefitUtilizationSummariesRequest, context));
     }
 
     /**
@@ -414,10 +364,8 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateByBillingProfileWithResponse(String billingAccountId, String billingProfileId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateByBillingProfileSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, billingProfileId, contentType, accept, benefitUtilizationSummariesRequest, Context.NONE);
+        return generateByBillingProfileWithResponse(billingAccountId, billingProfileId,
+            benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     /**
@@ -467,44 +415,17 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
                 BenefitUtilizationSummariesOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account and billing
-     * profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Billing Profile ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
         beginGenerateByBillingProfile(String billingAccountId, String billingProfileId,
             BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        Response<BinaryData> response = generateByBillingProfileWithResponse(billingAccountId, billingProfileId,
-            benefitUtilizationSummariesRequest);
-        return this.client
-            .<BenefitUtilizationSummariesOperationStatusInner, BenefitUtilizationSummariesOperationStatusInner>getLroResult(
-                response, BenefitUtilizationSummariesOperationStatusInner.class,
-                BenefitUtilizationSummariesOperationStatusInner.class, Context.NONE);
+        return beginGenerateByBillingProfile(billingAccountId, billingProfileId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account and billing
-     * profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Billing Profile ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
@@ -537,44 +458,21 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
             benefitUtilizationSummariesRequest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account and billing
-     * profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Billing Profile ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByBillingProfile(String billingAccountId,
         String billingProfileId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        return beginGenerateByBillingProfile(billingAccountId, billingProfileId, benefitUtilizationSummariesRequest)
-            .getFinalResult();
+        return generateByBillingProfile(billingAccountId, billingProfileId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided billing account and billing
-     * profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Billing Profile ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByBillingProfile(String billingAccountId,
         String billingProfileId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest,
         Context context) {
-        return beginGenerateByBillingProfile(billingAccountId, billingProfileId, benefitUtilizationSummariesRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginGenerateByBillingProfile(billingAccountId, billingProfileId,
+            benefitUtilizationSummariesRequest, context));
     }
 
     /**
@@ -613,10 +511,8 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateByReservationOrderIdWithResponse(String reservationOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateByReservationOrderIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            reservationOrderId, contentType, accept, benefitUtilizationSummariesRequest, Context.NONE);
+        return generateByReservationOrderIdWithResponse(reservationOrderId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
     /**
@@ -662,40 +558,16 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
                 BenefitUtilizationSummariesOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation order.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
         beginGenerateByReservationOrderId(String reservationOrderId,
             BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        Response<BinaryData> response
-            = generateByReservationOrderIdWithResponse(reservationOrderId, benefitUtilizationSummariesRequest);
-        return this.client
-            .<BenefitUtilizationSummariesOperationStatusInner, BenefitUtilizationSummariesOperationStatusInner>getLroResult(
-                response, BenefitUtilizationSummariesOperationStatusInner.class,
-                BenefitUtilizationSummariesOperationStatusInner.class, Context.NONE);
+        return beginGenerateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation order.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
@@ -726,39 +598,19 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation order.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByReservationOrderId(String reservationOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        return beginGenerateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest)
-            .getFinalResult();
+        return generateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation order.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByReservationOrderId(String reservationOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest, Context context) {
-        return beginGenerateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginGenerateByReservationOrderId(reservationOrderId, benefitUtilizationSummariesRequest, context));
     }
 
     /**
@@ -799,10 +651,8 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateByReservationIdWithResponse(String reservationOrderId, String reservationId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateByReservationIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            reservationOrderId, reservationId, contentType, accept, benefitUtilizationSummariesRequest, Context.NONE);
+        return generateByReservationIdWithResponse(reservationOrderId, reservationId,
+            benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     /**
@@ -850,42 +700,17 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
                 BenefitUtilizationSummariesOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param reservationId Reservation ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
         beginGenerateByReservationId(String reservationOrderId, String reservationId,
             BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        Response<BinaryData> response = generateByReservationIdWithResponse(reservationOrderId, reservationId,
-            benefitUtilizationSummariesRequest);
-        return this.client
-            .<BenefitUtilizationSummariesOperationStatusInner, BenefitUtilizationSummariesOperationStatusInner>getLroResult(
-                response, BenefitUtilizationSummariesOperationStatusInner.class,
-                BenefitUtilizationSummariesOperationStatusInner.class, Context.NONE);
+        return beginGenerateByReservationId(reservationOrderId, reservationId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param reservationId Reservation ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
@@ -919,41 +744,20 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param reservationId Reservation ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByReservationId(String reservationOrderId,
         String reservationId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        return beginGenerateByReservationId(reservationOrderId, reservationId, benefitUtilizationSummariesRequest)
-            .getFinalResult();
+        return generateByReservationId(reservationOrderId, reservationId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided reservation.
-     * 
-     * @param reservationOrderId Reservation Order ID.
-     * @param reservationId Reservation ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateByReservationId(String reservationOrderId,
         String reservationId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest, Context context) {
-        return beginGenerateByReservationId(reservationOrderId, reservationId, benefitUtilizationSummariesRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginGenerateByReservationId(reservationOrderId, reservationId,
+            benefitUtilizationSummariesRequest, context));
     }
 
     /**
@@ -992,10 +796,8 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateBySavingsPlanOrderIdWithResponse(String savingsPlanOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateBySavingsPlanOrderIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            savingsPlanOrderId, contentType, accept, benefitUtilizationSummariesRequest, Context.NONE);
+        return generateBySavingsPlanOrderIdWithResponse(savingsPlanOrderId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
     /**
@@ -1041,40 +843,16 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
                 BenefitUtilizationSummariesOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan order.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
         beginGenerateBySavingsPlanOrderId(String savingsPlanOrderId,
             BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        Response<BinaryData> response
-            = generateBySavingsPlanOrderIdWithResponse(savingsPlanOrderId, benefitUtilizationSummariesRequest);
-        return this.client
-            .<BenefitUtilizationSummariesOperationStatusInner, BenefitUtilizationSummariesOperationStatusInner>getLroResult(
-                response, BenefitUtilizationSummariesOperationStatusInner.class,
-                BenefitUtilizationSummariesOperationStatusInner.class, Context.NONE);
+        return beginGenerateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan order.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
@@ -1105,39 +883,19 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan order.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateBySavingsPlanOrderId(String savingsPlanOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        return beginGenerateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest)
-            .getFinalResult();
+        return generateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest, Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan order.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateBySavingsPlanOrderId(String savingsPlanOrderId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest, Context context) {
-        return beginGenerateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginGenerateBySavingsPlanOrderId(savingsPlanOrderId, benefitUtilizationSummariesRequest, context));
     }
 
     /**
@@ -1178,10 +936,8 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateBySavingsPlanIdWithResponse(String savingsPlanOrderId, String savingsPlanId,
         BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.generateBySavingsPlanIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            savingsPlanOrderId, savingsPlanId, contentType, accept, benefitUtilizationSummariesRequest, Context.NONE);
+        return generateBySavingsPlanIdWithResponse(savingsPlanOrderId, savingsPlanId,
+            benefitUtilizationSummariesRequest, Context.NONE);
     }
 
     /**
@@ -1229,42 +985,17 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
                 BenefitUtilizationSummariesOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param savingsPlanId Savings plan ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
         beginGenerateBySavingsPlanId(String savingsPlanOrderId, String savingsPlanId,
             BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        Response<BinaryData> response = generateBySavingsPlanIdWithResponse(savingsPlanOrderId, savingsPlanId,
-            benefitUtilizationSummariesRequest);
-        return this.client
-            .<BenefitUtilizationSummariesOperationStatusInner, BenefitUtilizationSummariesOperationStatusInner>getLroResult(
-                response, BenefitUtilizationSummariesOperationStatusInner.class,
-                BenefitUtilizationSummariesOperationStatusInner.class, Context.NONE);
+        return beginGenerateBySavingsPlanId(savingsPlanOrderId, savingsPlanId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param savingsPlanId Savings plan ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BenefitUtilizationSummariesOperationStatusInner>, BenefitUtilizationSummariesOperationStatusInner>
@@ -1298,40 +1029,19 @@ public final class GenerateBenefitUtilizationSummariesReportsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param savingsPlanId Savings plan ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateBySavingsPlanId(String savingsPlanOrderId,
         String savingsPlanId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest) {
-        return beginGenerateBySavingsPlanId(savingsPlanOrderId, savingsPlanId, benefitUtilizationSummariesRequest)
-            .getFinalResult();
+        return generateBySavingsPlanId(savingsPlanOrderId, savingsPlanId, benefitUtilizationSummariesRequest,
+            Context.NONE);
     }
 
-    /**
-     * Triggers generation of a benefit utilization summaries report for the provided savings plan.
-     * 
-     * @param savingsPlanOrderId Savings plan order ID.
-     * @param savingsPlanId Savings plan ID.
-     * @param benefitUtilizationSummariesRequest Async Benefit Utilization Summary report to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of a benefit utilization summaries report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BenefitUtilizationSummariesOperationStatusInner generateBySavingsPlanId(String savingsPlanOrderId,
         String savingsPlanId, BenefitUtilizationSummariesRequest benefitUtilizationSummariesRequest, Context context) {
-        return beginGenerateBySavingsPlanId(savingsPlanOrderId, savingsPlanId, benefitUtilizationSummariesRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginGenerateBySavingsPlanId(savingsPlanOrderId, savingsPlanId,
+            benefitUtilizationSummariesRequest, context));
     }
 }

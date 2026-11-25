@@ -67,7 +67,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void delete(String name) {
-        this.serviceClient().delete(name);
+        this.deleteWithResponse(name, Context.NONE);
     }
 
     public PagedIterable<ScheduledAction> list() {
@@ -85,7 +85,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void run(String name) {
-        this.serviceClient().run(name);
+        this.runWithResponse(name, Context.NONE);
     }
 
     public Response<ScheduledAction> getByScopeWithResponse(String scope, String name, Context context) {
@@ -108,7 +108,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void deleteByScope(String scope, String name) {
-        this.serviceClient().deleteByScope(scope, name);
+        this.deleteByScopeWithResponse(scope, name, Context.NONE);
     }
 
     public PagedIterable<ScheduledAction> listByScope(String scope) {
@@ -126,7 +126,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void runByScope(String scope, String name) {
-        this.serviceClient().runByScope(scope, name);
+        this.runByScopeWithResponse(scope, name, Context.NONE);
     }
 
     public Response<CheckNameAvailabilityResponse>
@@ -168,66 +168,26 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public ScheduledAction getById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        return this.getByScopeWithResponse(scope, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ScheduledAction> getByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope", "scope", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name", "scheduledActions", LOGGER);
         return this.getByScopeWithResponse(scope, name, context);
     }
 
     public void deleteById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        this.deleteByScopeWithResponse(scope, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope", "scope", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name", "scheduledActions", LOGGER);
         return this.deleteByScopeWithResponse(scope, name, context);
     }
 

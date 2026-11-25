@@ -248,31 +248,14 @@ public final class ViewsClientImpl implements ViewsClient {
         return getWithResponseAsync(viewName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the view by view name.
-     * 
-     * @param viewName View name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view by view name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ViewInner> getWithResponse(String viewName, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), viewName, accept, context);
     }
 
-    /**
-     * Gets the view by view name.
-     * 
-     * @param viewName View name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view by view name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ViewInner get(String viewName) {
         return getWithResponse(viewName, Context.NONE).getValue();
@@ -316,18 +299,7 @@ public final class ViewsClientImpl implements ViewsClient {
         return createOrUpdateWithResponseAsync(viewName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
-     * obtain the latest eTag by performing a get operation. Create operation does not require eTag.
-     * 
-     * @param viewName View name.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return states and configurations of Cost Analysis along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ViewInner> createOrUpdateWithResponse(String viewName, ViewInner parameters, Context context) {
         final String contentType = "application/json";
@@ -336,17 +308,7 @@ public final class ViewsClientImpl implements ViewsClient {
             accept, parameters, context);
     }
 
-    /**
-     * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
-     * obtain the latest eTag by performing a get operation. Create operation does not require eTag.
-     * 
-     * @param viewName View name.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return states and configurations of Cost Analysis.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ViewInner createOrUpdate(String viewName, ViewInner parameters) {
         return createOrUpdateWithResponse(viewName, parameters, Context.NONE).getValue();
@@ -383,29 +345,13 @@ public final class ViewsClientImpl implements ViewsClient {
         return deleteWithResponseAsync(viewName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * The operation to delete a view.
-     * 
-     * @param viewName View name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String viewName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), viewName, context);
     }
 
-    /**
-     * The operation to delete a view.
-     * 
-     * @param viewName View name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String viewName) {
         deleteWithResponse(viewName, Context.NONE);
@@ -450,11 +396,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ViewInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ViewListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -475,27 +417,13 @@ public final class ViewsClientImpl implements ViewsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all views by tenant and object.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ViewInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all views by tenant and object.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ViewInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -536,17 +464,7 @@ public final class ViewsClientImpl implements ViewsClient {
         return getByScopeWithResponseAsync(scope, viewName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the view for the defined scope by view name.
-     * 
-     * @param scope undefined.
-     * @param viewName View name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view for the defined scope by view name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ViewInner> getByScopeWithResponse(String scope, String viewName, Context context) {
         final String accept = "application/json";
@@ -554,16 +472,7 @@ public final class ViewsClientImpl implements ViewsClient {
             context);
     }
 
-    /**
-     * Gets the view for the defined scope by view name.
-     * 
-     * @param scope undefined.
-     * @param viewName View name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view for the defined scope by view name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ViewInner getByScope(String scope, String viewName) {
         return getByScopeWithResponse(scope, viewName, Context.NONE).getValue();
@@ -611,19 +520,7 @@ public final class ViewsClientImpl implements ViewsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
-     * obtain the latest eTag by performing a get operation. Create operation does not require eTag.
-     * 
-     * @param scope undefined.
-     * @param viewName View name.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return states and configurations of Cost Analysis along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ViewInner> createOrUpdateByScopeWithResponse(String scope, String viewName, ViewInner parameters,
         Context context) {
@@ -633,18 +530,7 @@ public final class ViewsClientImpl implements ViewsClient {
             viewName, contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
-     * obtain the latest eTag by performing a get operation. Create operation does not require eTag.
-     * 
-     * @param scope undefined.
-     * @param viewName View name.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return states and configurations of Cost Analysis.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ViewInner createOrUpdateByScope(String scope, String viewName, ViewInner parameters) {
         return createOrUpdateByScopeWithResponse(scope, viewName, parameters, Context.NONE).getValue();
@@ -683,32 +569,14 @@ public final class ViewsClientImpl implements ViewsClient {
         return deleteByScopeWithResponseAsync(scope, viewName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * The operation to delete a view.
-     * 
-     * @param scope undefined.
-     * @param viewName View name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByScopeWithResponse(String scope, String viewName, Context context) {
         return service.deleteByScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, viewName,
             context);
     }
 
-    /**
-     * The operation to delete a view.
-     * 
-     * @param scope undefined.
-     * @param viewName View name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByScope(String scope, String viewName) {
         deleteByScopeWithResponse(scope, viewName, Context.NONE);
@@ -760,11 +628,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ViewInner> listByScopeSinglePage(String scope) {
-        final String accept = "application/json";
-        Response<ViewListResult> res = service.listByScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            scope, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByScopeSinglePage(scope, Context.NONE);
     }
 
     /**
@@ -786,30 +650,13 @@ public final class ViewsClientImpl implements ViewsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all views at the given scope.
-     * 
-     * @param scope undefined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ViewInner> listByScope(String scope) {
-        return new PagedIterable<>(() -> listByScopeSinglePage(scope), nextLink -> listByScopeNextSinglePage(nextLink));
+        return listByScope(scope, Context.NONE);
     }
 
-    /**
-     * Lists all views at the given scope.
-     * 
-     * @param scope undefined.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ViewInner> listByScope(String scope, Context context) {
         return new PagedIterable<>(() -> listByScopeSinglePage(scope, context),
@@ -845,10 +692,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ViewInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ViewListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -899,11 +743,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ViewInner> listByScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ViewListResult> res
-            = service.listByScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

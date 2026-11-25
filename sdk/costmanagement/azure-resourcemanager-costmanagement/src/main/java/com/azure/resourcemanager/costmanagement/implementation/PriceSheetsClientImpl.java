@@ -158,9 +158,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> downloadByInvoiceWithResponse(String billingAccountName, String billingProfileName,
         String invoiceName) {
-        final String accept = "application/json";
-        return service.downloadByInvoiceSync(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountName,
-            billingProfileName, invoiceName, accept, Context.NONE);
+        return downloadByInvoiceWithResponse(billingAccountName, billingProfileName, invoiceName, Context.NONE);
     }
 
     /**
@@ -205,40 +203,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
             DownloadUrlInner.class, DownloadUrlInner.class, this.client.getContext());
     }
 
-    /**
-     * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a URL to download the pricesheet for an invoice.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByInvoice(String billingAccountName,
         String billingProfileName, String invoiceName) {
-        Response<BinaryData> response
-            = downloadByInvoiceWithResponse(billingAccountName, billingProfileName, invoiceName);
-        return this.client.<DownloadUrlInner, DownloadUrlInner>getLroResult(response, DownloadUrlInner.class,
-            DownloadUrlInner.class, Context.NONE);
+        return beginDownloadByInvoice(billingAccountName, billingProfileName, invoiceName, Context.NONE);
     }
 
-    /**
-     * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a URL to download the pricesheet for an invoice.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByInvoice(String billingAccountName,
         String billingProfileName, String invoiceName, Context context) {
@@ -267,41 +239,19 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download the pricesheet for an invoice.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadUrlInner downloadByInvoice(String billingAccountName, String billingProfileName,
         String invoiceName) {
-        return beginDownloadByInvoice(billingAccountName, billingProfileName, invoiceName).getFinalResult();
+        return downloadByInvoice(billingAccountName, billingProfileName, invoiceName, Context.NONE);
     }
 
-    /**
-     * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download the pricesheet for an invoice.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadUrlInner downloadByInvoice(String billingAccountName, String billingProfileName, String invoiceName,
         Context context) {
-        return beginDownloadByInvoice(billingAccountName, billingProfileName, invoiceName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginDownloadByInvoice(billingAccountName, billingProfileName, invoiceName, context));
     }
 
     /**
@@ -352,9 +302,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> downloadByBillingProfileWithResponse(String billingAccountName,
         String billingProfileName) {
-        final String accept = "application/json";
-        return service.downloadByBillingProfileSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountName, billingProfileName, accept, Context.NONE);
+        return downloadByBillingProfileWithResponse(billingAccountName, billingProfileName, Context.NONE);
     }
 
     /**
@@ -411,51 +359,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
             PricesheetDownloadPropertiesInner.class, this.client.getContext());
     }
 
-    /**
-     * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for
-     * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * You can use the new 2023-09-01 API version for billing periods January 2023 onwards. Azure Reserved Instance (RI)
-     * pricing is only available through the new version of the API.
-     * 
-     * Due to Azure product growth, the Azure price sheet download experience in this preview version will be updated
-     * from a single csv/json file to a Zip file containing multiple csv/json files, each with max size of 75MB.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a URL to download the current month's pricesheet for a billing
-     * profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PricesheetDownloadPropertiesInner>, PricesheetDownloadPropertiesInner>
         beginDownloadByBillingProfile(String billingAccountName, String billingProfileName) {
-        Response<BinaryData> response = downloadByBillingProfileWithResponse(billingAccountName, billingProfileName);
-        return this.client.<PricesheetDownloadPropertiesInner, PricesheetDownloadPropertiesInner>getLroResult(response,
-            PricesheetDownloadPropertiesInner.class, PricesheetDownloadPropertiesInner.class, Context.NONE);
+        return beginDownloadByBillingProfile(billingAccountName, billingProfileName, Context.NONE);
     }
 
-    /**
-     * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for
-     * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * You can use the new 2023-09-01 API version for billing periods January 2023 onwards. Azure Reserved Instance (RI)
-     * pricing is only available through the new version of the API.
-     * 
-     * Due to Azure product growth, the Azure price sheet download experience in this preview version will be updated
-     * from a single csv/json file to a Zip file containing multiple csv/json files, each with max size of 75MB.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a URL to download the current month's pricesheet for a billing
-     * profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PricesheetDownloadPropertiesInner>, PricesheetDownloadPropertiesInner>
         beginDownloadByBillingProfile(String billingAccountName, String billingProfileName, Context context) {
@@ -490,51 +401,19 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for
-     * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * You can use the new 2023-09-01 API version for billing periods January 2023 onwards. Azure Reserved Instance (RI)
-     * pricing is only available through the new version of the API.
-     * 
-     * Due to Azure product growth, the Azure price sheet download experience in this preview version will be updated
-     * from a single csv/json file to a Zip file containing multiple csv/json files, each with max size of 75MB.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download the current month's pricesheet for a billing profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricesheetDownloadPropertiesInner downloadByBillingProfile(String billingAccountName,
         String billingProfileName) {
-        return beginDownloadByBillingProfile(billingAccountName, billingProfileName).getFinalResult();
+        return downloadByBillingProfile(billingAccountName, billingProfileName, Context.NONE);
     }
 
-    /**
-     * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for
-     * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     * 
-     * You can use the new 2023-09-01 API version for billing periods January 2023 onwards. Azure Reserved Instance (RI)
-     * pricing is only available through the new version of the API.
-     * 
-     * Due to Azure product growth, the Azure price sheet download experience in this preview version will be updated
-     * from a single csv/json file to a Zip file containing multiple csv/json files, each with max size of 75MB.
-     * 
-     * @param billingAccountName BillingAccount ID.
-     * @param billingProfileName Billing Profile Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download the current month's pricesheet for a billing profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricesheetDownloadPropertiesInner downloadByBillingProfile(String billingAccountName,
         String billingProfileName, Context context) {
-        return beginDownloadByBillingProfile(billingAccountName, billingProfileName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDownloadByBillingProfile(billingAccountName, billingProfileName, context));
     }
 
     /**
@@ -617,9 +496,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> downloadByBillingAccountWithResponse(String billingAccountId,
         String billingPeriodName) {
-        final String accept = "application/json";
-        return service.downloadByBillingAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, billingPeriodName, accept, Context.NONE);
+        return downloadByBillingAccountWithResponse(billingAccountId, billingPeriodName, Context.NONE);
     }
 
     /**
@@ -706,81 +583,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
             OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Generates the pricesheet for the provided billing period asynchronously based on the Enrollment ID. This is for
-     * Enterprise Agreement customers.
-     * 
-     * **Migrate to version 2025-03-01**
-     * 
-     * You can use the 2025-03-01 API version with the new URI:
-     * 
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.CostManagement/pricesheets/default/download'
-     * 
-     * With a new schema detailed below, the new version of the price sheet provides additional information and includes
-     * prices for Azure Reserved Instances (RI) for the current billing period. We recommend downloading an Azure Price
-     * Sheet for when entering a new billing period if you would maintain an ongoing record of past Azure Reserved
-     * Instance (RI) pricing.
-     * 
-     * The EA Azure price sheet is available for billing periods in the past 13 months. To request a price sheet for a
-     * billing period older than 13 months, please contact support.
-     * 
-     * The Azure price sheet download experience has been updated from a single .csv file to a zip file containing
-     * multiple .csv files, each with max size of 75MB. The 2023-11-01 version has been upgraded to use http POST
-     * method; details can be found below.
-     * 
-     * All versions of the Microsoft.Consumption Azure Price Sheet - Download by Billing Account (including 2022-06-01,
-     * 2021-10-01, 2020-01-01-preview, 2019-10-01, 2019-05-01) are scheduled to be retired on 01 June 2026 and will no
-     * longer be supported after this date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingPeriodName Billing Period Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the long running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
         beginDownloadByBillingAccount(String billingAccountId, String billingPeriodName) {
-        Response<BinaryData> response = downloadByBillingAccountWithResponse(billingAccountId, billingPeriodName);
-        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(response,
-            OperationStatusInner.class, OperationStatusInner.class, Context.NONE);
+        return beginDownloadByBillingAccount(billingAccountId, billingPeriodName, Context.NONE);
     }
 
-    /**
-     * Generates the pricesheet for the provided billing period asynchronously based on the Enrollment ID. This is for
-     * Enterprise Agreement customers.
-     * 
-     * **Migrate to version 2025-03-01**
-     * 
-     * You can use the 2025-03-01 API version with the new URI:
-     * 
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.CostManagement/pricesheets/default/download'
-     * 
-     * With a new schema detailed below, the new version of the price sheet provides additional information and includes
-     * prices for Azure Reserved Instances (RI) for the current billing period. We recommend downloading an Azure Price
-     * Sheet for when entering a new billing period if you would maintain an ongoing record of past Azure Reserved
-     * Instance (RI) pricing.
-     * 
-     * The EA Azure price sheet is available for billing periods in the past 13 months. To request a price sheet for a
-     * billing period older than 13 months, please contact support.
-     * 
-     * The Azure price sheet download experience has been updated from a single .csv file to a zip file containing
-     * multiple .csv files, each with max size of 75MB. The 2023-11-01 version has been upgraded to use http POST
-     * method; details can be found below.
-     * 
-     * All versions of the Microsoft.Consumption Azure Price Sheet - Download by Billing Account (including 2022-06-01,
-     * 2021-10-01, 2020-01-01-preview, 2019-10-01, 2019-05-01) are scheduled to be retired on 01 June 2026 and will no
-     * longer be supported after this date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingPeriodName Billing Period Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the long running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
         beginDownloadByBillingAccount(String billingAccountId, String billingPeriodName, Context context) {
@@ -830,81 +640,17 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generates the pricesheet for the provided billing period asynchronously based on the Enrollment ID. This is for
-     * Enterprise Agreement customers.
-     * 
-     * **Migrate to version 2025-03-01**
-     * 
-     * You can use the 2025-03-01 API version with the new URI:
-     * 
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.CostManagement/pricesheets/default/download'
-     * 
-     * With a new schema detailed below, the new version of the price sheet provides additional information and includes
-     * prices for Azure Reserved Instances (RI) for the current billing period. We recommend downloading an Azure Price
-     * Sheet for when entering a new billing period if you would maintain an ongoing record of past Azure Reserved
-     * Instance (RI) pricing.
-     * 
-     * The EA Azure price sheet is available for billing periods in the past 13 months. To request a price sheet for a
-     * billing period older than 13 months, please contact support.
-     * 
-     * The Azure price sheet download experience has been updated from a single .csv file to a zip file containing
-     * multiple .csv files, each with max size of 75MB. The 2023-11-01 version has been upgraded to use http POST
-     * method; details can be found below.
-     * 
-     * All versions of the Microsoft.Consumption Azure Price Sheet - Download by Billing Account (including 2022-06-01,
-     * 2021-10-01, 2020-01-01-preview, 2019-10-01, 2019-05-01) are scheduled to be retired on 01 June 2026 and will no
-     * longer be supported after this date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingPeriodName Billing Period Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner downloadByBillingAccount(String billingAccountId, String billingPeriodName) {
-        return beginDownloadByBillingAccount(billingAccountId, billingPeriodName).getFinalResult();
+        return downloadByBillingAccount(billingAccountId, billingPeriodName, Context.NONE);
     }
 
-    /**
-     * Generates the pricesheet for the provided billing period asynchronously based on the Enrollment ID. This is for
-     * Enterprise Agreement customers.
-     * 
-     * **Migrate to version 2025-03-01**
-     * 
-     * You can use the 2025-03-01 API version with the new URI:
-     * 
-     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.CostManagement/pricesheets/default/download'
-     * 
-     * With a new schema detailed below, the new version of the price sheet provides additional information and includes
-     * prices for Azure Reserved Instances (RI) for the current billing period. We recommend downloading an Azure Price
-     * Sheet for when entering a new billing period if you would maintain an ongoing record of past Azure Reserved
-     * Instance (RI) pricing.
-     * 
-     * The EA Azure price sheet is available for billing periods in the past 13 months. To request a price sheet for a
-     * billing period older than 13 months, please contact support.
-     * 
-     * The Azure price sheet download experience has been updated from a single .csv file to a zip file containing
-     * multiple .csv files, each with max size of 75MB. The 2023-11-01 version has been upgraded to use http POST
-     * method; details can be found below.
-     * 
-     * All versions of the Microsoft.Consumption Azure Price Sheet - Download by Billing Account (including 2022-06-01,
-     * 2021-10-01, 2020-01-01-preview, 2019-10-01, 2019-05-01) are scheduled to be retired on 01 June 2026 and will no
-     * longer be supported after this date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingPeriodName Billing Period Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner downloadByBillingAccount(String billingAccountId, String billingPeriodName,
         Context context) {
-        return beginDownloadByBillingAccount(billingAccountId, billingPeriodName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDownloadByBillingAccount(billingAccountId, billingPeriodName, context));
     }
 }

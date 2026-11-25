@@ -124,10 +124,7 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOperationWithResponse(String scope,
         GenerateDetailedCostReportDefinition parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOperationSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, contentType,
-            accept, parameters, Context.NONE);
+        return createOperationWithResponse(scope, parameters, Context.NONE);
     }
 
     /**
@@ -179,46 +176,15 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
                 GenerateDetailedCostReportOperationResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
-     * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
-     * link to the operation created. A call on the operation will provide the status and if the operation is completed
-     * the blob file where generated detailed cost report is being stored.
-     * 
-     * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     * details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create detailed cost report operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the long running operation for cost detailed report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperation(String scope, GenerateDetailedCostReportDefinition parameters) {
-        Response<BinaryData> response = createOperationWithResponse(scope, parameters);
-        return this.client
-            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>getLroResult(
-                response, GenerateDetailedCostReportOperationResultInner.class,
-                GenerateDetailedCostReportOperationResultInner.class, Context.NONE);
+        return beginCreateOperation(scope, parameters, Context.NONE);
     }
 
-    /**
-     * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
-     * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
-     * link to the operation created. A call on the operation will provide the status and if the operation is completed
-     * the blob file where generated detailed cost report is being stored.
-     * 
-     * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     * details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create detailed cost report operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of the long running operation for cost detailed report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
@@ -251,44 +217,17 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
         return beginCreateOperationAsync(scope, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
-     * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
-     * link to the operation created. A call on the operation will provide the status and if the operation is completed
-     * the blob file where generated detailed cost report is being stored.
-     * 
-     * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     * details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create detailed cost report operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the long running operation for cost detailed report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateDetailedCostReportOperationResultInner createOperation(String scope,
         GenerateDetailedCostReportDefinition parameters) {
-        return beginCreateOperation(scope, parameters).getFinalResult();
+        return createOperation(scope, parameters, Context.NONE);
     }
 
-    /**
-     * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
-     * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
-     * link to the operation created. A call on the operation will provide the status and if the operation is completed
-     * the blob file where generated detailed cost report is being stored.
-     * 
-     * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     * details, see https://aka.ms/costmgmt/scopes.
-     * @param parameters Parameters supplied to the Create detailed cost report operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the long running operation for cost detailed report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateDetailedCostReportOperationResultInner createOperation(String scope,
         GenerateDetailedCostReportDefinition parameters, Context context) {
-        return beginCreateOperation(scope, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOperation(scope, parameters, context));
     }
 }

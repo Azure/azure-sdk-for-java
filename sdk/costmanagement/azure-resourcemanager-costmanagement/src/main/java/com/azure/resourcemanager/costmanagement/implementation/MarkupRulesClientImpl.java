@@ -191,18 +191,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a markup rule by name for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param ruleName Markup rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a markup rule by name for a billing account and billing profile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MarkupRuleInner> getWithResponse(String billingAccountId, String billingProfileId, String ruleName,
         Context context) {
@@ -211,17 +200,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
             billingProfileId, ruleName, accept, context);
     }
 
-    /**
-     * Get a markup rule by name for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param ruleName Markup rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a markup rule by name for a billing account and billing profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarkupRuleInner get(String billingAccountId, String billingProfileId, String ruleName) {
         return getWithResponse(billingAccountId, billingProfileId, ruleName, Context.NONE).getValue();
@@ -269,19 +248,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a markup rule for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param ruleName Markup rule name.
-     * @param resource The markup rule to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return markup rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MarkupRuleInner> createOrUpdateWithResponse(String billingAccountId, String billingProfileId,
         String ruleName, MarkupRuleInner resource, Context context) {
@@ -291,18 +258,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
             billingProfileId, ruleName, contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update a markup rule for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param ruleName Markup rule name.
-     * @param resource The markup rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return markup rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarkupRuleInner createOrUpdate(String billingAccountId, String billingProfileId, String ruleName,
         MarkupRuleInner resource) {
@@ -346,18 +302,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
         return deleteWithResponseAsync(billingAccountId, billingProfileId, ruleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a markup rule for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param ruleName Markup rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String billingAccountId, String billingProfileId, String ruleName,
         Context context) {
@@ -365,16 +310,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
             billingProfileId, ruleName, context);
     }
 
-    /**
-     * Delete a markup rule for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param ruleName Markup rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String billingAccountId, String billingProfileId, String ruleName) {
         deleteWithResponse(billingAccountId, billingProfileId, ruleName, Context.NONE);
@@ -429,11 +365,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarkupRuleInner> listSinglePage(String billingAccountId, String billingProfileId) {
-        final String accept = "application/json";
-        Response<MarkupRulePagedResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, billingProfileId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(billingAccountId, billingProfileId, Context.NONE);
     }
 
     /**
@@ -457,33 +389,13 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all markup rules for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return markup rule list result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarkupRuleInner> list(String billingAccountId, String billingProfileId) {
-        return new PagedIterable<>(() -> listSinglePage(billingAccountId, billingProfileId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(billingAccountId, billingProfileId, Context.NONE);
     }
 
-    /**
-     * List all markup rules for a billing account and billing profile.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return markup rule list result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarkupRuleInner> list(String billingAccountId, String billingProfileId, Context context) {
         return new PagedIterable<>(() -> listSinglePage(billingAccountId, billingProfileId, context),
@@ -519,11 +431,7 @@ public final class MarkupRulesClientImpl implements MarkupRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarkupRuleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MarkupRulePagedResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

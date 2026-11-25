@@ -115,18 +115,7 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
         return getWithResponseAsync(operationId, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation
-     * request response header.
-     * 
-     * @param operationId The target operation Id.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateDetailedCostReportOperationStatusesInner> getWithResponse(String operationId, String scope,
         Context context) {
@@ -135,17 +124,7 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
             context);
     }
 
-    /**
-     * Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation
-     * request response header.
-     * 
-     * @param operationId The target operation Id.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateDetailedCostReportOperationStatusesInner get(String operationId, String scope) {
         return getWithResponse(operationId, scope, Context.NONE).getValue();
