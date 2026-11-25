@@ -55,7 +55,6 @@ steps:
     with:
       repository: Azure/azure-sdk-for-java
       ref: "${{ github.event.pull_request.base.sha || 'main' }}"
-      path: trusted-sdk
       persist-credentials: false
 
   - name: Set up Java 17
@@ -67,7 +66,7 @@ steps:
   - name: Stage trusted Java API review tool
     shell: pwsh
     run: |
-      ./trusted-sdk/eng/scripts/Stage-ApiReviewTools.ps1 `
+      ./eng/scripts/Stage-ApiReviewTools.ps1 `
         -BinOutputDirectory "$env:RUNNER_TEMP/gh-aw/api-review-tools"
 
 engine:
@@ -154,7 +153,7 @@ exactly.
    - for each affected data-plane package, invoke only:
 
      ```text
-     pwsh trusted-sdk/eng/scripts/Generate-ApiReviewArtifact.ps1
+     pwsh eng/scripts/Generate-ApiReviewArtifact.ps1
        -RepositoryRoot $DATA_PLANE_REVIEW_PR_ROOT
        -PackageName <validated artifact ID>
        -ToolJar $DATA_PLANE_REVIEW_TOOL_JAR
