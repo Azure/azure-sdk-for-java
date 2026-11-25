@@ -5256,8 +5256,11 @@ public final class BlobClientInternal {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return getLayoutWithResponseInternal(requestOptions).getValue()
-            .toObject(BlobLayoutInternal.class, XML_SERIALIZER);
+        Response<BinaryData> protocolMethodResponse = getLayoutWithResponseInternal(requestOptions);
+        if (protocolMethodResponse.getStatusCode() == 204) {
+            return null;
+        }
+        return protocolMethodResponse.getValue().toObject(BlobLayoutInternal.class, XML_SERIALIZER);
     }
 
     /**
@@ -5273,8 +5276,11 @@ public final class BlobClientInternal {
     public BlobLayoutInternal getLayout() {
         // Generated convenience method for getLayoutWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getLayoutWithResponseInternal(requestOptions).getValue()
-            .toObject(BlobLayoutInternal.class, XML_SERIALIZER);
+        Response<BinaryData> protocolMethodResponse = getLayoutWithResponseInternal(requestOptions);
+        if (protocolMethodResponse.getStatusCode() == 204) {
+            return null;
+        }
+        return protocolMethodResponse.getValue().toObject(BlobLayoutInternal.class, XML_SERIALIZER);
     }
 
     /**

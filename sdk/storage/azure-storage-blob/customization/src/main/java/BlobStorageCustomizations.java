@@ -21,7 +21,6 @@ import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
-import com.github.javaparser.ast.expr.IntegerLiteralExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -153,8 +152,6 @@ public class BlobStorageCustomizations extends Customization {
         restoreShippedEnumOrder(customization.getPackage(MODELS_PACKAGE), logger);
 
         restoreShippedModelMembers(customization.getPackage(MODELS_PACKAGE), logger);
-
-        allowEmptyGetLayoutResponse(customization.getPackage(IMPL_PACKAGE));
 
         allowNullBlockListType(customization.getPackage(IMPL_PACKAGE));
 
@@ -417,28 +414,6 @@ public class BlobStorageCustomizations extends Customization {
                 .ifPresent(declaration -> declaration.getEntries()
                     .sort(Comparator.comparingInt(entry -> order.indexOf(entry.getNameAsString()))))));
         logger.info("Restored shipped enum constant order for {}", SHIPPED_ENUM_ORDER.keySet());
-    }
-
-    /**
-     * Get Blob Layout answers 204 without a body for an empty blob, but the generated convenience methods deserialize
-     * the body for every success status. A 204 now yields a null layout, which the hand-written paging treats as an
-     * empty page.
-     *
-     * @param implPackage The implementation package holding the relocated convenience clients.
-     */
-    private static void allowEmptyGetLayoutResponse(PackageCustomization implPackage) {
-        for (String className : Arrays.asList("BlobAsyncClientInternal", "BlobClientInternal")) {
-            implPackage.getClass(className)
-                .customizeAst(ast -> ast.getClassByName(className)
-                    .ifPresent(clazz -> clazz.getMethodsByName("getLayoutWithResponse")
-                        .forEach(method -> method
-                            .findAll(MethodCallExpr.class, call -> "toObject".equals(call.getNameAsString()))
-                            .forEach(call -> call.replace(new ConditionalExpr(
-                                new BinaryExpr(
-                                    new MethodCallExpr(new NameExpr("protocolMethodResponse"), "getStatusCode"),
-                                    new IntegerLiteralExpr("204"), BinaryExpr.Operator.EQUALS),
-                                new NullLiteralExpr(), call.clone()))))));
-        }
     }
 
     /**

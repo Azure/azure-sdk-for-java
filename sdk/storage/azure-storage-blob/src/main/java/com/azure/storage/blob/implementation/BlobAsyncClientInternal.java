@@ -5316,8 +5316,13 @@ public final class BlobAsyncClientInternal {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        return getLayoutWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BlobLayoutInternal.class, XML_SERIALIZER));
+        return getLayoutWithResponseInternal(requestOptions).flatMap(protocolMethodResponse -> {
+            if (protocolMethodResponse.getStatusCode() == 204) {
+                return Mono.empty();
+            }
+            return Mono
+                .justOrEmpty(protocolMethodResponse.getValue().toObject(BlobLayoutInternal.class, XML_SERIALIZER));
+        });
     }
 
     /**
@@ -5333,8 +5338,13 @@ public final class BlobAsyncClientInternal {
     public Mono<BlobLayoutInternal> getLayout() {
         // Generated convenience method for getLayoutWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getLayoutWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BlobLayoutInternal.class, XML_SERIALIZER));
+        return getLayoutWithResponseInternal(requestOptions).flatMap(protocolMethodResponse -> {
+            if (protocolMethodResponse.getStatusCode() == 204) {
+                return Mono.empty();
+            }
+            return Mono
+                .justOrEmpty(protocolMethodResponse.getValue().toObject(BlobLayoutInternal.class, XML_SERIALIZER));
+        });
     }
 
     /**

@@ -2608,7 +2608,7 @@ public final class ContainersImpl {
      * 
      * <pre>
      * {@code
-     * String
+     * BinaryData
      * }
      * </pre>
      * 
@@ -2629,10 +2629,11 @@ public final class ContainersImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BlobStorageErrorException thrown if the request is rejected by server.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listBlobFlatSegmentApacheArrowWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>>
+        listBlobFlatSegmentApacheArrowWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.apache.arrow.stream,application/xml";
         return FluxUtil
             .withContext(context -> service.listBlobFlatSegmentApacheArrow(this.client.getUrl(),
@@ -2670,7 +2671,7 @@ public final class ContainersImpl {
      * 
      * <pre>
      * {@code
-     * String
+     * BinaryData
      * }
      * </pre>
      * 
@@ -2691,10 +2692,10 @@ public final class ContainersImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BlobStorageErrorException thrown if the request is rejected by server.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/vnd.apache.arrow.stream,application/xml";
             return service.listBlobFlatSegmentApacheArrowSync(this.client.getUrl(),
@@ -3036,7 +3037,7 @@ public final class ContainersImpl {
      * 
      * <pre>
      * {@code
-     * String
+     * BinaryData
      * }
      * </pre>
      * 
@@ -3060,10 +3061,10 @@ public final class ContainersImpl {
      * may be a single character or a string.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BlobStorageErrorException thrown if the request is rejected by server.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrowWithResponseAsync(String delimiter,
+    public Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrowWithResponseInternalAsync(String delimiter,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.apache.arrow.stream,application/xml";
         return FluxUtil
@@ -3103,7 +3104,7 @@ public final class ContainersImpl {
      * 
      * <pre>
      * {@code
-     * String
+     * BinaryData
      * }
      * </pre>
      * 
@@ -3127,10 +3128,10 @@ public final class ContainersImpl {
      * may be a single character or a string.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BlobStorageErrorException thrown if the request is rejected by server.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponse(String delimiter,
+    public Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponseInternal(String delimiter,
         RequestOptions requestOptions) {
         try {
             final String accept = "application/vnd.apache.arrow.stream,application/xml";

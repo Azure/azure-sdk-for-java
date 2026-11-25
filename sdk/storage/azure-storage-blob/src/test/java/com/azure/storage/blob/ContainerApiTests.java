@@ -81,6 +81,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.BlobContainerClientInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 
@@ -2436,10 +2437,10 @@ public class ContainerApiTests extends BlobTestBase {
         ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
         include.add(ListBlobsIncludeItem.METADATA);
 
-        Response<BinaryData> response = impl.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponse(RequestOptionsHelper
-                .addListBlobsQueryParams(RequestOptionsHelper.containerRequestOptions(com.azure.core.util.Context.NONE,
-                    impl.getUrl(), containerName), null, null, null, include, null, null));
+        Response<BinaryData> response
+            = new BlobContainerClientInternal(impl.getContainers()).listBlobFlatSegmentApacheArrowWithResponse(null,
+                null, null, include, null, null, null, RequestOptionsHelper
+                    .containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(), containerName));
 
         ArrowBlobListDeserializer.ArrowListBlobsResult result;
         try (InputStream body = response.getValue().toStream()) {

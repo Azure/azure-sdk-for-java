@@ -1105,11 +1105,10 @@ public final class BlobContainerClient {
                 = finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
 
             if (finalOptions.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
-                Callable<Response<BinaryData>> operation = () -> this.azureBlobStorage.getContainers()
-                    .listBlobFlatSegmentApacheArrowWithResponse(
-                        RequestOptionsHelper.addListBlobsQueryParams(containerRequestOptions(Context.NONE),
-                            finalOptions.getPrefix(), nextMarker, finalOptions.getMaxResultsPerPage(), include,
-                            finalOptions.getStartFrom(), finalOptions.getEndBefore()));
+                Callable<Response<BinaryData>> operation = () -> this.containerClientInternal
+                    .listBlobFlatSegmentApacheArrowWithResponse(finalOptions.getPrefix(), nextMarker,
+                        finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
+                        finalOptions.getEndBefore(), containerRequestOptions(Context.NONE));
                 Response<BinaryData> response
                     = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
@@ -1294,11 +1293,10 @@ public final class BlobContainerClient {
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
         if (options.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
-            Callable<Response<BinaryData>> operation = () -> this.azureBlobStorage.getContainers()
-                .listBlobHierarchySegmentApacheArrowWithResponse(delimiter,
-                    RequestOptionsHelper.addListBlobsQueryParams(containerRequestOptions(Context.NONE),
-                        options.getPrefix(), marker, options.getMaxResultsPerPage(), include, options.getStartFrom(),
-                        options.getEndBefore()));
+            Callable<Response<BinaryData>> operation
+                = () -> this.containerClientInternal.listBlobHierarchySegmentApacheArrowWithResponse(delimiter,
+                    options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
+                    options.getEndBefore(), containerRequestOptions(Context.NONE));
             Response<BinaryData> response
                 = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 

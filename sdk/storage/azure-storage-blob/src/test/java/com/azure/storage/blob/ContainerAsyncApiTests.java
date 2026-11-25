@@ -22,6 +22,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.SessionContext.SessionMode;
@@ -2427,21 +2428,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         List<ListBlobsIncludeItem> include = new ArrayList<>();
         include.add(ListBlobsIncludeItem.METADATA);
 
-        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono
-            = bc.uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
-                .then(impl.getContainers()
-                    .listBlobFlatSegmentApacheArrowWithResponseAsync(RequestOptionsHelper.addListBlobsQueryParams(
-                        RequestOptionsHelper.containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(),
-                            containerName),
-                        null, null, null, include, null, null)))
-                .flatMap(response -> Mono.fromCallable(() -> response.getValue().toBytes()).map(bytes -> {
-                    String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
-                    assertTrue(
-                        StorageImplUtils.hasMatchingHeaderValue(contentType,
-                            Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
-                        "Expected Arrow content type but got: " + contentType);
-                    return ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes));
-                }));
+        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono = bc
+            .uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
+            .then(new BlobContainerAsyncClientInternal(impl.getContainers()).listBlobFlatSegmentApacheArrowWithResponse(
+                null, null, null, include, null, null, null,
+                RequestOptionsHelper.containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(),
+                    containerName)))
+            .flatMap(response -> Mono.fromCallable(() -> response.getValue().toBytes()).map(bytes -> {
+                String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+                assertTrue(
+                    StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
+                    "Expected Arrow content type but got: " + contentType);
+                return ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes));
+            }));
 
         StepVerifier.create(testMono.zipWhen(result -> bc.getProperties())).assertNext(response -> {
             ArrowBlobListDeserializer.ArrowListBlobsResult result = response.getT1();

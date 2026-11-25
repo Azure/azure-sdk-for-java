@@ -11,9 +11,6 @@ import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.net.URL;
 
-import java.util.List;
-import java.util.Objects;
-
 /**
  * Builds the {@link RequestOptions} passed to the generated {@code implementation/*Impl} protocol methods.
  * <p>
@@ -42,67 +39,6 @@ public final class RequestOptionsHelper {
             requestOptions.setContext(context);
         }
         return requestOptions;
-    }
-
-    /**
-     * Adds the List Blobs query parameters, for the Arrow listings, which are called through their protocol methods.
-     *
-     * @param requestOptions The {@link RequestOptions} to mutate.
-     * @param prefix Filters the results to blobs whose names begin with this prefix; may be null.
-     * @param marker The continuation marker; may be null.
-     * @param maxResults The maximum number of blobs to return; may be null.
-     * @param include The datasets to include in the response; may be null or empty.
-     * @param startFrom The blob name to start listing from; may be null.
-     * @param endBefore The blob name to end listing before; may be null.
-     * @return The same {@link RequestOptions}.
-     */
-    public static RequestOptions addListBlobsQueryParams(RequestOptions requestOptions, String prefix, String marker,
-        Integer maxResults, List<?> include, String startFrom, String endBefore) {
-        addOptionalQueryParam(requestOptions, "prefix", prefix);
-        addOptionalQueryParam(requestOptions, "marker", marker);
-        addOptionalQueryParam(requestOptions, "maxresults", maxResults);
-        addOptionalCsvQueryParam(requestOptions, "include", include);
-        addOptionalQueryParam(requestOptions, "startFrom", startFrom);
-        addOptionalQueryParam(requestOptions, "endBefore", endBefore);
-        return requestOptions;
-    }
-
-    /**
-     * Adds an optional query parameter to {@code requestOptions} when {@code value} is non-null, matching the
-     * AutoRest behavior of omitting the parameter entirely when it has no value.
-     *
-     * @param requestOptions The {@link RequestOptions} to mutate.
-     * @param name The query parameter name.
-     * @param value The value; when {@code null} the parameter is not added.
-     */
-    public static void addOptionalQueryParam(RequestOptions requestOptions, String name, Object value) {
-        if (value != null) {
-            requestOptions.addQueryParam(name, String.valueOf(value));
-        }
-    }
-
-    /**
-     * Adds a comma-joined query parameter when {@code values} is non-null and non-empty.
-     * <p>
-     * AutoRest omitted the parameter entirely when the collection was empty rather than sending an empty value, and
-     * recorded sessions depend on that: sending {@code include=} would not match.
-     *
-     * @param requestOptions The {@link RequestOptions} to mutate.
-     * @param name The query parameter name.
-     * @param values The values to join; when {@code null} or empty the parameter is not added.
-     */
-    public static void addOptionalCsvQueryParam(RequestOptions requestOptions, String name, List<?> values) {
-        if (values == null || values.isEmpty()) {
-            return;
-        }
-        StringBuilder joined = new StringBuilder();
-        for (Object value : values) {
-            if (joined.length() > 0) {
-                joined.append(',');
-            }
-            joined.append(Objects.toString(value, ""));
-        }
-        requestOptions.addQueryParam(name, joined.toString());
     }
 
     /**

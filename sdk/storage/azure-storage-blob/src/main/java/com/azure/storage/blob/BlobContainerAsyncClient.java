@@ -1249,11 +1249,10 @@ public final class BlobContainerAsyncClient {
         include = include.isEmpty() ? null : include;
 
         ListBlobsOptions arrowOptions = options;
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponseAsync(
-                RequestOptionsHelper.addListBlobsQueryParams(containerRequestOptions(Context.NONE),
-                    arrowOptions.getPrefix(), marker, arrowOptions.getMaxResultsPerPage(), include,
-                    arrowOptions.getStartFrom(), arrowOptions.getEndBefore())),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.containerClientInternal.listBlobFlatSegmentApacheArrowWithResponse(arrowOptions.getPrefix(), marker,
+                arrowOptions.getMaxResultsPerPage(), include, null, arrowOptions.getStartFrom(),
+                arrowOptions.getEndBefore(), containerRequestOptions(Context.NONE)),
             timeout).flatMap(response -> {
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
@@ -1467,12 +1466,13 @@ public final class BlobContainerAsyncClient {
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
         ListBlobsOptions finalOptions = options;
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobHierarchySegmentApacheArrowWithResponseAsync(delimiter,
-                RequestOptionsHelper.addListBlobsQueryParams(containerRequestOptions(Context.NONE),
-                    finalOptions.getPrefix(), marker, finalOptions.getMaxResultsPerPage(), include,
-                    finalOptions.getStartFrom(), finalOptions.getEndBefore())),
-            timeout).flatMap(response -> {
+        return StorageImplUtils
+            .applyOptionalTimeout(
+                this.containerClientInternal.listBlobHierarchySegmentApacheArrowWithResponse(delimiter,
+                    finalOptions.getPrefix(), marker, finalOptions.getMaxResultsPerPage(), include, null,
+                    finalOptions.getStartFrom(), finalOptions.getEndBefore(), containerRequestOptions(Context.NONE)),
+                timeout)
+            .flatMap(response -> {
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
                 return Mono.fromCallable(() -> response.getValue().toBytes()).map(bytes -> {

@@ -26,7 +26,9 @@ import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseHeaders;
 import com.azure.storage.blob.implementation.models.ContainersRenameHeaders;
@@ -1134,7 +1136,7 @@ public final class BlobContainerClientInternal {
      * 
      * <pre>
      * {@code
-     * String
+     * BinaryData
      * }
      * </pre>
      * 
@@ -1155,12 +1157,12 @@ public final class BlobContainerClientInternal {
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BlobStorageErrorException thrown if the request is rejected by server.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listBlobFlatSegmentApacheArrowWithResponse(requestOptions);
+    Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions);
     }
 
     /**
@@ -1339,7 +1341,7 @@ public final class BlobContainerClientInternal {
      * 
      * <pre>
      * {@code
-     * String
+     * BinaryData
      * }
      * </pre>
      * 
@@ -1363,13 +1365,13 @@ public final class BlobContainerClientInternal {
      * may be a single character or a string.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BlobStorageErrorException thrown if the request is rejected by server.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponse(String delimiter,
+    Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponseInternal(String delimiter,
         RequestOptions requestOptions) {
-        return this.serviceClient.listBlobHierarchySegmentApacheArrowWithResponse(delimiter, requestOptions);
+        return this.serviceClient.listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions);
     }
 
     /**
@@ -2946,6 +2948,136 @@ public final class BlobContainerClientInternal {
     }
 
     /**
+     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client.
+     * 
+     * @param prefix Filters the results to return only resources whose name begins with the specified prefix.
+     * @param marker An opaque string value that identifies the portion of the result set to return with this operation.
+     * @param maxresults Specifies the maximum number of resources to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items.
+     * @param include Specify to include additional, optional information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; for recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Filters the results to return only names that are ordered before this value. Currently only
+     * applies to Apache Arrow scenario.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, BinaryData>
+        listBlobFlatSegmentApacheArrowWithResponse(String prefix, String marker, Integer maxresults,
+            List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+            RequestOptions requestOptions) {
+        // Generated convenience method for listBlobFlatSegmentApacheArrowWithResponseInternal
+        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (include != null) {
+            requestOptions.addQueryParam("include",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (startFrom != null) {
+            requestOptions.addQueryParam("startFrom", startFrom, false);
+        }
+        if (endBefore != null) {
+            requestOptions.addQueryParam("endBefore", endBefore, false);
+        }
+        Response<BinaryData> protocolMethodResponse
+            = listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(), protocolMethodResponse.getValue(),
+            new ContainersListBlobFlatSegmentApacheArrowHeaders(protocolMethodResponse.getHeaders()));
+    }
+
+    /**
+     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client.
+     * 
+     * @param prefix Filters the results to return only resources whose name begins with the specified prefix.
+     * @param marker An opaque string value that identifies the portion of the result set to return with this operation.
+     * @param maxresults Specifies the maximum number of resources to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items.
+     * @param include Specify to include additional, optional information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; for recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Filters the results to return only names that are ordered before this value. Currently only
+     * applies to Apache Arrow scenario.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData listBlobFlatSegmentApacheArrow(String prefix, String marker, Integer maxresults,
+        List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore) {
+        // Generated convenience method for listBlobFlatSegmentApacheArrowWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (include != null) {
+            requestOptions.addQueryParam("include",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (startFrom != null) {
+            requestOptions.addQueryParam("startFrom", startFrom, false);
+        }
+        if (endBefore != null) {
+            requestOptions.addQueryParam("endBefore", endBefore, false);
+        }
+        return listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions).getValue();
+    }
+
+    /**
+     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client.
+     * 
+     * @throws BlobStorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData listBlobFlatSegmentApacheArrow() {
+        // Generated convenience method for listBlobFlatSegmentApacheArrowWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions).getValue();
+    }
+
+    /**
      * Returns a list of the blobs in the specified container. A delimiter can be used to traverse a virtual hierarchy
      * of blobs as though it were a file system.
      * 
@@ -3078,6 +3210,149 @@ public final class BlobContainerClientInternal {
         RequestOptions requestOptions = new RequestOptions();
         return listBlobHierarchySegmentWithResponseInternal(delimiter, requestOptions).getValue()
             .toObject(ListBlobsHierarchySegmentResponse.class, XML_SERIALIZER);
+    }
+
+    /**
+     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client. A delimiter can
+     * be used to traverse a virtual hierarchy of blobs as though it were a file system.
+     * 
+     * @param delimiter If specified, the operation returns a BlobPrefix element that acts as a placeholder for all
+     * blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter
+     * may be a single character or a string.
+     * @param prefix Filters the results to return only resources whose name begins with the specified prefix.
+     * @param marker An opaque string value that identifies the portion of the result set to return with this operation.
+     * @param maxresults Specifies the maximum number of resources to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items.
+     * @param include Specify to include additional, optional information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; for recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Filters the results to return only names that are ordered before this value. Currently only
+     * applies to Apache Arrow scenario.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, BinaryData>
+        listBlobHierarchySegmentApacheArrowWithResponse(String delimiter, String prefix, String marker,
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+            RequestOptions requestOptions) {
+        // Generated convenience method for listBlobHierarchySegmentApacheArrowWithResponseInternal
+        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (include != null) {
+            requestOptions.addQueryParam("include",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (startFrom != null) {
+            requestOptions.addQueryParam("startFrom", startFrom, false);
+        }
+        if (endBefore != null) {
+            requestOptions.addQueryParam("endBefore", endBefore, false);
+        }
+        Response<BinaryData> protocolMethodResponse
+            = listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(), protocolMethodResponse.getValue(),
+            new ContainersListBlobHierarchySegmentApacheArrowHeaders(protocolMethodResponse.getHeaders()));
+    }
+
+    /**
+     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client. A delimiter can
+     * be used to traverse a virtual hierarchy of blobs as though it were a file system.
+     * 
+     * @param delimiter If specified, the operation returns a BlobPrefix element that acts as a placeholder for all
+     * blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter
+     * may be a single character or a string.
+     * @param prefix Filters the results to return only resources whose name begins with the specified prefix.
+     * @param marker An opaque string value that identifies the portion of the result set to return with this operation.
+     * @param maxresults Specifies the maximum number of resources to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items.
+     * @param include Specify to include additional, optional information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; for recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Filters the results to return only names that are ordered before this value. Currently only
+     * applies to Apache Arrow scenario.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData listBlobHierarchySegmentApacheArrow(String delimiter, String prefix, String marker,
+        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore) {
+        // Generated convenience method for listBlobHierarchySegmentApacheArrowWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (include != null) {
+            requestOptions.addQueryParam("include",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (startFrom != null) {
+            requestOptions.addQueryParam("startFrom", startFrom, false);
+        }
+        if (endBefore != null) {
+            requestOptions.addQueryParam("endBefore", endBefore, false);
+        }
+        return listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions).getValue();
+    }
+
+    /**
+     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client. A delimiter can
+     * be used to traverse a virtual hierarchy of blobs as though it were a file system.
+     * 
+     * @param delimiter If specified, the operation returns a BlobPrefix element that acts as a placeholder for all
+     * blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter
+     * may be a single character or a string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData listBlobHierarchySegmentApacheArrow(String delimiter) {
+        // Generated convenience method for listBlobHierarchySegmentApacheArrowWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions).getValue();
     }
 
     /**
