@@ -9,13 +9,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
-import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.services.async.ConversationServiceAsync;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -102,7 +100,6 @@ public class AgentsAsyncTests extends ClientTestBase {
         })).verifyComplete();
     }
 
-    @Disabled("Disabled due to service errors (responses endpoint).")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -110,57 +107,52 @@ public class AgentsAsyncTests extends ClientTestBase {
         ConversationServiceAsync conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
         ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
+        String agentName = testResourceNamer.randomName("prompt-agent-async-", 32);
 
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition(agentModel);
 
-        StepVerifier.create(agentsClient.createAgentVersion(AGENT_NAME, promptAgentDefinition).flatMap(createdAgent -> {
-            assertNotNull(createdAgent);
-            assertNotNull(createdAgent.getId());
-            assertEquals(AGENT_NAME, createdAgent.getName());
+        StepVerifier
+            .create(Mono.usingWhen(agentsClient.createAgentVersion(agentName, promptAgentDefinition), createdAgent -> {
+                assertNotNull(createdAgent);
+                assertNotNull(createdAgent.getId());
+                assertEquals(agentName, createdAgent.getName());
 
-            AgentReference agentReference = new AgentReference(createdAgent.getName());
-            agentReference.setVersion(createdAgent.getVersion());
+                AgentReference agentReference = new AgentReference(createdAgent.getName());
+                agentReference.setVersion(createdAgent.getVersion());
 
-            return Mono.fromFuture(conversationsClient.create()).flatMap((Conversation conversation) -> {
-                List<ResponseInputItem> inputItems = new ArrayList<>();
-                inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
-                    .type(EasyInputMessage.Type.MESSAGE)
-                    .role(EasyInputMessage.Role.SYSTEM)
-                    .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
-                    .build()));
-                inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
-                    .type(EasyInputMessage.Type.MESSAGE)
-                    .role(EasyInputMessage.Role.USER)
-                    .content("Could you help me decide what clothes to wear today?")
-                    .build()));
+                return Mono.usingWhen(Mono.fromFuture(conversationsClient.create()), conversation -> {
+                    List<ResponseInputItem> inputItems = new ArrayList<>();
+                    inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                        .type(EasyInputMessage.Type.MESSAGE)
+                        .role(EasyInputMessage.Role.SYSTEM)
+                        .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
+                        .build()));
+                    inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                        .type(EasyInputMessage.Type.MESSAGE)
+                        .role(EasyInputMessage.Role.USER)
+                        .content("Could you help me decide what clothes to wear today?")
+                        .build()));
 
-                ResponseCreateParams.Builder paramsBuilder = ResponseCreateParams.builder().inputOfResponse(inputItems);
+                    ResponseCreateParams.Builder paramsBuilder
+                        = ResponseCreateParams.builder().inputOfResponse(inputItems);
 
-                return responsesClient
-                    .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        paramsBuilder.conversation(conversation.id()))
-                    .doOnNext(response -> {
-                        assertNotNull(response);
-                        assertTrue(response.id().startsWith("resp"));
-                        assertTrue(response.status().isPresent());
-                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                        assertFalse(response.output().isEmpty());
-                        assertTrue(response.output().get(0).isMessage());
-                        assertFalse(response.output().get(0).asMessage().content().isEmpty());
-                    })
-                    .flatMap(response -> cleanupPromptAgentTest(agentsClient, conversationsClient, responsesClient,
-                        createdAgent.getId(), conversation.id(), response.id()).thenReturn(response));
-            });
-        })).assertNext(response -> assertTrue(response.id().startsWith("resp"))).verifyComplete();
-    }
-
-    private Mono<Void> cleanupPromptAgentTest(AgentsAsyncClient agentsClient,
-        ConversationServiceAsync conversationsClient, ResponsesAsyncClient responsesClient, String agentId,
-        String conversationId, String responseId) {
-        return Mono.whenDelayError(agentsClient.deleteAgent(agentId).then(),
-            Mono.fromFuture(conversationsClient.delete(conversationId)).then(),
-            // Deleting response causes a 500 in service, but keep the request for parity with sync tests.
-            Mono.fromFuture(responsesClient.getResponseServiceAsync().delete(responseId)).then());
+                    return Mono.usingWhen(responsesClient.createAzureResponse(
+                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                        paramsBuilder.conversation(conversation.id())), response -> Mono.fromCallable(() -> {
+                            assertNotNull(response);
+                            assertTrue(response.id().startsWith("resp"));
+                            assertTrue(response.status().isPresent());
+                            assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                            assertFalse(response.output().isEmpty());
+                            assertTrue(response.output().get(0).isMessage());
+                            assertFalse(response.output().get(0).asMessage().content().isEmpty());
+                            return response;
+                        }), response -> Mono.fromFuture(responsesClient.getResponseServiceAsync().delete(response.id()))
+                            .then());
+                }, conversation -> Mono.fromFuture(conversationsClient.delete(conversation.id())).then());
+            }, createdAgent -> agentsClient.deleteAgent(createdAgent.getName()).then()))
+            .assertNext(response -> assertTrue(response.id().startsWith("resp")))
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

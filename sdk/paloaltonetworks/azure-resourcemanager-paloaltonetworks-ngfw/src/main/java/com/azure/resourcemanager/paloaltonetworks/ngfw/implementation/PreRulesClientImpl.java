@@ -242,17 +242,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
         return getWithResponseAsync(globalRulestackName, priority).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PreRulesResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreRulesResourceInner> getWithResponse(String globalRulestackName, String priority,
         Context context) {
@@ -261,16 +251,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             accept, context);
     }
 
-    /**
-     * Get a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PreRulesResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreRulesResourceInner get(String globalRulestackName, String priority) {
         return getWithResponse(globalRulestackName, priority, Context.NONE).getValue();
@@ -312,10 +293,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String globalRulestackName, String priority,
         PreRulesResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
-            priority, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(globalRulestackName, priority, resource, Context.NONE);
     }
 
     /**
@@ -360,37 +338,14 @@ public final class PreRulesClientImpl implements PreRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of preRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreRulesResourceInner>, PreRulesResourceInner>
         beginCreateOrUpdate(String globalRulestackName, String priority, PreRulesResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(globalRulestackName, priority, resource);
-        return this.client.<PreRulesResourceInner, PreRulesResourceInner>getLroResult(response,
-            PreRulesResourceInner.class, PreRulesResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(globalRulestackName, priority, resource, Context.NONE);
     }
 
-    /**
-     * Create a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of preRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreRulesResourceInner>, PreRulesResourceInner> beginCreateOrUpdate(
         String globalRulestackName, String priority, PreRulesResourceInner resource, Context context) {
@@ -417,39 +372,19 @@ public final class PreRulesClientImpl implements PreRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreRulesResourceInner createOrUpdate(String globalRulestackName, String priority,
         PreRulesResourceInner resource) {
-        return beginCreateOrUpdate(globalRulestackName, priority, resource).getFinalResult();
+        return createOrUpdate(globalRulestackName, priority, resource, Context.NONE);
     }
 
-    /**
-     * Create a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreRulesResourceInner createOrUpdate(String globalRulestackName, String priority,
         PreRulesResourceInner resource, Context context) {
-        return beginCreateOrUpdate(globalRulestackName, priority, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(globalRulestackName, priority, resource, context));
     }
 
     /**
@@ -482,8 +417,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String globalRulestackName, String priority) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, priority,
-            Context.NONE);
+        return deleteWithResponse(globalRulestackName, priority, Context.NONE);
     }
 
     /**
@@ -520,33 +454,13 @@ public final class PreRulesClientImpl implements PreRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String priority) {
-        Response<BinaryData> response = deleteWithResponse(globalRulestackName, priority);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(globalRulestackName, priority, Context.NONE);
     }
 
-    /**
-     * Delete a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String priority,
         Context context) {
@@ -569,33 +483,16 @@ public final class PreRulesClientImpl implements PreRulesClient {
         return beginDeleteAsync(globalRulestackName, priority).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, String priority) {
-        beginDelete(globalRulestackName, priority).getFinalResult();
+        delete(globalRulestackName, priority, Context.NONE);
     }
 
-    /**
-     * Delete a PreRulesResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, String priority, Context context) {
-        beginDelete(globalRulestackName, priority, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(globalRulestackName, priority, context));
     }
 
     /**
@@ -645,11 +542,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreRulesResourceInner> listSinglePage(String globalRulestackName) {
-        final String accept = "application/json";
-        Response<PreRulesResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), globalRulestackName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(globalRulestackName, Context.NONE);
     }
 
     /**
@@ -671,30 +564,13 @@ public final class PreRulesClientImpl implements PreRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PreRulesResource resources by Tenant.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreRulesResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreRulesResourceInner> list(String globalRulestackName) {
-        return new PagedIterable<>(() -> listSinglePage(globalRulestackName), nextLink -> listNextSinglePage(nextLink));
+        return list(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * List PreRulesResource resources by Tenant.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PreRulesResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreRulesResourceInner> list(String globalRulestackName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(globalRulestackName, context),
@@ -739,18 +615,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return counters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleCounterInner> getCountersWithResponse(String globalRulestackName, String priority,
         String firewallName, Context context) {
@@ -759,16 +624,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             priority, firewallName, accept, context);
     }
 
-    /**
-     * Get counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return counters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleCounterInner getCounters(String globalRulestackName, String priority) {
         final String firewallName = null;
@@ -812,18 +668,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Refresh counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
         Context context) {
@@ -831,15 +676,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             priority, firewallName, context);
     }
 
-    /**
-     * Refresh counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshCounters(String globalRulestackName, String priority) {
         final String firewallName = null;
@@ -884,18 +721,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Reset counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule counter reset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleCounterResetInner> resetCountersWithResponse(String globalRulestackName, String priority,
         String firewallName, Context context) {
@@ -904,16 +730,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
             priority, firewallName, accept, context);
     }
 
-    /**
-     * Reset counters.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param priority Pre Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule counter reset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleCounterResetInner resetCounters(String globalRulestackName, String priority) {
         final String firewallName = null;
@@ -950,11 +767,7 @@ public final class PreRulesClientImpl implements PreRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreRulesResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PreRulesResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

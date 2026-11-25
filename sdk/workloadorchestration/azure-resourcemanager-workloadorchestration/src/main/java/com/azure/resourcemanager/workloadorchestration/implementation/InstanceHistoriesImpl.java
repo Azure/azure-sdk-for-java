@@ -48,9 +48,7 @@ public final class InstanceHistoriesImpl implements InstanceHistories {
 
     public PagedIterable<InstanceHistory> listByInstance(String resourceGroupName, String targetName,
         String solutionName, String instanceName) {
-        PagedIterable<InstanceHistoryInner> inner
-            = this.serviceClient().listByInstance(resourceGroupName, targetName, solutionName, instanceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InstanceHistoryImpl(inner1, this.manager()));
+        return this.listByInstance(resourceGroupName, targetName, solutionName, instanceName, Context.NONE);
     }
 
     public PagedIterable<InstanceHistory> listByInstance(String resourceGroupName, String targetName,

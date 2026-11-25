@@ -84,10 +84,7 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
     }
 
     public ResourceAnchor create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceAnchors()
-            .createOrUpdate(resourceGroupName, resourceAnchorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ResourceAnchor create(Context context) {
@@ -109,10 +106,7 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
     }
 
     public ResourceAnchor apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceAnchors()
-            .update(resourceGroupName, resourceAnchorName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ResourceAnchor apply(Context context) {
@@ -135,11 +129,7 @@ public final class ResourceAnchorImpl implements ResourceAnchor, ResourceAnchor.
     }
 
     public ResourceAnchor refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getResourceAnchors()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceAnchorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ResourceAnchor refresh(Context context) {

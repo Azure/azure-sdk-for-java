@@ -108,16 +108,7 @@ public final class SaaSClientImpl implements SaaSClient {
         return activateResourceWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
-     * 
-     * @param request The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace SaaS resource details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SaaSResourceDetailsResponseInner> activateResourceWithResponse(ActivateSaaSParameterRequest request,
         Context context) {
@@ -127,15 +118,7 @@ public final class SaaSClientImpl implements SaaSClient {
             this.client.getSubscriptionId(), contentType, accept, request, context);
     }
 
-    /**
-     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
-     * 
-     * @param request The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace SaaS resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest request) {
         return activateResourceWithResponse(request, Context.NONE).getValue();

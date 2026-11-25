@@ -102,12 +102,7 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
     }
 
     public AutomationRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutomationRules()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, automationRuleId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutomationRule create(Context context) {
@@ -129,12 +124,7 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
     }
 
     public AutomationRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutomationRules()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, automationRuleId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutomationRule apply(Context context) {
@@ -161,11 +151,7 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
     }
 
     public AutomationRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutomationRules()
-            .getWithResponse(resourceGroupName, workspaceName, automationRuleId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutomationRule refresh(Context context) {

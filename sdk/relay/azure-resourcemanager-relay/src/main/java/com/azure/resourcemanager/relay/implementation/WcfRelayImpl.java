@@ -102,11 +102,7 @@ public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRel
     }
 
     public WcfRelay create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWcfRelays()
-            .createOrUpdateWithResponse(resourceGroupName, namespaceName, relayName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WcfRelay create(Context context) {
@@ -128,11 +124,7 @@ public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRel
     }
 
     public WcfRelay apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWcfRelays()
-            .createOrUpdateWithResponse(resourceGroupName, namespaceName, relayName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WcfRelay apply(Context context) {
@@ -158,11 +150,7 @@ public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRel
     }
 
     public WcfRelay refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWcfRelays()
-            .getWithResponse(resourceGroupName, namespaceName, relayName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WcfRelay refresh(Context context) {

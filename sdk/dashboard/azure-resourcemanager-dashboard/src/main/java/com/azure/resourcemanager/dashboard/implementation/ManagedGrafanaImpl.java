@@ -98,10 +98,7 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafana create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGrafanas()
-            .create(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedGrafana create(Context context) {
@@ -123,10 +120,7 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafana apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGrafanas()
-            .update(resourceGroupName, workspaceName, updateRequestBodyParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedGrafana apply(Context context) {
@@ -149,11 +143,7 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafana refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGrafanas()
-            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedGrafana refresh(Context context) {

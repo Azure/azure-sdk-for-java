@@ -14,12 +14,12 @@ public final class ReplicationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationStatusInner model = BinaryData.fromString(
-            "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Broken\",\"totalProgress\":\"blylpstdbh\",\"errorMessage\":\"srzdzucerscdn\"}")
+            "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Broken\",\"totalProgress\":\"mcwyhzdxssadb\",\"errorMessage\":\"nvdfznuda\"}")
             .toObject(ReplicationStatusInner.class);
-        Assertions.assertFalse(model.healthy());
-        Assertions.assertEquals(VolumeReplicationRelationshipStatus.IDLE, model.relationshipStatus());
+        Assertions.assertTrue(model.healthy());
+        Assertions.assertEquals(VolumeReplicationRelationshipStatus.TRANSFERRING, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("blylpstdbh", model.totalProgress());
-        Assertions.assertEquals("srzdzucerscdn", model.errorMessage());
+        Assertions.assertEquals("mcwyhzdxssadb", model.totalProgress());
+        Assertions.assertEquals("nvdfznuda", model.errorMessage());
     }
 }

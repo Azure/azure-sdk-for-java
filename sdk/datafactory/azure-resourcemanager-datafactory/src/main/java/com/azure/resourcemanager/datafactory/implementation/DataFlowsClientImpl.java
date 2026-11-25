@@ -200,20 +200,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a data flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFlowResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String dataFlowName, String ifNoneMatch, Context context) {
@@ -222,17 +209,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
             resourceGroupName, factoryName, dataFlowName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a data flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowResourceInner get(String resourceGroupName, String factoryName, String dataFlowName) {
         final String ifNoneMatch = null;
@@ -285,21 +262,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a data flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @param dataFlow Data flow resource definition.
-     * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFlowResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String dataFlowName, DataFlowResourceInner dataFlow, String ifMatch, Context context) {
@@ -310,18 +273,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
             dataFlow, context);
     }
 
-    /**
-     * Creates or updates a data flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @param dataFlow Data flow resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowResourceInner createOrUpdate(String resourceGroupName, String factoryName, String dataFlowName,
         DataFlowResourceInner dataFlow) {
@@ -366,18 +318,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
         return deleteWithResponseAsync(resourceGroupName, factoryName, dataFlowName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a data flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String dataFlowName,
         Context context) {
@@ -385,16 +326,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, dataFlowName, context);
     }
 
-    /**
-     * Deletes a data flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String dataFlowName) {
         deleteWithResponse(resourceGroupName, factoryName, dataFlowName, Context.NONE);
@@ -450,12 +382,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataFlowResourceInner> listByFactorySinglePage(String resourceGroupName, String factoryName) {
-        final String accept = "application/json";
-        Response<DataFlowListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -480,33 +407,13 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists data flows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists data flows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -544,11 +451,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataFlowResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataFlowListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

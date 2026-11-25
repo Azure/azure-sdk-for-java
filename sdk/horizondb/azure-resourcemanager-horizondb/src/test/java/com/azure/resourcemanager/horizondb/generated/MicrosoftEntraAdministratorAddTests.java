@@ -13,24 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class MicrosoftEntraAdministratorAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MicrosoftEntraAdministratorAdd model = BinaryData
-            .fromString(
-                "{\"properties\":{\"principalName\":\"pi\",\"principalType\":\"Unknown\",\"tenantId\":\"aasipqi\"}}")
+        MicrosoftEntraAdministratorAdd model = BinaryData.fromString(
+            "{\"properties\":{\"principalName\":\"uicybxarzgszuf\",\"principalType\":\"Unknown\",\"tenantId\":\"iqopidoamciod\"}}")
             .toObject(MicrosoftEntraAdministratorAdd.class);
-        Assertions.assertEquals("pi", model.properties().principalName());
+        Assertions.assertEquals("uicybxarzgszuf", model.properties().principalName());
         Assertions.assertEquals(PrincipalTypes.UNKNOWN, model.properties().principalType());
-        Assertions.assertEquals("aasipqi", model.properties().tenantId());
+        Assertions.assertEquals("iqopidoamciod", model.properties().tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MicrosoftEntraAdministratorAdd model = new MicrosoftEntraAdministratorAdd()
-            .withProperties(new MicrosoftEntraAdministratorPropertiesForAdd().withPrincipalName("pi")
+            .withProperties(new MicrosoftEntraAdministratorPropertiesForAdd().withPrincipalName("uicybxarzgszuf")
                 .withPrincipalType(PrincipalTypes.UNKNOWN)
-                .withTenantId("aasipqi"));
+                .withTenantId("iqopidoamciod"));
         model = BinaryData.fromObject(model).toObject(MicrosoftEntraAdministratorAdd.class);
-        Assertions.assertEquals("pi", model.properties().principalName());
+        Assertions.assertEquals("uicybxarzgszuf", model.properties().principalName());
         Assertions.assertEquals(PrincipalTypes.UNKNOWN, model.properties().principalType());
-        Assertions.assertEquals("aasipqi", model.properties().tenantId());
+        Assertions.assertEquals("iqopidoamciod", model.properties().tenantId());
     }
 }

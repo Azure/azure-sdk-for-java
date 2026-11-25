@@ -69,6 +69,14 @@ public final class HttpUtils {
     public static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     /**
+     * Context key used to indicate to the asynchronous RestProxy that a {@code BinaryData} response body should be
+     * streamed as it's consumed rather than buffered into memory before the response is emitted. The returned
+     * {@code BinaryData} can only be consumed once, and must not be read with a blocking method (such as
+     * {@code toBytes()}) on a non-blocking thread.
+     */
+    public static final String AZURE_STREAM_RESPONSE_BODY = "azure-stream-response-body";
+
+    /**
      * Determines whether a Content-Type header identifies exactly one {@code text/event-stream} representation.
      * Charset parameters don't affect this determination as event streams are always decoded as UTF-8.
      *

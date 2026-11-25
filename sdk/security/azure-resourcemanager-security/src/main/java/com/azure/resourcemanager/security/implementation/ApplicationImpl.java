@@ -65,11 +65,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     private String applicationId;
 
     public Application create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .createOrUpdateWithResponse(applicationId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Application create(Context context) {
@@ -91,11 +87,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .createOrUpdateWithResponse(applicationId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Application apply(Context context) {
@@ -112,12 +104,15 @@ public final class ApplicationImpl implements Application, Application.Definitio
         this.applicationId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
             "applicationId");
+        if (this.applicationId == null) {
+            this.applicationId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}",
+                "applicationId");
+        }
     }
 
     public Application refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getApplications().getWithResponse(applicationId, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Application refresh(Context context) {

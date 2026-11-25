@@ -112,19 +112,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's Advanced Threat Protection state along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -206,18 +194,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             resourceGroupName, managedInstanceName, databaseName, advancedThreatProtectionName, accept, context);
     }
 
-    /**
-     * Gets a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's Advanced Threat Protection state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseAdvancedThreatProtectionInner> getAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -225,19 +202,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's Advanced Threat Protection state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseAdvancedThreatProtectionInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -246,18 +211,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             context).block();
     }
 
-    /**
-     * Gets a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's Advanced Threat Protection state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseAdvancedThreatProtectionInner get(String resourceGroupName, String managedInstanceName,
         String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -265,20 +219,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed database Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database Advanced Threat Protection along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseAdvancedThreatProtectionInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName,
@@ -377,19 +318,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             advancedThreatProtectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed database Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database Advanced Threat Protection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -398,20 +327,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             advancedThreatProtectionName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed database Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database Advanced Threat Protection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseAdvancedThreatProtectionInner> createOrUpdateWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -420,19 +336,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             advancedThreatProtectionName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a managed database's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed database Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -529,18 +433,7 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed database's Advanced Threat Protection states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's Advanced Threat Protection states as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedDatabaseAdvancedThreatProtectionInner> listByDatabaseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -570,37 +463,14 @@ public final class ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed database's Advanced Threat Protection states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's Advanced Threat Protection states as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseAdvancedThreatProtectionInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName));
     }
 
-    /**
-     * Gets a list of managed database's Advanced Threat Protection states.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's Advanced Threat Protection states as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseAdvancedThreatProtectionInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName, Context context) {

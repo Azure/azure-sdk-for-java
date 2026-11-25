@@ -15,25 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VoiceResponseSerializationTests {
 
     @Test
-    public void maxOutputTokensVariantsRoundTrip() throws IOException {
-        VoiceResponse longResult = roundTrip("{\"max_output_tokens\":4096}");
-        assertEquals(4096L, longResult.getMaxOutputTokensAsLong());
-        assertNull(longResult.getMaxOutputTokensAsString());
-
-        VoiceResponse stringResult = roundTrip("{\"max_output_tokens\":\"inf\"}");
-        assertEquals("inf", stringResult.getMaxOutputTokensAsString());
-        assertNull(stringResult.getMaxOutputTokensAsLong());
-    }
-
-    @Test
-    public void absentMaxOutputTokensReturnsNull() throws IOException {
-        VoiceResponse response = UnionTypeSerializationTestUtils
-            .deserialize("{\"id\":\"response\",\"conversation_id\":\"conversation\"}", VoiceResponse::fromJson);
-        assertNull(response.getMaxOutputTokensAsLong());
-        assertNull(response.getMaxOutputTokensAsString());
-    }
-
-    @Test
     public void objectTypeRoundTripsUnderObjectWireName() throws IOException {
         VoiceResponse response = UnionTypeSerializationTestUtils.deserialize(
             "{\"id\":\"response\",\"conversation_id\":\"conversation\",\"object\":\"realtime.response\"}",
@@ -52,10 +33,4 @@ public class VoiceResponseSerializationTests {
             UnionTypeSerializationTestUtils.deserialize("{\"object\":null}", VoiceResponse::fromJson).getObjectType());
     }
 
-    private VoiceResponse roundTrip(String json) throws IOException {
-        VoiceResponse value = UnionTypeSerializationTestUtils.deserialize(json, VoiceResponse::fromJson);
-        String serialized = UnionTypeSerializationTestUtils.serialize(value);
-        assertTrue(serialized.contains("\"max_output_tokens\""));
-        return UnionTypeSerializationTestUtils.deserialize(serialized, VoiceResponse::fromJson);
-    }
 }

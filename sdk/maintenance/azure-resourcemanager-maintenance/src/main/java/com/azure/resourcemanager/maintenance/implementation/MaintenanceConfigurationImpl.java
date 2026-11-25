@@ -125,11 +125,7 @@ public final class MaintenanceConfigurationImpl
     }
 
     public MaintenanceConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MaintenanceConfiguration create(Context context) {
@@ -151,11 +147,7 @@ public final class MaintenanceConfigurationImpl
     }
 
     public MaintenanceConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MaintenanceConfiguration apply(Context context) {
@@ -179,11 +171,7 @@ public final class MaintenanceConfigurationImpl
     }
 
     public MaintenanceConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MaintenanceConfiguration refresh(Context context) {

@@ -157,18 +157,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Query pipeline runs in the factory based on input filter conditions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineRunsQueryResponseInner> queryByFactoryWithResponse(String resourceGroupName,
         String factoryName, RunFilterParameters filterParameters, Context context) {
@@ -179,17 +168,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             context);
     }
 
-    /**
-     * Query pipeline runs in the factory based on input filter conditions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineRunsQueryResponseInner queryByFactory(String resourceGroupName, String factoryName,
         RunFilterParameters filterParameters) {
@@ -234,18 +213,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a pipeline run by its run ID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param runId The pipeline run identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineRunInner> getWithResponse(String resourceGroupName, String factoryName, String runId,
         Context context) {
@@ -254,17 +222,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             resourceGroupName, factoryName, runId, accept, context);
     }
 
-    /**
-     * Get a pipeline run by its run ID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineRunInner get(String resourceGroupName, String factoryName, String runId) {
         return getWithResponse(resourceGroupName, factoryName, runId, Context.NONE).getValue();
@@ -309,19 +267,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancel a pipeline run by its run ID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param runId The pipeline run identifier.
-     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String factoryName, String runId,
         Boolean isRecursive, Context context) {
@@ -329,16 +275,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, runId, isRecursive, context);
     }
 
-    /**
-     * Cancel a pipeline run by its run ID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String factoryName, String runId) {
         final Boolean isRecursive = null;

@@ -111,10 +111,7 @@ public final class NetworkMonitorImpl implements NetworkMonitor, NetworkMonitor.
     }
 
     public NetworkMonitor create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkMonitors()
-            .create(resourceGroupName, networkMonitorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkMonitor create(Context context) {
@@ -137,10 +134,7 @@ public final class NetworkMonitorImpl implements NetworkMonitor, NetworkMonitor.
     }
 
     public NetworkMonitor apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkMonitors()
-            .update(resourceGroupName, networkMonitorName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkMonitor apply(Context context) {
@@ -163,11 +157,7 @@ public final class NetworkMonitorImpl implements NetworkMonitor, NetworkMonitor.
     }
 
     public NetworkMonitor refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkMonitors()
-            .getByResourceGroupWithResponse(resourceGroupName, networkMonitorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkMonitor refresh(Context context) {

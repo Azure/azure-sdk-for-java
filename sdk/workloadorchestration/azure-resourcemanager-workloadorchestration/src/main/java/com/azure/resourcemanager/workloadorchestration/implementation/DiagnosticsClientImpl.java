@@ -252,17 +252,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns details of specified Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Diagnostic resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticInner> getByResourceGroupWithResponse(String resourceGroupName, String diagnosticName,
         Context context) {
@@ -271,16 +261,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             this.client.getSubscriptionId(), resourceGroupName, diagnosticName, accept, context);
     }
 
-    /**
-     * Returns details of specified Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticInner getByResourceGroup(String resourceGroupName, String diagnosticName) {
         return getByResourceGroupWithResponse(resourceGroupName, diagnosticName, Context.NONE).getValue();
@@ -323,11 +304,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String diagnosticName,
         DiagnosticInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, diagnosticName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, diagnosticName, resource, Context.NONE);
     }
 
     /**
@@ -371,37 +348,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             DiagnosticInner.class, DiagnosticInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates new or updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginCreateOrUpdate(String resourceGroupName,
         String diagnosticName, DiagnosticInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, diagnosticName, resource);
-        return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(response, DiagnosticInner.class,
-            DiagnosticInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, diagnosticName, resource, Context.NONE);
     }
 
-    /**
-     * Creates new or updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginCreateOrUpdate(String resourceGroupName,
         String diagnosticName, DiagnosticInner resource, Context context) {
@@ -429,38 +383,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates new or updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticInner createOrUpdate(String resourceGroupName, String diagnosticName, DiagnosticInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, diagnosticName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, diagnosticName, resource, Context.NONE);
     }
 
-    /**
-     * Creates new or updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticInner createOrUpdate(String resourceGroupName, String diagnosticName, DiagnosticInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, diagnosticName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, diagnosticName, resource, context));
     }
 
     /**
@@ -500,11 +434,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String diagnosticName,
         DiagnosticUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, diagnosticName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, diagnosticName, properties, Context.NONE);
     }
 
     /**
@@ -548,37 +478,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             DiagnosticInner.class, DiagnosticInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
         String diagnosticName, DiagnosticUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, diagnosticName, properties);
-        return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(response, DiagnosticInner.class,
-            DiagnosticInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, diagnosticName, properties, Context.NONE);
     }
 
-    /**
-     * Updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
         String diagnosticName, DiagnosticUpdate properties, Context context) {
@@ -605,38 +512,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties) {
-        return beginUpdate(resourceGroupName, diagnosticName, properties).getFinalResult();
+        return update(resourceGroupName, diagnosticName, properties, Context.NONE);
     }
 
-    /**
-     * Updates existing Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Diagnostic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, diagnosticName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, diagnosticName, properties, context));
     }
 
     /**
@@ -669,8 +556,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String diagnosticName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, diagnosticName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, diagnosticName, Context.NONE);
     }
 
     /**
@@ -707,33 +593,13 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes specified Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diagnosticName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, diagnosticName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, diagnosticName, Context.NONE);
     }
 
-    /**
-     * Deletes specified Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diagnosticName,
         Context context) {
@@ -757,33 +623,16 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes specified Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String diagnosticName) {
-        beginDelete(resourceGroupName, diagnosticName).getFinalResult();
+        delete(resourceGroupName, diagnosticName, Context.NONE);
     }
 
-    /**
-     * Deletes specified Diagnostic resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diagnosticName Name of Diagnostic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String diagnosticName, Context context) {
-        beginDelete(resourceGroupName, diagnosticName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, diagnosticName, context));
     }
 
     /**
@@ -833,11 +682,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DiagnosticListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -859,31 +704,13 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns a collection of Diagnostic resources within the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Diagnostic list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Returns a collection of Diagnostic resources within the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Diagnostic list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -931,11 +758,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DiagnosticListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -956,27 +779,13 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Diagnostics resources within an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Diagnostic list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists Diagnostics resources within an Azure subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Diagnostic list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1015,11 +824,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiagnosticListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1073,11 +878,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiagnosticListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

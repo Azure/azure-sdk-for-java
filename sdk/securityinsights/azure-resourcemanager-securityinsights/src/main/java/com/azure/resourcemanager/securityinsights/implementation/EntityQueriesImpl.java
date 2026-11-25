@@ -71,7 +71,7 @@ public final class EntityQueriesImpl implements EntityQueries {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String entityQueryId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, entityQueryId);
+        this.deleteWithResponse(resourceGroupName, workspaceName, entityQueryId, Context.NONE);
     }
 
     public PagedIterable<EntityQuery> list(String resourceGroupName, String workspaceName) {

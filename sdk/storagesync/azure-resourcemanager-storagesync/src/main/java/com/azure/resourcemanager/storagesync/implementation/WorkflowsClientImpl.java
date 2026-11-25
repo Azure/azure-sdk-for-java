@@ -179,18 +179,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Workflows resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param workflowId workflow Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflows resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowsGetResponse getWithResponse(String resourceGroupName, String storageSyncServiceName,
         String workflowId, Context context) {
@@ -199,17 +188,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             resourceGroupName, storageSyncServiceName, workflowId, accept, context);
     }
 
-    /**
-     * Get Workflows resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param workflowId workflow Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflows resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowInner get(String resourceGroupName, String storageSyncServiceName, String workflowId) {
         return getWithResponse(resourceGroupName, storageSyncServiceName, workflowId, Context.NONE).getValue();
@@ -268,12 +247,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowInner> listByStorageSyncServiceSinglePage(String resourceGroupName,
         String storageSyncServiceName) {
-        final String accept = "application/json";
-        Response<WorkflowArray> res
-            = service.listByStorageSyncServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
     /**
@@ -298,34 +272,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a Workflow List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workflow List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName) {
-        return new PagedIterable<>(() -> listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName),
-            nextLink -> listByStorageSyncServiceNextSinglePage(nextLink));
+        return listByStorageSyncService(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
-    /**
-     * Get a Workflow List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workflow List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName, Context context) {
@@ -371,18 +325,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Abort the given workflow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param workflowId workflow Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowsAbortResponse abortWithResponse(String resourceGroupName, String storageSyncServiceName,
         String workflowId, Context context) {
@@ -390,16 +333,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, workflowId, context);
     }
 
-    /**
-     * Abort the given workflow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param workflowId workflow Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void abort(String resourceGroupName, String storageSyncServiceName, String workflowId) {
         abortWithResponse(resourceGroupName, storageSyncServiceName, workflowId, Context.NONE);
@@ -436,11 +370,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowInner> listByStorageSyncServiceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkflowArray> res
-            = service.listByStorageSyncServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

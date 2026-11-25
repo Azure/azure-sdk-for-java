@@ -12,14 +12,14 @@ public final class SettingsGatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SettingsGatewayProperties model
-            = BinaryData.fromString("{\"gatewayResourceId\":\"vizbfhfo\"}").toObject(SettingsGatewayProperties.class);
-        Assertions.assertEquals("vizbfhfo", model.gatewayResourceId());
+            = BinaryData.fromString("{\"gatewayResourceId\":\"w\"}").toObject(SettingsGatewayProperties.class);
+        Assertions.assertEquals("w", model.gatewayResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsGatewayProperties model = new SettingsGatewayProperties().withGatewayResourceId("vizbfhfo");
+        SettingsGatewayProperties model = new SettingsGatewayProperties().withGatewayResourceId("w");
         model = BinaryData.fromObject(model).toObject(SettingsGatewayProperties.class);
-        Assertions.assertEquals("vizbfhfo", model.gatewayResourceId());
+        Assertions.assertEquals("w", model.gatewayResourceId());
     }
 }

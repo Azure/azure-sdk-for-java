@@ -147,17 +147,7 @@ public final class DnsPrivateViewsClientImpl implements DnsPrivateViewsClient {
         return getWithResponseAsync(location, dnsprivateviewocid).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DnsPrivateView.
-     * 
-     * @param location The name of the Azure region.
-     * @param dnsprivateviewocid DnsPrivateView OCID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DnsPrivateView along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsPrivateViewInner> getWithResponse(String location, String dnsprivateviewocid, Context context) {
         final String accept = "application/json";
@@ -165,16 +155,7 @@ public final class DnsPrivateViewsClientImpl implements DnsPrivateViewsClient {
             location, dnsprivateviewocid, accept, context);
     }
 
-    /**
-     * Get a DnsPrivateView.
-     * 
-     * @param location The name of the Azure region.
-     * @param dnsprivateviewocid DnsPrivateView OCID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DnsPrivateView.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsPrivateViewInner get(String location, String dnsprivateviewocid) {
         return getWithResponse(location, dnsprivateviewocid, Context.NONE).getValue();
@@ -227,11 +208,7 @@ public final class DnsPrivateViewsClientImpl implements DnsPrivateViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateViewInner> listByLocationSinglePage(String location) {
-        final String accept = "application/json";
-        Response<DnsPrivateViewListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, Context.NONE);
     }
 
     /**
@@ -253,31 +230,13 @@ public final class DnsPrivateViewsClientImpl implements DnsPrivateViewsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DnsPrivateView resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsPrivateView list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsPrivateViewInner> listByLocation(String location) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, Context.NONE);
     }
 
-    /**
-     * List DnsPrivateView resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsPrivateView list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsPrivateViewInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(() -> listByLocationSinglePage(location, context),
@@ -315,11 +274,7 @@ public final class DnsPrivateViewsClientImpl implements DnsPrivateViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateViewInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsPrivateViewListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

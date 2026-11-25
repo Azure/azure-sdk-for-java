@@ -43,8 +43,7 @@ public final class SystemVersionsImpl implements SystemVersions {
     }
 
     public PagedIterable<SystemVersion> listByLocation(String location) {
-        PagedIterable<SystemVersionInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SystemVersionImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<SystemVersion> listByLocation(String location, Context context) {

@@ -6,7 +6,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -43,7 +42,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -53,8 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -445,7 +441,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             }
 
             assertDoesNotThrow(() -> primaryDataLakeServiceClient
-                .listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(10))
+                .listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(60))
                 .streamByPage()
                 .count());
         } finally {
@@ -603,7 +599,7 @@ public class ServiceApiTests extends DataLakeTestBase {
 
         // Wait until the file system is garbage collected.
         DataLakeFileSystemClient restoredContainerClient
-            = waitUntilFileSystemIsDeleted(() -> primaryDataLakeServiceClient
+            = runAfterFileSystemDeleteCompletes(() -> primaryDataLakeServiceClient
                 .undeleteFileSystem(fileSystemItem.getName(), fileSystemItem.getVersion()));
 
         List<PathItem> pathItems = restoredContainerClient.listPaths().stream().collect(Collectors.toList());
@@ -627,7 +623,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     //        String destinationFileSystemName = generateFileSystemName();
     //
     //        // Wait until the file system is garbage collected.
-    //        DataLakeFileSystemClient restoredContainerClient = waitUntilFileSystemIsDeleted(
+    //        DataLakeFileSystemClient restoredContainerClient = runAfterFileSystemDeleteCompletes(
     //            () -> primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
     //                new FileSystemUndeleteOptions(fileSystemItem.getName(), fileSystemItem.getVersion())
     //                    .setDestinationFileSystemName(destinationFileSystemName), null, Context.NONE))
@@ -656,7 +652,7 @@ public class ServiceApiTests extends DataLakeTestBase {
 
         // Wait until the file system is garbage collected.
         Response<DataLakeFileSystemClient> response
-            = waitUntilFileSystemIsDeleted(() -> primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
+            = runAfterFileSystemDeleteCompletes(() -> primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
                 new FileSystemUndeleteOptions(fileSystemItem.getName(), fileSystemItem.getVersion()),
                 Duration.ofMinutes(1), Context.NONE));
 
@@ -681,7 +677,7 @@ public class ServiceApiTests extends DataLakeTestBase {
                 .listFileSystems(new ListFileSystemsOptions().setPrefix(cc1.getFileSystemName())
                     .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)))
                 .next())
-            .flatMap(blobContainerItem -> waitUntilFileSystemIsDeletedAsync(primaryDataLakeServiceAsyncClient
+            .flatMap(blobContainerItem -> runAfterFileSystemDeleteCompletes(primaryDataLakeServiceAsyncClient
                 .undeleteFileSystem(blobContainerItem.getName(), blobContainerItem.getVersion())))
             .flatMap(restoredContainerClient -> restoredContainerClient.listPaths().collectList());
 
@@ -705,7 +701,7 @@ public class ServiceApiTests extends DataLakeTestBase {
                 .listFileSystems(new ListFileSystemsOptions().setPrefix(cc1.getFileSystemName())
                     .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)))
                 .next())
-            .flatMap(blobContainerItem -> waitUntilFileSystemIsDeletedAsync(
+            .flatMap(blobContainerItem -> runAfterFileSystemDeleteCompletes(
                 primaryDataLakeServiceAsyncClient.undeleteFileSystemWithResponse(
                     new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))));
 
@@ -741,7 +737,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient cc2 = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
 
         assertThrows(DataLakeStorageException.class,
-            () -> waitUntilFileSystemIsDeleted(() -> primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
+            () -> runAfterFileSystemDeleteCompletes(() -> primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
                 new FileSystemUndeleteOptions(fileSystemItem.getName(), fileSystemItem.getVersion())
                     .setDestinationFileSystemName(cc2.getFileSystemName()),
                 null, Context.NONE)));
@@ -897,42 +893,4 @@ public class ServiceApiTests extends DataLakeTestBase {
     //        assertThrows(DataLakeStorageException.class, () ->
     //                primaryDataLakeServiceClient.renameFileSystem(generateFileSystemName(), generateFileSystemName()));
     //    }
-
-    private static <T> T waitUntilFileSystemIsDeleted(Callable<T> waitUntilOperation) {
-        for (int i = 0; i < 30; i++) {
-            try {
-                return waitUntilOperation.call();
-            } catch (Exception ex) {
-                if (ex instanceof DataLakeStorageException && ((DataLakeStorageException) ex).getStatusCode() == 409) {
-                    // Only repeat if the exception was a service exception and the status code was 409.
-                    sleepIfLiveTesting(1000);
-                } else if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                } else {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-
-        try {
-            return waitUntilOperation.call();
-        } catch (Exception ex) {
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
-            } else {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
-    private static <T> Mono<T> waitUntilFileSystemIsDeletedAsync(Mono<T> waitUntilOperation) {
-        Predicate<Throwable> retryPredicate
-            = ex -> ex instanceof DataLakeStorageException && ((DataLakeStorageException) ex).getStatusCode() == 409;
-
-        Retry retry = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK
-            ? Retry.max(30).filter(retryPredicate)
-            : Retry.fixedDelay(30, Duration.ofMillis(1000)).filter(retryPredicate);
-
-        return waitUntilOperation.retryWhen(retry);
-    }
 }

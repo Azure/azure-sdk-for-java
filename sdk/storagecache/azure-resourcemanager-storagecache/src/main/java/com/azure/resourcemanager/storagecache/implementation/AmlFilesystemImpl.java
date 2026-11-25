@@ -157,10 +157,7 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAmlFilesystems()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AmlFilesystem create(Context context) {
@@ -182,10 +179,7 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAmlFilesystems()
-            .update(resourceGroupName, amlFilesystemName, updateAmlFilesystem, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AmlFilesystem apply(Context context) {
@@ -208,11 +202,7 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAmlFilesystems()
-            .getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AmlFilesystem refresh(Context context) {

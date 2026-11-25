@@ -45,6 +45,7 @@ public class Sample_Advanced_ContentSourceTest extends ContentUnderstandingClien
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
+        setPlaybackSyncPollerPollInterval(operation);
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, operation.waitForCompletion().getStatus());
         AnalysisResult result = operation.getFinalResult();

@@ -17,9 +17,24 @@ import java.io.IOException;
 @Fluent
 public final class RaiAcsInterventionPoints implements JsonSerializable<RaiAcsInterventionPoints> {
     /*
+     * The policy evaluated when the agent execution session starts.
+     */
+    private RaiAcsAgentStartupInterventionPoint agentStartup;
+
+    /*
      * The policy evaluated for user input.
      */
     private RaiAcsInterventionPoint input;
+
+    /*
+     * The policy evaluated before a model call.
+     */
+    private RaiAcsPreModelCallInterventionPoint preModelCall;
+
+    /*
+     * The policy evaluated after a model call.
+     */
+    private RaiAcsPostModelCallInterventionPoint postModelCall;
 
     /*
      * The policy evaluated before a tool call.
@@ -36,10 +51,35 @@ public final class RaiAcsInterventionPoints implements JsonSerializable<RaiAcsIn
      */
     private RaiAcsInterventionPoint output;
 
+    /*
+     * The policy evaluated when the agent execution session shuts down.
+     */
+    private RaiAcsAgentShutdownInterventionPoint agentShutdown;
+
     /**
      * Creates an instance of RaiAcsInterventionPoints class.
      */
     public RaiAcsInterventionPoints() {
+    }
+
+    /**
+     * Get the agentStartup property: The policy evaluated when the agent execution session starts.
+     * 
+     * @return the agentStartup value.
+     */
+    public RaiAcsAgentStartupInterventionPoint agentStartup() {
+        return this.agentStartup;
+    }
+
+    /**
+     * Set the agentStartup property: The policy evaluated when the agent execution session starts.
+     * 
+     * @param agentStartup the agentStartup value to set.
+     * @return the RaiAcsInterventionPoints object itself.
+     */
+    public RaiAcsInterventionPoints withAgentStartup(RaiAcsAgentStartupInterventionPoint agentStartup) {
+        this.agentStartup = agentStartup;
+        return this;
     }
 
     /**
@@ -59,6 +99,46 @@ public final class RaiAcsInterventionPoints implements JsonSerializable<RaiAcsIn
      */
     public RaiAcsInterventionPoints withInput(RaiAcsInterventionPoint input) {
         this.input = input;
+        return this;
+    }
+
+    /**
+     * Get the preModelCall property: The policy evaluated before a model call.
+     * 
+     * @return the preModelCall value.
+     */
+    public RaiAcsPreModelCallInterventionPoint preModelCall() {
+        return this.preModelCall;
+    }
+
+    /**
+     * Set the preModelCall property: The policy evaluated before a model call.
+     * 
+     * @param preModelCall the preModelCall value to set.
+     * @return the RaiAcsInterventionPoints object itself.
+     */
+    public RaiAcsInterventionPoints withPreModelCall(RaiAcsPreModelCallInterventionPoint preModelCall) {
+        this.preModelCall = preModelCall;
+        return this;
+    }
+
+    /**
+     * Get the postModelCall property: The policy evaluated after a model call.
+     * 
+     * @return the postModelCall value.
+     */
+    public RaiAcsPostModelCallInterventionPoint postModelCall() {
+        return this.postModelCall;
+    }
+
+    /**
+     * Set the postModelCall property: The policy evaluated after a model call.
+     * 
+     * @param postModelCall the postModelCall value to set.
+     * @return the RaiAcsInterventionPoints object itself.
+     */
+    public RaiAcsInterventionPoints withPostModelCall(RaiAcsPostModelCallInterventionPoint postModelCall) {
+        this.postModelCall = postModelCall;
         return this;
     }
 
@@ -123,15 +203,39 @@ public final class RaiAcsInterventionPoints implements JsonSerializable<RaiAcsIn
     }
 
     /**
+     * Get the agentShutdown property: The policy evaluated when the agent execution session shuts down.
+     * 
+     * @return the agentShutdown value.
+     */
+    public RaiAcsAgentShutdownInterventionPoint agentShutdown() {
+        return this.agentShutdown;
+    }
+
+    /**
+     * Set the agentShutdown property: The policy evaluated when the agent execution session shuts down.
+     * 
+     * @param agentShutdown the agentShutdown value to set.
+     * @return the RaiAcsInterventionPoints object itself.
+     */
+    public RaiAcsInterventionPoints withAgentShutdown(RaiAcsAgentShutdownInterventionPoint agentShutdown) {
+        this.agentShutdown = agentShutdown;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("agent_startup", this.agentStartup);
         jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeJsonField("pre_model_call", this.preModelCall);
+        jsonWriter.writeJsonField("post_model_call", this.postModelCall);
         jsonWriter.writeJsonField("pre_tool_call", this.preToolCall);
         jsonWriter.writeJsonField("post_tool_call", this.postToolCall);
         jsonWriter.writeJsonField("output", this.output);
+        jsonWriter.writeJsonField("agent_shutdown", this.agentShutdown);
         return jsonWriter.writeEndObject();
     }
 
@@ -150,14 +254,26 @@ public final class RaiAcsInterventionPoints implements JsonSerializable<RaiAcsIn
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("input".equals(fieldName)) {
+                if ("agent_startup".equals(fieldName)) {
+                    deserializedRaiAcsInterventionPoints.agentStartup
+                        = RaiAcsAgentStartupInterventionPoint.fromJson(reader);
+                } else if ("input".equals(fieldName)) {
                     deserializedRaiAcsInterventionPoints.input = RaiAcsInterventionPoint.fromJson(reader);
+                } else if ("pre_model_call".equals(fieldName)) {
+                    deserializedRaiAcsInterventionPoints.preModelCall
+                        = RaiAcsPreModelCallInterventionPoint.fromJson(reader);
+                } else if ("post_model_call".equals(fieldName)) {
+                    deserializedRaiAcsInterventionPoints.postModelCall
+                        = RaiAcsPostModelCallInterventionPoint.fromJson(reader);
                 } else if ("pre_tool_call".equals(fieldName)) {
                     deserializedRaiAcsInterventionPoints.preToolCall = RaiAcsToolInterventionPoint.fromJson(reader);
                 } else if ("post_tool_call".equals(fieldName)) {
                     deserializedRaiAcsInterventionPoints.postToolCall = RaiAcsToolInterventionPoint.fromJson(reader);
                 } else if ("output".equals(fieldName)) {
                     deserializedRaiAcsInterventionPoints.output = RaiAcsInterventionPoint.fromJson(reader);
+                } else if ("agent_shutdown".equals(fieldName)) {
+                    deserializedRaiAcsInterventionPoints.agentShutdown
+                        = RaiAcsAgentShutdownInterventionPoint.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -46,13 +46,7 @@ public final class MicrosoftEntraAuthenticationsImpl implements MicrosoftEntraAu
 
     public MicrosoftEntraAuthentication createOrReplace(String resourceGroupName, String clusterName,
         MicrosoftEntraAuthenticationInner resource) {
-        MicrosoftEntraAuthenticationInner inner
-            = this.serviceClient().createOrReplace(resourceGroupName, clusterName, resource);
-        if (inner != null) {
-            return new MicrosoftEntraAuthenticationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     public MicrosoftEntraAuthentication createOrReplace(String resourceGroupName, String clusterName,
@@ -68,13 +62,7 @@ public final class MicrosoftEntraAuthenticationsImpl implements MicrosoftEntraAu
 
     public MicrosoftEntraAuthentication update(String resourceGroupName, String clusterName,
         MicrosoftEntraAuthenticationForPatchUpdate properties) {
-        MicrosoftEntraAuthenticationInner inner
-            = this.serviceClient().update(resourceGroupName, clusterName, properties);
-        if (inner != null) {
-            return new MicrosoftEntraAuthenticationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
     public MicrosoftEntraAuthentication update(String resourceGroupName, String clusterName,

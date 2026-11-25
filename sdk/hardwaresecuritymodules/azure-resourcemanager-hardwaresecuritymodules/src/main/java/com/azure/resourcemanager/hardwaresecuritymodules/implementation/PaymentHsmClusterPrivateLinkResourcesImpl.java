@@ -27,9 +27,7 @@ public final class PaymentHsmClusterPrivateLinkResourcesImpl implements PaymentH
 
     public PagedIterable<PrivateLinkResource> listByPaymentHsmCluster(String resourceGroupName,
         String paymentHsmClusterName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByPaymentHsmCluster(resourceGroupName, paymentHsmClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByPaymentHsmCluster(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByPaymentHsmCluster(String resourceGroupName,

@@ -31,13 +31,7 @@ public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationR
 
     public SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        SsisObjectMetadataStatusResponseInner inner
-            = this.serviceClient().refresh(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new SsisObjectMetadataStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.refresh(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String factoryName,

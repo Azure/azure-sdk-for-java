@@ -163,18 +163,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server administrator associated to a Microsoft Entra principal along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdministratorMicrosoftEntraInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String objectId) {
@@ -185,18 +174,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server administrator associated to a Microsoft Entra principal on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdministratorMicrosoftEntraInner> getAsync(String resourceGroupName, String serverName,
         String objectId) {
@@ -204,19 +182,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server administrator associated to a Microsoft Entra principal along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdministratorMicrosoftEntraInner> getWithResponse(String resourceGroupName, String serverName,
         String objectId, Context context) {
@@ -225,35 +191,13 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             resourceGroupName, serverName, objectId, accept, context);
     }
 
-    /**
-     * Gets information about a server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server administrator associated to a Microsoft Entra principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdministratorMicrosoftEntraInner get(String resourceGroupName, String serverName, String objectId) {
         return getWithResponse(resourceGroupName, serverName, objectId, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String objectId, AdministratorMicrosoftEntraAdd parameters) {
@@ -281,10 +225,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String objectId, AdministratorMicrosoftEntraAdd parameters) {
-        final String contentType = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, objectId, contentType, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, serverName, objectId, parameters, Context.NONE);
     }
 
     /**
@@ -309,19 +250,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             this.client.getSubscriptionId(), resourceGroupName, serverName, objectId, contentType, parameters, context);
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AdministratorMicrosoftEntraInner>, AdministratorMicrosoftEntraInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String objectId,
@@ -333,42 +262,15 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             AdministratorMicrosoftEntraInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AdministratorMicrosoftEntraInner>, AdministratorMicrosoftEntraInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String objectId,
             AdministratorMicrosoftEntraAdd parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, serverName, objectId, parameters);
-        return this.client.<AdministratorMicrosoftEntraInner, AdministratorMicrosoftEntraInner>getLroResult(response,
-            AdministratorMicrosoftEntraInner.class, AdministratorMicrosoftEntraInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, serverName, objectId, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AdministratorMicrosoftEntraInner>, AdministratorMicrosoftEntraInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String objectId,
@@ -379,19 +281,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             AdministratorMicrosoftEntraInner.class, AdministratorMicrosoftEntraInner.class, context);
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdministratorMicrosoftEntraInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String objectId, AdministratorMicrosoftEntraAdd parameters) {
@@ -399,56 +289,22 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdministratorMicrosoftEntraInner createOrUpdate(String resourceGroupName, String serverName, String objectId,
         AdministratorMicrosoftEntraAdd parameters) {
-        return beginCreateOrUpdate(resourceGroupName, serverName, objectId, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, serverName, objectId, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param parameters Required parameters for adding a server administrator associated to a Microsoft Entra
-     * principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdministratorMicrosoftEntraInner createOrUpdate(String resourceGroupName, String serverName, String objectId,
         AdministratorMicrosoftEntraAdd parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, serverName, objectId, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, serverName, objectId, parameters, context));
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String objectId) {
@@ -471,8 +327,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String serverName, String objectId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, objectId, Context.NONE);
+        return deleteWithResponse(resourceGroupName, serverName, objectId, Context.NONE);
     }
 
     /**
@@ -494,17 +349,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             this.client.getSubscriptionId(), resourceGroupName, serverName, objectId, context);
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String objectId) {
@@ -513,36 +358,14 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             this.client.getContext());
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String objectId) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, serverName, objectId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, serverName, objectId, Context.NONE);
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String objectId,
         Context context) {
@@ -550,52 +373,23 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId) {
         return beginDeleteAsync(resourceGroupName, serverName, objectId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String objectId) {
-        beginDelete(resourceGroupName, serverName, objectId).getFinalResult();
+        delete(resourceGroupName, serverName, objectId, Context.NONE);
     }
 
-    /**
-     * Deletes an existing server administrator associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param objectId Object identifier of the Microsoft Entra principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String objectId, Context context) {
-        beginDelete(resourceGroupName, serverName, objectId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, serverName, objectId, context));
     }
 
     /**
@@ -621,17 +415,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * List all server administrators associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server administrators associated to Microsoft Entra principals as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AdministratorMicrosoftEntraInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -651,12 +435,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AdministratorMicrosoftEntraInner> listByServerSinglePage(String resourceGroupName,
         String serverName) {
-        final String accept = "application/json";
-        Response<AdministratorMicrosoftEntraList> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -681,35 +460,13 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all server administrators associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server administrators associated to Microsoft Entra principals as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdministratorMicrosoftEntraInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * List all server administrators associated to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server administrators associated to Microsoft Entra principals as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdministratorMicrosoftEntraInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
@@ -748,11 +505,7 @@ public final class AdministratorsMicrosoftEntrasClientImpl implements Administra
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AdministratorMicrosoftEntraInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AdministratorMicrosoftEntraList> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -27,9 +27,7 @@ public final class IscsiPathsImpl implements IscsiPaths {
     }
 
     public PagedIterable<IscsiPath> listByPrivateCloud(String resourceGroupName, String privateCloudName) {
-        PagedIterable<IscsiPathInner> inner
-            = this.serviceClient().listByPrivateCloud(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IscsiPathImpl(inner1, this.manager()));
+        return this.listByPrivateCloud(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public PagedIterable<IscsiPath> listByPrivateCloud(String resourceGroupName, String privateCloudName,
@@ -56,12 +54,7 @@ public final class IscsiPathsImpl implements IscsiPaths {
     }
 
     public IscsiPath createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource) {
-        IscsiPathInner inner = this.serviceClient().createOrUpdate(resourceGroupName, privateCloudName, resource);
-        if (inner != null) {
-            return new IscsiPathImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, privateCloudName, resource, Context.NONE);
     }
 
     public IscsiPath createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource,
@@ -76,7 +69,7 @@ public final class IscsiPathsImpl implements IscsiPaths {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String privateCloudName) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName);
+        this.delete(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String privateCloudName, Context context) {

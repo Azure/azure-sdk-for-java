@@ -147,11 +147,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountResourceInner> listSinglePage(String userEmail, String location) {
-        final String accept = "application/json";
-        Response<AccountsListResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), userEmail, location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(userEmail, location, Context.NONE);
     }
 
     /**
@@ -175,34 +171,13 @@ public final class AccountsClientImpl implements AccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
-     * have been created.
-     * 
-     * @param userEmail User Email.
-     * @param location Location for NewRelic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all accounts Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountResourceInner> list(String userEmail, String location) {
-        return new PagedIterable<>(() -> listSinglePage(userEmail, location), nextLink -> listNextSinglePage(nextLink));
+        return list(userEmail, location, Context.NONE);
     }
 
-    /**
-     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
-     * have been created.
-     * 
-     * @param userEmail User Email.
-     * @param location Location for NewRelic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all accounts Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountResourceInner> list(String userEmail, String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(userEmail, location, context),
@@ -239,11 +214,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccountsListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

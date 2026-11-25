@@ -86,10 +86,7 @@ public final class SupercomputerImpl implements Supercomputer, Supercomputer.Def
     }
 
     public Supercomputer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSupercomputers()
-            .createOrUpdate(resourceGroupName, supercomputerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Supercomputer create(Context context) {
@@ -110,10 +107,7 @@ public final class SupercomputerImpl implements Supercomputer, Supercomputer.Def
     }
 
     public Supercomputer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSupercomputers()
-            .update(resourceGroupName, supercomputerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Supercomputer apply(Context context) {
@@ -136,11 +130,7 @@ public final class SupercomputerImpl implements Supercomputer, Supercomputer.Def
     }
 
     public Supercomputer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSupercomputers()
-            .getByResourceGroupWithResponse(resourceGroupName, supercomputerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Supercomputer refresh(Context context) {

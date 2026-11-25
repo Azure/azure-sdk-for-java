@@ -13,12 +13,12 @@ public final class AdministratorMicrosoftEntraListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"ygz\",\"objectId\":\"dnkfx\",\"tenantId\":\"emdwzrmuhapfc\"},\"id\":\"psqxq\",\"name\":\"psvuoymgc\",\"type\":\"elvezrypq\"},{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"okerqwkyhkobop\",\"objectId\":\"edkowepbqpcrfk\",\"tenantId\":\"ccsnjvcdwxlpq\"},\"id\":\"ftnkhtj\",\"name\":\"y\",\"type\":\"ngwfqatm\"}],\"nextLink\":\"htmdvy\"}")
+            "{\"value\":[{\"properties\":{\"principalType\":\"User\",\"principalName\":\"yajguqfhwygzlv\",\"objectId\":\"kfxu\",\"tenantId\":\"mdwzrmuhapfcqdps\"},\"id\":\"qvpsvuoymg\",\"name\":\"celve\",\"type\":\"rypqlmfeo\"}],\"nextLink\":\"rqwky\"}")
             .toObject(AdministratorMicrosoftEntraList.class);
-        Assertions.assertEquals(PrincipalType.UNKNOWN, model.value().get(0).principalType());
-        Assertions.assertEquals("ygz", model.value().get(0).principalName());
-        Assertions.assertEquals("dnkfx", model.value().get(0).objectId());
-        Assertions.assertEquals("emdwzrmuhapfc", model.value().get(0).tenantId());
-        Assertions.assertEquals("htmdvy", model.nextLink());
+        Assertions.assertEquals(PrincipalType.USER, model.value().get(0).principalType());
+        Assertions.assertEquals("yajguqfhwygzlv", model.value().get(0).principalName());
+        Assertions.assertEquals("kfxu", model.value().get(0).objectId());
+        Assertions.assertEquals("mdwzrmuhapfcqdps", model.value().get(0).tenantId());
+        Assertions.assertEquals("rqwky", model.nextLink());
     }
 }

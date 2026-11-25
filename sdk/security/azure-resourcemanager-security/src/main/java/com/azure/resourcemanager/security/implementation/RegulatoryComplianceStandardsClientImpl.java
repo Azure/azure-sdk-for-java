@@ -168,31 +168,14 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
         return getWithResponseAsync(regulatoryComplianceStandardName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Supported regulatory compliance details state for selected standard.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegulatoryComplianceStandardInner> getWithResponse(String regulatoryComplianceStandardName,
         Context context) {
         return getWithResponseAsync(regulatoryComplianceStandardName, context).block();
     }
 
-    /**
-     * Supported regulatory compliance details state for selected standard.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegulatoryComplianceStandardInner get(String regulatoryComplianceStandardName) {
         return getWithResponse(regulatoryComplianceStandardName, Context.NONE).getValue();
@@ -301,29 +284,14 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Supported regulatory compliance standards details and state.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceStandardInner> list() {
         final String filter = null;
         return new PagedIterable<>(listAsync(filter));
     }
 
-    /**
-     * Supported regulatory compliance standards details and state.
-     * 
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceStandardInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));

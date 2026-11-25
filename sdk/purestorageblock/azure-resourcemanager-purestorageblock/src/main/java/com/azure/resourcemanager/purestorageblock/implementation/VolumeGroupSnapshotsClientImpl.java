@@ -239,19 +239,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a volume group snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume group snapshot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeGroupSnapshotInner> getWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String snapshotName, Context context) {
@@ -260,18 +248,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             resourceGroupName, storagePoolName, volumeGroupName, snapshotName, accept, context);
     }
 
-    /**
-     * Get a volume group snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume group snapshot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupSnapshotInner get(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String snapshotName) {
@@ -322,11 +299,8 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String snapshotName, VolumeGroupSnapshotInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, snapshotName,
-            contentType, accept, resource, Context.NONE);
+        return createWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource,
+            Context.NONE);
     }
 
     /**
@@ -379,45 +353,15 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             this.client.getContext());
     }
 
-    /**
-     * Create a manual snapshot of a volume group, or recover from an existing snapshot by providing
-     * sourceSnapshotResourceId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a snapshot of a volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupSnapshotInner>, VolumeGroupSnapshotInner> beginCreate(
         String resourceGroupName, String storagePoolName, String volumeGroupName, String snapshotName,
         VolumeGroupSnapshotInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource);
-        return this.client.<VolumeGroupSnapshotInner, VolumeGroupSnapshotInner>getLroResult(response,
-            VolumeGroupSnapshotInner.class, VolumeGroupSnapshotInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource, Context.NONE);
     }
 
-    /**
-     * Create a manual snapshot of a volume group, or recover from an existing snapshot by providing
-     * sourceSnapshotResourceId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a snapshot of a volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupSnapshotInner>, VolumeGroupSnapshotInner> beginCreate(
         String resourceGroupName, String storagePoolName, String volumeGroupName, String snapshotName,
@@ -449,47 +393,19 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a manual snapshot of a volume group, or recover from an existing snapshot by providing
-     * sourceSnapshotResourceId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot of a volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupSnapshotInner create(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String snapshotName, VolumeGroupSnapshotInner resource) {
-        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource)
-            .getFinalResult();
+        return create(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource, Context.NONE);
     }
 
-    /**
-     * Create a manual snapshot of a volume group, or recover from an existing snapshot by providing
-     * sourceSnapshotResourceId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot of a volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupSnapshotInner create(String resourceGroupName, String storagePoolName, String volumeGroupName,
         String snapshotName, VolumeGroupSnapshotInner resource, Context context) {
-        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, resource, context));
     }
 
     /**
@@ -529,9 +445,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String snapshotName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, snapshotName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE);
     }
 
     /**
@@ -576,39 +490,14 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             this.client.getContext());
     }
 
-    /**
-     * Delete a volume group snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String snapshotName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE);
     }
 
-    /**
-     * Delete a volume group snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String snapshotName, Context context) {
@@ -636,38 +525,18 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a volume group snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, String snapshotName) {
-        beginDelete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName).getFinalResult();
+        delete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE);
     }
 
-    /**
-     * Delete a volume group snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param snapshotName Name of the volume group snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, String snapshotName,
         Context context) {
-        beginDelete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, context));
     }
 
     /**
@@ -761,12 +630,8 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupSnapshotInner> listByVolumeGroupSinglePage(String resourceGroupName,
         String storagePoolName, String volumeGroupName, String filter, String orderby, Integer top, Integer skip) {
-        final String accept = "application/json";
-        Response<VolumeGroupSnapshotListResult> res = service.listByVolumeGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storagePoolName,
-            volumeGroupName, filter, orderby, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeGroupSinglePage(resourceGroupName, storagePoolName, volumeGroupName, filter, orderby, top,
+            skip, Context.NONE);
     }
 
     /**
@@ -797,17 +662,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all snapshots for a given volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list result for volume group snapshots as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupSnapshotInner> listByVolumeGroup(String resourceGroupName, String storagePoolName,
         String volumeGroupName) {
@@ -815,26 +670,11 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
         final String orderby = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedIterable<>(() -> listByVolumeGroupSinglePage(resourceGroupName, storagePoolName,
-            volumeGroupName, filter, orderby, top, skip), nextLink -> listByVolumeGroupNextSinglePage(nextLink));
+        return listByVolumeGroup(resourceGroupName, storagePoolName, volumeGroupName, filter, orderby, top, skip,
+            Context.NONE);
     }
 
-    /**
-     * List all snapshots for a given volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param filter OData filter expression (e.g. $filter=substringof('sna', name) and space/unique gt 1000).
-     * @param orderby OData order-by expression (e.g. $orderby=name asc).
-     * @param top Maximum number of results to return per page.
-     * @param skip Number of results to skip (page offset).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list result for volume group snapshots as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupSnapshotInner> listByVolumeGroup(String resourceGroupName, String storagePoolName,
         String volumeGroupName, String filter, String orderby, Integer top, Integer skip, Context context) {
@@ -889,20 +729,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all snapshots for a given volume group using POST with the same request and response contract.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param properties Snapshot list request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for volume group snapshots returned by the listSnapshots POST action along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeGroupSnapshotPostListResultInner> listSnapshotsWithResponse(String resourceGroupName,
         String storagePoolName, String volumeGroupName, VolumeGroupSnapshotListRequest properties, Context context) {
@@ -913,18 +740,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
             properties, context);
     }
 
-    /**
-     * List all snapshots for a given volume group using POST with the same request and response contract.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param properties Snapshot list request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for volume group snapshots returned by the listSnapshots POST action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupSnapshotPostListResultInner listSnapshots(String resourceGroupName, String storagePoolName,
         String volumeGroupName, VolumeGroupSnapshotListRequest properties) {
@@ -963,11 +779,7 @@ public final class VolumeGroupSnapshotsClientImpl implements VolumeGroupSnapshot
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupSnapshotInner> listByVolumeGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VolumeGroupSnapshotListResult> res
-            = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

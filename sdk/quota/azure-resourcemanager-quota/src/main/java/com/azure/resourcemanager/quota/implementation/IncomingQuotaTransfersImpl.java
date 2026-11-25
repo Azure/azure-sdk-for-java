@@ -47,8 +47,7 @@ public final class IncomingQuotaTransfersImpl implements IncomingQuotaTransfers 
     }
 
     public PagedIterable<IncomingQuotaTransfer> list(String targetProvider, String region) {
-        PagedIterable<IncomingQuotaTransferInner> inner = this.serviceClient().list(targetProvider, region);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IncomingQuotaTransferImpl(inner1, this.manager()));
+        return this.list(targetProvider, region, Context.NONE);
     }
 
     public PagedIterable<IncomingQuotaTransfer> list(String targetProvider, String region, Context context) {
@@ -57,8 +56,7 @@ public final class IncomingQuotaTransfersImpl implements IncomingQuotaTransfers 
     }
 
     public PagedIterable<IncomingQuotaTransfer> listBySubscription() {
-        PagedIterable<IncomingQuotaTransferInner> inner = this.serviceClient().listBySubscription();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IncomingQuotaTransferImpl(inner1, this.manager()));
+        return this.listBySubscription(Context.NONE);
     }
 
     public PagedIterable<IncomingQuotaTransfer> listBySubscription(Context context) {

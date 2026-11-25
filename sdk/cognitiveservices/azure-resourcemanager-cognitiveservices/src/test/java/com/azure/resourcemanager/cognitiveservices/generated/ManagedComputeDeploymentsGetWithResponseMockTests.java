@@ -23,7 +23,7 @@ public final class ManagedComputeDeploymentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"model\":\"rsddcuqddldaoyv\",\"deploymentTemplate\":\"tqewqjojesxjhty\",\"acceleratorType\":\"wqocygoyineuax\",\"versionUpgradeOption\":\"NoAutoUpgrade\",\"gatedModelAccess\":{\"connectionId\":\"itr\"},\"capabilities\":{\"oyxfoafzdypzlx\":\"lw\"},\"computeId\":\"ndhgwhlbp\",\"priority\":\"ajzqxavmitnwl\",\"acceleratorsPerInstance\":2076796219,\"totalAccelerators\":443805300,\"provisioningState\":\"Creating\",\"provisioningDetails\":{\"message\":\"tyyddbhat\",\"lastOperationTimestamp\":\"2021-07-09T01:31:18Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"gnqtjtnnrjewih\",\"swagger\":\"gaahmdfsp\",\"messagesApiScoringPath\":\"nxqxzxt\"}},\"sku\":{\"name\":\"tnzr\",\"tier\":\"Standard\",\"size\":\"iclhdwienvt\",\"family\":\"zjyfk\",\"capacity\":542992160},\"etag\":\"ghaknklt\",\"id\":\"wppvihbmwrv\",\"name\":\"vdrohu\",\"type\":\"ob\"}";
+            = "{\"properties\":{\"model\":\"djpcevbkkgqfjwgp\",\"deploymentTemplate\":\"pwxghwwfq\",\"acceleratorType\":\"ysmsq\",\"versionUpgradeOption\":\"OnceNewDefaultVersionAvailable\",\"gatedModelAccess\":{\"connectionId\":\"jsqepxft\"},\"capabilities\":{\"ib\":\"adsliifdrbsrpjsp\"},\"computeId\":\"xmfooinpnrfvqg\",\"priority\":\"wgkm\",\"acceleratorsPerInstance\":1189513397,\"totalAccelerators\":1737857066,\"provisioningState\":\"Accepted\",\"provisioningDetails\":{\"message\":\"xktsxnikcgitt\",\"lastOperationTimestamp\":\"2021-09-07T19:56:30Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"htepasjebrinvfc\",\"swagger\":\"ijsinybntlxwa\",\"messagesApiScoringPath\":\"ujzoxgakqt\"}},\"sku\":{\"name\":\"jucazwedmahulxgc\",\"tier\":\"Enterprise\",\"size\":\"anudvqannenxg\",\"family\":\"mmgb\",\"capacity\":881329261},\"etag\":\"gzbfpqifsgzfgxw\",\"id\":\"jiqpdsohwnna\",\"name\":\"ooghjxhppp\",\"type\":\"ksqiwlmegjtose\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,21 @@ public final class ManagedComputeDeploymentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedComputeDeployment response = manager.managedComputeDeployments()
-            .getWithResponse("hprgf", "hfz", "hrurmrfyyqjcnib", com.azure.core.util.Context.NONE)
+            .getWithResponse("r", "b", "hzyfuupqkr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rsddcuqddldaoyv", response.properties().model());
-        Assertions.assertEquals("tqewqjojesxjhty", response.properties().deploymentTemplate());
-        Assertions.assertEquals("wqocygoyineuax", response.properties().acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE,
+        Assertions.assertEquals("djpcevbkkgqfjwgp", response.properties().model());
+        Assertions.assertEquals("pwxghwwfq", response.properties().deploymentTemplate());
+        Assertions.assertEquals("ysmsq", response.properties().acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_NEW_DEFAULT_VERSION_AVAILABLE,
             response.properties().versionUpgradeOption());
-        Assertions.assertEquals("itr", response.properties().gatedModelAccess().connectionId());
-        Assertions.assertEquals("ndhgwhlbp", response.properties().computeId());
-        Assertions.assertEquals("ajzqxavmitnwl", response.properties().priority());
-        Assertions.assertEquals("tnzr", response.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals("iclhdwienvt", response.sku().size());
-        Assertions.assertEquals("zjyfk", response.sku().family());
-        Assertions.assertEquals(542992160, response.sku().capacity());
+        Assertions.assertEquals("jsqepxft", response.properties().gatedModelAccess().connectionId());
+        Assertions.assertEquals("xmfooinpnrfvqg", response.properties().computeId());
+        Assertions.assertEquals("wgkm", response.properties().priority());
+        Assertions.assertEquals("jucazwedmahulxgc", response.sku().name());
+        Assertions.assertEquals(SkuTier.ENTERPRISE, response.sku().tier());
+        Assertions.assertEquals("anudvqannenxg", response.sku().size());
+        Assertions.assertEquals("mmgb", response.sku().family());
+        Assertions.assertEquals(881329261, response.sku().capacity());
     }
 }

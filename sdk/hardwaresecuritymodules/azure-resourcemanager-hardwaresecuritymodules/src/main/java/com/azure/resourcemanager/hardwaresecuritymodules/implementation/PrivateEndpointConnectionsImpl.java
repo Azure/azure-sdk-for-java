@@ -27,9 +27,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PagedIterable<PrivateEndpointConnection> listByCloudHsmCluster(String resourceGroupName,
         String cloudHsmClusterName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> listByCloudHsmCluster(String resourceGroupName,

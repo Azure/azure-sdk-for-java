@@ -93,16 +93,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
             @BodyParam("application/json") CheckNameAvailabilityRequest parameters, Context context);
     }
 
-    /**
-     * Checks the validity and availability of the given name, to assign it to a new server or to use it as the base
-     * name of a new pair of virtual endpoints.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NameAvailabilityModelInner>>
         checkGloballyWithResponseAsync(CheckNameAvailabilityRequest parameters) {
@@ -114,32 +105,13 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Checks the validity and availability of the given name, to assign it to a new server or to use it as the base
-     * name of a new pair of virtual endpoints.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NameAvailabilityModelInner> checkGloballyAsync(CheckNameAvailabilityRequest parameters) {
         return checkGloballyWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks the validity and availability of the given name, to assign it to a new server or to use it as the base
-     * name of a new pair of virtual endpoints.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityModelInner> checkGloballyWithResponse(CheckNameAvailabilityRequest parameters,
         Context context) {
@@ -149,31 +121,13 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Checks the validity and availability of the given name, to assign it to a new server or to use it as the base
-     * name of a new pair of virtual endpoints.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityModelInner checkGlobally(CheckNameAvailabilityRequest parameters) {
         return checkGloballyWithResponse(parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Check the availability of name for resource.
-     * 
-     * @param locationName The name of the location.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NameAvailabilityModelInner>> checkWithLocationWithResponseAsync(String locationName,
         CheckNameAvailabilityRequest parameters) {
@@ -185,16 +139,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Check the availability of name for resource.
-     * 
-     * @param locationName The name of the location.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NameAvailabilityModelInner> checkWithLocationAsync(String locationName,
         CheckNameAvailabilityRequest parameters) {
@@ -202,17 +147,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the availability of name for resource.
-     * 
-     * @param locationName The name of the location.
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityModelInner> checkWithLocationWithResponse(String locationName,
         CheckNameAvailabilityRequest parameters, Context context) {
@@ -222,16 +157,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
             this.client.getSubscriptionId(), locationName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Check the availability of name for resource.
-     * 
-     * @param locationName The name of the location.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityModelInner checkWithLocation(String locationName, CheckNameAvailabilityRequest parameters) {
         return checkWithLocationWithResponse(locationName, parameters, Context.NONE).getValue();

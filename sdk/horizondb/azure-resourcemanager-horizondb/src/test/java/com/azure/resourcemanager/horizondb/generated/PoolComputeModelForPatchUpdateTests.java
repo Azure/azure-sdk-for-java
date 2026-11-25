@@ -14,12 +14,12 @@ public final class PoolComputeModelForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolComputeModelForPatchUpdate model = BinaryData.fromString(
-            "{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":1604770276,\"vCores\":537336258}")
+            "{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":1305884847,\"vCores\":2081594756}")
             .toObject(PoolComputeModelForPatchUpdate.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.type());
         Assertions.assertEquals(ComputeProcessorType.AMD, model.computeProcessor());
-        Assertions.assertEquals(1604770276, model.computeGeneration());
-        Assertions.assertEquals(537336258, model.vCores());
+        Assertions.assertEquals(1305884847, model.computeGeneration());
+        Assertions.assertEquals(2081594756, model.vCores());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,12 +27,12 @@ public final class PoolComputeModelForPatchUpdateTests {
         PoolComputeModelForPatchUpdate model
             = new PoolComputeModelForPatchUpdate().withType(PoolComputeModelType.PROVISIONED)
                 .withComputeProcessor(ComputeProcessorType.AMD)
-                .withComputeGeneration(1604770276)
-                .withVCores(537336258);
+                .withComputeGeneration(1305884847)
+                .withVCores(2081594756);
         model = BinaryData.fromObject(model).toObject(PoolComputeModelForPatchUpdate.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.type());
         Assertions.assertEquals(ComputeProcessorType.AMD, model.computeProcessor());
-        Assertions.assertEquals(1604770276, model.computeGeneration());
-        Assertions.assertEquals(537336258, model.vCores());
+        Assertions.assertEquals(1305884847, model.computeGeneration());
+        Assertions.assertEquals(2081594756, model.vCores());
     }
 }

@@ -79,17 +79,7 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the primary and secondary admin API keys for the specified Azure AI Search service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary admin API keys for the specified Azure AI Search service along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdminKeyResultInner>> getWithResponseAsync(String resourceGroupName,
         String searchServiceName) {
@@ -153,68 +143,27 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
             resourceGroupName, searchServiceName, accept, context);
     }
 
-    /**
-     * Gets the primary and secondary admin API keys for the specified Azure AI Search service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary admin API keys for the specified Azure AI Search service on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdminKeyResultInner> getAsync(String resourceGroupName, String searchServiceName) {
         return getWithResponseAsync(resourceGroupName, searchServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the primary and secondary admin API keys for the specified Azure AI Search service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary admin API keys for the specified Azure AI Search service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdminKeyResultInner> getWithResponse(String resourceGroupName, String searchServiceName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, searchServiceName, context).block();
     }
 
-    /**
-     * Gets the primary and secondary admin API keys for the specified Azure AI Search service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary admin API keys for the specified Azure AI Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdminKeyResultInner get(String resourceGroupName, String searchServiceName) {
         return getWithResponse(resourceGroupName, searchServiceName, Context.NONE).getValue();
     }
 
-    /**
-     * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given Azure AI Search service along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdminKeyResultInner>> regenerateWithResponseAsync(String resourceGroupName,
         String searchServiceName, AdminKeyKind keyKind) {
@@ -285,18 +234,7 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
             this.client.getSubscriptionId(), resourceGroupName, searchServiceName, keyKind, accept, context);
     }
 
-    /**
-     * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given Azure AI Search service on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdminKeyResultInner> regenerateAsync(String resourceGroupName, String searchServiceName,
         AdminKeyKind keyKind) {
@@ -304,36 +242,14 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given Azure AI Search service along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdminKeyResultInner> regenerateWithResponse(String resourceGroupName, String searchServiceName,
         AdminKeyKind keyKind, Context context) {
         return regenerateWithResponseAsync(resourceGroupName, searchServiceName, keyKind, context).block();
     }
 
-    /**
-     * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given Azure AI Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdminKeyResultInner regenerate(String resourceGroupName, String searchServiceName, AdminKeyKind keyKind) {
         return regenerateWithResponse(resourceGroupName, searchServiceName, keyKind, Context.NONE).getValue();

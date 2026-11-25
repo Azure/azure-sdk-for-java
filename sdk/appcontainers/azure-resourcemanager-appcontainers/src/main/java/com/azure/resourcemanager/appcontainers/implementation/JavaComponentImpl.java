@@ -60,10 +60,7 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
     }
 
     public JavaComponent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJavaComponents()
-            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public JavaComponent create(Context context) {
@@ -84,10 +81,7 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
     }
 
     public JavaComponent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJavaComponents()
-            .update(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public JavaComponent apply(Context context) {
@@ -113,11 +107,7 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
     }
 
     public JavaComponent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJavaComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public JavaComponent refresh(Context context) {

@@ -312,7 +312,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesSync() {
-        addUserAssignedIdentitySanitizer();
+        addPaginationSanitizers();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
@@ -331,7 +331,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesAsync() {
-        addUserAssignedIdentitySanitizer();
+        addPaginationSanitizers();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
@@ -1245,10 +1245,11 @@ public class IndexersManagementTests extends SearchTestBase {
         return names;
     }
 
-    private void addUserAssignedIdentitySanitizer() {
+    private void addPaginationSanitizers() {
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(
-                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..container.name", null, "searchcontainer", TestProxySanitizerType.BODY_KEY));
         }
     }
 

@@ -165,20 +165,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param ifNoneMatch ETag of the private endpoint connection entity. Should only be specified for get. If the ETag
-     * matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionResourceInner> getWithResponse(String resourceGroupName,
         String factoryName, String privateEndpointConnectionName, String ifNoneMatch, Context context) {
@@ -187,17 +174,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             resourceGroupName, factoryName, privateEndpointConnectionName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner get(String resourceGroupName, String factoryName,
         String privateEndpointConnectionName) {
@@ -255,21 +232,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param resource The resource parameter.
-     * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
-     * should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String factoryName, String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource resource,
@@ -281,18 +244,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             contentType, accept, resource, context);
     }
 
-    /**
-     * Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param resource The resource parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner createOrUpdate(String resourceGroupName, String factoryName,
         String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource resource) {
@@ -337,18 +289,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         String privateEndpointConnectionName, Context context) {
@@ -356,16 +297,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
             this.client.getSubscriptionId(), resourceGroupName, factoryName, privateEndpointConnectionName, context);
     }
 
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String privateEndpointConnectionName) {
         deleteWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, Context.NONE);

@@ -114,16 +114,7 @@ public final class CapabilitiesByLocationsClientImpl implements CapabilitiesByLo
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the capabilities available in a given location for a specific subscription.
-     * 
-     * @param locationName The name of the location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capabilities for the Azure Database for PostgreSQL flexible server as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapabilityInner> listAsync(String locationName) {
         return new PagedFlux<>(() -> listSinglePageAsync(locationName), nextLink -> listNextSinglePageAsync(nextLink));
@@ -141,11 +132,7 @@ public final class CapabilitiesByLocationsClientImpl implements CapabilitiesByLo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listSinglePage(String locationName) {
-        final String accept = "application/json";
-        Response<CapabilityList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), locationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(locationName, Context.NONE);
     }
 
     /**
@@ -168,32 +155,13 @@ public final class CapabilitiesByLocationsClientImpl implements CapabilitiesByLo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the capabilities available in a given location for a specific subscription.
-     * 
-     * @param locationName The name of the location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capabilities for the Azure Database for PostgreSQL flexible server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String locationName) {
-        return new PagedIterable<>(() -> listSinglePage(locationName), nextLink -> listNextSinglePage(nextLink));
+        return list(locationName, Context.NONE);
     }
 
-    /**
-     * Lists the capabilities available in a given location for a specific subscription.
-     * 
-     * @param locationName The name of the location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capabilities for the Azure Database for PostgreSQL flexible server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String locationName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(locationName, context),
@@ -231,10 +199,7 @@ public final class CapabilitiesByLocationsClientImpl implements CapabilitiesByLo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CapabilityList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

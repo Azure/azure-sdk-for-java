@@ -19,7 +19,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
@@ -51,7 +50,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     /*
      * Major version of PostgreSQL database engine.
      */
-    private PostgresMajorVersion version;
+    private String version;
 
     /*
      * Minor version of PostgreSQL database engine.
@@ -219,7 +218,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * 
      * @return the version value.
      */
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.version;
     }
 
@@ -229,7 +228,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * @param version the version value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withVersion(PostgresMajorVersion version) {
+    public ServerProperties withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -600,7 +599,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
-        jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
+        jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeJsonField("storage", this.storage);
         jsonWriter.writeJsonField("authConfig", this.authConfig);
         jsonWriter.writeJsonField("dataEncryption", this.dataEncryption);
@@ -641,7 +640,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                 } else if ("administratorLoginPassword".equals(fieldName)) {
                     deserializedServerProperties.administratorLoginPassword = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedServerProperties.version = PostgresMajorVersion.fromString(reader.getString());
+                    deserializedServerProperties.version = reader.getString();
                 } else if ("minorVersion".equals(fieldName)) {
                     deserializedServerProperties.minorVersion = reader.getString();
                 } else if ("state".equals(fieldName)) {

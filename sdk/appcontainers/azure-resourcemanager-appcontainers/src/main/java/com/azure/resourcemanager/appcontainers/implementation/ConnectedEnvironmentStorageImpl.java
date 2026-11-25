@@ -62,10 +62,7 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsStorages()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConnectedEnvironmentStorage create(Context context) {
@@ -87,10 +84,7 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsStorages()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConnectedEnvironmentStorage apply(Context context) {
@@ -116,11 +110,7 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectedEnvironmentsStorages()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConnectedEnvironmentStorage refresh(Context context) {

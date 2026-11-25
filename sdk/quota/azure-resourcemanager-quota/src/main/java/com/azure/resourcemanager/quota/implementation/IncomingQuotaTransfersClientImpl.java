@@ -252,19 +252,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an incoming quota transfer.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incoming quota transfer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IncomingQuotaTransferInner> getWithResponse(String targetProvider, String region, String transferId,
         Context context) {
@@ -273,18 +261,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             targetProvider, region, transferId, accept, context);
     }
 
-    /**
-     * Get an incoming quota transfer.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incoming quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncomingQuotaTransferInner get(String targetProvider, String region, String transferId) {
         return getWithResponse(targetProvider, region, transferId, Context.NONE).getValue();
@@ -343,11 +320,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IncomingQuotaTransferInner> listSinglePage(String targetProvider, String region) {
-        final String accept = "application/json";
-        Response<IncomingQuotaTransferListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), targetProvider, region, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(targetProvider, region, Context.NONE);
     }
 
     /**
@@ -372,35 +345,13 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List incoming quota transfers at the (subscription, targetProvider, region) scope.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IncomingQuotaTransfer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncomingQuotaTransferInner> list(String targetProvider, String region) {
-        return new PagedIterable<>(() -> listSinglePage(targetProvider, region),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(targetProvider, region, Context.NONE);
     }
 
-    /**
-     * List incoming quota transfers at the (subscription, targetProvider, region) scope.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IncomingQuotaTransfer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncomingQuotaTransferInner> list(String targetProvider, String region, Context context) {
         return new PagedIterable<>(() -> listSinglePage(targetProvider, region, context),
@@ -451,11 +402,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IncomingQuotaTransferInner> listBySubscriptionSinglePage() {
-        final String accept = "application/json";
-        Response<IncomingQuotaTransferListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(Context.NONE);
     }
 
     /**
@@ -477,30 +424,13 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List incoming quota transfers across every targetProvider and region for the
-     * subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IncomingQuotaTransfer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncomingQuotaTransferInner> listBySubscription() {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(Context.NONE);
     }
 
-    /**
-     * List incoming quota transfers across every targetProvider and region for the
-     * subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IncomingQuotaTransfer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncomingQuotaTransferInner> listBySubscription(Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(context),
@@ -556,10 +486,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> approveWithResponse(String targetProvider, String region, String transferId,
         String ifMatch, IncomingQuotaTransferApproveRequest body) {
-        final String accept = "application/json";
-        return service.approveSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), targetProvider, region, transferId, ifMatch, accept, body,
-            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), Context.NONE);
+        return approveWithResponse(targetProvider, region, transferId, ifMatch, body, Context.NONE);
     }
 
     /**
@@ -662,57 +589,21 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
      * @return the {@link SyncPoller} for polling of recipient-side projection of a quota transfer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IncomingQuotaTransferInner>, IncomingQuotaTransferInner> beginApprove(
+    private SyncPoller<PollResult<IncomingQuotaTransferInner>, IncomingQuotaTransferInner> beginApprove(
         String targetProvider, String region, String transferId, String ifMatch,
         IncomingQuotaTransferApproveRequest body) {
-        Response<BinaryData> response = approveWithResponse(targetProvider, region, transferId, ifMatch, body);
-        return this.client.<IncomingQuotaTransferInner, IncomingQuotaTransferInner>getLroResult(response,
-            IncomingQuotaTransferInner.class, IncomingQuotaTransferInner.class, Context.NONE);
+        return beginApprove(targetProvider, region, transferId, ifMatch, body, Context.NONE);
     }
 
-    /**
-     * Approve a Pending incoming quota transfer. Long-running. The `If-Match` header value
-     * must equal `properties.sourceEtag` returned on a prior GET; a stale value yields
-     * 412 SourceResourceModified.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param ifMatch Optimistic-concurrency precondition. Must equal `properties.sourceEtag` from a
-     * prior GET on the incoming transfer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recipient-side projection of a quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IncomingQuotaTransferInner>, IncomingQuotaTransferInner>
         beginApprove(String targetProvider, String region, String transferId, String ifMatch) {
         final IncomingQuotaTransferApproveRequest body = null;
-        Response<BinaryData> response = approveWithResponse(targetProvider, region, transferId, ifMatch, body);
-        return this.client.<IncomingQuotaTransferInner, IncomingQuotaTransferInner>getLroResult(response,
-            IncomingQuotaTransferInner.class, IncomingQuotaTransferInner.class, Context.NONE);
+        return beginApprove(targetProvider, region, transferId, ifMatch, body, Context.NONE);
     }
 
-    /**
-     * Approve a Pending incoming quota transfer. Long-running. The `If-Match` header value
-     * must equal `properties.sourceEtag` returned on a prior GET; a stale value yields
-     * 412 SourceResourceModified.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param ifMatch Optimistic-concurrency precondition. Must equal `properties.sourceEtag` from a
-     * prior GET on the incoming transfer.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recipient-side projection of a quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IncomingQuotaTransferInner>, IncomingQuotaTransferInner> beginApprove(
         String targetProvider, String region, String transferId, String ifMatch,
@@ -770,50 +661,19 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Approve a Pending incoming quota transfer. Long-running. The `If-Match` header value
-     * must equal `properties.sourceEtag` returned on a prior GET; a stale value yields
-     * 412 SourceResourceModified.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param ifMatch Optimistic-concurrency precondition. Must equal `properties.sourceEtag` from a
-     * prior GET on the incoming transfer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient-side projection of a quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncomingQuotaTransferInner approve(String targetProvider, String region, String transferId, String ifMatch) {
         final IncomingQuotaTransferApproveRequest body = null;
-        return beginApprove(targetProvider, region, transferId, ifMatch, body).getFinalResult();
+        return approve(targetProvider, region, transferId, ifMatch, body, Context.NONE);
     }
 
-    /**
-     * Approve a Pending incoming quota transfer. Long-running. The `If-Match` header value
-     * must equal `properties.sourceEtag` returned on a prior GET; a stale value yields
-     * 412 SourceResourceModified.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param ifMatch Optimistic-concurrency precondition. Must equal `properties.sourceEtag` from a
-     * prior GET on the incoming transfer.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient-side projection of a quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncomingQuotaTransferInner approve(String targetProvider, String region, String transferId, String ifMatch,
         IncomingQuotaTransferApproveRequest body, Context context) {
-        return beginApprove(targetProvider, region, transferId, ifMatch, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginApprove(targetProvider, region, transferId, ifMatch, body, context));
     }
 
     /**
@@ -867,23 +727,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Reject a Pending incoming quota transfer. Synchronous. The `If-Match` header value
-     * must equal `properties.sourceEtag` returned on a prior GET.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param ifMatch Optimistic-concurrency precondition. Must equal `properties.sourceEtag` from a
-     * prior GET on the incoming transfer.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient-side projection of a quota transfer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IncomingQuotaTransferInner> rejectWithResponse(String targetProvider, String region,
         String transferId, String ifMatch, IncomingQuotaTransferRejectRequest body, Context context) {
@@ -893,21 +737,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
             CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
-    /**
-     * Reject a Pending incoming quota transfer. Synchronous. The `If-Match` header value
-     * must equal `properties.sourceEtag` returned on a prior GET.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to.
-     * @param transferId Server-generated identifier of the transfer (matches `properties.transferId`).
-     * @param ifMatch Optimistic-concurrency precondition. Must equal `properties.sourceEtag` from a
-     * prior GET on the incoming transfer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient-side projection of a quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncomingQuotaTransferInner reject(String targetProvider, String region, String transferId, String ifMatch) {
         final IncomingQuotaTransferRejectRequest body = null;
@@ -944,11 +774,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IncomingQuotaTransferInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IncomingQuotaTransferListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1002,11 +828,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IncomingQuotaTransferInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IncomingQuotaTransferListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

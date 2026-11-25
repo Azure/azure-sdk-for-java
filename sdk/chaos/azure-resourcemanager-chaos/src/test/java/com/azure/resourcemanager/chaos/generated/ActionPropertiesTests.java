@@ -11,7 +11,7 @@ public final class ActionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionProperties model = BinaryData.fromString(
-            "{\"canonicalId\":\"m\",\"displayName\":\"maehvbbxurip\",\"description\":\"fnhtbaxkgxyw\",\"actionName\":\"kpyklyhp\",\"version\":\"odpvruudlgzib\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"ktst\",\"requiredPermissions\":[\"eclze\",\"qbcvhzlhplod\",\"kdl\",\"wqfbumlkxtrqjfsm\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"xhwgfwsrtaw\",\"oezbrhubsk\"]}")
+            "{\"canonicalId\":\"nuuzkopbm\",\"displayName\":\"rfdwoyu\",\"description\":\"ziuiefozbhdm\",\"actionName\":\"l\",\"version\":\"qhoftrmaequiah\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"aoqzpiyylhaln\",\"requiredPermissions\":[\"ccsphkaivwi\"]},{\"targetType\":\"scywuggwoluhc\",\"requiredPermissions\":[\"emh\"]},{\"targetType\":\"rsbrgzdwm\",\"requiredPermissions\":[\"ypqwdxggiccc\",\"xqhuexm\",\"ttlstvlzywemhz\",\"ncsdtclusiyp\"]},{\"targetType\":\"fgytguslfeadcyg\",\"requiredPermissions\":[\"yhejhzisxgfp\",\"lolp\",\"vk\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"vu\",\"zraehtwd\",\"r\",\"tswiby\"]}")
             .toObject(ActionProperties.class);
     }
 }

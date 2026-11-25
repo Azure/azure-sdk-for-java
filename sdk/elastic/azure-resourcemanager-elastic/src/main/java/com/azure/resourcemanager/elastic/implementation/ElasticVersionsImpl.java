@@ -26,8 +26,7 @@ public final class ElasticVersionsImpl implements ElasticVersions {
     }
 
     public PagedIterable<ElasticVersionListFormat> list(String region) {
-        PagedIterable<ElasticVersionListFormatInner> inner = this.serviceClient().list(region);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
+        return this.list(region, Context.NONE);
     }
 
     public PagedIterable<ElasticVersionListFormat> list(String region, Context context) {

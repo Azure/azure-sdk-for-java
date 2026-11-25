@@ -116,17 +116,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an outbound firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound firewall rule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OutboundFirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
@@ -196,17 +186,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             resourceGroupName, serverName, outboundRuleFqdn, accept, context);
     }
 
-    /**
-     * Gets an outbound firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound firewall rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OutboundFirewallRuleInner> getAsync(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
@@ -214,52 +194,20 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an outbound firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound firewall rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OutboundFirewallRuleInner> getWithResponse(String resourceGroupName, String serverName,
         String outboundRuleFqdn, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, outboundRuleFqdn, context).block();
     }
 
-    /**
-     * Gets an outbound firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundFirewallRuleInner get(String resourceGroupName, String serverName, String outboundRuleFqdn) {
         return getWithResponse(resourceGroupName, serverName, outboundRuleFqdn, Context.NONE).getValue();
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL DB Server Outbound Firewall Rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
@@ -330,17 +278,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             this.client.getSubscriptionId(), resourceGroupName, serverName, outboundRuleFqdn, accept, context);
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL DB Server Outbound Firewall Rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String outboundRuleFqdn) {
@@ -373,52 +311,21 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             this.client.getHttpPipeline(), OutboundFirewallRuleInner.class, OutboundFirewallRuleInner.class, context);
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL DB Server Outbound Firewall Rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL DB Server Outbound Firewall Rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL DB Server Outbound Firewall Rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OutboundFirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
@@ -445,52 +352,21 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL DB Server Outbound Firewall Rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
         return createOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).block();
     }
 
-    /**
-     * Create a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL DB Server Outbound Firewall Rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName,
         String outboundRuleFqdn, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).block();
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
@@ -558,17 +434,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             resourceGroupName, serverName, outboundRuleFqdn, context);
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
@@ -600,52 +466,21 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             context);
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String outboundRuleFqdn) {
         return this.beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String outboundRuleFqdn, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String outboundRuleFqdn) {
         return beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn).last()
@@ -671,32 +506,13 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String outboundRuleFqdn) {
         deleteAsync(resourceGroupName, serverName, outboundRuleFqdn).block();
     }
 
-    /**
-     * Deletes a outbound firewall rule with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param outboundRuleFqdn The outboundRuleFqdn parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String outboundRuleFqdn, Context context) {
         deleteAsync(resourceGroupName, serverName, outboundRuleFqdn, context).block();
@@ -779,16 +595,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -813,32 +620,13 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName,
         Context context) {

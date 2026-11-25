@@ -8,7 +8,10 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ValidatableContent;
+
+import java.net.URI;
 
 /**
  * Extended options that may be passed when downloading blob content (full blob or range in memory).
@@ -20,6 +23,7 @@ public final class BlobDownloadContentOptions implements ValidatableContent {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private ContentValidationAlgorithm contentValidationAlgorithm;
+    private URI dataLocalityEndpoint;
 
     /**
      * Creates a new instance of {@link BlobDownloadContentOptions}.
@@ -127,6 +131,30 @@ public final class BlobDownloadContentOptions implements ValidatableContent {
     public BlobDownloadContentOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
+        return this;
+    }
+
+    /**
+     * Gets the endpoint to use for this download.
+     *
+     * @return The data locality endpoint, or null if the client's configured endpoint should be used.
+     */
+    URI getDataLocalityEndpoint() {
+        return dataLocalityEndpoint;
+    }
+
+    /**
+     * Sets the endpoint to use for this download.
+     * <p>
+     * Using a data locality endpoint preserves the original storage account authority in the {@code Host} header.
+     * See {@link LayoutAwareRouting#ENABLED} for JDK HTTP transport requirements.
+     *
+     * @param dataLocalityEndpoint The endpoint selected from blob layout information, as an absolute URI or an
+     * authority-only URI reference such as {@code //host:port}. The request's scheme is preserved.
+     * @return The updated options.
+     */
+    BlobDownloadContentOptions setDataLocalityEndpoint(URI dataLocalityEndpoint) {
+        this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }
 }

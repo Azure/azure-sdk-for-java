@@ -350,19 +350,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Hybrid connection authorization rule for a hybrid connection by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String hybridConnectionName, String authorizationRuleName, Context context) {
@@ -372,18 +360,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, accept, context);
     }
 
-    /**
-     * Hybrid connection authorization rule for a hybrid connection by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName,
         String hybridConnectionName, String authorizationRuleName) {
@@ -439,20 +416,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an authorization rule for a hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The authorization rule parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String hybridConnectionName, String authorizationRuleName,
@@ -464,19 +428,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an authorization rule for a hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The authorization rule parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName,
         String hybridConnectionName, String authorizationRuleName, AuthorizationRuleInner parameters) {
@@ -525,19 +477,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a hybrid connection authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
         String hybridConnectionName, String authorizationRuleName, Context context) {
@@ -546,17 +486,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, context);
     }
 
-    /**
-     * Deletes a hybrid connection authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String hybridConnectionName,
         String authorizationRuleName) {
@@ -622,12 +552,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizationRuleInner> listAuthorizationRulesSinglePage(String resourceGroupName,
         String namespaceName, String hybridConnectionName) {
-        final String accept = "application/json";
-        Response<AuthorizationRuleListResult> res = service.listAuthorizationRulesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
-            hybridConnectionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAuthorizationRulesSinglePage(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE);
     }
 
     /**
@@ -653,37 +578,14 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Authorization rules for a hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthorizationRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName,
         String hybridConnectionName) {
-        return new PagedIterable<>(
-            () -> listAuthorizationRulesSinglePage(resourceGroupName, namespaceName, hybridConnectionName),
-            nextLink -> listAuthorizationRulesNextSinglePage(nextLink));
+        return listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE);
     }
 
-    /**
-     * Authorization rules for a hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthorizationRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName,
         String hybridConnectionName, Context context) {
@@ -734,19 +636,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Primary and secondary connection strings to the hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName,
         String hybridConnectionName, String authorizationRuleName, Context context) {
@@ -756,18 +646,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, accept, context);
     }
 
-    /**
-     * Primary and secondary connection strings to the hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String hybridConnectionName,
         String authorizationRuleName) {
@@ -821,20 +700,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings to the hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
         String hybridConnectionName, String authorizationRuleName, RegenerateAccessKeyParameters parameters,
@@ -846,19 +712,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             authorizationRuleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings to the hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String hybridConnectionName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
@@ -905,18 +759,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the description for the specified hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridConnectionInner> getWithResponse(String resourceGroupName, String namespaceName,
         String hybridConnectionName, Context context) {
@@ -925,17 +768,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             resourceGroupName, namespaceName, hybridConnectionName, accept, context);
     }
 
-    /**
-     * Returns the description for the specified hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridConnectionInner get(String resourceGroupName, String namespaceName, String hybridConnectionName) {
         return getWithResponse(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE).getValue();
@@ -985,19 +818,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a service hybrid connection. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param parameters Parameters supplied to create a hybrid connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String hybridConnectionName, HybridConnectionInner parameters, Context context) {
@@ -1008,18 +829,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a service hybrid connection. This operation is idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param parameters Parameters supplied to create a hybrid connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridConnectionInner createOrUpdate(String resourceGroupName, String namespaceName,
         String hybridConnectionName, HybridConnectionInner parameters) {
@@ -1064,18 +874,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName,
         String hybridConnectionName, Context context) {
@@ -1083,16 +882,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, hybridConnectionName, context);
     }
 
-    /**
-     * Deletes a hybrid connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String hybridConnectionName) {
         deleteWithResponse(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE);
@@ -1150,12 +940,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridConnectionInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<HybridConnectionListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -1180,33 +965,13 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the hybrid connection within the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HybridConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridConnectionInner> listByNamespace(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Lists the hybrid connection within the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HybridConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridConnectionInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
@@ -1246,11 +1011,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizationRuleInner> listAuthorizationRulesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AuthorizationRuleListResult> res
-            = service.listAuthorizationRulesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAuthorizationRulesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1304,11 +1065,7 @@ public final class HybridConnectionsClientImpl implements HybridConnectionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridConnectionInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HybridConnectionListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

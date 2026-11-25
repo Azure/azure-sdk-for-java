@@ -188,17 +188,7 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the AppComplianceAutomation scoping configuration of the specific report.
-     * 
-     * @param reportName Report Name.
-     * @param scopingConfigurationName The scoping configuration of the specific report.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation scoping configuration of the specific report along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopingConfigurationResourceInner> getWithResponse(String reportName,
         String scopingConfigurationName, Context context) {
@@ -207,16 +197,7 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
             scopingConfigurationName, accept, context);
     }
 
-    /**
-     * Get the AppComplianceAutomation scoping configuration of the specific report.
-     * 
-     * @param reportName Report Name.
-     * @param scopingConfigurationName The scoping configuration of the specific report.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation scoping configuration of the specific report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopingConfigurationResourceInner get(String reportName, String scopingConfigurationName) {
         return getWithResponse(reportName, scopingConfigurationName, Context.NONE).getValue();
@@ -266,19 +247,7 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the AppComplianceAutomation scoping configuration of the specific report.
-     * 
-     * @param reportName Report Name.
-     * @param scopingConfigurationName The scoping configuration of the specific report.
-     * @param properties Parameters for the create or update operation, this is a singleton resource, so please make
-     * sure you're using 'default' as the name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation scoping configuration of the specific report along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopingConfigurationResourceInner> createOrUpdateWithResponse(String reportName,
         String scopingConfigurationName, ScopingConfigurationResourceInner properties, Context context) {
@@ -288,18 +257,7 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
             scopingConfigurationName, contentType, accept, properties, context);
     }
 
-    /**
-     * Get the AppComplianceAutomation scoping configuration of the specific report.
-     * 
-     * @param reportName Report Name.
-     * @param scopingConfigurationName The scoping configuration of the specific report.
-     * @param properties Parameters for the create or update operation, this is a singleton resource, so please make
-     * sure you're using 'default' as the name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation scoping configuration of the specific report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopingConfigurationResourceInner createOrUpdate(String reportName, String scopingConfigurationName,
         ScopingConfigurationResourceInner properties) {
@@ -339,32 +297,14 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
         return deleteWithResponseAsync(reportName, scopingConfigurationName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Clean the AppComplianceAutomation scoping configuration of the specific report.
-     * 
-     * @param reportName Report Name.
-     * @param scopingConfigurationName The scoping configuration of the specific report.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String reportName, String scopingConfigurationName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName,
             scopingConfigurationName, context);
     }
 
-    /**
-     * Clean the AppComplianceAutomation scoping configuration of the specific report.
-     * 
-     * @param reportName Report Name.
-     * @param scopingConfigurationName The scoping configuration of the specific report.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String reportName, String scopingConfigurationName) {
         deleteWithResponse(reportName, scopingConfigurationName, Context.NONE);
@@ -417,11 +357,7 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScopingConfigurationResourceInner> listSinglePage(String reportName) {
-        final String accept = "application/json";
-        Response<ScopingConfigurationResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), reportName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(reportName, Context.NONE);
     }
 
     /**
@@ -443,32 +379,13 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns a list format of the singleton scopingConfiguration for a specified report.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScopingConfigurationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopingConfigurationResourceInner> list(String reportName) {
-        return new PagedIterable<>(() -> listSinglePage(reportName), nextLink -> listNextSinglePage(nextLink));
+        return list(reportName, Context.NONE);
     }
 
-    /**
-     * Returns a list format of the singleton scopingConfiguration for a specified report.
-     * 
-     * @param reportName Report Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScopingConfigurationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopingConfigurationResourceInner> list(String reportName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(reportName, context),
@@ -505,11 +422,7 @@ public final class ScopingConfigurationsClientImpl implements ScopingConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScopingConfigurationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScopingConfigurationResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

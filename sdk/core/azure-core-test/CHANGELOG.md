@@ -8,6 +8,14 @@
 
 ### Bugs Fixed
 
+- Automatic test-proxy installation now uses a per-user cache instead of a shared temporary path. On POSIX file
+  systems the cache must be owned by and accessible only to the current user. Downloads are checked against GitHub's
+  published SHA-256 digest, and the cached executable is verified before launch. Installation now happens only when a
+  test proxy needs to be started, so an already running test proxy is used without installing one.
+- Recording now fails closed if test-proxy sanitizer registration fails, including when a sanitizer is invalid.
+  Further requests are rejected and the recording session is discarded instead of saving data without the requested
+  redactions.
+
 ### Other Changes
 
 ## 1.27.0-beta.20 (2026-10-27)

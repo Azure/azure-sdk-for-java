@@ -62,10 +62,7 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     }
 
     public QuotaTransfer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTransfers()
-            .createOrUpdate(targetProvider, region, transferName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public QuotaTransfer create(Context context) {
@@ -86,10 +83,7 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     }
 
     public QuotaTransfer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTransfers()
-            .createOrUpdate(targetProvider, region, transferName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public QuotaTransfer apply(Context context) {
@@ -114,11 +108,7 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     }
 
     public QuotaTransfer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTransfers()
-            .getWithResponse(targetProvider, region, transferName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public QuotaTransfer refresh(Context context) {

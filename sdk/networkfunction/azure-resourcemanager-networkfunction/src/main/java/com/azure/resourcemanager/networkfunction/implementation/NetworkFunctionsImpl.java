@@ -26,8 +26,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     }
 
     public PagedIterable<Operation> listOperations() {
-        PagedIterable<OperationInner> inner = this.serviceClient().listOperations();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return this.listOperations(Context.NONE);
     }
 
     public PagedIterable<Operation> listOperations(Context context) {

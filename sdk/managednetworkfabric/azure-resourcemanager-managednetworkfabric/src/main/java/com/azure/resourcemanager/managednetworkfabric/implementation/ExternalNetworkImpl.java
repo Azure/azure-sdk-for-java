@@ -129,10 +129,7 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalNetworks()
-            .create(resourceGroupName, l3IsolationDomainName, externalNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExternalNetwork create(Context context) {
@@ -155,10 +152,7 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalNetworks()
-            .update(resourceGroupName, l3IsolationDomainName, externalNetworkName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExternalNetwork apply(Context context) {
@@ -184,11 +178,7 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExternalNetworks()
-            .getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExternalNetwork refresh(Context context) {

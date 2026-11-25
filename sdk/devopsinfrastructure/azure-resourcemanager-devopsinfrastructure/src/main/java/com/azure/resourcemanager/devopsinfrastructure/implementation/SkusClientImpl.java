@@ -141,11 +141,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceSkuInner> listByLocationSinglePage(String locationName) {
-        final String accept = "application/json";
-        Response<ResourceSkuListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), locationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(locationName, Context.NONE);
     }
 
     /**
@@ -167,31 +163,13 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ResourceSku resources by subscription ID.
-     * 
-     * @param locationName Name of the location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceSku list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> listByLocation(String locationName) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(locationName),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(locationName, Context.NONE);
     }
 
-    /**
-     * List ResourceSku resources by subscription ID.
-     * 
-     * @param locationName Name of the location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceSku list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> listByLocation(String locationName, Context context) {
         return new PagedIterable<>(() -> listByLocationSinglePage(locationName, context),
@@ -229,11 +207,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceSkuInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceSkuListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -62,12 +62,7 @@ public final class MetricsContainerResourceImpl
     }
 
     public MetricsContainerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsContainers()
-            .createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MetricsContainerResource create(Context context) {
@@ -91,12 +86,7 @@ public final class MetricsContainerResourceImpl
     }
 
     public MetricsContainerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsContainers()
-            .createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MetricsContainerResource apply(Context context) {
@@ -124,11 +114,7 @@ public final class MetricsContainerResourceImpl
     }
 
     public MetricsContainerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsContainers()
-            .getWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MetricsContainerResource refresh(Context context) {
