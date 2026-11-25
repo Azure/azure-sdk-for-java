@@ -15,7 +15,6 @@ Optional prebuilt sources JAR for local validation. Otherwise builds the selecte
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory)][string]$RepositoryRoot,
-    [Parameter(Mandatory)]
     [ValidatePattern('^sdk/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
     [string]$PackagePath,
     [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_.-]*$')][string]$PackageName,
@@ -33,10 +32,20 @@ $tool = (Resolve-Path -LiteralPath $ToolJar).Path
 if (-not (Test-Path -LiteralPath $tool -PathType Leaf)) {
     throw "Expected an executable Java API review JAR: $tool"
 }
-$package = (Resolve-Path -LiteralPath (Join-Path $root $PackagePath)).Path
 $sdkRoot = (Resolve-Path -LiteralPath (Join-Path $root 'sdk')).Path.TrimEnd('\', '/')
-if (-not $package.StartsWith("$sdkRoot$([IO.Path]::DirectorySeparatorChar)", [StringComparison]::Ordinal)) {
-    throw "Package path is outside the SDK directory: $PackagePath"
+if ($PackagePath) {
+    $package = (Resolve-Path -LiteralPath (Join-Path $root $PackagePath)).Path
+    if (-not $package.StartsWith("$sdkRoot$([IO.Path]::DirectorySeparatorChar)", [StringComparison]::Ordinal)) {
+        throw "Package path is outside the SDK directory: $PackagePath"
+    }
+    $relativePath = $PackagePath
+} else {
+    $packages = @(Get-ChildItem -Path (Join-Path $sdkRoot '*' $PackageName 'pom.xml') -File)
+    if ($packages.Count -ne 1) {
+        throw "Expected one package directory for $PackageName; found $($packages.Count)."
+    }
+    $package = $packages[0].Directory.FullName
+    $relativePath = [IO.Path]::GetRelativePath($root, $package).Replace('\', '/')
 }
 $pomPath = Join-Path $package 'pom.xml'
 if (-not (Test-Path -LiteralPath $pomPath -PathType Leaf)) {
@@ -50,7 +59,6 @@ if (-not $artifact -or $artifact.InnerText -ne $PackageName -or -not $version -o
     throw 'The package POM must declare the expected artifact ID and a literal project version.'
 }
 $packageVersion = $version.InnerText.Trim()
-$relativePath = $PackagePath
 $output = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputDirectory)
 if ($output.TrimEnd('\', '/') -eq $package.TrimEnd('\', '/') -or
     $output.TrimEnd('\', '/') -eq $root.TrimEnd('\', '/')) {
