@@ -192,18 +192,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsName The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingsInner> getWithResponse(String resourceGroupName, String workspaceName, String settingsName,
         Context context) {
@@ -212,17 +201,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
             resourceGroupName, workspaceName, settingsName, accept, context);
     }
 
-    /**
-     * Gets a setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsName The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SettingsInner get(String resourceGroupName, String workspaceName, String settingsName) {
         return getWithResponse(resourceGroupName, workspaceName, settingsName, Context.NONE).getValue();
@@ -271,19 +250,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsName The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba.
-     * @param settings The setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingsInner> updateWithResponse(String resourceGroupName, String workspaceName,
         String settingsName, SettingsInner settings, Context context) {
@@ -294,18 +261,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
             settings, context);
     }
 
-    /**
-     * Updates setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsName The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba.
-     * @param settings The setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SettingsInner update(String resourceGroupName, String workspaceName, String settingsName,
         SettingsInner settings) {
@@ -348,18 +304,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, settingsName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete setting of the product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsName The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String settingsName,
         Context context) {
@@ -367,16 +312,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, settingsName, context);
     }
 
-    /**
-     * Delete setting of the product.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsName The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String settingsName) {
         deleteWithResponse(resourceGroupName, workspaceName, settingsName, Context.NONE);
@@ -431,11 +367,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SettingsInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<SettingList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -459,33 +391,13 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of all the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingsInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List of all the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingsInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -521,10 +433,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SettingsInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SettingList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

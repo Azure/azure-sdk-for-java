@@ -200,18 +200,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AuthConfig of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AuthConfig of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthConfigInner> getWithResponse(String resourceGroupName, String containerAppName,
         String authConfigName, Context context) {
@@ -220,17 +209,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             resourceGroupName, containerAppName, authConfigName, accept, context);
     }
 
-    /**
-     * Get a AuthConfig of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AuthConfig of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthConfigInner get(String resourceGroupName, String containerAppName, String authConfigName) {
         return getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE).getValue();
@@ -281,20 +260,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update the AuthConfig for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration settings for the Azure ContainerApp Service Authentication / Authorization feature along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthConfigInner> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
         String authConfigName, AuthConfigInner authConfigEnvelope, Context context) {
@@ -305,18 +271,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             authConfigEnvelope, context);
     }
 
-    /**
-     * Create or update the AuthConfig for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration settings for the Azure ContainerApp Service Authentication / Authorization feature.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthConfigInner createOrUpdate(String resourceGroupName, String containerAppName, String authConfigName,
         AuthConfigInner authConfigEnvelope) {
@@ -361,18 +316,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Container App AuthConfig.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String containerAppName, String authConfigName,
         Context context) {
@@ -380,16 +324,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, authConfigName, context);
     }
 
-    /**
-     * Delete a Container App AuthConfig.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
         deleteWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE);
@@ -447,12 +382,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthConfigInner> listByContainerAppSinglePage(String resourceGroupName,
         String containerAppName) {
-        final String accept = "application/json";
-        Response<AuthConfigCollection> res
-            = service.listByContainerAppSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContainerAppSinglePage(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -477,33 +407,13 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Container App AuthConfigs in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container App AuthConfigs in a given resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthConfigInner> listByContainerApp(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(() -> listByContainerAppSinglePage(resourceGroupName, containerAppName),
-            nextLink -> listByContainerAppNextSinglePage(nextLink));
+        return listByContainerApp(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * Get the Container App AuthConfigs in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container App AuthConfigs in a given resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthConfigInner> listByContainerApp(String resourceGroupName, String containerAppName,
         Context context) {
@@ -547,11 +457,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthConfigInner> listByContainerAppNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AuthConfigCollection> res
-            = service.listByContainerAppNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContainerAppNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -88,11 +88,7 @@ public final class ManagedCertificateImpl
     }
 
     public ManagedCertificate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedCertificates()
-            .createOrUpdate(resourceGroupName, environmentName, managedCertificateName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedCertificate create(Context context) {
@@ -115,12 +111,7 @@ public final class ManagedCertificateImpl
     }
 
     public ManagedCertificate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedCertificates()
-            .updateWithResponse(resourceGroupName, environmentName, managedCertificateName,
-                updateManagedCertificateEnvelope, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedCertificate apply(Context context) {
@@ -148,11 +139,7 @@ public final class ManagedCertificateImpl
     }
 
     public ManagedCertificate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedCertificates()
-            .getWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedCertificate refresh(Context context) {

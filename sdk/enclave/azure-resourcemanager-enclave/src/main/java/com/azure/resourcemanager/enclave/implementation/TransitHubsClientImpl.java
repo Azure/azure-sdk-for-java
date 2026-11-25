@@ -255,18 +255,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TransitHubResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransitHubResourceInner> getWithResponse(String resourceGroupName, String communityName,
         String transitHubName, Context context) {
@@ -275,17 +264,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             resourceGroupName, communityName, transitHubName, accept, context);
     }
 
-    /**
-     * Get a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TransitHubResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransitHubResourceInner get(String resourceGroupName, String communityName, String transitHubName) {
         return getWithResponse(resourceGroupName, communityName, transitHubName, Context.NONE).getValue();
@@ -330,11 +309,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String communityName,
         String transitHubName, TransitHubResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, transitHubName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, communityName, transitHubName, resource, Context.NONE);
     }
 
     /**
@@ -382,40 +357,14 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TransitHubResourceInner>, TransitHubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, String transitHubName, TransitHubResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, communityName, transitHubName, resource);
-        return this.client.<TransitHubResourceInner, TransitHubResourceInner>getLroResult(response,
-            TransitHubResourceInner.class, TransitHubResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, communityName, transitHubName, resource, Context.NONE);
     }
 
-    /**
-     * Create a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TransitHubResourceInner>, TransitHubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, String transitHubName, TransitHubResourceInner resource,
@@ -445,42 +394,19 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransitHubResourceInner createOrUpdate(String resourceGroupName, String communityName, String transitHubName,
         TransitHubResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, transitHubName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, communityName, transitHubName, resource, Context.NONE);
     }
 
-    /**
-     * Create a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransitHubResourceInner createOrUpdate(String resourceGroupName, String communityName, String transitHubName,
         TransitHubResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, transitHubName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, communityName, transitHubName, resource, context));
     }
 
     /**
@@ -522,11 +448,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String communityName,
         String transitHubName, TransitHubPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, transitHubName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, communityName, transitHubName, properties, Context.NONE);
     }
 
     /**
@@ -574,40 +496,14 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TransitHubResourceInner>, TransitHubResourceInner> beginUpdate(
         String resourceGroupName, String communityName, String transitHubName, TransitHubPatchModel properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, communityName, transitHubName, properties);
-        return this.client.<TransitHubResourceInner, TransitHubResourceInner>getLroResult(response,
-            TransitHubResourceInner.class, TransitHubResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, communityName, transitHubName, properties, Context.NONE);
     }
 
-    /**
-     * Update a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TransitHubResourceInner>, TransitHubResourceInner> beginUpdate(
         String resourceGroupName, String communityName, String transitHubName, TransitHubPatchModel properties,
@@ -637,41 +533,19 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransitHubResourceInner update(String resourceGroupName, String communityName, String transitHubName,
         TransitHubPatchModel properties) {
-        return beginUpdate(resourceGroupName, communityName, transitHubName, properties).getFinalResult();
+        return update(resourceGroupName, communityName, transitHubName, properties, Context.NONE);
     }
 
-    /**
-     * Update a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransitHubResourceInner update(String resourceGroupName, String communityName, String transitHubName,
         TransitHubPatchModel properties, Context context) {
-        return beginUpdate(resourceGroupName, communityName, transitHubName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, communityName, transitHubName, properties, context));
     }
 
     /**
@@ -708,8 +582,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String communityName,
         String transitHubName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, transitHubName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, communityName, transitHubName, Context.NONE);
     }
 
     /**
@@ -751,36 +624,14 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         String transitHubName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, communityName, transitHubName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, communityName, transitHubName, Context.NONE);
     }
 
-    /**
-     * Delete a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         String transitHubName, Context context) {
@@ -805,35 +656,16 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, String transitHubName) {
-        beginDelete(resourceGroupName, communityName, transitHubName).getFinalResult();
+        delete(resourceGroupName, communityName, transitHubName, Context.NONE);
     }
 
-    /**
-     * Delete a TransitHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param transitHubName The name of the TransitHub Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, String transitHubName, Context context) {
-        beginDelete(resourceGroupName, communityName, transitHubName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, communityName, transitHubName, context));
     }
 
     /**
@@ -890,12 +722,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TransitHubResourceInner> listByCommunityResourceSinglePage(String resourceGroupName,
         String communityName) {
-        final String accept = "application/json";
-        Response<TransitHubResourceListResult> res
-            = service.listByCommunityResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, communityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCommunityResourceSinglePage(resourceGroupName, communityName, Context.NONE);
     }
 
     /**
@@ -920,34 +747,14 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List TransitHubResource resources by CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TransitHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransitHubResourceInner> listByCommunityResource(String resourceGroupName,
         String communityName) {
-        return new PagedIterable<>(() -> listByCommunityResourceSinglePage(resourceGroupName, communityName),
-            nextLink -> listByCommunityResourceNextSinglePage(nextLink));
+        return listByCommunityResource(resourceGroupName, communityName, Context.NONE);
     }
 
-    /**
-     * List TransitHubResource resources by CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TransitHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransitHubResourceInner> listByCommunityResource(String resourceGroupName,
         String communityName, Context context) {
@@ -1002,11 +809,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TransitHubResourceInner> listBySubscriptionSinglePage(String communityName) {
-        final String accept = "application/json";
-        Response<TransitHubResourceListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), communityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(communityName, Context.NONE);
     }
 
     /**
@@ -1028,31 +831,13 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List TransitHubResource resources by subscription ID.
-     * 
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TransitHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransitHubResourceInner> listBySubscription(String communityName) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(communityName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(communityName, Context.NONE);
     }
 
-    /**
-     * List TransitHubResource resources by subscription ID.
-     * 
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TransitHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransitHubResourceInner> listBySubscription(String communityName, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(communityName, context),
@@ -1091,11 +876,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TransitHubResourceInner> listByCommunityResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TransitHubResourceListResult> res
-            = service.listByCommunityResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCommunityResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1150,11 +931,7 @@ public final class TransitHubsClientImpl implements TransitHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TransitHubResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TransitHubResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

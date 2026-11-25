@@ -162,17 +162,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
         return listApprovedSchemasWithResponseAsync(pipeline).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the list of approved schemas available for Azure Data Transfer. This operation has reached end of life
-     * support starting version 2025-05-30-preview. For schema support please create and use a FlowProfile resource.
-     * 
-     * @param pipeline The request payload for listing approved schemas.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schemas list result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemasListResultInner> listApprovedSchemasWithResponse(ListApprovedSchemasRequest pipeline,
         Context context) {
@@ -182,16 +172,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
             accept, pipeline, context);
     }
 
-    /**
-     * Retrieves the list of approved schemas available for Azure Data Transfer. This operation has reached end of life
-     * support starting version 2025-05-30-preview. For schema support please create and use a FlowProfile resource.
-     * 
-     * @param pipeline The request payload for listing approved schemas.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schemas list result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemasListResultInner listApprovedSchemas(ListApprovedSchemasRequest pipeline) {
         return listApprovedSchemasWithResponse(pipeline, Context.NONE).getValue();
@@ -231,16 +212,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
         return listFlowProfilesWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves a list of FlowProfile resources associated with a specified pipeline.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow profiles list result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FlowProfilesListResultInner> listFlowProfilesWithResponse(ListFlowProfilesRequest body,
         Context context) {
@@ -250,15 +222,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
             body, context);
     }
 
-    /**
-     * Retrieves a list of FlowProfile resources associated with a specified pipeline.
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow profiles list result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowProfilesListResultInner listFlowProfiles(ListFlowProfilesRequest body) {
         return listFlowProfilesWithResponse(body, Context.NONE).getValue();
@@ -301,18 +265,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
         return validateSchemaWithResponseAsync(schema).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates the structure and content of a schema for use in Azure Data Transfer. This operation has reached end of
-     * life support starting version 2025-05-30-preview. For schema support please create and use a FlowProfile
-     * resource.
-     * 
-     * @param schema The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the schema validation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateSchemaResultInner> validateSchemaWithResponse(Schema schema, Context context) {
         final String contentType = "application/json";
@@ -321,17 +274,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
             schema, context);
     }
 
-    /**
-     * Validates the structure and content of a schema for use in Azure Data Transfer. This operation has reached end of
-     * life support starting version 2025-05-30-preview. For schema support please create and use a FlowProfile
-     * resource.
-     * 
-     * @param schema The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the schema validation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateSchemaResultInner validateSchema(Schema schema) {
         return validateSchemaWithResponse(schema, Context.NONE).getValue();
@@ -373,17 +316,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
         return listPipelineMetadataWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the pipeline metadata associated with a specified pipeline.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response body for retrieving Pipeline metadata for a provided pipeline along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListPipelineMetadataResultInner> listPipelineMetadataWithResponse(ListPipelineMetadataRequest body,
         Context context) {
@@ -393,15 +326,7 @@ public final class AzureDataTransfersClientImpl implements AzureDataTransfersCli
             accept, body, context);
     }
 
-    /**
-     * Retrieves the pipeline metadata associated with a specified pipeline.
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response body for retrieving Pipeline metadata for a provided pipeline.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListPipelineMetadataResultInner listPipelineMetadata(ListPipelineMetadataRequest body) {
         return listPipelineMetadataWithResponse(body, Context.NONE).getValue();

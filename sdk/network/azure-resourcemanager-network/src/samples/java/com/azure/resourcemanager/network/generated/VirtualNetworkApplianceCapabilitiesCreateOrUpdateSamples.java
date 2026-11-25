@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkApplianceCapabilit
  */
 public final class VirtualNetworkApplianceCapabilitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate_PLGateway.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate_PLGateway.json
      */
     /**
      * Sample code: Create virtual network appliance PLGateway capability.
@@ -34,7 +34,7 @@ public final class VirtualNetworkApplianceCapabilitiesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate_NAT64.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate_NAT64.json
      */
     /**
      * Sample code: Create virtual network appliance NAT64 capability.
@@ -51,7 +51,7 @@ public final class VirtualNetworkApplianceCapabilitiesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate.json
      */
     /**
      * Sample code: Create virtual network appliance PLGatewayFastpath capability.
@@ -69,7 +69,7 @@ public final class VirtualNetworkApplianceCapabilitiesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate_PLIPForwarders.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkApplianceCapabilities_CreateOrUpdate_PLIPForwarders.json
      */
     /**
      * Sample code: Create virtual network appliance PLIPForwarders capability.

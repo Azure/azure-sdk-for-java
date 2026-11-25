@@ -12,8 +12,8 @@ public final class ExtensionValueListResultV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionValueListResultV2 model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"extensionUris\":[\"mzznrtffyaqitmhh\",\"ioqaqhvs\",\"ufuqyrx\"],\"extensionSignatureUri\":\"lcgqlsismj\",\"operatingSystem\":\"rddga\",\"architecture\":[\"hiosrsjuiv\",\"cdisyir\",\"xzhczexrxz\"],\"version\":\"jrtrhqvwrevk\",\"extensionType\":\"nlnzonzlrpi\",\"publisher\":\"wncvjtszcofiz\"},\"id\":\"tdhgbjkvrelj\",\"name\":\"amurvzmlovuan\",\"type\":\"shcxlpmjerbdk\"}],\"nextLink\":\"vidizozsdb\"}")
+            "{\"value\":[{\"properties\":{\"extensionUris\":[\"jhlnymzotqyryu\",\"cbm\",\"qvx\"],\"extensionSignatureUri\":\"wfgtayxonsup\",\"operatingSystem\":\"jlzqnhc\",\"architecture\":[\"ltnzoibgsxg\"],\"version\":\"fyq\",\"extensionType\":\"mpqoxw\",\"publisher\":\"fdbxiqxeiiqbim\"},\"id\":\"mwwinhehfqpofv\",\"name\":\"bcblemb\",\"type\":\"kbwvqvxkdiv\"},{\"properties\":{\"extensionUris\":[\"b\",\"tswbzuwfmd\"],\"extensionSignatureUri\":\"agegiz\",\"operatingSystem\":\"jfelisdjubggbqig\",\"architecture\":[\"bsazgakg\",\"cyrcmjdmspo\"],\"version\":\"pv\",\"extensionType\":\"rylniofrzg\",\"publisher\":\"jed\"},\"id\":\"tkvnlvxbcuiiznkt\",\"name\":\"f\",\"type\":\"nsnvpd\"}],\"nextLink\":\"mik\"}")
             .toObject(ExtensionValueListResultV2.class);
-        Assertions.assertEquals("vidizozsdb", model.nextLink());
+        Assertions.assertEquals("mik", model.nextLink());
     }
 }

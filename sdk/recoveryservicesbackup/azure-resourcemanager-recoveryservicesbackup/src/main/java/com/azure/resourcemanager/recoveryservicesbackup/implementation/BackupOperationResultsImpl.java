@@ -29,7 +29,7 @@ public final class BackupOperationResultsImpl implements BackupOperationResults 
     }
 
     public void get(String vaultName, String resourceGroupName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, operationId);
+        this.getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE);
     }
 
     private BackupOperationResultsClient serviceClient() {

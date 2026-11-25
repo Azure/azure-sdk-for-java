@@ -21,7 +21,7 @@ public final class RaiBindingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"boundResourceId\":\"jjaojpzngdrzige\",\"targetPolicyName\":\"wsadsqyu\"},\"etag\":\"khwqdmohheuyuu\",\"tags\":{\"li\":\"yevyigdeipnfizej\",\"dapqokhdy\":\"acndjzwhaj\",\"e\":\"cradxsew\"},\"id\":\"fapmqnmelyksy\",\"name\":\"ihiclmsln\",\"type\":\"n\"}";
+            = "{\"properties\":{\"boundResourceId\":\"qnirmidtvhjcgs\",\"targetPolicyName\":\"fbqyg\"},\"etag\":\"rlfojlclpum\",\"tags\":{\"rvykduumwbcu\":\"bod\",\"e\":\"j\"},\"id\":\"dxtsaujtc\",\"name\":\"ojybolqoxuptsli\",\"type\":\"vmlkwkzlinv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class RaiBindingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBinding response = manager.raiBindings()
-            .getWithResponse("idyli", "ajklnac", "dnxqeonm", com.azure.core.util.Context.NONE)
+            .getWithResponse("zxpus", "dmwnfhmjusuqn", "ushvlxudhe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jjaojpzngdrzige", response.properties().boundResourceId());
-        Assertions.assertEquals("wsadsqyu", response.properties().targetPolicyName());
-        Assertions.assertEquals("yevyigdeipnfizej", response.tags().get("li"));
+        Assertions.assertEquals("qnirmidtvhjcgs", response.properties().boundResourceId());
+        Assertions.assertEquals("fbqyg", response.properties().targetPolicyName());
+        Assertions.assertEquals("bod", response.tags().get("rvykduumwbcu"));
     }
 }

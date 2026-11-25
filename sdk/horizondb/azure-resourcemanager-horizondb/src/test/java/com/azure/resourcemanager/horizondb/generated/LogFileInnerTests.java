@@ -11,7 +11,7 @@ public final class LogFileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogFileInner model = BinaryData.fromString(
-            "{\"properties\":{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-05-01T16:56:13Z\",\"lastModifiedAtUtc\":\"2021-12-07T09:36:22Z\",\"retentionExpiresAtUtc\":\"2021-03-16T08:43:43Z\",\"isMutable\":false,\"sizeInKilobytes\":4038204930571080777,\"pool\":\"qmqhldvriii\",\"node\":\"jnalghf\",\"role\":\"ReadWrite\"},\"id\":\"vsexsowuelu\",\"name\":\"hhahhxvrhmzkwpjg\",\"type\":\"wspughftqsxhqx\"}")
+            "{\"properties\":{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-10-08T05:52:02Z\",\"lastModifiedAtUtc\":\"2021-07-23T22:47:29Z\",\"retentionExpiresAtUtc\":\"2021-03-11T23:46:52Z\",\"isMutable\":true,\"sizeInKilobytes\":2623062511310512908,\"pool\":\"zirtxdyuxzejntps\",\"node\":\"wgioilqukry\",\"role\":\"ReadOnly\"},\"id\":\"qmi\",\"name\":\"ox\",\"type\":\"rgguf\"}")
             .toObject(LogFileInner.class);
     }
 }

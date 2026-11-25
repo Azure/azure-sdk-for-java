@@ -178,21 +178,7 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the GroupQuotas enforcement settings for the ResourceProvider/location. The locations, where GroupQuota
-     * enforcement is not enabled will return Not Found.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotas enforcement settings for the ResourceProvider/location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupQuotasEnforcementStatusInner> getWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, Context context) {
@@ -201,20 +187,7 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
             groupQuotaName, resourceProviderName, location, accept, context);
     }
 
-    /**
-     * Gets the GroupQuotas enforcement settings for the ResourceProvider/location. The locations, where GroupQuota
-     * enforcement is not enabled will return Not Found.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotas enforcement settings for the ResourceProvider/location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEnforcementStatusInner get(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location) {
@@ -283,9 +256,8 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            groupQuotaName, resourceProviderName, location, accept, locationSettings, Context.NONE);
+        return createOrUpdateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location,
+            locationSettings, Context.NONE);
     }
 
     /**
@@ -413,72 +385,24 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
      * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
+    private SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
         beginCreateOrUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName,
             String location, GroupQuotasEnforcementStatusInner locationSettings) {
-        Response<BinaryData> response = createOrUpdateWithResponse(managementGroupId, groupQuotaName,
-            resourceProviderName, location, locationSettings);
-        return this.client.<GroupQuotasEnforcementStatusInner, GroupQuotasEnforcementStatusInner>getLroResult(response,
-            GroupQuotasEnforcementStatusInner.class, GroupQuotasEnforcementStatusInner.class, Context.NONE);
+        return beginCreateOrUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
         beginCreateOrUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName,
             String location) {
         final GroupQuotasEnforcementStatusInner locationSettings = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(managementGroupId, groupQuotaName,
-            resourceProviderName, location, locationSettings);
-        return this.client.<GroupQuotasEnforcementStatusInner, GroupQuotasEnforcementStatusInner>getLroResult(response,
-            GroupQuotasEnforcementStatusInner.class, GroupQuotasEnforcementStatusInner.class, Context.NONE);
+        return beginCreateOrUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param locationSettings The GroupQuota body details for creation or update of a GroupQuota entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
         beginCreateOrUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName,
@@ -549,66 +473,22 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
             locationSettings).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEnforcementStatusInner createOrUpdate(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location) {
         final GroupQuotasEnforcementStatusInner locationSettings = null;
-        return beginCreateOrUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings)
-            .getFinalResult();
+        return createOrUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param locationSettings The GroupQuota body details for creation or update of a GroupQuota entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEnforcementStatusInner createOrUpdate(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings,
         Context context) {
-        return beginCreateOrUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(managementGroupId, groupQuotaName,
+            resourceProviderName, location, locationSettings, context));
     }
 
     /**
@@ -671,9 +551,8 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
-            groupQuotaName, resourceProviderName, location, accept, locationSettings, Context.NONE);
+        return updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
     /**
@@ -801,71 +680,23 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
      * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner> beginUpdate(
+    private SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner> beginUpdate(
         String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
         GroupQuotasEnforcementStatusInner locationSettings) {
-        Response<BinaryData> response
-            = updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings);
-        return this.client.<GroupQuotasEnforcementStatusInner, GroupQuotasEnforcementStatusInner>getLroResult(response,
-            GroupQuotasEnforcementStatusInner.class, GroupQuotasEnforcementStatusInner.class, Context.NONE);
+        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
         beginUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName, String location) {
         final GroupQuotasEnforcementStatusInner locationSettings = null;
-        Response<BinaryData> response
-            = updateWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings);
-        return this.client.<GroupQuotasEnforcementStatusInner, GroupQuotasEnforcementStatusInner>getLroResult(response,
-            GroupQuotasEnforcementStatusInner.class, GroupQuotasEnforcementStatusInner.class, Context.NONE);
+        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param locationSettings The GroupQuota body details for creation or update of a GroupQuota entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner> beginUpdate(
         String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
@@ -938,65 +769,21 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEnforcementStatusInner update(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location) {
         final GroupQuotasEnforcementStatusInner locationSettings = null;
-        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings)
-            .getFinalResult();
+        return update(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings,
+            Context.NONE);
     }
 
-    /**
-     * Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-     * will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The
-     * subscriptions cannot request quota at subscription level since it is now part of an enforced group.
-     * The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then
-     * submit a groupQuotaLimit request for the specific resource - provider/location/resource.
-     * Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota
-     * Enforcement -
-     * 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example -
-     * GroupQuotaSubscriptions_Delete).
-     * 2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param locationSettings The GroupQuota body details for creation or update of a GroupQuota entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuota Enforcement status for a Azure Location/Region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupQuotasEnforcementStatusInner update(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings,
         Context context) {
-        return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings, context));
     }
 }

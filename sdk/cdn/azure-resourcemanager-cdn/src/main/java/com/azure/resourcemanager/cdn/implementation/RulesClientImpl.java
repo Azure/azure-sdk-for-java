@@ -127,20 +127,7 @@ public final class RulesClientImpl implements RulesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleInner>> getWithResponseAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName) {
@@ -216,78 +203,27 @@ public final class RulesClientImpl implements RulesClient {
             resourceGroupName, profileName, ruleSetName, ruleName, accept, context);
     }
 
-    /**
-     * Gets an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> getAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
         return getWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> getWithResponse(String resourceGroupName, String profileName, String ruleSetName,
         String ruleName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).block();
     }
 
-    /**
-     * Gets an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
         return getWithResponse(resourceGroupName, profileName, ruleSetName, ruleName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleInner rule) {
@@ -378,21 +314,7 @@ public final class RulesClientImpl implements RulesClient {
             resourceGroupName, profileName, ruleSetName, ruleName, contentType, accept, rule, context);
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleInner rule) {
@@ -428,43 +350,14 @@ public final class RulesClientImpl implements RulesClient {
             RuleInner.class, context);
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleInner rule) {
         return this.beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).getSyncPoller();
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleInner rule, Context context) {
@@ -472,21 +365,7 @@ public final class RulesClientImpl implements RulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> createAsync(String resourceGroupName, String profileName, String ruleSetName,
         String ruleName, RuleInner rule) {
@@ -517,62 +396,21 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner create(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
         RuleInner rule) {
         return createAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).block();
     }
 
-    /**
-     * Creates a new delivery rule within the specified rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param rule The delivery rule properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner create(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
         RuleInner rule, Context context) {
         return createAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context).block();
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties) {
@@ -665,21 +503,7 @@ public final class RulesClientImpl implements RulesClient {
             resourceGroupName, profileName, ruleSetName, ruleName, contentType, accept, ruleUpdateProperties, context);
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties) {
@@ -715,21 +539,7 @@ public final class RulesClientImpl implements RulesClient {
             RuleInner.class, context);
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties) {
@@ -737,22 +547,7 @@ public final class RulesClientImpl implements RulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties, Context context) {
@@ -761,21 +556,7 @@ public final class RulesClientImpl implements RulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> updateAsync(String resourceGroupName, String profileName, String ruleSetName,
         String ruleName, RuleUpdateParameters ruleUpdateProperties) {
@@ -807,41 +588,14 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner update(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
         RuleUpdateParameters ruleUpdateProperties) {
         return updateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties).block();
     }
 
-    /**
-     * Updates an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleInner update(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
         RuleUpdateParameters ruleUpdateProperties, Context context) {
@@ -849,19 +603,7 @@ public final class RulesClientImpl implements RulesClient {
             .block();
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName) {
@@ -935,19 +677,7 @@ public final class RulesClientImpl implements RulesClient {
             resourceGroupName, profileName, ruleSetName, ruleName, context);
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName) {
@@ -981,58 +711,21 @@ public final class RulesClientImpl implements RulesClient {
             context);
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String ruleSetName, String ruleName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
         return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).last()
@@ -1060,36 +753,13 @@ public final class RulesClientImpl implements RulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
         deleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).block();
     }
 
-    /**
-     * Deletes an existing delivery rule within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
         Context context) {
@@ -1183,18 +853,7 @@ public final class RulesClientImpl implements RulesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the existing delivery rules within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RuleInner> listByRuleSetAsync(String resourceGroupName, String profileName, String ruleSetName) {
         return new PagedFlux<>(() -> listByRuleSetSinglePageAsync(resourceGroupName, profileName, ruleSetName),
@@ -1221,36 +880,13 @@ public final class RulesClientImpl implements RulesClient {
             nextLink -> listByRuleSetNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the existing delivery rules within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> listByRuleSet(String resourceGroupName, String profileName, String ruleSetName) {
         return new PagedIterable<>(listByRuleSetAsync(resourceGroupName, profileName, ruleSetName));
     }
 
-    /**
-     * Lists all of the existing delivery rules within a rule set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Rule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> listByRuleSet(String resourceGroupName, String profileName, String ruleSetName,
         Context context) {

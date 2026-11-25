@@ -276,24 +276,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             encodedMetricNamespace, encodedMetricName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a metric configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param encodedMetricName Tilde encoding is used for the metric name in the URL path. It is similar to percent
-     * encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. The original metric name is provided
-     * in `properties.metricName`.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricConfigurationResourceInner> getWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String encodedMetricNamespace,
@@ -304,23 +287,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             encodedMetricName, accept, context);
     }
 
-    /**
-     * Gets a metric configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param encodedMetricName Tilde encoding is used for the metric name in the URL path. It is similar to percent
-     * encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. The original metric name is provided
-     * in `properties.metricName`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricConfigurationResourceInner get(String resourceGroupName, String azureMonitorWorkspaceName,
         String metricsContainerName, String encodedMetricNamespace, String encodedMetricName) {
@@ -387,25 +354,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             encodedMetricNamespace, encodedMetricName, resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a metric configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param encodedMetricName Tilde encoding is used for the metric name in the URL path. It is similar to percent
-     * encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. The original metric name is provided
-     * in `properties.metricName`.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric configuration in an Azure Monitor Workspace metric namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricConfigurationResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String encodedMetricNamespace,
@@ -417,24 +366,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             encodedMetricNamespace, encodedMetricName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates a metric configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param encodedMetricName Tilde encoding is used for the metric name in the URL path. It is similar to percent
-     * encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. The original metric name is provided
-     * in `properties.metricName`.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric configuration in an Azure Monitor Workspace metric namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricConfigurationResourceInner createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
         String metricsContainerName, String encodedMetricNamespace, String encodedMetricName,
@@ -494,24 +426,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             encodedMetricNamespace, encodedMetricName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a metric configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param encodedMetricName Tilde encoding is used for the metric name in the URL path. It is similar to percent
-     * encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. The original metric name is provided
-     * in `properties.metricName`.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         String metricsContainerName, String encodedMetricNamespace, String encodedMetricName, Context context) {
@@ -520,22 +435,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             encodedMetricNamespace, encodedMetricName, context);
     }
 
-    /**
-     * Deletes a metric configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param encodedMetricName Tilde encoding is used for the metric name in the URL path. It is similar to percent
-     * encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. The original metric name is provided
-     * in `properties.metricName`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureMonitorWorkspaceName, String metricsContainerName,
         String encodedMetricNamespace, String encodedMetricName) {
@@ -645,12 +545,8 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricConfigurationResourceInner> listByMetricNamespaceSinglePage(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String encodedMetricNamespace, String filter) {
-        final String accept = "application/json";
-        Response<MetricConfigurationResourceListResult> res = service.listByMetricNamespaceSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            azureMonitorWorkspaceName, metricsContainerName, encodedMetricNamespace, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMetricNamespaceSinglePage(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
+            encodedMetricNamespace, filter, Context.NONE);
     }
 
     /**
@@ -682,49 +578,16 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists metrics in a metric namespace. Resource properties may be omitted
-     * in collection responses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricConfigurationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricConfigurationResourceInner> listByMetricNamespace(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String encodedMetricNamespace) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByMetricNamespaceSinglePage(resourceGroupName, azureMonitorWorkspaceName,
-            metricsContainerName, encodedMetricNamespace, filter),
-            nextLink -> listByMetricNamespaceNextSinglePage(nextLink));
+        return listByMetricNamespace(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
+            encodedMetricNamespace, filter, Context.NONE);
     }
 
-    /**
-     * Lists metrics in a metric namespace. Resource properties may be omitted
-     * in collection responses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param encodedMetricNamespace Tilde encoding is used for the metric namespace in the URL path. It is similar to
-     * percent encoding but uses `~` instead of `%`. For example, `/` is encoded as `~2F`. Metric configurations provide
-     * the original namespace in `properties.namespace`.
-     * @param filter An OData filter for source metric resource IDs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricConfigurationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricConfigurationResourceInner> listByMetricNamespace(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String encodedMetricNamespace, String filter,
@@ -818,12 +681,8 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricConfigurationResourceInner> listByMetricsContainerSinglePage(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String filter) {
-        final String accept = "application/json";
-        Response<PagedMetricConfigurationResource> res = service.listByMetricsContainerSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName,
-            metricsContainerName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMetricsContainerSinglePage(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
+            filter, Context.NONE);
     }
 
     /**
@@ -851,40 +710,16 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists metrics across all namespaces in a metrics container. Resource
-     * properties may be omitted in collection responses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MetricConfigurationResource items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricConfigurationResourceInner> listByMetricsContainer(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByMetricsContainerSinglePage(resourceGroupName, azureMonitorWorkspaceName,
-            metricsContainerName, filter), nextLink -> listByMetricsContainerNextSinglePage(nextLink));
+        return listByMetricsContainer(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, filter,
+            Context.NONE);
     }
 
-    /**
-     * Lists metrics across all namespaces in a metrics container. Resource
-     * properties may be omitted in collection responses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param metricsContainerName The name of the MetricsContainer.
-     * @param filter An OData filter for source metric resource IDs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MetricConfigurationResource items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricConfigurationResourceInner> listByMetricsContainer(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName, String filter, Context context) {
@@ -926,11 +761,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricConfigurationResourceInner> listByMetricNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetricConfigurationResourceListResult> res
-            = service.listByMetricNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMetricNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -986,11 +817,7 @@ public final class MetricConfigurationsClientImpl implements MetricConfiguration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricConfigurationResourceInner> listByMetricsContainerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PagedMetricConfigurationResource> res
-            = service.listByMetricsContainerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMetricsContainerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -253,17 +253,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Supercomputer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupercomputerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String supercomputerName, Context context) {
@@ -272,16 +262,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             this.client.getSubscriptionId(), resourceGroupName, supercomputerName, accept, context);
     }
 
-    /**
-     * Get a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Supercomputer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupercomputerInner getByResourceGroup(String resourceGroupName, String supercomputerName) {
         return getByResourceGroupWithResponse(resourceGroupName, supercomputerName, Context.NONE).getValue();
@@ -324,11 +305,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String supercomputerName,
         SupercomputerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, supercomputerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, supercomputerName, resource, Context.NONE);
     }
 
     /**
@@ -373,37 +350,14 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             SupercomputerInner.class, SupercomputerInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SupercomputerInner>, SupercomputerInner> beginCreateOrUpdate(String resourceGroupName,
         String supercomputerName, SupercomputerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, supercomputerName, resource);
-        return this.client.<SupercomputerInner, SupercomputerInner>getLroResult(response, SupercomputerInner.class,
-            SupercomputerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, supercomputerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SupercomputerInner>, SupercomputerInner> beginCreateOrUpdate(String resourceGroupName,
         String supercomputerName, SupercomputerInner resource, Context context) {
@@ -431,39 +385,19 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupercomputerInner createOrUpdate(String resourceGroupName, String supercomputerName,
         SupercomputerInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, supercomputerName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, supercomputerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupercomputerInner createOrUpdate(String resourceGroupName, String supercomputerName,
         SupercomputerInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, supercomputerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, supercomputerName, resource, context));
     }
 
     /**
@@ -503,11 +437,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String supercomputerName,
         SupercomputerInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, supercomputerName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, supercomputerName, properties, Context.NONE);
     }
 
     /**
@@ -552,37 +482,14 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             SupercomputerInner.class, SupercomputerInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SupercomputerInner>, SupercomputerInner> beginUpdate(String resourceGroupName,
         String supercomputerName, SupercomputerInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, supercomputerName, properties);
-        return this.client.<SupercomputerInner, SupercomputerInner>getLroResult(response, SupercomputerInner.class,
-            SupercomputerInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, supercomputerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SupercomputerInner>, SupercomputerInner> beginUpdate(String resourceGroupName,
         String supercomputerName, SupercomputerInner properties, Context context) {
@@ -609,39 +516,19 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupercomputerInner update(String resourceGroupName, String supercomputerName,
         SupercomputerInner properties) {
-        return beginUpdate(resourceGroupName, supercomputerName, properties).getFinalResult();
+        return update(resourceGroupName, supercomputerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supercomputer tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupercomputerInner update(String resourceGroupName, String supercomputerName, SupercomputerInner properties,
         Context context) {
-        return beginUpdate(resourceGroupName, supercomputerName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, supercomputerName, properties, context));
     }
 
     /**
@@ -675,8 +562,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String supercomputerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, supercomputerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, supercomputerName, Context.NONE);
     }
 
     /**
@@ -714,33 +600,13 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String supercomputerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, supercomputerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, supercomputerName, Context.NONE);
     }
 
-    /**
-     * Delete a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String supercomputerName,
         Context context) {
@@ -764,33 +630,16 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String supercomputerName) {
-        beginDelete(resourceGroupName, supercomputerName).getFinalResult();
+        delete(resourceGroupName, supercomputerName, Context.NONE);
     }
 
-    /**
-     * Delete a Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String supercomputerName, Context context) {
-        beginDelete(resourceGroupName, supercomputerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, supercomputerName, context));
     }
 
     /**
@@ -840,11 +689,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SupercomputerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SupercomputerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -866,31 +711,13 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Supercomputer resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Supercomputer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupercomputerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Supercomputer resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Supercomputer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupercomputerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -938,11 +765,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SupercomputerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SupercomputerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -963,27 +786,13 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Supercomputer resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Supercomputer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupercomputerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Supercomputer resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Supercomputer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupercomputerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1022,11 +831,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SupercomputerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SupercomputerListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1080,11 +885,7 @@ public final class SupercomputersClientImpl implements SupercomputersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SupercomputerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SupercomputerListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

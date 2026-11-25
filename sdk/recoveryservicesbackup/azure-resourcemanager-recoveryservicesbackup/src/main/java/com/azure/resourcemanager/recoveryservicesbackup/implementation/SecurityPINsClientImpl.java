@@ -118,18 +118,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the security PIN.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters security pin request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TokenInformationInner> getWithResponse(String vaultName, String resourceGroupName,
         SecurityPinBase parameters, Context context) {
@@ -138,16 +127,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
             this.client.getSubscriptionId(), accept, parameters, context);
     }
 
-    /**
-     * Get the security PIN.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TokenInformationInner get(String vaultName, String resourceGroupName) {
         final SecurityPinBase parameters = null;

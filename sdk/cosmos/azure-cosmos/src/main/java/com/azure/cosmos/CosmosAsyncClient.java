@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
@@ -907,6 +908,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public String getUserAgent(CosmosAsyncClient client) {
                     return client.getUserAgent();
+                }
+
+                @Override
+                public void appendUserAgentSuffix(CosmosAsyncClient client, String suffix) {
+                    client.asyncDocumentClient.appendUserAgentSuffix(suffix);
+                }
+
+                @Override
+                public void addUserAgentFeatureFlag(CosmosAsyncClient client, UserAgentFeatureFlags userAgentFeatureFlag) {
+                    client.asyncDocumentClient.addUserAgentFeatureFlag(userAgentFeatureFlag);
                 }
 
                 @Override

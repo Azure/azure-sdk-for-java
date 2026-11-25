@@ -81,6 +81,24 @@ public final class SearchPagedResponse
     }
 
     /**
+     * Gets diagnostic information requested by the query's debug option.
+     *
+     * @return the query diagnostics, or null when not returned.
+     */
+    public DebugInfo getDebugInfo() {
+        return page.getDebugInfo();
+    }
+
+    /**
+     * Gets the result of semantic query rewriting.
+     *
+     * @return the query rewrite result type, or null when not returned.
+     */
+    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
+        return page.getSemanticQueryRewritesResultType();
+    }
+
+    /**
      * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic
      * ranking request.
      *

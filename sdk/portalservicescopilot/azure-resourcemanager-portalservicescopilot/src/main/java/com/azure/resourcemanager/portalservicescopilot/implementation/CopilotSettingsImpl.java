@@ -80,7 +80,7 @@ public final class CopilotSettingsImpl implements CopilotSettings {
     }
 
     public void delete() {
-        this.serviceClient().delete();
+        this.deleteWithResponse(Context.NONE);
     }
 
     private CopilotSettingsClient serviceClient() {

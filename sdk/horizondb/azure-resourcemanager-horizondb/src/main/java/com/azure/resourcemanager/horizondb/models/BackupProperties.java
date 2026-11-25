@@ -19,7 +19,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class BackupProperties implements JsonSerializable<BackupProperties> {
     /*
-     * The geo-redundancy state. Geo-redundant backup is not supported when dataEncryption.type is AzureKeyVault.
+     * The geo-redundancy state. When creationMode is PointInTimeRestore, the service ignores the requested value during
+     * cluster creation and configures the new cluster with the same geo-redundancy setting as the source cluster, for
+     * both same-location and cross-location restores. The response reports the inherited setting. Geo-redundant backup
+     * is not supported when dataEncryption.type is AzureKeyVault.
      */
     private GeoRedundancyState geoRedundancy;
 
@@ -41,8 +44,10 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     }
 
     /**
-     * Get the geoRedundancy property: The geo-redundancy state. Geo-redundant backup is not supported when
-     * dataEncryption.type is AzureKeyVault.
+     * Get the geoRedundancy property: The geo-redundancy state. When creationMode is PointInTimeRestore, the service
+     * ignores the requested value during cluster creation and configures the new cluster with the same geo-redundancy
+     * setting as the source cluster, for both same-location and cross-location restores. The response reports the
+     * inherited setting. Geo-redundant backup is not supported when dataEncryption.type is AzureKeyVault.
      * 
      * @return the geoRedundancy value.
      */
@@ -51,8 +56,10 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     }
 
     /**
-     * Set the geoRedundancy property: The geo-redundancy state. Geo-redundant backup is not supported when
-     * dataEncryption.type is AzureKeyVault.
+     * Set the geoRedundancy property: The geo-redundancy state. When creationMode is PointInTimeRestore, the service
+     * ignores the requested value during cluster creation and configures the new cluster with the same geo-redundancy
+     * setting as the source cluster, for both same-location and cross-location restores. The response reports the
+     * inherited setting. Geo-redundant backup is not supported when dataEncryption.type is AzureKeyVault.
      * 
      * @param geoRedundancy the geoRedundancy value to set.
      * @return the BackupProperties object itself.

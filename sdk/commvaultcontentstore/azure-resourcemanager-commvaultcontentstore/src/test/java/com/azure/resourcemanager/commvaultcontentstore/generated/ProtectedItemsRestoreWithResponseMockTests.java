@@ -25,8 +25,7 @@ import reactor.core.publisher.Mono;
 public final class ProtectedItemsRestoreWithResponseMockTests {
     @Test
     public void testRestoreWithResponse() throws Exception {
-        String responseStr
-            = "{\"taskId\":672829136,\"jobIds\":[\"omdjvlpjxxkzbrm\",\"geivsiykzkdncj\",\"xonbzoggculapz\"]}";
+        String responseStr = "{\"taskId\":869522029,\"jobIds\":[\"xrrilozapee\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,36 +35,33 @@ public final class ProtectedItemsRestoreWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RestoreProtectionItemResponse response = manager.protectedItems()
-            .restoreWithResponse("isavok", "dzf", "azivjlfrqttbajl", "atnwxyiopi",
+            .restoreWithResponse("tfpmvmemfnczdw", "vbalxlllc", "podbzevwrdnh", "ukuv",
                 new RestoreProtectionItemRequest().withInPlaceRestore(false)
                     .withRestoreType(RestoreType.VIRTUAL_MACHINE)
-                    .withToTime("kuvscxkdm")
+                    .withToTime("smystuluqypfc")
                     .withVmDestinationInfo(new VmDestinationInfo().withVmInfoList(Arrays.asList(
-                        new VmInfo().withSourceVmGuid("govibrxkpmloazu")
-                            .withStorageAccountId("u")
+                        new VmInfo().withSourceVmGuid("er")
+                            .withStorageAccountId("hp")
                             .withPowerOnVmAfterRestore(false)
-                            .withName("oorb")
-                            .withResourceGroup("oybfhjxakvvj")
-                            .withRegion("lordilmywwtkgkxn")
-                            .withNetworkId("dabg")
-                            .withSubnetId("udtjuewbc")
-                            .withAttachAndSwapOsDisk(false)
-                            .withTargetVmGuid("uwhcjyxccybv")
-                            .withVmtags(Arrays.asList(new VmTag().withName("akkud").withValue("px"))),
-                        new VmInfo().withSourceVmGuid("wjplma")
-                            .withStorageAccountId("stcyohpfkyrkdbd")
-                            .withPowerOnVmAfterRestore(true)
-                            .withName("sjkmnwqj")
-                            .withResourceGroup("baiyhddviaceg")
-                            .withRegion("m")
-                            .withNetworkId("fpmvmemfnczd")
-                            .withSubnetId("vbalxlllc")
+                            .withName("pjbabwidfc")
+                            .withResourceGroup("spuunnoxyhkxgq")
+                            .withRegion("rihpfhoq")
+                            .withNetworkId("a")
+                            .withSubnetId("dao")
                             .withAttachAndSwapOsDisk(true)
-                            .withTargetVmGuid("bzevwrd")
-                            .withVmtags(Arrays.asList(new VmTag().withName("ukuv").withValue("jcswsmys"),
-                                new VmTag().withName("uluqypfc").withValue("lerchpq"),
-                                new VmTag().withName("mfpjbabw").withValue("dfc"),
-                                new VmTag().withName("sspuunnoxyhkx").withValue("qddrihpfhoqcaae")))))),
+                            .withTargetVmGuid("l")
+                            .withVmtags(Arrays.asList(new VmTag().withName("xkzb").withValue("msgeivsiykzk"))),
+                        new VmInfo().withSourceVmGuid("ncj")
+                            .withStorageAccountId("xonbzoggculapz")
+                            .withPowerOnVmAfterRestore(true)
+                            .withName("gogtqxepnylbf")
+                            .withResourceGroup("jlyjtlvofq")
+                            .withRegion("vfcibyfmowux")
+                            .withNetworkId("jpvd")
+                            .withSubnetId("fzwiivwzjbhyz")
+                            .withAttachAndSwapOsDisk(true)
+                            .withTargetVmGuid("kambtrnegvmnvuqe")
+                            .withVmtags(Arrays.asList(new VmTag().withName("dspastjbkkdmfl").withValue("est")))))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

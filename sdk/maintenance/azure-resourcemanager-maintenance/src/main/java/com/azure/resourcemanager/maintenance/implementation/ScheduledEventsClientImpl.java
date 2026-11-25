@@ -145,20 +145,7 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Post ScheduledEvents Acknowledgement.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceType Resource type.
-     * @param resourceName Resource Name.
-     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of ScheduledEvents acknowledge along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledEventsApproveResponseInner> acknowledgeWithResponse(String resourceGroupName,
         String resourceType, String resourceName, String scheduledEventId, Context context) {
@@ -168,19 +155,7 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
             context);
     }
 
-    /**
-     * Post ScheduledEvents Acknowledgement.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceType Resource type.
-     * @param resourceName Resource Name.
-     * @param scheduledEventId ScheduledEvents Id. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of ScheduledEvents acknowledge.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledEventsApproveResponseInner acknowledge(String resourceGroupName, String resourceType,
         String resourceName, String scheduledEventId) {
@@ -237,21 +212,7 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Post ScheduledEvents List Acknowledgement
-     * 
-     * Post List of ScheduledEvents Acknowledgement.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param scheduledEventsIdList List of ScheduledEvents Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of ScheduledEvents acknowledge along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledEventsApproveResponseInner> acknowledgeListWithResponse(String resourceGroupName,
         String resourceType, String resourceName, ScheduledEventsIdList scheduledEventsIdList, Context context) {
@@ -262,20 +223,7 @@ public final class ScheduledEventsClientImpl implements ScheduledEventsClient {
             scheduledEventsIdList, context);
     }
 
-    /**
-     * Post ScheduledEvents List Acknowledgement
-     * 
-     * Post List of ScheduledEvents Acknowledgement.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param scheduledEventsIdList List of ScheduledEvents Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of ScheduledEvents acknowledge.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledEventsApproveResponseInner acknowledgeList(String resourceGroupName, String resourceType,
         String resourceName, ScheduledEventsIdList scheduledEventsIdList) {

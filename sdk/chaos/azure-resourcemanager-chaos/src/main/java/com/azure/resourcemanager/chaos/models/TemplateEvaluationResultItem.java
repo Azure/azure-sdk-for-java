@@ -17,15 +17,13 @@ import java.io.IOException;
 @Immutable
 public final class TemplateEvaluationResultItem implements JsonSerializable<TemplateEvaluationResultItem> {
     /*
-     * The template ID that was evaluated. Optional because the underlying BE field may
-     * be null for legacy evaluations created before template-centric persistence landed;
-     * the GW falls back to `scenarioName` in that case (`scenario.Id == templateId` by BE
-     * convention), so ARM responses are typically populated in practice.
+     * The canonical ARM ID of the evaluated scenario-template version. Scenario IDs and versionless template aliases
+     * are not valid substitutes.
      */
     private String templateId;
 
     /*
-     * The template name that was evaluated. Optional for the same reason as `templateId`.
+     * The stable catalog name of the evaluated scenario template, not a localized display name.
      */
     private String templateName;
 
@@ -41,10 +39,8 @@ public final class TemplateEvaluationResultItem implements JsonSerializable<Temp
     }
 
     /**
-     * Get the templateId property: The template ID that was evaluated. Optional because the underlying BE field may
-     * be null for legacy evaluations created before template-centric persistence landed;
-     * the GW falls back to `scenarioName` in that case (`scenario.Id == templateId` by BE
-     * convention), so ARM responses are typically populated in practice.
+     * Get the templateId property: The canonical ARM ID of the evaluated scenario-template version. Scenario IDs and
+     * versionless template aliases are not valid substitutes.
      * 
      * @return the templateId value.
      */
@@ -53,8 +49,8 @@ public final class TemplateEvaluationResultItem implements JsonSerializable<Temp
     }
 
     /**
-     * Get the templateName property: The template name that was evaluated. Optional for the same reason as
-     * `templateId`.
+     * Get the templateName property: The stable catalog name of the evaluated scenario template, not a localized
+     * display name.
      * 
      * @return the templateName value.
      */
@@ -79,8 +75,6 @@ public final class TemplateEvaluationResultItem implements JsonSerializable<Temp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("evaluationResult",
             this.evaluationResult == null ? null : this.evaluationResult.toString());
-        jsonWriter.writeStringField("templateId", this.templateId);
-        jsonWriter.writeStringField("templateName", this.templateName);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,13 +94,13 @@ public final class TemplateEvaluationResultItem implements JsonSerializable<Temp
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("evaluationResult".equals(fieldName)) {
-                    deserializedTemplateEvaluationResultItem.evaluationResult
-                        = RecommendationStatus.fromString(reader.getString());
-                } else if ("templateId".equals(fieldName)) {
+                if ("templateId".equals(fieldName)) {
                     deserializedTemplateEvaluationResultItem.templateId = reader.getString();
                 } else if ("templateName".equals(fieldName)) {
                     deserializedTemplateEvaluationResultItem.templateName = reader.getString();
+                } else if ("evaluationResult".equals(fieldName)) {
+                    deserializedTemplateEvaluationResultItem.evaluationResult
+                        = RecommendationStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

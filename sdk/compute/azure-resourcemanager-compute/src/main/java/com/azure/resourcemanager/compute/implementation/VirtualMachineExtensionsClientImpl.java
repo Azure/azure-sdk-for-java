@@ -117,19 +117,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineExtensionInner>> getWithResponseAsync(String resourceGroupName, String vmName,
         String vmExtensionName, String expand) {
@@ -203,17 +191,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             vmName, vmExtensionName, expand, accept, context);
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionInner> getAsync(String resourceGroupName, String vmName,
         String vmExtensionName) {
@@ -222,55 +200,21 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineExtensionInner> getWithResponse(String resourceGroupName, String vmName,
         String vmExtensionName, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, vmName, vmExtensionName, expand, context).block();
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
         final String expand = null;
         return getWithResponse(resourceGroupName, vmName, vmExtensionName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName,
         String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
@@ -359,18 +303,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             resourceGroupName, vmName, vmExtensionName, contentType, accept, extensionParameters, context);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vmName, String vmExtensionName,
@@ -407,18 +340,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             context);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
         String resourceGroupName, String vmName, String vmExtensionName,
@@ -427,19 +349,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
         String resourceGroupName, String vmName, String vmExtensionName,
@@ -448,18 +358,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmName,
         String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
@@ -487,56 +386,21 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters) {
         return createOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).block();
     }
 
-    /**
-     * The operation to create or update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context).block();
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName,
         String vmExtensionName, VirtualMachineExtensionUpdate extensionParameters) {
@@ -625,18 +489,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             vmName, vmExtensionName, contentType, accept, extensionParameters, context);
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdateAsync(
         String resourceGroupName, String vmName, String vmExtensionName,
@@ -673,18 +526,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             context);
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
         String resourceGroupName, String vmName, String vmExtensionName,
@@ -692,19 +534,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         return this.beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).getSyncPoller();
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
         String resourceGroupName, String vmName, String vmExtensionName,
@@ -713,18 +543,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .getSyncPoller();
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionInner> updateAsync(String resourceGroupName, String vmName,
         String vmExtensionName, VirtualMachineExtensionUpdate extensionParameters) {
@@ -752,54 +571,21 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineExtensionInner update(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters) {
         return updateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).block();
     }
 
-    /**
-     * The operation to update the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineExtensionInner update(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters, Context context) {
         return updateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context).block();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName,
         String vmExtensionName) {
@@ -869,17 +655,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             vmName, vmExtensionName, context);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName,
         String vmExtensionName) {
@@ -910,52 +686,21 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             context);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
         String vmExtensionName) {
         return this.beginDeleteAsync(resourceGroupName, vmName, vmExtensionName).getSyncPoller();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
         String vmExtensionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vmName, vmExtensionName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName).last()
@@ -980,49 +725,19 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmName, String vmExtensionName) {
         deleteAsync(resourceGroupName, vmName, vmExtensionName).block();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmName, String vmExtensionName, Context context) {
         deleteAsync(resourceGroupName, vmName, vmExtensionName, context).block();
     }
 
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineExtensionsListResultInner>> listWithResponseAsync(String resourceGroupName,
         String vmName, String expand) {
@@ -1087,16 +802,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             vmName, expand, accept, context);
     }
 
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionsListResultInner> listAsync(String resourceGroupName, String vmName) {
         final String expand = null;
@@ -1104,34 +810,14 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineExtensionsListResultInner> listWithResponse(String resourceGroupName, String vmName,
         String expand, Context context) {
         return listWithResponseAsync(resourceGroupName, vmName, expand, context).block();
     }
 
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineExtensionsListResultInner list(String resourceGroupName, String vmName) {
         final String expand = null;

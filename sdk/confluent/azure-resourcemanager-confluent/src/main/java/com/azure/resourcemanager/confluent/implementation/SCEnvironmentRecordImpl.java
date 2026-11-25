@@ -70,12 +70,7 @@ public final class SCEnvironmentRecordImpl
     }
 
     public SCEnvironmentRecord create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SCEnvironmentRecord create(Context context) {
@@ -97,12 +92,7 @@ public final class SCEnvironmentRecordImpl
     }
 
     public SCEnvironmentRecord apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SCEnvironmentRecord apply(Context context) {

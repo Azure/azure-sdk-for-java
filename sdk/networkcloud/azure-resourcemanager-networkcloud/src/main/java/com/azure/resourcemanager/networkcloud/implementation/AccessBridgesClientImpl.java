@@ -265,17 +265,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of the provided access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided access bridge along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessBridgeInner> getByResourceGroupWithResponse(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, Context context) {
@@ -284,16 +274,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             this.client.getSubscriptionId(), resourceGroupName, accessBridgeName, accept, context);
     }
 
-    /**
-     * Get the properties of the provided access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided access bridge.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessBridgeInner getByResourceGroup(String resourceGroupName, AccessBridgeAllowedName accessBridgeName) {
         return getByResourceGroupWithResponse(resourceGroupName, accessBridgeName, Context.NONE).getValue();
@@ -337,11 +318,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, AccessBridgeInner accessBridge) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accessBridgeName, contentType, accept, accessBridge,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accessBridgeName, accessBridge, Context.NONE);
     }
 
     /**
@@ -386,37 +363,14 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             AccessBridgeInner.class, AccessBridgeInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a new access bridge or update the properties of the existing access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param accessBridge The access bridge configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginCreateOrUpdate(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, AccessBridgeInner accessBridge) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accessBridgeName, accessBridge);
-        return this.client.<AccessBridgeInner, AccessBridgeInner>getLroResult(response, AccessBridgeInner.class,
-            AccessBridgeInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accessBridgeName, accessBridge, Context.NONE);
     }
 
-    /**
-     * Create a new access bridge or update the properties of the existing access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param accessBridge The access bridge configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginCreateOrUpdate(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, AccessBridgeInner accessBridge, Context context) {
@@ -444,39 +398,19 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new access bridge or update the properties of the existing access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param accessBridge The access bridge configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessBridgeInner createOrUpdate(String resourceGroupName, AccessBridgeAllowedName accessBridgeName,
         AccessBridgeInner accessBridge) {
-        return beginCreateOrUpdate(resourceGroupName, accessBridgeName, accessBridge).getFinalResult();
+        return createOrUpdate(resourceGroupName, accessBridgeName, accessBridge, Context.NONE);
     }
 
-    /**
-     * Create a new access bridge or update the properties of the existing access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param accessBridge The access bridge configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessBridgeInner createOrUpdate(String resourceGroupName, AccessBridgeAllowedName accessBridgeName,
         AccessBridgeInner accessBridge, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accessBridgeName, accessBridge, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, accessBridgeName, accessBridge, context));
     }
 
     /**
@@ -527,9 +461,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, AccessBridgeAllowedName accessBridgeName,
         String ifMatch, String ifNoneMatch, AccessBridgePatchParameters accessBridgeUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, accept,
+        return updateWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch,
             accessBridgeUpdateParameters, Context.NONE);
     }
 
@@ -625,55 +557,25 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      * @return the {@link SyncPoller} for polling of accessBridge represents a managed access bridge resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginUpdate(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, String ifMatch, String ifNoneMatch,
         AccessBridgePatchParameters accessBridgeUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch,
-            accessBridgeUpdateParameters);
-        return this.client.<AccessBridgeInner, AccessBridgeInner>getLroResult(response, AccessBridgeInner.class,
-            AccessBridgeInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, accessBridgeUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update properties of the provided access bridge, or update tags associated with the access bridge. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginUpdate(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final AccessBridgePatchParameters accessBridgeUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch,
-            accessBridgeUpdateParameters);
-        return this.client.<AccessBridgeInner, AccessBridgeInner>getLroResult(response, AccessBridgeInner.class,
-            AccessBridgeInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, accessBridgeUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update properties of the provided access bridge, or update tags associated with the access bridge. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param accessBridgeUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginUpdate(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, String ifMatch, String ifNoneMatch,
@@ -729,48 +631,22 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of the provided access bridge, or update tags associated with the access bridge. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessBridgeInner update(String resourceGroupName, AccessBridgeAllowedName accessBridgeName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final AccessBridgePatchParameters accessBridgeUpdateParameters = null;
-        return beginUpdate(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, accessBridgeUpdateParameters)
-            .getFinalResult();
+        return update(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, accessBridgeUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update properties of the provided access bridge, or update tags associated with the access bridge. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param accessBridgeUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return accessBridge represents a managed access bridge resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessBridgeInner update(String resourceGroupName, AccessBridgeAllowedName accessBridgeName, String ifMatch,
         String ifNoneMatch, AccessBridgePatchParameters accessBridgeUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, accessBridgeUpdateParameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, accessBridgeName, ifMatch,
+            ifNoneMatch, accessBridgeUpdateParameters, context));
     }
 
     /**
@@ -813,8 +689,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, AccessBridgeAllowedName accessBridgeName,
         String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -898,46 +773,21 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the specified access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the specified access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, String ifMatch, String ifNoneMatch, Context context) {
@@ -985,40 +835,20 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the specified access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, AccessBridgeAllowedName accessBridgeName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the specified access bridge.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessBridgeName The name of the access bridge.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, AccessBridgeAllowedName accessBridgeName, String ifMatch,
         String ifNoneMatch, Context context) {
-        beginDelete(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1097,12 +927,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessBridgeInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<AccessBridgeList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1129,36 +954,15 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of access bridges in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of access bridges in the provided resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessBridgeInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of access bridges in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of access bridges in the provided resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessBridgeInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
         Context context) {
@@ -1234,11 +1038,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessBridgeInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<AccessBridgeList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1262,33 +1062,15 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of access bridges in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of access bridges in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessBridgeInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of access bridges in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of access bridges in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessBridgeInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1327,11 +1109,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessBridgeInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccessBridgeList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1385,11 +1163,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessBridgeInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccessBridgeList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

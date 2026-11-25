@@ -192,16 +192,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed HSM Pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedHsmInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -261,66 +252,27 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed HSM Pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedHsmInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed HSM Pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedHsmInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed HSM Pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedHsmInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
         ManagedHsmInner parameters) {
@@ -395,17 +347,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String name, ManagedHsmInner parameters) {
@@ -436,52 +378,21 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             ManagedHsmInner.class, ManagedHsmInner.class, context);
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(String resourceGroupName,
         String name, ManagedHsmInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(String resourceGroupName,
         String name, ManagedHsmInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedHsmInner> createOrUpdateAsync(String resourceGroupName, String name,
         ManagedHsmInner parameters) {
@@ -508,52 +419,20 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedHsmInner createOrUpdate(String resourceGroupName, String name, ManagedHsmInner parameters) {
         return createOrUpdateAsync(resourceGroupName, name, parameters).block();
     }
 
-    /**
-     * Create or update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to create or update the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedHsmInner createOrUpdate(String resourceGroupName, String name, ManagedHsmInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, name, parameters, context).block();
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
         ManagedHsmInner parameters) {
@@ -628,17 +507,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             resourceGroupName, name, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(String resourceGroupName,
         String name, ManagedHsmInner parameters) {
@@ -668,52 +537,21 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             ManagedHsmInner.class, ManagedHsmInner.class, context);
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(String resourceGroupName, String name,
         ManagedHsmInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(String resourceGroupName, String name,
         ManagedHsmInner parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedHsmInner> updateAsync(String resourceGroupName, String name, ManagedHsmInner parameters) {
         return beginUpdateAsync(resourceGroupName, name, parameters).last()
@@ -739,49 +577,19 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedHsmInner update(String resourceGroupName, String name, ManagedHsmInner parameters) {
         return updateAsync(resourceGroupName, name, parameters).block();
     }
 
-    /**
-     * Update a managed HSM Pool in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param parameters Parameters to patch the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedHsmInner update(String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
         return updateAsync(resourceGroupName, name, parameters, context).block();
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -839,16 +647,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             resourceGroupName, name, context);
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
@@ -876,47 +675,19 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             context);
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
@@ -938,30 +709,13 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
         return beginDeleteAsync(resourceGroupName, name, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
         deleteAsync(resourceGroupName, name).block();
     }
 
-    /**
-     * Deletes the specified managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, Context context) {
         deleteAsync(resourceGroupName, name, context).block();
@@ -1040,33 +794,14 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription and within the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top Maximum number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listByResourceGroupAsync(String resourceGroupName, Integer top) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription and within the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
@@ -1093,34 +828,14 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription and within the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedHsmInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription and within the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top Maximum number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedHsmInner> listByResourceGroup(String resourceGroupName, Integer top, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, context));
@@ -1185,28 +900,14 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription.
-     * 
-     * @param top Maximum number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listAsync(Integer top) {
         return new PagedFlux<>(() -> listSinglePageAsync(top),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listAsync() {
         final Integer top = null;
@@ -1230,44 +931,20 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedHsmInner> list() {
         final Integer top = null;
         return new PagedIterable<>(listAsync(top));
     }
 
-    /**
-     * The List operation gets information about the managed HSM Pools associated with the subscription.
-     * 
-     * @param top Maximum number of results to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedHsm list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedHsmInner> list(Integer top, Context context) {
         return new PagedIterable<>(listAsync(top, context));
     }
 
-    /**
-     * Gets the specified deleted managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deleted managed HSM along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String name, String location) {
         if (name == null) {
@@ -1309,62 +986,25 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             this.client.getSubscriptionId(), location, name, accept, context);
     }
 
-    /**
-     * Gets the specified deleted managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deleted managed HSM on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedManagedHsmInner> getDeletedAsync(String name, String location) {
         return getDeletedWithResponseAsync(name, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified deleted managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deleted managed HSM along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedManagedHsmInner> getDeletedWithResponse(String name, String location, Context context) {
         return getDeletedWithResponseAsync(name, location, context).block();
     }
 
-    /**
-     * Gets the specified deleted managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deleted managed HSM.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedManagedHsmInner getDeleted(String name, String location) {
         return getDeletedWithResponse(name, location, Context.NONE).getValue();
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String name, String location) {
         if (name == null) {
@@ -1404,16 +1044,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             this.client.getSubscriptionId(), location, name, context);
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String name, String location) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(name, location);
@@ -1440,47 +1071,19 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             context);
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String name, String location) {
         return this.beginPurgeDeletedAsync(name, location).getSyncPoller();
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String name, String location, Context context) {
         return this.beginPurgeDeletedAsync(name, location, context).getSyncPoller();
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedAsync(String name, String location) {
         return beginPurgeDeletedAsync(name, location).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1502,30 +1105,13 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
         return beginPurgeDeletedAsync(name, location, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeleted(String name, String location) {
         purgeDeletedAsync(name, location).block();
     }
 
-    /**
-     * Permanently deletes the specified managed HSM.
-     * 
-     * @param name The name of the deleted managed HSM.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeleted(String name, String location, Context context) {
         purgeDeletedAsync(name, location, context).block();
@@ -1587,13 +1173,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeletedManagedHsm list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedManagedHsmInner> listDeletedAsync() {
         return new PagedFlux<>(() -> listDeletedSinglePageAsync(),
@@ -1615,42 +1195,19 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             nextLink -> listDeletedNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeletedManagedHsm list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedManagedHsmInner> listDeleted() {
         return new PagedIterable<>(listDeletedAsync());
     }
 
-    /**
-     * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeletedManagedHsm list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedManagedHsmInner> listDeleted(Context context) {
         return new PagedIterable<>(listDeletedAsync(context));
     }
 
-    /**
-     * Checks that the managed hsm name is valid and is not already in use.
-     * 
-     * @param mhsmName The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckMhsmNameAvailability operation response along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckMhsmNameAvailabilityResultInner>>
         checkMhsmNameAvailabilityWithResponseAsync(CheckMhsmNameAvailabilityParameters mhsmName) {
@@ -1709,46 +1266,21 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
             this.client.getSubscriptionId(), contentType, accept, mhsmName, context);
     }
 
-    /**
-     * Checks that the managed hsm name is valid and is not already in use.
-     * 
-     * @param mhsmName The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckMhsmNameAvailability operation response on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckMhsmNameAvailabilityResultInner>
         checkMhsmNameAvailabilityAsync(CheckMhsmNameAvailabilityParameters mhsmName) {
         return checkMhsmNameAvailabilityWithResponseAsync(mhsmName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks that the managed hsm name is valid and is not already in use.
-     * 
-     * @param mhsmName The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckMhsmNameAvailability operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckMhsmNameAvailabilityResultInner>
         checkMhsmNameAvailabilityWithResponse(CheckMhsmNameAvailabilityParameters mhsmName, Context context) {
         return checkMhsmNameAvailabilityWithResponseAsync(mhsmName, context).block();
     }
 
-    /**
-     * Checks that the managed hsm name is valid and is not already in use.
-     * 
-     * @param mhsmName The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckMhsmNameAvailability operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckMhsmNameAvailabilityResultInner
         checkMhsmNameAvailability(CheckMhsmNameAvailabilityParameters mhsmName) {

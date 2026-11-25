@@ -27,9 +27,7 @@ public final class MaintenanceConfigurationsForResourceGroupsImpl
     }
 
     public PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MaintenanceConfigurationInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName, Context context) {

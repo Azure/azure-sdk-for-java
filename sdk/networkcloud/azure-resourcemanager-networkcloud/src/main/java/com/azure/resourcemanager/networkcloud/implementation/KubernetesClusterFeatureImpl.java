@@ -135,11 +135,7 @@ public final class KubernetesClusterFeatureImpl
     }
 
     public KubernetesClusterFeature create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesClusterFeatures()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, featureName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public KubernetesClusterFeature create(Context context) {
@@ -167,11 +163,7 @@ public final class KubernetesClusterFeatureImpl
     }
 
     public KubernetesClusterFeature apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesClusterFeatures()
-            .update(resourceGroupName, kubernetesClusterName, featureName, updateIfMatch, updateIfNoneMatch,
-                updateKubernetesClusterFeatureUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public KubernetesClusterFeature apply(Context context) {
@@ -198,11 +190,7 @@ public final class KubernetesClusterFeatureImpl
     }
 
     public KubernetesClusterFeature refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesClusterFeatures()
-            .getWithResponse(resourceGroupName, kubernetesClusterName, featureName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public KubernetesClusterFeature refresh(Context context) {

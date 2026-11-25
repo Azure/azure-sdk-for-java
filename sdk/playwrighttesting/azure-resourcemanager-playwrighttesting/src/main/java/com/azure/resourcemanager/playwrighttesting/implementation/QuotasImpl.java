@@ -44,8 +44,7 @@ public final class QuotasImpl implements Quotas {
     }
 
     public PagedIterable<Quota> listBySubscription(String location) {
-        PagedIterable<QuotaInner> inner = this.serviceClient().listBySubscription(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+        return this.listBySubscription(location, Context.NONE);
     }
 
     public PagedIterable<Quota> listBySubscription(String location, Context context) {

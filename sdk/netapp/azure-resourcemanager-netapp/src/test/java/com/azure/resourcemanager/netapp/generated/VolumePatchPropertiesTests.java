@@ -6,21 +6,17 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.fluent.models.VolumePatchProperties;
-import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
-import com.azure.resourcemanager.netapp.models.AsyncDirectoryDeleteStatus;
 import com.azure.resourcemanager.netapp.models.ChownMode;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.DesiredRansomwareProtectionState;
 import com.azure.resourcemanager.netapp.models.ExportPolicyRule;
-import com.azure.resourcemanager.netapp.models.OriginVolume;
 import com.azure.resourcemanager.netapp.models.RansomwareProtectionPatchSettings;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.VolumeBackupProperties;
-import com.azure.resourcemanager.netapp.models.VolumePatchNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeSnapshotProperties;
@@ -31,149 +27,170 @@ public final class VolumePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatchProperties model = BinaryData.fromString(
-            "{\"serviceLevel\":\"Flexible\",\"usageThreshold\":7589955596249884886,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":24250609,\"unixReadOnly\":false,\"unixReadWrite\":false,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":true,\"cifs\":true,\"nfsv3\":true,\"nfsv41\":false,\"allowedClients\":\"c\",\"hasRootAccess\":true,\"chownMode\":\"Restricted\"},{\"ruleIndex\":1519896216,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"llwptfdy\",\"hasRootAccess\":true,\"chownMode\":\"Restricted\"}]},\"protocolTypes\":[\"ceopzfqrhhuaopp\"],\"throughputMibps\":30.051893,\"dataProtection\":{\"backup\":{\"backupPolicyId\":\"ol\",\"policyEnforced\":true,\"backupVaultId\":\"zxctobgb\"},\"snapshot\":{\"snapshotPolicyId\":\"oizpostmgrcfbun\"},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Enabled\"}},\"isDefaultQuotaEnabled\":false,\"asyncDirectoryDelete\":{\"status\":\"Disabled\",\"trashBinName\":\"pvjymjhxxjyng\"},\"defaultUserQuotaInKiBs\":7751853531137098645,\"defaultGroupQuotaInKiBs\":1111219125512367618,\"unixPermissions\":\"wbxqzvszjfau\",\"coolAccess\":true,\"coolnessPeriod\":1631327314,\"coolAccessRetrievalPolicy\":\"Never\",\"coolAccessTieringPolicy\":\"Auto\",\"snapshotDirectoryVisible\":true,\"smbAccessBasedEnumeration\":\"Enabled\",\"smbNonBrowsable\":\"Enabled\",\"smbOplocks\":\"Disabled\",\"geoNamespaceProperties\":{\"originVolume\":\"Enabled\"}}")
+            "{\"serviceLevel\":\"Ultra\",\"usageThreshold\":1355278792802325938,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1904300707,\"unixReadOnly\":false,\"unixReadWrite\":false,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"vpgylgqgitxmed\",\"hasRootAccess\":false,\"chownMode\":\"Unrestricted\"},{\"ruleIndex\":73392328,\"unixReadOnly\":true,\"unixReadWrite\":false,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":false,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":true,\"cifs\":true,\"nfsv3\":true,\"nfsv41\":false,\"allowedClients\":\"eoellwptfdygp\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"},{\"ruleIndex\":1412085565,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":false,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":false,\"cifs\":true,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"ahzxctobgbk\",\"hasRootAccess\":true,\"chownMode\":\"Unrestricted\"},{\"ruleIndex\":2138169830,\"unixReadOnly\":true,\"unixReadWrite\":false,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":false,\"cifs\":false,\"nfsv3\":true,\"nfsv41\":true,\"allowedClients\":\"ymjhxxjyngudivkr\",\"hasRootAccess\":true,\"chownMode\":\"Unrestricted\"}]},\"protocolTypes\":[\"vszjfauvjfdxxi\",\"e\"],\"throughputMibps\":1.0101438,\"dataProtection\":{\"backup\":{\"backupPolicyId\":\"qtdo\",\"policyEnforced\":true,\"backupVaultId\":\"xv\"},\"snapshot\":{\"snapshotPolicyId\":\"yslqbhsfx\"},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Enabled\"}},\"isDefaultQuotaEnabled\":false,\"defaultUserQuotaInKiBs\":2696095639939857222,\"defaultGroupQuotaInKiBs\":5739741395116766160,\"unixPermissions\":\"wfbkrvrns\",\"coolAccess\":true,\"coolnessPeriod\":2131802432,\"coolAccessRetrievalPolicy\":\"Never\",\"coolAccessTieringPolicy\":\"SnapshotOnly\",\"snapshotDirectoryVisible\":false,\"smbAccessBasedEnumeration\":\"Disabled\",\"smbNonBrowsable\":\"Enabled\",\"smbOplocks\":\"Enabled\"}")
             .toObject(VolumePatchProperties.class);
-        Assertions.assertEquals(ServiceLevel.FLEXIBLE, model.serviceLevel());
-        Assertions.assertEquals(7589955596249884886L, model.usageThreshold());
-        Assertions.assertEquals(24250609, model.exportPolicy().rules().get(0).ruleIndex());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
+        Assertions.assertEquals(1355278792802325938L, model.usageThreshold());
+        Assertions.assertEquals(1904300707, model.exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).unixReadOnly());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).unixReadWrite());
-        Assertions.assertFalse(model.exportPolicy().rules().get(0).kerberos5ReadOnly());
+        Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5ReadOnly());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5ReadWrite());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5IReadOnly());
-        Assertions.assertFalse(model.exportPolicy().rules().get(0).kerberos5IReadWrite());
+        Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5IReadWrite());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).kerberos5PReadOnly());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5PReadWrite());
-        Assertions.assertTrue(model.exportPolicy().rules().get(0).cifs());
-        Assertions.assertTrue(model.exportPolicy().rules().get(0).nfsv3());
+        Assertions.assertFalse(model.exportPolicy().rules().get(0).cifs());
+        Assertions.assertFalse(model.exportPolicy().rules().get(0).nfsv3());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).nfsv41());
-        Assertions.assertEquals("c", model.exportPolicy().rules().get(0).allowedClients());
-        Assertions.assertTrue(model.exportPolicy().rules().get(0).hasRootAccess());
-        Assertions.assertEquals(ChownMode.RESTRICTED, model.exportPolicy().rules().get(0).chownMode());
-        Assertions.assertEquals("ceopzfqrhhuaopp", model.protocolTypes().get(0));
-        Assertions.assertEquals(30.051893F, model.throughputMibps());
-        Assertions.assertEquals("ol", model.dataProtection().backup().backupPolicyId());
+        Assertions.assertEquals("vpgylgqgitxmed", model.exportPolicy().rules().get(0).allowedClients());
+        Assertions.assertFalse(model.exportPolicy().rules().get(0).hasRootAccess());
+        Assertions.assertEquals(ChownMode.UNRESTRICTED, model.exportPolicy().rules().get(0).chownMode());
+        Assertions.assertEquals("vszjfauvjfdxxi", model.protocolTypes().get(0));
+        Assertions.assertEquals(1.0101438F, model.throughputMibps());
+        Assertions.assertEquals("qtdo", model.dataProtection().backup().backupPolicyId());
         Assertions.assertTrue(model.dataProtection().backup().policyEnforced());
-        Assertions.assertEquals("zxctobgb", model.dataProtection().backup().backupVaultId());
-        Assertions.assertEquals("oizpostmgrcfbun", model.dataProtection().snapshot().snapshotPolicyId());
+        Assertions.assertEquals("xv", model.dataProtection().backup().backupVaultId());
+        Assertions.assertEquals("yslqbhsfx", model.dataProtection().snapshot().snapshotPolicyId());
         Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
             model.dataProtection().ransomwareProtection().desiredRansomwareProtectionState());
         Assertions.assertFalse(model.isDefaultQuotaEnabled());
-        Assertions.assertEquals(AsyncDirectoryDeleteStatus.DISABLED, model.asyncDirectoryDelete().status());
-        Assertions.assertEquals("pvjymjhxxjyng", model.asyncDirectoryDelete().trashBinName());
-        Assertions.assertEquals(7751853531137098645L, model.defaultUserQuotaInKiBs());
-        Assertions.assertEquals(1111219125512367618L, model.defaultGroupQuotaInKiBs());
-        Assertions.assertEquals("wbxqzvszjfau", model.unixPermissions());
+        Assertions.assertEquals(2696095639939857222L, model.defaultUserQuotaInKiBs());
+        Assertions.assertEquals(5739741395116766160L, model.defaultGroupQuotaInKiBs());
+        Assertions.assertEquals("wfbkrvrns", model.unixPermissions());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(1631327314, model.coolnessPeriod());
+        Assertions.assertEquals(2131802432, model.coolnessPeriod());
         Assertions.assertEquals(CoolAccessRetrievalPolicy.NEVER, model.coolAccessRetrievalPolicy());
-        Assertions.assertEquals(CoolAccessTieringPolicy.AUTO, model.coolAccessTieringPolicy());
-        Assertions.assertTrue(model.snapshotDirectoryVisible());
-        Assertions.assertEquals(SmbAccessBasedEnumeration.ENABLED, model.smbAccessBasedEnumeration());
+        Assertions.assertEquals(CoolAccessTieringPolicy.SNAPSHOT_ONLY, model.coolAccessTieringPolicy());
+        Assertions.assertFalse(model.snapshotDirectoryVisible());
+        Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumeration());
         Assertions.assertEquals(SmbNonBrowsable.ENABLED, model.smbNonBrowsable());
-        Assertions.assertEquals(SmbOplocks.DISABLED, model.smbOplocks());
-        Assertions.assertEquals(OriginVolume.ENABLED, model.geoNamespaceProperties().originVolume());
+        Assertions.assertEquals(SmbOplocks.ENABLED, model.smbOplocks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumePatchProperties model = new VolumePatchProperties().withServiceLevel(ServiceLevel.FLEXIBLE)
-            .withUsageThreshold(7589955596249884886L)
+        VolumePatchProperties model = new VolumePatchProperties().withServiceLevel(ServiceLevel.ULTRA)
+            .withUsageThreshold(1355278792802325938L)
             .withExportPolicy(new VolumePatchPropertiesExportPolicy().withRules(Arrays.asList(
-                new ExportPolicyRule().withRuleIndex(24250609)
+                new ExportPolicyRule().withRuleIndex(1904300707)
                     .withUnixReadOnly(false)
+                    .withUnixReadWrite(false)
+                    .withKerberos5ReadOnly(true)
+                    .withKerberos5ReadWrite(true)
+                    .withKerberos5IReadOnly(true)
+                    .withKerberos5IReadWrite(true)
+                    .withKerberos5PReadOnly(false)
+                    .withKerberos5PReadWrite(true)
+                    .withCifs(false)
+                    .withNfsv3(false)
+                    .withNfsv41(false)
+                    .withAllowedClients("vpgylgqgitxmed")
+                    .withHasRootAccess(false)
+                    .withChownMode(ChownMode.UNRESTRICTED),
+                new ExportPolicyRule().withRuleIndex(73392328)
+                    .withUnixReadOnly(true)
                     .withUnixReadWrite(false)
                     .withKerberos5ReadOnly(false)
                     .withKerberos5ReadWrite(true)
-                    .withKerberos5IReadOnly(true)
-                    .withKerberos5IReadWrite(false)
+                    .withKerberos5IReadOnly(false)
+                    .withKerberos5IReadWrite(true)
                     .withKerberos5PReadOnly(false)
                     .withKerberos5PReadWrite(true)
                     .withCifs(true)
                     .withNfsv3(true)
                     .withNfsv41(false)
-                    .withAllowedClients("c")
-                    .withHasRootAccess(true)
+                    .withAllowedClients("eoellwptfdygp")
+                    .withHasRootAccess(false)
                     .withChownMode(ChownMode.RESTRICTED),
-                new ExportPolicyRule().withRuleIndex(1519896216)
+                new ExportPolicyRule().withRuleIndex(1412085565)
                     .withUnixReadOnly(true)
                     .withUnixReadWrite(true)
+                    .withKerberos5ReadOnly(true)
+                    .withKerberos5ReadWrite(false)
+                    .withKerberos5IReadOnly(false)
+                    .withKerberos5IReadWrite(true)
+                    .withKerberos5PReadOnly(false)
+                    .withKerberos5PReadWrite(false)
+                    .withCifs(true)
+                    .withNfsv3(false)
+                    .withNfsv41(false)
+                    .withAllowedClients("ahzxctobgbk")
+                    .withHasRootAccess(true)
+                    .withChownMode(ChownMode.UNRESTRICTED),
+                new ExportPolicyRule().withRuleIndex(2138169830)
+                    .withUnixReadOnly(true)
+                    .withUnixReadWrite(false)
                     .withKerberos5ReadOnly(false)
                     .withKerberos5ReadWrite(true)
                     .withKerberos5IReadOnly(true)
-                    .withKerberos5IReadWrite(false)
+                    .withKerberos5IReadWrite(true)
                     .withKerberos5PReadOnly(true)
-                    .withKerberos5PReadWrite(true)
+                    .withKerberos5PReadWrite(false)
                     .withCifs(false)
-                    .withNfsv3(false)
-                    .withNfsv41(false)
-                    .withAllowedClients("llwptfdy")
+                    .withNfsv3(true)
+                    .withNfsv41(true)
+                    .withAllowedClients("ymjhxxjyngudivkr")
                     .withHasRootAccess(true)
-                    .withChownMode(ChownMode.RESTRICTED))))
-            .withProtocolTypes(Arrays.asList("ceopzfqrhhuaopp"))
-            .withThroughputMibps(30.051893F)
+                    .withChownMode(ChownMode.UNRESTRICTED))))
+            .withProtocolTypes(Arrays.asList("vszjfauvjfdxxi", "e"))
+            .withThroughputMibps(1.0101438F)
             .withDataProtection(new VolumePatchPropertiesDataProtection()
-                .withBackup(new VolumeBackupProperties().withBackupPolicyId("ol")
+                .withBackup(new VolumeBackupProperties().withBackupPolicyId("qtdo")
                     .withPolicyEnforced(true)
-                    .withBackupVaultId("zxctobgb"))
-                .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("oizpostmgrcfbun"))
+                    .withBackupVaultId("xv"))
+                .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("yslqbhsfx"))
                 .withRansomwareProtection(new RansomwareProtectionPatchSettings()
                     .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.ENABLED)))
             .withIsDefaultQuotaEnabled(false)
-            .withAsyncDirectoryDelete(new AsyncDirectoryDelete().withStatus(AsyncDirectoryDeleteStatus.DISABLED)
-                .withTrashBinName("pvjymjhxxjyng"))
-            .withDefaultUserQuotaInKiBs(7751853531137098645L)
-            .withDefaultGroupQuotaInKiBs(1111219125512367618L)
-            .withUnixPermissions("wbxqzvszjfau")
+            .withDefaultUserQuotaInKiBs(2696095639939857222L)
+            .withDefaultGroupQuotaInKiBs(5739741395116766160L)
+            .withUnixPermissions("wfbkrvrns")
             .withCoolAccess(true)
-            .withCoolnessPeriod(1631327314)
+            .withCoolnessPeriod(2131802432)
             .withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy.NEVER)
-            .withCoolAccessTieringPolicy(CoolAccessTieringPolicy.AUTO)
-            .withSnapshotDirectoryVisible(true)
-            .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.ENABLED)
+            .withCoolAccessTieringPolicy(CoolAccessTieringPolicy.SNAPSHOT_ONLY)
+            .withSnapshotDirectoryVisible(false)
+            .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
             .withSmbNonBrowsable(SmbNonBrowsable.ENABLED)
-            .withSmbOplocks(SmbOplocks.DISABLED)
-            .withGeoNamespaceProperties(new VolumePatchNamespaceProperties().withOriginVolume(OriginVolume.ENABLED));
+            .withSmbOplocks(SmbOplocks.ENABLED);
         model = BinaryData.fromObject(model).toObject(VolumePatchProperties.class);
-        Assertions.assertEquals(ServiceLevel.FLEXIBLE, model.serviceLevel());
-        Assertions.assertEquals(7589955596249884886L, model.usageThreshold());
-        Assertions.assertEquals(24250609, model.exportPolicy().rules().get(0).ruleIndex());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
+        Assertions.assertEquals(1355278792802325938L, model.usageThreshold());
+        Assertions.assertEquals(1904300707, model.exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).unixReadOnly());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).unixReadWrite());
-        Assertions.assertFalse(model.exportPolicy().rules().get(0).kerberos5ReadOnly());
+        Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5ReadOnly());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5ReadWrite());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5IReadOnly());
-        Assertions.assertFalse(model.exportPolicy().rules().get(0).kerberos5IReadWrite());
+        Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5IReadWrite());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).kerberos5PReadOnly());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).kerberos5PReadWrite());
-        Assertions.assertTrue(model.exportPolicy().rules().get(0).cifs());
-        Assertions.assertTrue(model.exportPolicy().rules().get(0).nfsv3());
+        Assertions.assertFalse(model.exportPolicy().rules().get(0).cifs());
+        Assertions.assertFalse(model.exportPolicy().rules().get(0).nfsv3());
         Assertions.assertFalse(model.exportPolicy().rules().get(0).nfsv41());
-        Assertions.assertEquals("c", model.exportPolicy().rules().get(0).allowedClients());
-        Assertions.assertTrue(model.exportPolicy().rules().get(0).hasRootAccess());
-        Assertions.assertEquals(ChownMode.RESTRICTED, model.exportPolicy().rules().get(0).chownMode());
-        Assertions.assertEquals("ceopzfqrhhuaopp", model.protocolTypes().get(0));
-        Assertions.assertEquals(30.051893F, model.throughputMibps());
-        Assertions.assertEquals("ol", model.dataProtection().backup().backupPolicyId());
+        Assertions.assertEquals("vpgylgqgitxmed", model.exportPolicy().rules().get(0).allowedClients());
+        Assertions.assertFalse(model.exportPolicy().rules().get(0).hasRootAccess());
+        Assertions.assertEquals(ChownMode.UNRESTRICTED, model.exportPolicy().rules().get(0).chownMode());
+        Assertions.assertEquals("vszjfauvjfdxxi", model.protocolTypes().get(0));
+        Assertions.assertEquals(1.0101438F, model.throughputMibps());
+        Assertions.assertEquals("qtdo", model.dataProtection().backup().backupPolicyId());
         Assertions.assertTrue(model.dataProtection().backup().policyEnforced());
-        Assertions.assertEquals("zxctobgb", model.dataProtection().backup().backupVaultId());
-        Assertions.assertEquals("oizpostmgrcfbun", model.dataProtection().snapshot().snapshotPolicyId());
+        Assertions.assertEquals("xv", model.dataProtection().backup().backupVaultId());
+        Assertions.assertEquals("yslqbhsfx", model.dataProtection().snapshot().snapshotPolicyId());
         Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
             model.dataProtection().ransomwareProtection().desiredRansomwareProtectionState());
         Assertions.assertFalse(model.isDefaultQuotaEnabled());
-        Assertions.assertEquals(AsyncDirectoryDeleteStatus.DISABLED, model.asyncDirectoryDelete().status());
-        Assertions.assertEquals("pvjymjhxxjyng", model.asyncDirectoryDelete().trashBinName());
-        Assertions.assertEquals(7751853531137098645L, model.defaultUserQuotaInKiBs());
-        Assertions.assertEquals(1111219125512367618L, model.defaultGroupQuotaInKiBs());
-        Assertions.assertEquals("wbxqzvszjfau", model.unixPermissions());
+        Assertions.assertEquals(2696095639939857222L, model.defaultUserQuotaInKiBs());
+        Assertions.assertEquals(5739741395116766160L, model.defaultGroupQuotaInKiBs());
+        Assertions.assertEquals("wfbkrvrns", model.unixPermissions());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(1631327314, model.coolnessPeriod());
+        Assertions.assertEquals(2131802432, model.coolnessPeriod());
         Assertions.assertEquals(CoolAccessRetrievalPolicy.NEVER, model.coolAccessRetrievalPolicy());
-        Assertions.assertEquals(CoolAccessTieringPolicy.AUTO, model.coolAccessTieringPolicy());
-        Assertions.assertTrue(model.snapshotDirectoryVisible());
-        Assertions.assertEquals(SmbAccessBasedEnumeration.ENABLED, model.smbAccessBasedEnumeration());
+        Assertions.assertEquals(CoolAccessTieringPolicy.SNAPSHOT_ONLY, model.coolAccessTieringPolicy());
+        Assertions.assertFalse(model.snapshotDirectoryVisible());
+        Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumeration());
         Assertions.assertEquals(SmbNonBrowsable.ENABLED, model.smbNonBrowsable());
-        Assertions.assertEquals(SmbOplocks.DISABLED, model.smbOplocks());
-        Assertions.assertEquals(OriginVolume.ENABLED, model.geoNamespaceProperties().originVolume());
+        Assertions.assertEquals(SmbOplocks.ENABLED, model.smbOplocks());
     }
 }

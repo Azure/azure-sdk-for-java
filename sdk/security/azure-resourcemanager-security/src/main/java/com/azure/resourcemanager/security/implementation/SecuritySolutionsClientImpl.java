@@ -191,37 +191,14 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a specific Security Solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param securitySolutionName Name of security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySolutionInner> getWithResponse(String resourceGroupName, String ascLocation,
         String securitySolutionName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, securitySolutionName, context).block();
     }
 
-    /**
-     * Gets a specific Security Solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param securitySolutionName Name of security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySolutionInner get(String resourceGroupName, String ascLocation, String securitySolutionName) {
         return getWithResponse(resourceGroupName, ascLocation, securitySolutionName, Context.NONE).getValue();
@@ -310,27 +287,13 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of Security Solutions for the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySolutionInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets a list of Security Solutions for the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySolutionInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

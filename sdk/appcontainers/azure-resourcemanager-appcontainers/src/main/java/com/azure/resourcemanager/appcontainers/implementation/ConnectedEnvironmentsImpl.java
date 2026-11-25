@@ -49,7 +49,7 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String connectedEnvironmentName) {
-        this.serviceClient().delete(resourceGroupName, connectedEnvironmentName);
+        this.delete(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, Context context) {
@@ -57,8 +57,7 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public PagedIterable<ConnectedEnvironment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ConnectedEnvironmentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ConnectedEnvironment> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,8 +67,7 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public PagedIterable<ConnectedEnvironment> list() {
-        PagedIterable<ConnectedEnvironmentInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ConnectedEnvironment> list(Context context) {
@@ -98,75 +96,30 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public ConnectedEnvironment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ConnectedEnvironment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectedEnvironmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
+            "connectedEnvironmentName", "connectedEnvironments", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
-        this.delete(resourceGroupName, connectedEnvironmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectedEnvironmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}",
-            "connectedEnvironmentName");
-        if (connectedEnvironmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
-        }
+            "connectedEnvironmentName", "connectedEnvironments", LOGGER);
         this.delete(resourceGroupName, connectedEnvironmentName, context);
     }
 

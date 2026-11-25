@@ -208,12 +208,8 @@ public final class ProductTemplatesOperationsClientImpl implements ProductTempla
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProductTemplateModelInner> listSinglePage(String resourceGroupName, String workspaceName,
         String filter, String orderby, String search, Boolean count, Integer top, Integer skip, String skipToken) {
-        final String accept = "application/json";
-        Response<ProductTemplateList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, filter, orderby, search, count, top,
-            skip, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, filter, orderby, search, count, top, skip, skipToken,
+            Context.NONE);
     }
 
     /**
@@ -249,16 +245,7 @@ public final class ProductTemplatesOperationsClientImpl implements ProductTempla
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all templates in the catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all templates in the catalog as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductTemplateModelInner> list(String resourceGroupName, String workspaceName) {
         final String filter = null;
@@ -268,31 +255,11 @@ public final class ProductTemplatesOperationsClientImpl implements ProductTempla
         final Integer top = null;
         final Integer skip = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, filter, orderby, search,
-            count, top, skip, skipToken), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, filter, orderby, search, count, top, skip, skipToken,
+            Context.NONE);
     }
 
-    /**
-     * Gets all templates in the catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param search Searches for a substring in the response. Optional.
-     * @param count Instructs the server to return only object count without actual body. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     * if there are any left.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all templates in the catalog as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductTemplateModelInner> list(String resourceGroupName, String workspaceName, String filter,
         String orderby, String search, Boolean count, Integer top, Integer skip, String skipToken, Context context) {
@@ -329,11 +296,7 @@ public final class ProductTemplatesOperationsClientImpl implements ProductTempla
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProductTemplateModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProductTemplateList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

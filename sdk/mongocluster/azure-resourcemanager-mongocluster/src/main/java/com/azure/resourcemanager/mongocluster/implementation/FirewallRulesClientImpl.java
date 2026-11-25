@@ -173,16 +173,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Gets information about a mongo cluster firewall rule.
+     * Gets information about a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster firewall rule along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about a DocumentDB cluster firewall rule along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String mongoClusterName,
@@ -194,15 +194,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Gets information about a mongo cluster firewall rule.
+     * Gets information about a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster firewall rule on successful completion of {@link Mono}.
+     * @return information about a DocumentDB cluster firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> getAsync(String resourceGroupName, String mongoClusterName,
@@ -211,18 +211,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a mongo cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster firewall rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context) {
@@ -231,33 +220,23 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             resourceGroupName, mongoClusterName, firewallRuleName, accept, context);
     }
 
-    /**
-     * Gets information about a mongo cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner get(String resourceGroupName, String mongoClusterName, String firewallRuleName) {
         return getWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE).getValue();
     }
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule along with {@link Response} on successful completion of
+     * @return represents a DocumentDB cluster firewall rule along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -273,39 +252,36 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule along with {@link Response}.
+     * @return represents a DocumentDB cluster firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, FirewallRuleInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, resource,
+            Context.NONE);
     }
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule along with {@link Response}.
+     * @return represents a DocumentDB cluster firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
@@ -318,16 +294,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a mongo cluster firewall rule.
+     * @return the {@link PollerFlux} for polling of represents a DocumentDB cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
@@ -338,40 +314,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             FirewallRuleInner.class, FirewallRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, resource);
-        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(response, FirewallRuleInner.class,
-            FirewallRuleInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, String firewallRuleName, FirewallRuleInner resource, Context context) {
@@ -382,16 +332,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
+     * Creates a new firewall rule or updates an existing firewall rule on a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String mongoClusterName,
@@ -400,50 +350,27 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrUpdate(String resourceGroupName, String mongoClusterName, String firewallRuleName,
         FirewallRuleInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster firewall rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner createOrUpdate(String resourceGroupName, String mongoClusterName, String firewallRuleName,
         FirewallRuleInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, mongoClusterName, firewallRuleName, resource, context));
     }
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,11 +386,11 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -472,16 +399,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mongoClusterName,
         String firewallRuleName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
     }
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -496,11 +422,11 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -515,36 +441,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a mongo cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName,
         String firewallRuleName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mongoClusterName, firewallRuleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes a mongo cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName,
         String firewallRuleName, Context context) {
@@ -554,11 +458,11 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Deletes a mongo cluster firewall rule.
+     * Deletes a DocumentDB cluster firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
+     * @param mongoClusterName The name of the DocumentDB cluster.
+     * @param firewallRuleName The name of the DocumentDB cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -570,42 +474,24 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a mongo cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName) {
-        beginDelete(resourceGroupName, mongoClusterName, firewallRuleName).getFinalResult();
+        delete(resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes a mongo cluster firewall rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param firewallRuleName The name of the mongo cluster firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mongoClusterName, String firewallRuleName, Context context) {
-        beginDelete(resourceGroupName, mongoClusterName, firewallRuleName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, mongoClusterName, firewallRuleName, context));
     }
 
     /**
-     * List all the firewall rules in a given mongo cluster.
+     * List all the firewall rules in a given DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -625,10 +511,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * List all the firewall rules in a given mongo cluster.
+     * List all the firewall rules in a given DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -641,10 +527,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * List all the firewall rules in a given mongo cluster.
+     * List all the firewall rules in a given DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -653,19 +539,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallRuleInner> listByMongoClusterSinglePage(String resourceGroupName,
         String mongoClusterName) {
-        final String accept = "application/json";
-        Response<FirewallRuleListResult> res
-            = service.listByMongoClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMongoClusterSinglePage(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     /**
-     * List all the firewall rules in a given mongo cluster.
+     * List all the firewall rules in a given DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -683,33 +564,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the firewall rules in a given mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName) {
-        return new PagedIterable<>(() -> listByMongoClusterSinglePage(resourceGroupName, mongoClusterName),
-            nextLink -> listByMongoClusterNextSinglePage(nextLink));
+        return listByMongoCluster(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
-    /**
-     * List all the firewall rules in a given mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
         Context context) {
@@ -749,11 +610,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallRuleInner> listByMongoClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirewallRuleListResult> res
-            = service.listByMongoClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMongoClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

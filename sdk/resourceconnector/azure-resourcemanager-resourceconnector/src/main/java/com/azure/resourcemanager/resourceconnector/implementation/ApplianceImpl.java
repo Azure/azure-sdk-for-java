@@ -130,10 +130,7 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppliances()
-            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Appliance create(Context context) {
@@ -155,11 +152,7 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppliances()
-            .updateWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Appliance apply(Context context) {
@@ -183,11 +176,7 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppliances()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Appliance refresh(Context context) {

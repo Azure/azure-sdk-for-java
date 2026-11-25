@@ -21,7 +21,7 @@ public final class FirewallRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"startIpAddress\":\"oxoebqi\",\"endIpAddress\":\"jipnwj\"},\"id\":\"jqlafcbahhpzp\",\"name\":\"foiyjwpfilk\",\"type\":\"kkholvdndvia\"}";
+            = "{\"properties\":{\"startIpAddress\":\"ttvwkpqh\",\"endIpAddress\":\"penuy\"},\"id\":\"qeqqekewvnqvcdl\",\"name\":\"uaucmf\",\"type\":\"jwnlax\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,10 @@ public final class FirewallRulesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        FirewallRule response = manager.firewallRules()
-            .getWithResponse("kmqp", "o", "hlfbcgwgc", com.azure.core.util.Context.NONE)
-            .getValue();
+        FirewallRule response
+            = manager.firewallRules().getWithResponse("ji", "xfz", "j", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("oxoebqi", response.startIpAddress());
-        Assertions.assertEquals("jipnwj", response.endIpAddress());
+        Assertions.assertEquals("ttvwkpqh", response.startIpAddress());
+        Assertions.assertEquals("penuy", response.endIpAddress());
     }
 }

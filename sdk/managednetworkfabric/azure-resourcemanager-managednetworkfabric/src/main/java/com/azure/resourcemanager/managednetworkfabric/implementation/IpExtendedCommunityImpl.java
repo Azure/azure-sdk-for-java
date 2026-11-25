@@ -119,10 +119,7 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpExtendedCommunities()
-            .create(resourceGroupName, ipExtendedCommunityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IpExtendedCommunity create(Context context) {
@@ -145,10 +142,7 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpExtendedCommunities()
-            .update(resourceGroupName, ipExtendedCommunityName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IpExtendedCommunity apply(Context context) {
@@ -171,11 +165,7 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpExtendedCommunities()
-            .getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IpExtendedCommunity refresh(Context context) {

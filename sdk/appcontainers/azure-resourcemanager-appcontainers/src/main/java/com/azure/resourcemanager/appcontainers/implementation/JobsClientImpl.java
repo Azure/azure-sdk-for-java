@@ -435,17 +435,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container Apps Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobInner> getByResourceGroupWithResponse(String resourceGroupName, String jobName,
         Context context) {
@@ -454,16 +444,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context);
     }
 
-    /**
-     * Get the properties of a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container Apps Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner getByResourceGroup(String resourceGroupName, String jobName) {
         return getByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
@@ -505,11 +486,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String jobName,
         JobInner jobEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, contentType, accept, jobEnvelope,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, jobName, jobEnvelope, Context.NONE);
     }
 
     /**
@@ -553,36 +530,14 @@ public final class JobsClientImpl implements JobsClient {
             JobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or Update a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginCreateOrUpdate(String resourceGroupName, String jobName,
         JobInner jobEnvelope) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, jobName, jobEnvelope);
-        return this.client.<JobInner, JobInner>getLroResult(response, JobInner.class, JobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, jobName, jobEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or Update a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginCreateOrUpdate(String resourceGroupName, String jobName,
         JobInner jobEnvelope, Context context) {
@@ -607,37 +562,17 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner createOrUpdate(String resourceGroupName, String jobName, JobInner jobEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, jobName, jobEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, jobName, jobEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or Update a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner createOrUpdate(String resourceGroupName, String jobName, JobInner jobEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, jobName, jobEnvelope, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, jobName, jobEnvelope, context));
     }
 
     /**
@@ -680,11 +615,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String jobName,
         JobPatchProperties jobEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, contentType, accept, jobEnvelope,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, jobName, jobEnvelope, Context.NONE);
     }
 
     /**
@@ -731,40 +662,14 @@ public final class JobsClientImpl implements JobsClient {
             JobInner.class, this.client.getContext());
     }
 
-    /**
-     * Update properties of a Container Apps Job
-     * 
-     * Patches a Container Apps Job using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginUpdate(String resourceGroupName, String jobName,
         JobPatchProperties jobEnvelope) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, jobName, jobEnvelope);
-        return this.client.<JobInner, JobInner>getLroResult(response, JobInner.class, JobInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, jobName, jobEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a Container Apps Job
-     * 
-     * Patches a Container Apps Job using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginUpdate(String resourceGroupName, String jobName,
         JobPatchProperties jobEnvelope, Context context) {
@@ -791,41 +696,16 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of a Container Apps Job
-     * 
-     * Patches a Container Apps Job using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner update(String resourceGroupName, String jobName, JobPatchProperties jobEnvelope) {
-        return beginUpdate(resourceGroupName, jobName, jobEnvelope).getFinalResult();
+        return update(resourceGroupName, jobName, jobEnvelope, Context.NONE);
     }
 
-    /**
-     * Update properties of a Container Apps Job
-     * 
-     * Patches a Container Apps Job using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobEnvelope Properties used to create a container apps job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner update(String resourceGroupName, String jobName, JobPatchProperties jobEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, jobName, jobEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, jobName, jobEnvelope, context));
     }
 
     /**
@@ -858,8 +738,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String jobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -896,33 +775,13 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, jobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Delete a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, jobName, context);
@@ -944,33 +803,16 @@ public final class JobsClientImpl implements JobsClient {
         return beginDeleteAsync(resourceGroupName, jobName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String jobName) {
-        beginDelete(resourceGroupName, jobName).getFinalResult();
+        delete(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Delete a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String jobName, Context context) {
-        beginDelete(resourceGroupName, jobName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, jobName, context));
     }
 
     /**
@@ -1020,11 +862,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<JobsCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1046,31 +884,13 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Container Apps Jobs in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps Jobs in a given resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get the Container Apps Jobs in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps Jobs in a given resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1118,11 +938,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<JobsCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1143,27 +959,13 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Container Apps Jobs in a given subscription.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps Jobs in a given subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get the Container Apps Jobs in a given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container Apps Jobs in a given subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1205,9 +1007,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String jobName,
         JobExecutionTemplate template) {
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, accept, template, Context.NONE);
+        return startWithResponse(resourceGroupName, jobName, template, Context.NONE);
     }
 
     /**
@@ -1282,44 +1082,20 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of container App's Job execution name.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(String resourceGroupName,
+    private SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(String resourceGroupName,
         String jobName, JobExecutionTemplate template) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, jobName, template);
-        return this.client.<JobExecutionBaseInner, JobExecutionBaseInner>getLroResult(response,
-            JobExecutionBaseInner.class, JobExecutionBaseInner.class, Context.NONE);
+        return beginStart(resourceGroupName, jobName, template, Context.NONE);
     }
 
-    /**
-     * Start a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App's Job execution name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(String resourceGroupName,
         String jobName) {
         final JobExecutionTemplate template = null;
-        Response<BinaryData> response = startWithResponse(resourceGroupName, jobName, template);
-        return this.client.<JobExecutionBaseInner, JobExecutionBaseInner>getLroResult(response,
-            JobExecutionBaseInner.class, JobExecutionBaseInner.class, Context.NONE);
+        return beginStart(resourceGroupName, jobName, template, Context.NONE);
     }
 
-    /**
-     * Start a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param template Properties used to start a job execution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App's Job execution name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(String resourceGroupName,
         String jobName, JobExecutionTemplate template, Context context) {
@@ -1363,38 +1139,18 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App's Job execution name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobExecutionBaseInner start(String resourceGroupName, String jobName) {
         final JobExecutionTemplate template = null;
-        return beginStart(resourceGroupName, jobName, template).getFinalResult();
+        return start(resourceGroupName, jobName, template, Context.NONE);
     }
 
-    /**
-     * Start a Container Apps Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param template Properties used to start a job execution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App's Job execution name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobExecutionBaseInner start(String resourceGroupName, String jobName, JobExecutionTemplate template,
         Context context) {
-        return beginStart(resourceGroupName, jobName, template, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStart(resourceGroupName, jobName, template, context));
     }
 
     /**
@@ -1431,9 +1187,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopMultipleExecutionsWithResponse(String resourceGroupName, String jobName) {
-        final String accept = "application/json";
-        return service.stopMultipleExecutionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, accept, Context.NONE);
+        return stopMultipleExecutionsWithResponse(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -1474,35 +1228,14 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App executions collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppJobExecutionsInner>, ContainerAppJobExecutionsInner>
         beginStopMultipleExecutions(String resourceGroupName, String jobName) {
-        Response<BinaryData> response = stopMultipleExecutionsWithResponse(resourceGroupName, jobName);
-        return this.client.<ContainerAppJobExecutionsInner, ContainerAppJobExecutionsInner>getLroResult(response,
-            ContainerAppJobExecutionsInner.class, ContainerAppJobExecutionsInner.class, Context.NONE);
+        return beginStopMultipleExecutions(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App executions collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppJobExecutionsInner>, ContainerAppJobExecutionsInner>
         beginStopMultipleExecutions(String resourceGroupName, String jobName, Context context) {
@@ -1527,36 +1260,17 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App executions collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppJobExecutionsInner stopMultipleExecutions(String resourceGroupName, String jobName) {
-        return beginStopMultipleExecutions(resourceGroupName, jobName).getFinalResult();
+        return stopMultipleExecutions(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App executions collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppJobExecutionsInner stopMultipleExecutions(String resourceGroupName, String jobName,
         Context context) {
-        return beginStopMultipleExecutions(resourceGroupName, jobName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStopMultipleExecutions(resourceGroupName, jobName, context));
     }
 
     /**
@@ -1596,17 +1310,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List secrets for a container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container Apps Job Secrets Collection ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobSecretsCollectionInner> listSecretsWithResponse(String resourceGroupName, String jobName,
         Context context) {
@@ -1615,16 +1319,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context);
     }
 
-    /**
-     * List secrets for a container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container Apps Job Secrets Collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobSecretsCollectionInner listSecrets(String resourceGroupName, String jobName) {
         return listSecretsWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
@@ -1665,9 +1360,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String resourceGroupName, String jobName) {
-        final String accept = "application/json";
-        return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, accept, Context.NONE);
+        return resumeWithResponse(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -1709,37 +1402,13 @@ public final class JobsClientImpl implements JobsClient {
             JobInner.class, this.client.getContext());
     }
 
-    /**
-     * Resumes a suspended job
-     * 
-     * Resumes execution for a suspended Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceGroupName, String jobName) {
-        Response<BinaryData> response = resumeWithResponse(resourceGroupName, jobName);
-        return this.client.<JobInner, JobInner>getLroResult(response, JobInner.class, JobInner.class, Context.NONE);
+        return beginResume(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Resumes a suspended job
-     * 
-     * Resumes execution for a suspended Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceGroupName, String jobName,
         Context context) {
@@ -1764,39 +1433,16 @@ public final class JobsClientImpl implements JobsClient {
         return beginResumeAsync(resourceGroupName, jobName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resumes a suspended job
-     * 
-     * Resumes execution for a suspended Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner resume(String resourceGroupName, String jobName) {
-        return beginResume(resourceGroupName, jobName).getFinalResult();
+        return resume(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Resumes a suspended job
-     * 
-     * Resumes execution for a suspended Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner resume(String resourceGroupName, String jobName, Context context) {
-        return beginResume(resourceGroupName, jobName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResume(resourceGroupName, jobName, context));
     }
 
     /**
@@ -1834,9 +1480,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendWithResponse(String resourceGroupName, String jobName) {
-        final String accept = "application/json";
-        return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, accept, Context.NONE);
+        return suspendWithResponse(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -1878,37 +1522,13 @@ public final class JobsClientImpl implements JobsClient {
             JobInner.class, this.client.getContext());
     }
 
-    /**
-     * Suspends a job
-     * 
-     * Suspends execution for a running Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginSuspend(String resourceGroupName, String jobName) {
-        Response<BinaryData> response = suspendWithResponse(resourceGroupName, jobName);
-        return this.client.<JobInner, JobInner>getLroResult(response, JobInner.class, JobInner.class, Context.NONE);
+        return beginSuspend(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Suspends a job
-     * 
-     * Suspends execution for a running Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginSuspend(String resourceGroupName, String jobName,
         Context context) {
@@ -1933,39 +1553,16 @@ public final class JobsClientImpl implements JobsClient {
         return beginSuspendAsync(resourceGroupName, jobName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Suspends a job
-     * 
-     * Suspends execution for a running Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner suspend(String resourceGroupName, String jobName) {
-        return beginSuspend(resourceGroupName, jobName).getFinalResult();
+        return suspend(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Suspends a job
-     * 
-     * Suspends execution for a running Container Apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner suspend(String resourceGroupName, String jobName, Context context) {
-        return beginSuspend(resourceGroupName, jobName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSuspend(resourceGroupName, jobName, context));
     }
 
     /**
@@ -2002,8 +1599,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopExecutionWithResponse(String resourceGroupName, String jobName,
         String jobExecutionName) {
-        return service.stopExecutionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, jobExecutionName, Context.NONE);
+        return stopExecutionWithResponse(resourceGroupName, jobName, jobExecutionName, Context.NONE);
     }
 
     /**
@@ -2045,36 +1641,14 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopExecution(String resourceGroupName, String jobName,
         String jobExecutionName) {
-        Response<BinaryData> response = stopExecutionWithResponse(resourceGroupName, jobName, jobExecutionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStopExecution(resourceGroupName, jobName, jobExecutionName, Context.NONE);
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopExecution(String resourceGroupName, String jobName,
         String jobExecutionName, Context context) {
@@ -2100,35 +1674,16 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopExecution(String resourceGroupName, String jobName, String jobExecutionName) {
-        beginStopExecution(resourceGroupName, jobName, jobExecutionName).getFinalResult();
+        stopExecution(resourceGroupName, jobName, jobExecutionName, Context.NONE);
     }
 
-    /**
-     * Terminates execution of a running container apps job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopExecution(String resourceGroupName, String jobName, String jobExecutionName, Context context) {
-        beginStopExecution(resourceGroupName, jobName, jobExecutionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStopExecution(resourceGroupName, jobName, jobExecutionName, context));
     }
 
     /**
@@ -2178,22 +1733,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Container App Job.
-     * 
-     * Get the properties for a given Container App Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param apiName Proxy API Name for Container App Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App Job.
-     * 
-     * Get the properties for a given Container App Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobInner> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName,
         Context context) {
@@ -2202,21 +1742,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, jobName, apiName, accept, context);
     }
 
-    /**
-     * Get the properties of a Container App Job.
-     * 
-     * Get the properties for a given Container App Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param apiName Proxy API Name for Container App Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App Job.
-     * 
-     * Get the properties for a given Container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner proxyGet(String resourceGroupName, String jobName, String apiName) {
         return proxyGetWithResponse(resourceGroupName, jobName, apiName, Context.NONE).getValue();
@@ -2285,12 +1811,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticsInner> listDetectorsSinglePage(String resourceGroupName, String jobName) {
-        final String accept = "application/json";
-        Response<DiagnosticsCollectionInner> res
-            = service.listDetectorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDetectorsSinglePage(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -2318,41 +1839,13 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the list of diagnostics for a given Container App Job.
-     * 
-     * Get the list of diagnostics for a Container App Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container App Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a given Container App Job.
-     * 
-     * Get the list of diagnostics for a Container App Job as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticsInner> listDetectors(String resourceGroupName, String jobName) {
-        return new PagedIterable<>(() -> listDetectorsSinglePage(resourceGroupName, jobName),
-            nextLink -> listDetectorsNextSinglePage(nextLink));
+        return listDetectors(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Get the list of diagnostics for a given Container App Job.
-     * 
-     * Get the list of diagnostics for a Container App Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container App Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a given Container App Job.
-     * 
-     * Get the list of diagnostics for a Container App Job as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticsInner> listDetectors(String resourceGroupName, String jobName, Context context) {
         return new PagedIterable<>(() -> listDetectorsSinglePage(resourceGroupName, jobName, context),
@@ -2406,22 +1899,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the diagnostics data for a given Container App Job.
-     * 
-     * Get the diagnostics data for a Container App Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container App Job.
-     * @param detectorName Proxy API Name for Container App Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostics data for a given Container App Job.
-     * 
-     * Get the diagnostics data for a Container App Job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticsInner> getDetectorWithResponse(String resourceGroupName, String jobName,
         String detectorName, Context context) {
@@ -2430,21 +1908,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, jobName, detectorName, accept, context);
     }
 
-    /**
-     * Get the diagnostics data for a given Container App Job.
-     * 
-     * Get the diagnostics data for a Container App Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container App Job.
-     * @param detectorName Proxy API Name for Container App Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostics data for a given Container App Job.
-     * 
-     * Get the diagnostics data for a Container App Job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticsInner getDetector(String resourceGroupName, String jobName, String detectorName) {
         return getDetectorWithResponse(resourceGroupName, jobName, detectorName, Context.NONE).getValue();
@@ -2486,11 +1950,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobsCollection> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2550,11 +2010,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobsCollection> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2617,11 +2073,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticsInner> listDetectorsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiagnosticsCollectionInner> res
-            = service.listDetectorsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDetectorsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

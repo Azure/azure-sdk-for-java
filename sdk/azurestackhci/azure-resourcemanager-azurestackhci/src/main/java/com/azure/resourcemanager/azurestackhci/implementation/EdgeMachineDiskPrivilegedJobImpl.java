@@ -65,11 +65,7 @@ public final class EdgeMachineDiskPrivilegedJobImpl implements EdgeMachineDiskPr
     }
 
     public EdgeMachineDiskPrivilegedJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDiskPrivilegedJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineDiskPrivilegedJob create(Context context) {
@@ -92,11 +88,7 @@ public final class EdgeMachineDiskPrivilegedJobImpl implements EdgeMachineDiskPr
     }
 
     public EdgeMachineDiskPrivilegedJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDiskPrivilegedJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, diskName, privilegedJobName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineDiskPrivilegedJob apply(Context context) {
@@ -126,11 +118,7 @@ public final class EdgeMachineDiskPrivilegedJobImpl implements EdgeMachineDiskPr
     }
 
     public EdgeMachineDiskPrivilegedJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineDiskPrivilegedJobs()
-            .getWithResponse(resourceGroupName, edgeMachineName, diskName, privilegedJobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineDiskPrivilegedJob refresh(Context context) {

@@ -548,19 +548,7 @@ public final class SkusClientImpl implements SkusClient {
             sku).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> getNestedResourceTypeFirstWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
@@ -595,18 +583,7 @@ public final class SkusClientImpl implements SkusClient {
             context);
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner getNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String sku) {
@@ -689,21 +666,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeFirst, sku, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> createOrUpdateNestedResourceTypeFirstWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String sku, SkuResourceInner properties, Context context) {
@@ -745,19 +708,7 @@ public final class SkusClientImpl implements SkusClient {
             accept, properties, context);
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String sku, SkuResourceInner properties) {
@@ -828,19 +779,7 @@ public final class SkusClientImpl implements SkusClient {
             sku).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String sku, Context context) {
@@ -873,17 +812,7 @@ public final class SkusClientImpl implements SkusClient {
             this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, sku, context);
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String sku) {
@@ -969,35 +898,8 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePage(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsNestedResourceTypeFirstSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-                nestedResourceTypeFirst, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePage(providerNamespace, resourceType,
+            nestedResourceTypeFirst, Context.NONE);
     }
 
     /**
@@ -1046,38 +948,15 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
-        return new PagedIterable<>(
-            () -> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePage(providerNamespace, resourceType,
-                nestedResourceTypeFirst),
-            nextLink -> listByResourceTypeRegistrationsNestedResourceTypeFirstNextSinglePage(nextLink));
+        return listByResourceTypeRegistrationsNestedResourceTypeFirst(providerNamespace, resourceType,
+            nestedResourceTypeFirst, Context.NONE);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context) {
@@ -1144,18 +1023,7 @@ public final class SkusClientImpl implements SkusClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> getWithResponse(String providerNamespace, String resourceType, String sku,
         Context context) {
@@ -1185,17 +1053,7 @@ public final class SkusClientImpl implements SkusClient {
             providerNamespace, resourceType, sku, accept, context);
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner get(String providerNamespace, String resourceType, String sku) {
         return getWithResponse(providerNamespace, resourceType, sku, Context.NONE).getValue();
@@ -1269,20 +1127,7 @@ public final class SkusClientImpl implements SkusClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> createOrUpdateWithResponse(String providerNamespace, String resourceType,
         String sku, SkuResourceInner properties, Context context) {
@@ -1320,18 +1165,7 @@ public final class SkusClientImpl implements SkusClient {
             context);
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner createOrUpdate(String providerNamespace, String resourceType, String sku,
         SkuResourceInner properties) {
@@ -1391,18 +1225,7 @@ public final class SkusClientImpl implements SkusClient {
         return deleteWithResponseAsync(providerNamespace, resourceType, sku).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, String resourceType, String sku,
         Context context) {
@@ -1431,16 +1254,7 @@ public final class SkusClientImpl implements SkusClient {
             this.client.getSubscriptionId(), providerNamespace, resourceType, sku, context);
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, String resourceType, String sku) {
         deleteWithResponse(providerNamespace, resourceType, sku, Context.NONE);
@@ -1515,30 +1329,7 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listByResourceTypeRegistrationsSinglePage(String providerNamespace,
         String resourceType) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), providerNamespace, resourceType, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsSinglePage(providerNamespace, resourceType, Context.NONE);
     }
 
     /**
@@ -1581,34 +1372,14 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(String providerNamespace,
         String resourceType) {
-        return new PagedIterable<>(() -> listByResourceTypeRegistrationsSinglePage(providerNamespace, resourceType),
-            nextLink -> listByResourceTypeRegistrationsNextSinglePage(nextLink));
+        return listByResourceTypeRegistrations(providerNamespace, resourceType, Context.NONE);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(String providerNamespace,
         String resourceType, Context context) {
@@ -1688,20 +1459,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, sku).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> getNestedResourceTypeSecondWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
@@ -1742,19 +1500,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, sku, accept, context);
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner getNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
@@ -1845,22 +1591,7 @@ public final class SkusClientImpl implements SkusClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> createOrUpdateNestedResourceTypeSecondWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
@@ -1908,20 +1639,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeFirst, nestedResourceTypeSecond, sku, contentType, accept, properties, context);
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner createOrUpdateNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, SkuResourceInner properties) {
@@ -1998,20 +1716,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, sku).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, Context context) {
@@ -2050,18 +1755,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, sku, context);
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
@@ -2157,40 +1851,8 @@ public final class SkusClientImpl implements SkusClient {
     private PagedResponse<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePage(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsNestedResourceTypeSecondSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePage(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, Context.NONE);
     }
 
     /**
@@ -2246,41 +1908,16 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
-        return new PagedIterable<>(
-            () -> listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePage(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond),
-            nextLink -> listByResourceTypeRegistrationsNestedResourceTypeSecondNextSinglePage(nextLink));
+        return listByResourceTypeRegistrationsNestedResourceTypeSecond(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, Context.NONE);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2369,21 +2006,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, nestedResourceTypeThird, sku).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> getNestedResourceTypeThirdWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2428,20 +2051,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, nestedResourceTypeThird, sku, accept, context);
     }
 
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner getNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
@@ -2539,23 +2149,7 @@ public final class SkusClientImpl implements SkusClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuResourceInner> createOrUpdateNestedResourceTypeThirdWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2607,21 +2201,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, nestedResourceTypeThird, sku, contentType, accept, properties, context);
     }
 
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuResourceInner createOrUpdateNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
@@ -2707,21 +2287,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, nestedResourceTypeThird, sku).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
@@ -2765,19 +2331,7 @@ public final class SkusClientImpl implements SkusClient {
             nestedResourceTypeSecond, nestedResourceTypeThird, sku, context);
     }
 
-    /**
-     * Deletes a resource type sku.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
@@ -2881,44 +2435,8 @@ public final class SkusClientImpl implements SkusClient {
     private PagedResponse<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePage(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsNestedResourceTypeThirdSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePage(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, Context.NONE);
     }
 
     /**
@@ -2979,43 +2497,16 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        return new PagedIterable<>(
-            () -> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePage(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird),
-            nextLink -> listByResourceTypeRegistrationsNestedResourceTypeThirdNextSinglePage(nextLink));
+        return listByResourceTypeRegistrationsNestedResourceTypeThird(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, Context.NONE);
     }
 
-    /**
-     * Gets the list of skus for the given resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -3067,21 +2558,7 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner>
         listByResourceTypeRegistrationsNestedResourceTypeFirstNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsNestedResourceTypeFirstNextSync(nextLink,
-                this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNestedResourceTypeFirstNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3153,20 +2630,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listByResourceTypeRegistrationsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res = service
-            .listByResourceTypeRegistrationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3239,21 +2703,7 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner>
         listByResourceTypeRegistrationsNestedResourceTypeSecondNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsNestedResourceTypeSecondNextSync(nextLink,
-                this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNestedResourceTypeSecondNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3327,21 +2777,7 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner>
         listByResourceTypeRegistrationsNestedResourceTypeThirdNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuResourceArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationsNestedResourceTypeThirdNextSync(nextLink,
-                this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationsNestedResourceTypeThirdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

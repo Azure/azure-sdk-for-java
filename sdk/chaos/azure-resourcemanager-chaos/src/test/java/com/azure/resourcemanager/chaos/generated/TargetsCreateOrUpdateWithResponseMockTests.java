@@ -25,7 +25,7 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hlaiwd\":\"\\\"datav\\\"\",\"hzdtxetlgydlh\":\"\\\"dataxsmlz\\\"\",\"b\":\"\\\"datavlnnpx\\\"\",\"gjekglklby\":\"\\\"datafiqgeaar\\\"\"},\"location\":\"idwcwvmzegjon\",\"id\":\"jirwgdnqzbrfk\",\"name\":\"pzhz\",\"type\":\"tk\"}";
+            = "{\"properties\":{\"o\":\"\\\"dataehgpdohzjqatu\\\"\",\"cnwfepbnwgfmxjg\":\"\\\"datagebx\\\"\"},\"location\":\"bjb\",\"id\":\"lfgtdysnaquflqbc\",\"name\":\"q\",\"type\":\"amz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,15 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Target response = manager.targets()
-            .createOrUpdateWithResponse("tjklntikyjuzk", "bqzolxr", "vhqjwtrhtgvg", "pcrrk", "lawjmjsmwrok",
-                new TargetInner()
-                    .withProperties(mapOf("nuchlgmltxdwhmo",
-                        BinaryData.fromBytes("\"dataxfzzzwyjafitlhgu\"".getBytes(StandardCharsets.UTF_8)), "zvlnsnnjz",
-                        BinaryData.fromBytes("\"dataus\"".getBytes(StandardCharsets.UTF_8)), "mwamxqzragpgdph",
-                        BinaryData.fromBytes("\"datapafolp\"".getBytes(StandardCharsets.UTF_8))))
-                    .withLocation("dulajvlejchcs"),
+            .createOrUpdateWithResponse("iropionszon", "pngajin", "ixjawrtm", "fjmyccxlzhco", "ovne",
+                new TargetInner().withProperties(mapOf("dtjxtxrdcqt",
+                    BinaryData.fromBytes("\"dataenlusfn\"".getBytes(StandardCharsets.UTF_8)), "vuwkasiziesfuugh",
+                    BinaryData.fromBytes("\"datavidttgepuslvyjt\"".getBytes(StandardCharsets.UTF_8)), "ey",
+                    BinaryData.fromBytes("\"datauqfecj\"".getBytes(StandardCharsets.UTF_8)))).withLocation("uhxu"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("idwcwvmzegjon", response.location());
+        Assertions.assertEquals("bjb", response.location());
     }
 
     // Use "Map.of" if available

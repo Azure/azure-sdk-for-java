@@ -191,12 +191,7 @@ public final class FetchSecondaryRecoveryPointsClientImpl implements FetchSecond
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupRecoveryPointResourceInner> listSinglePage(String resourceGroupName,
         String location, FetchSecondaryRPsRequestParameters parameters, String filter, String skipToken) {
-        final String accept = "application/json";
-        Response<AzureBackupRecoveryPointResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, location, filter, skipToken, accept, parameters, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, location, parameters, filter, skipToken, Context.NONE);
     }
 
     /**
@@ -226,42 +221,16 @@ public final class FetchSecondaryRecoveryPointsClientImpl implements FetchSecond
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns a list of Secondary Recovery Points for a DataSource in a vault, that can be used for Cross Region
-     * Restore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure backup recoveryPoint resource list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String location,
         FetchSecondaryRPsRequestParameters parameters) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, location, parameters, filter, skipToken, Context.NONE);
     }
 
-    /**
-     * Returns a list of Secondary Recovery Points for a DataSource in a vault, that can be used for Cross Region
-     * Restore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure backup recoveryPoint resource list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String location,
         FetchSecondaryRPsRequestParameters parameters, String filter, String skipToken, Context context) {
@@ -300,11 +269,7 @@ public final class FetchSecondaryRecoveryPointsClientImpl implements FetchSecond
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupRecoveryPointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureBackupRecoveryPointResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

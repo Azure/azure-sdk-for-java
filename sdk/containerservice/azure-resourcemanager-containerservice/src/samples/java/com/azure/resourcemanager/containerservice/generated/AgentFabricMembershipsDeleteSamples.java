@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentFabricMembershipsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/AgentFabricMemberships_Delete.json
+     * x-ms-original-file: 2026-09-02-preview/AgentFabricMemberships_Delete.json
      */
     /**
      * Sample code: Delete AgentFabric Membership.

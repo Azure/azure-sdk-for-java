@@ -119,20 +119,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
-     * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
-     * format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param operationId OperationID which represents the export job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExportJobsResultInner> getWithResponse(String resourceGroupName, String vaultName,
         String operationId, Context context) {
@@ -141,19 +128,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
             resourceGroupName, vaultName, operationId, accept, context);
     }
 
-    /**
-     * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
-     * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
-     * format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param operationId OperationID which represents the export job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportJobsResultInner get(String resourceGroupName, String vaultName, String operationId) {
         return getWithResponse(resourceGroupName, vaultName, operationId, Context.NONE).getValue();

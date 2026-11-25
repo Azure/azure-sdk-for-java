@@ -82,13 +82,6 @@ public interface ChaosManagementClient {
     ExperimentsClient getExperiments();
 
     /**
-     * Gets the PrivateAccessesClient object to access its operations.
-     * 
-     * @return the PrivateAccessesClient object.
-     */
-    PrivateAccessesClient getPrivateAccesses();
-
-    /**
      * Gets the ActionsClient object to access its operations.
      * 
      * @return the ActionsClient object.
@@ -124,6 +117,20 @@ public interface ChaosManagementClient {
     WorkspacesClient getWorkspaces();
 
     /**
+     * Gets the WorkspaceDiscoveriesClient object to access its operations.
+     * 
+     * @return the WorkspaceDiscoveriesClient object.
+     */
+    WorkspaceDiscoveriesClient getWorkspaceDiscoveries();
+
+    /**
+     * Gets the WorkspaceEvaluationsClient object to access its operations.
+     * 
+     * @return the WorkspaceEvaluationsClient object.
+     */
+    WorkspaceEvaluationsClient getWorkspaceEvaluations();
+
+    /**
      * Gets the DiscoveredResourcesClient object to access its operations.
      * 
      * @return the DiscoveredResourcesClient object.
@@ -136,6 +143,20 @@ public interface ChaosManagementClient {
      * @return the ScenariosClient object.
      */
     ScenariosClient getScenarios();
+
+    /**
+     * Gets the ScenarioTemplatesClient object to access its operations.
+     * 
+     * @return the ScenarioTemplatesClient object.
+     */
+    ScenarioTemplatesClient getScenarioTemplates();
+
+    /**
+     * Gets the ScenarioTemplateVersionsClient object to access its operations.
+     * 
+     * @return the ScenarioTemplateVersionsClient object.
+     */
+    ScenarioTemplateVersionsClient getScenarioTemplateVersions();
 
     /**
      * Gets the ScenarioConfigurationsClient object to access its operations.

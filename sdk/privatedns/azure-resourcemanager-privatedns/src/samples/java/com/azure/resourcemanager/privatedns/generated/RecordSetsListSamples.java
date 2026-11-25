@@ -9,7 +9,7 @@ package com.azure.resourcemanager.privatedns.generated;
  */
 public final class RecordSetsListSamples {
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetALLList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetALLList.json
      */
     /**
      * Sample code: GET Private DNS Zone ALL Record Sets.

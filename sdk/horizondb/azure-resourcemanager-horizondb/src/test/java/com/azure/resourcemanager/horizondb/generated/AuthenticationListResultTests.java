@@ -12,8 +12,8 @@ public final class AuthenticationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"ldtlwwr\",\"name\":\"kdmtncvokotll\",\"type\":\"d\"},{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Provisioning\"},\"id\":\"cogjltdtbn\",\"name\":\"hadoocrk\",\"type\":\"cikhnv\"}],\"nextLink\":\"mqg\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"faoqzpiyylhal\",\"name\":\"swhccsphk\",\"type\":\"ivwitqscywugg\"},{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"zbwemh\",\"name\":\"i\",\"type\":\"sbrgz\"},{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"},\"id\":\"ypqwdxggiccc\",\"name\":\"xqhuexm\",\"type\":\"ttlstvlzywemhz\"}],\"nextLink\":\"csdtclusiypbs\"}")
             .toObject(AuthenticationListResult.class);
-        Assertions.assertEquals("mqg", model.nextLink());
+        Assertions.assertEquals("csdtclusiypbs", model.nextLink());
     }
 }

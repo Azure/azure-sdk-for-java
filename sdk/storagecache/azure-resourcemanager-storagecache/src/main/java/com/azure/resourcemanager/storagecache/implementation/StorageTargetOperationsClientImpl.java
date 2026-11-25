@@ -172,8 +172,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> flushWithResponse(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        return service.flushSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cacheName, storageTargetName, Context.NONE);
+        return flushWithResponse(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     /**
@@ -218,40 +217,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             this.client.getContext());
     }
 
-    /**
-     * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
-     * target's namespace will return errors until the flush operation completes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        Response<BinaryData> response = flushWithResponse(resourceGroupName, cacheName, storageTargetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFlush(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
-     * target's namespace will return errors until the flush operation completes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName,
         String storageTargetName, Context context) {
@@ -278,39 +251,16 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
-     * target's namespace will return errors until the flush operation completes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void flush(String resourceGroupName, String cacheName, String storageTargetName) {
-        beginFlush(resourceGroupName, cacheName, storageTargetName).getFinalResult();
+        flush(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
-     * target's namespace will return errors until the flush operation completes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void flush(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        beginFlush(resourceGroupName, cacheName, storageTargetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginFlush(resourceGroupName, cacheName, storageTargetName, context));
     }
 
     /**
@@ -349,8 +299,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendWithResponse(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cacheName, storageTargetName, Context.NONE);
+        return suspendWithResponse(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     /**
@@ -394,38 +343,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             this.client.getContext());
     }
 
-    /**
-     * Suspends client access to a storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        Response<BinaryData> response = suspendWithResponse(resourceGroupName, cacheName, storageTargetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSuspend(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Suspends client access to a storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String cacheName,
         String storageTargetName, Context context) {
@@ -451,37 +376,16 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Suspends client access to a storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspend(String resourceGroupName, String cacheName, String storageTargetName) {
-        beginSuspend(resourceGroupName, cacheName, storageTargetName).getFinalResult();
+        suspend(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Suspends client access to a storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspend(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        beginSuspend(resourceGroupName, cacheName, storageTargetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginSuspend(resourceGroupName, cacheName, storageTargetName, context));
     }
 
     /**
@@ -520,8 +424,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cacheName, storageTargetName, Context.NONE);
+        return resumeWithResponse(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     /**
@@ -565,38 +468,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             this.client.getContext());
     }
 
-    /**
-     * Resumes client access to a previously suspended storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        Response<BinaryData> response = resumeWithResponse(resourceGroupName, cacheName, storageTargetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResume(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Resumes client access to a previously suspended storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String cacheName,
         String storageTargetName, Context context) {
@@ -622,37 +501,16 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resumes client access to a previously suspended storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String resourceGroupName, String cacheName, String storageTargetName) {
-        beginResume(resourceGroupName, cacheName, storageTargetName).getFinalResult();
+        resume(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Resumes client access to a previously suspended storage target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        beginResume(resourceGroupName, cacheName, storageTargetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginResume(resourceGroupName, cacheName, storageTargetName, context));
     }
 
     /**
@@ -693,8 +551,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> invalidateWithResponse(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        return service.invalidateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cacheName, storageTargetName, Context.NONE);
+        return invalidateWithResponse(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
     /**
@@ -740,40 +597,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             this.client.getContext());
     }
 
-    /**
-     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
-     * next request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInvalidate(String resourceGroupName, String cacheName,
         String storageTargetName) {
-        Response<BinaryData> response = invalidateWithResponse(resourceGroupName, cacheName, storageTargetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginInvalidate(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
-     * next request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInvalidate(String resourceGroupName, String cacheName,
         String storageTargetName, Context context) {
@@ -801,38 +632,15 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
-     * next request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void invalidate(String resourceGroupName, String cacheName, String storageTargetName) {
-        beginInvalidate(resourceGroupName, cacheName, storageTargetName).getFinalResult();
+        invalidate(resourceGroupName, cacheName, storageTargetName, Context.NONE);
     }
 
-    /**
-     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
-     * next request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void invalidate(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        beginInvalidate(resourceGroupName, cacheName, storageTargetName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginInvalidate(resourceGroupName, cacheName, storageTargetName, context));
     }
 }

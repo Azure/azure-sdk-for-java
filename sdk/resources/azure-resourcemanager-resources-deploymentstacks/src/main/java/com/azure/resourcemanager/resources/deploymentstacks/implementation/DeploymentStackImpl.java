@@ -84,10 +84,7 @@ public final class DeploymentStackImpl implements DeploymentStack, DeploymentSta
     }
 
     public DeploymentStack create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentStacks()
-            .createOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeploymentStack create(Context context) {
@@ -109,10 +106,7 @@ public final class DeploymentStackImpl implements DeploymentStack, DeploymentSta
     }
 
     public DeploymentStack apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentStacks()
-            .createOrUpdateAtResourceGroup(resourceGroupName, deploymentStackName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeploymentStack apply(Context context) {
@@ -132,14 +126,20 @@ public final class DeploymentStackImpl implements DeploymentStack, DeploymentSta
         this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
             "deploymentStackName");
+        if (this.deploymentStackName == null) {
+            this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+                "deploymentStackName");
+        }
+        if (this.deploymentStackName == null) {
+            this.deploymentStackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}",
+                "deploymentStackName");
+        }
     }
 
     public DeploymentStack refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentStacks()
-            .getByResourceGroupWithResponse(resourceGroupName, deploymentStackName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeploymentStack refresh(Context context) {

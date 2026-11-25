@@ -81,10 +81,7 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupInstances()
-            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupInstanceResource create(Context context) {
@@ -106,10 +103,7 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupInstances()
-            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupInstanceResource apply(Context context) {
@@ -135,11 +129,7 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupInstances()
-            .getWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupInstanceResource refresh(Context context) {

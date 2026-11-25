@@ -47,9 +47,7 @@ public final class DrillRunResourcesImpl implements DrillRunResources {
     }
 
     public PagedIterable<DrillRunResource> list(String serviceGroupName, String drillName, String drillRunName) {
-        PagedIterable<DrillRunResourceInner> inner
-            = this.serviceClient().list(serviceGroupName, drillName, drillRunName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DrillRunResourceImpl(inner1, this.manager()));
+        return this.list(serviceGroupName, drillName, drillRunName, Context.NONE);
     }
 
     public PagedIterable<DrillRunResource> list(String serviceGroupName, String drillName, String drillRunName,

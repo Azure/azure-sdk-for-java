@@ -110,19 +110,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LongTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, LongTermRetentionPolicyName policyName) {
@@ -197,18 +185,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             resourceGroupName, serverName, databaseName, policyName, accept, context);
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName) {
@@ -216,56 +193,21 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LongTermRetentionPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, LongTermRetentionPolicyName policyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, context).block();
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, policyName, Context.NONE).getValue();
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
@@ -356,19 +298,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             accept, parameters, context);
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
@@ -406,19 +336,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             context);
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
@@ -427,20 +345,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             .getSyncPoller();
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
@@ -450,19 +355,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             .getSyncPoller();
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
@@ -493,39 +386,14 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
-    /**
-     * Set or update a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be Default.
-     * @param parameters The long term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters, Context context) {
@@ -618,17 +486,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -656,35 +514,14 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets a database's long term retention policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {

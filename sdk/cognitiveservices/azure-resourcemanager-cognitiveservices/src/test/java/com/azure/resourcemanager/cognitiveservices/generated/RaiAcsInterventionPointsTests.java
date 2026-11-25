@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cognitiveservices.models.RaiAcsEmptyObject;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsAgentShutdownInterventionPoint;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsAgentStartupInterventionPoint;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsAnnotationBinding;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsHarmCategory;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsHarmConfiguration;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsInterventionPoint;
@@ -15,164 +17,373 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiAcsModerationSubjec
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyBinding;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTarget;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTargetKind;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPostModelCallInterventionPoint;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPreModelCallInterventionPoint;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolInterventionPoint;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolNameSelector;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class RaiAcsInterventionPointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiAcsInterventionPoints model = BinaryData.fromString(
-            "{\"input\":{\"policy_target\":\"$snap.tool_call.args\",\"policy_target_kind\":\"tool_args\",\"policy\":{\"id\":\"is\",\"query\":\"w\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"efaxvxilc\"},{\"category\":\"SelfHarm\",\"harm_config_id\":\"nhnzeyqxt\"},{\"category\":\"Sexual\",\"harm_config_id\":\"zqlqhyc\"}]}},\"annotations\":{}},\"pre_tool_call\":{\"policy_target\":\"$snap.tool_call.args\",\"policy_target_kind\":\"assistant_output\",\"policy\":{\"id\":\"gxdbeesmie\",\"query\":\"lrariaawiu\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"Violence\",\"harm_config_id\":\"fbylyrfg\"}]}},\"annotations\":{},\"tool_name_from\":\"$.tool_call.name\"},\"post_tool_call\":{\"policy_target\":\"$snap.tool_call.args\",\"policy_target_kind\":\"tool_result\",\"policy\":{\"id\":\"ocqwogfnzjvus\",\"query\":\"ld\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"PromptInjection\",\"harm_config_id\":\"lfsbtkadpysow\"},{\"category\":\"SelfHarm\",\"harm_config_id\":\"gkbugrjqct\"},{\"category\":\"ProtectedMaterialCode\",\"harm_config_id\":\"mi\"},{\"category\":\"Sexual\",\"harm_config_id\":\"ieypef\"}]}},\"annotations\":{},\"tool_name_from\":\"$snap.tool_call.name\"},\"output\":{\"policy_target\":\"$snap.output\",\"policy_target_kind\":\"tool_result\",\"policy\":{\"id\":\"u\",\"query\":\"cp\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"PromptInjection\",\"harm_config_id\":\"hihlhzdsqtzbs\"},{\"category\":\"ProtectedMaterialCode\",\"harm_config_id\":\"o\"},{\"category\":\"Sexual\",\"harm_config_id\":\"hfgmvecactxm\"}]}},\"annotations\":{}}}")
+            "{\"agent_startup\":{\"policy\":{\"id\":\"kcdxfzzzw\",\"query\":\"afitlhguynuchlg\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"PromptInjection\",\"harm_config_id\":\"hmoz\"}]}},\"annotations\":{\"mqrhvthl\":{\"from\":\"zvlnsnnjz\",\"p\":\"\\\"datafolpymwamxqzra\\\"\",\"ulajvlejchc\":\"\\\"datadphtv\\\"\",\"mzlanru\":\"\\\"datarlzk\\\"\",\"phcnzqtpj\":\"\\\"datadwv\\\"\"},\"digsxcdgl\":{\"from\":\"iwdcxsmlzzhzd\",\"lhqvlnnpxybafi\":\"\\\"datatlgy\\\"\",\"gjekglklby\":\"\\\"datageaar\\\"\",\"hj\":\"\\\"datalidwcwvmzegjon\\\"\",\"zhzmtksjci\":\"\\\"datarwgdnqzbrfks\\\"\"}}},\"input\":{\"policy_target\":\"$snap.messages\",\"policy_target_kind\":\"assistant_output\",\"policy\":{\"id\":\"euachtomfl\",\"query\":\"tswfpfmdgycxnms\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"Hate\",\"harm_config_id\":\"yslu\"},{\"category\":\"ProtectedMaterialCode\",\"harm_config_id\":\"shhkvpedw\"},{\"category\":\"Violence\",\"harm_config_id\":\"srhmpqvww\"}]}},\"annotations\":{\"wjksghudgzhxo\":{\"from\":\"ndcbrwi\",\"ovyrrleaesinu\":\"\\\"dataqejo\\\"\",\"hcecybmrqbr\":\"\\\"datatljqobbpih\\\"\",\"crse\":\"\\\"databbmpxdlvykfre\\\"\"},\"muikjcjcaztbws\":{\"from\":\"jggsvo\",\"kxfbvfbhdyirhp\":\"\\\"dataxibdafhrkmdyo\\\"\",\"vgkk\":\"\\\"datapgddeimawz\\\"\"}}},\"pre_model_call\":{\"policy\":{\"id\":\"qowxwcom\",\"query\":\"kytwvcz\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"PromptInjection\",\"harm_config_id\":\"ve\"}]}},\"annotations\":{\"t\":{\"from\":\"dvlvhbwrnfxtgdd\",\"kcoeqswank\":\"\\\"datahehnmnaoya\\\"\"}}},\"post_model_call\":{\"policy\":{\"id\":\"mhdroznnhdrlktg\",\"query\":\"sggux\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"ProtectedMaterialCode\",\"harm_config_id\":\"waeeczgfb\"},{\"category\":\"PromptInjection\",\"harm_config_id\":\"lelssxblycsxzujk\"}]}},\"annotations\":{\"deugf\":{\"from\":\"smdesqplpvmjcd\",\"eowxvgpi\":\"\\\"databidyv\\\"\"},\"ixkykxd\":{\"from\":\"xzecpaxwkufykhvu\",\"znabaobns\":\"\\\"datapmru\\\"\",\"ihywartspph\":\"\\\"dataujdjltymkmvg\\\"\"},\"s\":{\"from\":\"sj\",\"rmymyincqlhr\":\"\\\"datamucfxhikkf\\\"\"},\"ulwgniiprglvawuw\":{\"from\":\"sl\",\"qcgxuug\":\"\\\"dataiov\\\"\",\"ptjgwdt\":\"\\\"datakctotiowlxteq\\\"\",\"hqlkccuzgygqwaho\":\"\\\"dataukranblw\\\"\"}}},\"pre_tool_call\":{\"policy_target\":\"$snap.messages\",\"policy_target_kind\":\"messages\",\"policy\":{\"id\":\"ypivlsbb\",\"query\":\"mcub\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"Hate\",\"harm_config_id\":\"xkubvphavpmhbrbq\"}]}},\"annotations\":{\"yfqi\":{\"from\":\"ovpbbttefjoknssq\",\"rjgeih\":\"\\\"dataedikdfrdbiq\\\"\",\"zcxmjpbyep\":\"\\\"dataqlggwfi\\\"\",\"rc\":\"\\\"datamgtvlj\\\"\"},\"wtoaukhfk\":{\"from\":\"gxhnpomyqwcabv\",\"augmrmfjlr\":\"\\\"dataleeyaswl\\\"\"},\"wcgyeewxeiqb\":{\"from\":\"cisiz\",\"jwuive\":\"\\\"dataeds\\\"\"}},\"tool_name_from\":\"$snap.tool_call.name\"},\"post_tool_call\":{\"policy_target\":\"$snap.response\",\"policy_target_kind\":\"messages\",\"policy\":{\"id\":\"guamlj\",\"query\":\"rgmsplzga\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"Sexual\",\"harm_config_id\":\"vnewgnxkympqanx\"},{\"category\":\"PromptInjection\",\"harm_config_id\":\"ixt\"},{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"aoypny\"}]}},\"annotations\":{\"ssffxuifmc\":{\"from\":\"hxcylhkgm\",\"vyom\":\"\\\"datahpxycphdrwjjk\\\"\",\"u\":\"\\\"datac\\\"\",\"wmkoisq\":\"\\\"datavxnqmhrpqpd\\\"\"},\"izxqltgrd\":{\"from\":\"ypobkdqzr\",\"ijpvuaurkihc\":\"\\\"dataylollgtrczzydmxz\\\"\",\"b\":\"\\\"datarldefxrdcox\\\"\",\"nqbnqb\":\"\\\"datakjanur\\\"\"},\"wqagnepzwa\":{\"from\":\"gypxrxvbfihwuhvc\",\"bxrblmliowxihspn\":\"\\\"datas\\\"\"}},\"tool_name_from\":\"$snap.tool_call.name\"},\"output\":{\"policy_target\":\"$snap.input\",\"policy_target_kind\":\"tool_args\",\"policy\":{\"id\":\"qqqagwwrxaomzi\",\"query\":\"lrrcz\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"tnjadhq\"},{\"category\":\"SelfHarm\",\"harm_config_id\":\"jqoyueayfbpcm\"},{\"category\":\"SelfHarm\",\"harm_config_id\":\"byrrueqth\"}]}},\"annotations\":{\"xcptsoqfyiaseqc\":{\"from\":\"nmbscbbx\",\"dpyqyybxubmd\":\"\\\"datahxiidlopedb\\\"\",\"e\":\"\\\"dataafcbqw\\\"\",\"hdbvqvwzkjop\":\"\\\"datajelaqacigele\\\"\",\"bxcea\":\"\\\"databeonrlkwzdq\\\"\"},\"nzxojpslsvjgpli\":{\"from\":\"krtt\",\"zohmnrxxbs\":\"\\\"datazisgykiuemvanb\\\"\",\"dptysprqs\":\"\\\"datajklinh\\\"\"},\"jwfljhznamtua\":{\"from\":\"fiqwoy\",\"pqojxcx\":\"\\\"dataapcohhouc\\\"\",\"tzqdd\":\"\\\"datarzdcgdzbenribcaw\\\"\"},\"uocnjrohmbpyr\":{\"from\":\"mzwcjjncqt\",\"gat\":\"\\\"dataizvg\\\"\",\"grebwggahttzlsw\":\"\\\"datauuvbx\\\"\",\"oqza\":\"\\\"dataajqfutlx\\\"\",\"zfrgqhaohcm\":\"\\\"dataunwqr\\\"\"}}},\"agent_shutdown\":{\"policy\":{\"id\":\"ameb\",\"query\":\"dyvkfkmr\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"Hate\",\"harm_config_id\":\"v\"},{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"odlfpyapucygvo\"}]}},\"annotations\":{\"phuuuerctato\":{\"from\":\"unssxlghieegjl\",\"xantuygdhg\":\"\\\"datapaseksgb\\\"\",\"iwrqofulopmjnl\":\"\\\"dataqipir\\\"\",\"hcbjpibk\":\"\\\"datax\\\"\"},\"gsksrfhf\":{\"from\":\"intqpbrlcyr\",\"rucvcrrpcjttbs\":\"\\\"datazkgofxyf\\\"\",\"hktuidvrma\":\"\\\"datavjeaqnrmvvfkoxml\\\"\",\"bhpwvqsgnyy\":\"\\\"datalpdwwexymzvlazi\\\"\",\"patlbijp\":\"\\\"datauzivensrpmeyyvp\\\"\"}}}}")
             .toObject(RaiAcsInterventionPoints.class);
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS, model.input().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS, model.input().policyTargetKind());
-        Assertions.assertEquals("is", model.input().policy().id());
-        Assertions.assertEquals("w", model.input().policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+        Assertions.assertEquals("kcdxfzzzw", model.agentStartup().policy().id());
+        Assertions.assertEquals("afitlhguynuchlg", model.agentStartup().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
+            model.agentStartup().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+            model.agentStartup().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("hmoz",
+            model.agentStartup().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("zvlnsnnjz", model.agentStartup().annotations().get("mqrhvthl").from());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_MESSAGES, model.input().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT, model.input().policyTargetKind());
+        Assertions.assertEquals("euachtomfl", model.input().policy().id());
+        Assertions.assertEquals("tswfpfmdgycxnms", model.input().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
             model.input().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE,
             model.input().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("efaxvxilc",
-            model.input().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS, model.preToolCall().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT, model.preToolCall().policyTargetKind());
-        Assertions.assertEquals("gxdbeesmie", model.preToolCall().policy().id());
-        Assertions.assertEquals("lrariaawiu", model.preToolCall().policy().query());
+        Assertions.assertEquals("yslu", model.input().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("ndcbrwi", model.input().annotations().get("wjksghudgzhxo").from());
+        Assertions.assertEquals("qowxwcom", model.preModelCall().policy().id());
+        Assertions.assertEquals("kytwvcz", model.preModelCall().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
+            model.preModelCall().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+            model.preModelCall().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("ve",
+            model.preModelCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("dvlvhbwrnfxtgdd", model.preModelCall().annotations().get("t").from());
+        Assertions.assertEquals("mhdroznnhdrlktg", model.postModelCall().policy().id());
+        Assertions.assertEquals("sggux", model.postModelCall().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+            model.postModelCall().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE,
+            model.postModelCall().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("waeeczgfb",
+            model.postModelCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("smdesqplpvmjcd", model.postModelCall().annotations().get("deugf").from());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_MESSAGES, model.preToolCall().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES, model.preToolCall().policyTargetKind());
+        Assertions.assertEquals("ypivlsbb", model.preToolCall().policy().id());
+        Assertions.assertEquals("mcub", model.preToolCall().policy().query());
         Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
             model.preToolCall().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.VIOLENCE,
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE,
             model.preToolCall().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("fbylyrfg",
+        Assertions.assertEquals("xkubvphavpmhbrbq",
             model.preToolCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
-        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME_ALIAS, model.preToolCall().toolNameFrom());
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS, model.postToolCall().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_RESULT, model.postToolCall().policyTargetKind());
-        Assertions.assertEquals("ocqwogfnzjvus", model.postToolCall().policy().id());
-        Assertions.assertEquals("ld", model.postToolCall().policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+        Assertions.assertEquals("ovpbbttefjoknssq", model.preToolCall().annotations().get("yfqi").from());
+        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME, model.preToolCall().toolNameFrom());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_RESPONSE, model.postToolCall().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES, model.postToolCall().policyTargetKind());
+        Assertions.assertEquals("guamlj", model.postToolCall().policy().id());
+        Assertions.assertEquals("rgmsplzga", model.postToolCall().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
             model.postToolCall().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+        Assertions.assertEquals(RaiAcsHarmCategory.SEXUAL,
             model.postToolCall().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("lfsbtkadpysow",
+        Assertions.assertEquals("vnewgnxkympqanx",
             model.postToolCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("hxcylhkgm", model.postToolCall().annotations().get("ssffxuifmc").from());
         Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME, model.postToolCall().toolNameFrom());
-        Assertions.assertEquals(RaiAcsPolicyTarget.OUTPUT, model.output().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_RESULT, model.output().policyTargetKind());
-        Assertions.assertEquals("u", model.output().policy().id());
-        Assertions.assertEquals("cp", model.output().policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+        Assertions.assertEquals(RaiAcsPolicyTarget.INPUT, model.output().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS, model.output().policyTargetKind());
+        Assertions.assertEquals("qqqagwwrxaomzi", model.output().policy().id());
+        Assertions.assertEquals("lrrcz", model.output().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
             model.output().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
             model.output().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("hihlhzdsqtzbs",
+        Assertions.assertEquals("tnjadhq",
             model.output().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("nmbscbbx", model.output().annotations().get("xcptsoqfyiaseqc").from());
+        Assertions.assertEquals("ameb", model.agentShutdown().policy().id());
+        Assertions.assertEquals("dyvkfkmr", model.agentShutdown().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
+            model.agentShutdown().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE,
+            model.agentShutdown().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("v",
+            model.agentShutdown().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("unssxlghieegjl", model.agentShutdown().annotations().get("phuuuerctato").from());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiAcsInterventionPoints model = new RaiAcsInterventionPoints()
-            .withInput(new RaiAcsInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_ARGUMENTS)
-                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS)
-                .withPolicy(new RaiAcsPolicyBinding().withId("is")
-                    .withQuery("w")
-                    .withAacsModeration(new RaiAcsModerationBindingExtension()
-                        .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
-                        .withHarmConfigs(Arrays.asList(
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
-                                .withHarmConfigId("efaxvxilc"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM)
-                                .withHarmConfigId("nhnzeyqxt"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SEXUAL)
-                                .withHarmConfigId("zqlqhyc")))))
-                .withAnnotations(new RaiAcsEmptyObject()))
-            .withPreToolCall(
-                new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_ARGUMENTS)
-                    .withPolicyTargetKind(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT)
-                    .withPolicy(
-                        new RaiAcsPolicyBinding().withId("gxdbeesmie")
-                            .withQuery("lrariaawiu")
+        RaiAcsInterventionPoints model
+            = new RaiAcsInterventionPoints()
+                .withAgentStartup(
+                    new RaiAcsAgentStartupInterventionPoint()
+                        .withPolicy(new RaiAcsPolicyBinding().withId("kcdxfzzzw")
+                            .withQuery("afitlhguynuchlg")
                             .withAacsModeration(new RaiAcsModerationBindingExtension()
-                                .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
-                                .withHarmConfigs(Arrays
-                                    .asList(new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.VIOLENCE)
-                                        .withHarmConfigId("fbylyrfg")))))
-                    .withAnnotations(new RaiAcsEmptyObject())
-                    .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME_ALIAS))
-            .withPostToolCall(new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_ARGUMENTS)
-                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_RESULT)
-                .withPolicy(new RaiAcsPolicyBinding().withId("ocqwogfnzjvus")
-                    .withQuery("ld")
+                                .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                                .withHarmConfigs(Arrays.asList(
+                                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
+                                        .withHarmConfigId("hmoz")))))
+                        .withAnnotations(mapOf("mqrhvthl", new RaiAcsAnnotationBinding()
+                            .withFrom("zvlnsnnjz")
+                            .withAdditionalProperties(mapOf("p", "\"datafolpymwamxqzra\"", "phcnzqtpj", "\"datadwv\"",
+                                "ulajvlejchc", "\"datadphtv\"", "mzlanru", "\"datarlzk\"")),
+                            "digsxcdgl",
+                            new RaiAcsAnnotationBinding().withFrom("iwdcxsmlzzhzd")
+                                .withAdditionalProperties(
+                                    mapOf("hj", "\"datalidwcwvmzegjon\"", "lhqvlnnpxybafi", "\"datatlgy\"",
+                                        "zhzmtksjci", "\"datarwgdnqzbrfks\"", "gjekglklby", "\"datageaar\"")))))
+                .withInput(new RaiAcsInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.MODEL_MESSAGES)
+                    .withPolicyTargetKind(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT)
+                    .withPolicy(new RaiAcsPolicyBinding().withId("euachtomfl")
+                        .withQuery("tswfpfmdgycxnms")
+                        .withAacsModeration(new RaiAcsModerationBindingExtension()
+                            .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                            .withHarmConfigs(Arrays.asList(
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.HATE)
+                                    .withHarmConfigId("yslu"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE)
+                                    .withHarmConfigId("shhkvpedw"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.VIOLENCE)
+                                    .withHarmConfigId("srhmpqvww")))))
+                    .withAnnotations(mapOf("wjksghudgzhxo",
+                        new RaiAcsAnnotationBinding().withFrom("ndcbrwi")
+                            .withAdditionalProperties(mapOf("ovyrrleaesinu", "\"dataqejo\"", "hcecybmrqbr",
+                                "\"datatljqobbpih\"", "crse", "\"databbmpxdlvykfre\"")),
+                        "muikjcjcaztbws",
+                        new RaiAcsAnnotationBinding().withFrom("jggsvo")
+                            .withAdditionalProperties(
+                                mapOf("vgkk", "\"datapgddeimawz\"", "kxfbvfbhdyirhp", "\"dataxibdafhrkmdyo\"")))))
+                .withPreModelCall(
+                    new RaiAcsPreModelCallInterventionPoint()
+                        .withPolicy(new RaiAcsPolicyBinding().withId("qowxwcom")
+                            .withQuery("kytwvcz")
+                            .withAacsModeration(new RaiAcsModerationBindingExtension()
+                                .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                                .withHarmConfigs(Arrays.asList(
+                                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
+                                        .withHarmConfigId("ve")))))
+                        .withAnnotations(mapOf("t",
+                            new RaiAcsAnnotationBinding().withFrom("dvlvhbwrnfxtgdd")
+                                .withAdditionalProperties(mapOf("kcoeqswank", "\"datahehnmnaoya\"")))))
+                .withPostModelCall(new RaiAcsPostModelCallInterventionPoint()
+                    .withPolicy(new RaiAcsPolicyBinding().withId("mhdroznnhdrlktg")
+                        .withQuery("sggux")
+                        .withAacsModeration(new RaiAcsModerationBindingExtension()
+                            .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
+                            .withHarmConfigs(Arrays.asList(
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE)
+                                    .withHarmConfigId("waeeczgfb"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
+                                    .withHarmConfigId("lelssxblycsxzujk")))))
+                    .withAnnotations(
+                        mapOf("deugf",
+                            new RaiAcsAnnotationBinding().withFrom("smdesqplpvmjcd")
+                                .withAdditionalProperties(mapOf("eowxvgpi", "\"databidyv\"")),
+                            "ixkykxd",
+                            new RaiAcsAnnotationBinding().withFrom("xzecpaxwkufykhvu")
+                                .withAdditionalProperties(
+                                    mapOf("znabaobns", "\"datapmru\"", "ihywartspph", "\"dataujdjltymkmvg\"")),
+                            "s",
+                            new RaiAcsAnnotationBinding().withFrom("sj")
+                                .withAdditionalProperties(mapOf("rmymyincqlhr", "\"datamucfxhikkf\"")),
+                            "ulwgniiprglvawuw", new RaiAcsAnnotationBinding().withFrom("sl")
+                                .withAdditionalProperties(mapOf("ptjgwdt", "\"datakctotiowlxteq\"", "qcgxuug",
+                                    "\"dataiov\"", "hqlkccuzgygqwaho", "\"dataukranblw\"")))))
+                .withPreToolCall(
+                    new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.MODEL_MESSAGES)
+                        .withPolicyTargetKind(RaiAcsPolicyTargetKind.MODEL_MESSAGES)
+                        .withPolicy(
+                            new RaiAcsPolicyBinding().withId("ypivlsbb")
+                                .withQuery("mcub")
+                                .withAacsModeration(new RaiAcsModerationBindingExtension()
+                                    .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
+                                    .withHarmConfigs(Arrays
+                                        .asList(new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.HATE)
+                                            .withHarmConfigId("xkubvphavpmhbrbq")))))
+                        .withAnnotations(mapOf("yfqi",
+                            new RaiAcsAnnotationBinding().withFrom("ovpbbttefjoknssq")
+                                .withAdditionalProperties(mapOf("rc", "\"datamgtvlj\"", "zcxmjpbyep", "\"dataqlggwfi\"",
+                                    "rjgeih", "\"dataedikdfrdbiq\"")),
+                            "wtoaukhfk",
+                            new RaiAcsAnnotationBinding().withFrom("gxhnpomyqwcabv")
+                                .withAdditionalProperties(mapOf("augmrmfjlr", "\"dataleeyaswl\"")),
+                            "wcgyeewxeiqb",
+                            new RaiAcsAnnotationBinding().withFrom("cisiz")
+                                .withAdditionalProperties(mapOf("jwuive", "\"dataeds\""))))
+                        .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME))
+                .withPostToolCall(new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.MODEL_RESPONSE)
+                    .withPolicyTargetKind(RaiAcsPolicyTargetKind.MODEL_MESSAGES)
+                    .withPolicy(new RaiAcsPolicyBinding().withId("guamlj")
+                        .withQuery("rgmsplzga")
+                        .withAacsModeration(new RaiAcsModerationBindingExtension()
+                            .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                            .withHarmConfigs(Arrays.asList(
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SEXUAL)
+                                    .withHarmConfigId("vnewgnxkympqanx"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
+                                    .withHarmConfigId("ixt"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
+                                    .withHarmConfigId("aoypny")))))
+                    .withAnnotations(mapOf("ssffxuifmc",
+                        new RaiAcsAnnotationBinding().withFrom("hxcylhkgm")
+                            .withAdditionalProperties(mapOf(
+                                "wmkoisq", "\"datavxnqmhrpqpd\"", "u", "\"datac\"", "vyom", "\"datahpxycphdrwjjk\"")),
+                        "izxqltgrd",
+                        new RaiAcsAnnotationBinding().withFrom("ypobkdqzr")
+                            .withAdditionalProperties(mapOf("b", "\"datarldefxrdcox\"", "ijpvuaurkihc",
+                                "\"dataylollgtrczzydmxz\"", "nqbnqb", "\"datakjanur\"")),
+                        "wqagnepzwa",
+                        new RaiAcsAnnotationBinding().withFrom("gypxrxvbfihwuhvc")
+                            .withAdditionalProperties(mapOf("bxrblmliowxihspn", "\"datas\""))))
+                    .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME))
+                .withOutput(new RaiAcsInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.INPUT)
+                    .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS)
+                    .withPolicy(new RaiAcsPolicyBinding().withId("qqqagwwrxaomzi")
+                        .withQuery("lrrcz")
+                        .withAacsModeration(new RaiAcsModerationBindingExtension()
+                            .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                            .withHarmConfigs(Arrays.asList(
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
+                                    .withHarmConfigId("tnjadhq"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM)
+                                    .withHarmConfigId("jqoyueayfbpcm"),
+                                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM)
+                                    .withHarmConfigId("byrrueqth")))))
+                    .withAnnotations(mapOf("xcptsoqfyiaseqc",
+                        new RaiAcsAnnotationBinding().withFrom("nmbscbbx")
+                            .withAdditionalProperties(mapOf("bxcea", "\"databeonrlkwzdq\"", "dpyqyybxubmd",
+                                "\"datahxiidlopedb\"", "e", "\"dataafcbqw\"", "hdbvqvwzkjop", "\"datajelaqacigele\"")),
+                        "nzxojpslsvjgpli",
+                        new RaiAcsAnnotationBinding().withFrom("krtt")
+                            .withAdditionalProperties(
+                                mapOf("dptysprqs", "\"datajklinh\"", "zohmnrxxbs", "\"datazisgykiuemvanb\"")),
+                        "jwfljhznamtua",
+                        new RaiAcsAnnotationBinding().withFrom("fiqwoy")
+                            .withAdditionalProperties(
+                                mapOf("tzqdd", "\"datarzdcgdzbenribcaw\"", "pqojxcx", "\"dataapcohhouc\"")),
+                        "uocnjrohmbpyr",
+                        new RaiAcsAnnotationBinding()
+                            .withFrom("mzwcjjncqt")
+                            .withAdditionalProperties(
+                                mapOf(
+                                    "grebwggahttzlsw", "\"datauuvbx\"", "zfrgqhaohcm", "\"dataunwqr\"", "gat",
+                                    "\"dataizvg\"", "oqza", "\"dataajqfutlx\"")))))
+                .withAgentShutdown(new RaiAcsAgentShutdownInterventionPoint().withPolicy(new RaiAcsPolicyBinding()
+                    .withId("ameb")
+                    .withQuery("dyvkfkmr")
                     .withAacsModeration(new RaiAcsModerationBindingExtension()
-                        .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
+                        .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
                         .withHarmConfigs(Arrays.asList(
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
-                                .withHarmConfigId("lfsbtkadpysow"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM)
-                                .withHarmConfigId("gkbugrjqct"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE)
-                                .withHarmConfigId("mi"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SEXUAL)
-                                .withHarmConfigId("ieypef")))))
-                .withAnnotations(new RaiAcsEmptyObject())
-                .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME))
-            .withOutput(new RaiAcsInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.OUTPUT)
-                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_RESULT)
-                .withPolicy(new RaiAcsPolicyBinding().withId("u")
-                    .withQuery("cp")
-                    .withAacsModeration(new RaiAcsModerationBindingExtension()
-                        .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
-                        .withHarmConfigs(Arrays.asList(
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
-                                .withHarmConfigId("hihlhzdsqtzbs"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE)
-                                .withHarmConfigId("o"),
-                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SEXUAL)
-                                .withHarmConfigId("hfgmvecactxm")))))
-                .withAnnotations(new RaiAcsEmptyObject()));
+                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.HATE).withHarmConfigId("v"),
+                            new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
+                                .withHarmConfigId("odlfpyapucygvo")))))
+                    .withAnnotations(mapOf("phuuuerctato",
+                        new RaiAcsAnnotationBinding().withFrom("unssxlghieegjl")
+                            .withAdditionalProperties(mapOf("xantuygdhg", "\"datapaseksgb\"", "iwrqofulopmjnl",
+                                "\"dataqipir\"", "hcbjpibk", "\"datax\"")),
+                        "gsksrfhf",
+                        new RaiAcsAnnotationBinding().withFrom("intqpbrlcyr")
+                            .withAdditionalProperties(mapOf("rucvcrrpcjttbs", "\"datazkgofxyf\"", "bhpwvqsgnyy",
+                                "\"datalpdwwexymzvlazi\"", "patlbijp", "\"datauzivensrpmeyyvp\"", "hktuidvrma",
+                                "\"datavjeaqnrmvvfkoxml\"")))));
         model = BinaryData.fromObject(model).toObject(RaiAcsInterventionPoints.class);
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS, model.input().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS, model.input().policyTargetKind());
-        Assertions.assertEquals("is", model.input().policy().id());
-        Assertions.assertEquals("w", model.input().policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+        Assertions.assertEquals("kcdxfzzzw", model.agentStartup().policy().id());
+        Assertions.assertEquals("afitlhguynuchlg", model.agentStartup().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
+            model.agentStartup().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+            model.agentStartup().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("hmoz",
+            model.agentStartup().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("zvlnsnnjz", model.agentStartup().annotations().get("mqrhvthl").from());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_MESSAGES, model.input().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT, model.input().policyTargetKind());
+        Assertions.assertEquals("euachtomfl", model.input().policy().id());
+        Assertions.assertEquals("tswfpfmdgycxnms", model.input().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
             model.input().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE,
             model.input().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("efaxvxilc",
-            model.input().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS, model.preToolCall().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT, model.preToolCall().policyTargetKind());
-        Assertions.assertEquals("gxdbeesmie", model.preToolCall().policy().id());
-        Assertions.assertEquals("lrariaawiu", model.preToolCall().policy().query());
+        Assertions.assertEquals("yslu", model.input().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("ndcbrwi", model.input().annotations().get("wjksghudgzhxo").from());
+        Assertions.assertEquals("qowxwcom", model.preModelCall().policy().id());
+        Assertions.assertEquals("kytwvcz", model.preModelCall().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
+            model.preModelCall().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+            model.preModelCall().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("ve",
+            model.preModelCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("dvlvhbwrnfxtgdd", model.preModelCall().annotations().get("t").from());
+        Assertions.assertEquals("mhdroznnhdrlktg", model.postModelCall().policy().id());
+        Assertions.assertEquals("sggux", model.postModelCall().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+            model.postModelCall().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE,
+            model.postModelCall().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("waeeczgfb",
+            model.postModelCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("smdesqplpvmjcd", model.postModelCall().annotations().get("deugf").from());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_MESSAGES, model.preToolCall().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES, model.preToolCall().policyTargetKind());
+        Assertions.assertEquals("ypivlsbb", model.preToolCall().policy().id());
+        Assertions.assertEquals("mcub", model.preToolCall().policy().query());
         Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
             model.preToolCall().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.VIOLENCE,
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE,
             model.preToolCall().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("fbylyrfg",
+        Assertions.assertEquals("xkubvphavpmhbrbq",
             model.preToolCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
-        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME_ALIAS, model.preToolCall().toolNameFrom());
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS, model.postToolCall().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_RESULT, model.postToolCall().policyTargetKind());
-        Assertions.assertEquals("ocqwogfnzjvus", model.postToolCall().policy().id());
-        Assertions.assertEquals("ld", model.postToolCall().policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+        Assertions.assertEquals("ovpbbttefjoknssq", model.preToolCall().annotations().get("yfqi").from());
+        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME, model.preToolCall().toolNameFrom());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_RESPONSE, model.postToolCall().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES, model.postToolCall().policyTargetKind());
+        Assertions.assertEquals("guamlj", model.postToolCall().policy().id());
+        Assertions.assertEquals("rgmsplzga", model.postToolCall().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
             model.postToolCall().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+        Assertions.assertEquals(RaiAcsHarmCategory.SEXUAL,
             model.postToolCall().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("lfsbtkadpysow",
+        Assertions.assertEquals("vnewgnxkympqanx",
             model.postToolCall().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("hxcylhkgm", model.postToolCall().annotations().get("ssffxuifmc").from());
         Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME, model.postToolCall().toolNameFrom());
-        Assertions.assertEquals(RaiAcsPolicyTarget.OUTPUT, model.output().policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_RESULT, model.output().policyTargetKind());
-        Assertions.assertEquals("u", model.output().policy().id());
-        Assertions.assertEquals("cp", model.output().policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+        Assertions.assertEquals(RaiAcsPolicyTarget.INPUT, model.output().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS, model.output().policyTargetKind());
+        Assertions.assertEquals("qqqagwwrxaomzi", model.output().policy().id());
+        Assertions.assertEquals("lrrcz", model.output().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
             model.output().policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
             model.output().policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("hihlhzdsqtzbs",
+        Assertions.assertEquals("tnjadhq",
             model.output().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("nmbscbbx", model.output().annotations().get("xcptsoqfyiaseqc").from());
+        Assertions.assertEquals("ameb", model.agentShutdown().policy().id());
+        Assertions.assertEquals("dyvkfkmr", model.agentShutdown().policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT,
+            model.agentShutdown().policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE,
+            model.agentShutdown().policy().aacsModeration().harmConfigs().get(0).category());
+        Assertions.assertEquals("v",
+            model.agentShutdown().policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("unssxlghieegjl", model.agentShutdown().annotations().get("phuuuerctato").from());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -36,9 +36,8 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
 
     public void provision(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, IlrRequestResource parameters) {
-        this.serviceClient()
-            .provision(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
-                parameters);
+        this.provisionWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, Context.NONE);
     }
 
     public Response<Void> revokeWithResponse(String vaultName, String resourceGroupName, String fabricName,
@@ -50,8 +49,8 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
 
     public void revoke(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId) {
-        this.serviceClient()
-            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+        this.revokeWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, Context.NONE);
     }
 
     public Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(
@@ -65,9 +64,10 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
     public InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         InstantItemRecoveryOperationResultRequest body) {
-        return this.serviceClient()
-            .listInstantItemRecoveryOperationResult(resourceGroupName, vaultName, fabricName, containerName,
-                protectedItemName, recoveryPointId, body);
+        return this
+            .listInstantItemRecoveryOperationResultWithResponse(resourceGroupName, vaultName, fabricName, containerName,
+                protectedItemName, recoveryPointId, body, Context.NONE)
+            .getValue();
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

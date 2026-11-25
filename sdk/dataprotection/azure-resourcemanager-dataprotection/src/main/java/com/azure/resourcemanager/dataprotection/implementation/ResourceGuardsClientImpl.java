@@ -611,19 +611,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
@@ -633,18 +621,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName, accept, context);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DppBaseResourceInner getDefaultDeleteResourceGuardProxyRequestsObject(String resourceGroupName,
         String resourceGuardsName, String requestName) {
@@ -710,12 +687,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner>
         getDeleteResourceGuardProxyRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceGuardsName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getDeleteResourceGuardProxyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName,
+            Context.NONE);
     }
 
     /**
@@ -741,37 +714,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(
-            () -> getDeleteResourceGuardProxyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
-            nextLink -> getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(nextLink));
+        return getDeleteResourceGuardProxyRequestsObjects(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -819,18 +769,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a ResourceGuard belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -839,16 +778,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceGuardsName, accept, context);
     }
 
-    /**
-     * Returns a ResourceGuard belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardResourceInner getByResourceGroup(String resourceGroupName, String resourceGuardsName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE).getValue();
@@ -897,19 +827,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a ResourceGuard resource belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> putWithResponse(String resourceGroupName, String resourceGuardsName,
         ResourceGuardResourceInner parameters, Context context) {
@@ -919,17 +837,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             resourceGroupName, resourceGuardsName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a ResourceGuard resource belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardResourceInner put(String resourceGroupName, String resourceGuardsName,
         ResourceGuardResourceInner parameters) {
@@ -979,19 +887,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a ResourceGuard resource belonging to a resource group. For example, updating tags for a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> patchWithResponse(String resourceGroupName, String resourceGuardsName,
         PatchResourceGuardInput parameters, Context context) {
@@ -1002,17 +898,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             context);
     }
 
-    /**
-     * Updates a ResourceGuard resource belonging to a resource group. For example, updating tags for a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardResourceInner patch(String resourceGroupName, String resourceGuardsName,
         PatchResourceGuardInput parameters) {
@@ -1052,32 +938,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         return deleteWithResponseAsync(resourceGroupName, resourceGuardsName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a ResourceGuard resource from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceGuardsName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, resourceGuardsName, context);
     }
 
-    /**
-     * Deletes a ResourceGuard resource from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceGuardsName) {
         deleteWithResponse(resourceGroupName, resourceGuardsName, Context.NONE);
@@ -1131,11 +999,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ResourceGuardResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1158,31 +1022,13 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns ResourceGuards collection belonging to a ResourceGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> getResourcesInResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Returns ResourceGuards collection belonging to a ResourceGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1230,11 +1076,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ResourceGuardResourceList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1255,28 +1097,13 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns ResourceGuards collection belonging to a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(),
-            nextLink -> getResourcesInSubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Returns ResourceGuards collection belonging to a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1326,19 +1153,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
@@ -1348,18 +1163,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName, accept, context);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DppBaseResourceInner getDefaultDisableSoftDeleteRequestsObject(String resourceGroupName,
         String resourceGuardsName, String requestName) {
@@ -1425,12 +1229,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsSinglePage(String resourceGroupName,
         String resourceGuardsName) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res
-            = service.getDisableSoftDeleteRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceGuardsName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getDisableSoftDeleteRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     /**
@@ -1456,37 +1255,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(
-            () -> getDisableSoftDeleteRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
-            nextLink -> getDisableSoftDeleteRequestsObjectsNextSinglePage(nextLink));
+        return getDisableSoftDeleteRequestsObjects(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -1538,19 +1314,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultUpdateProtectedItemRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
@@ -1560,18 +1324,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName, accept, context);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DppBaseResourceInner getDefaultUpdateProtectedItemRequestsObject(String resourceGroupName,
         String resourceGuardsName, String requestName) {
@@ -1637,12 +1390,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner>
         getUpdateProtectedItemRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res
-            = service.getUpdateProtectedItemRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceGuardsName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getUpdateProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     /**
@@ -1668,37 +1416,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(
-            () -> getUpdateProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
-            nextLink -> getUpdateProtectedItemRequestsObjectsNextSinglePage(nextLink));
+        return getUpdateProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -1750,19 +1475,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
@@ -1772,18 +1485,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName, accept, context);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DppBaseResourceInner getDefaultUpdateProtectionPolicyRequestsObject(String resourceGroupName,
         String resourceGuardsName, String requestName) {
@@ -1849,12 +1551,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner>
         getUpdateProtectionPolicyRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getUpdateProtectionPolicyRequestsObjectsSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceGuardsName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getUpdateProtectionPolicyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     /**
@@ -1880,37 +1577,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(
-            () -> getUpdateProtectionPolicyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
-            nextLink -> getUpdateProtectionPolicyRequestsObjectsNextSinglePage(nextLink));
+        return getUpdateProtectionPolicyRequestsObjects(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -1962,19 +1636,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
@@ -1984,18 +1646,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName, accept, context);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DppBaseResourceInner getDefaultDeleteProtectedItemRequestsObject(String resourceGroupName,
         String resourceGuardsName, String requestName) {
@@ -2061,12 +1712,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner>
         getDeleteProtectedItemRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res
-            = service.getDeleteProtectedItemRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceGuardsName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getDeleteProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     /**
@@ -2092,37 +1738,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(
-            () -> getDeleteProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
-            nextLink -> getDeleteProtectedItemRequestsObjectsNextSinglePage(nextLink));
+        return getDeleteProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -2174,19 +1797,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultBackupSecurityPinRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
@@ -2196,18 +1807,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             requestName, accept, context);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param requestName The name of the DppBaseResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DppBaseResourceInner getDefaultBackupSecurityPinRequestsObject(String resourceGroupName,
         String resourceGuardsName, String requestName) {
@@ -2273,12 +1873,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsSinglePage(String resourceGroupName,
         String resourceGuardsName) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res
-            = service.getBackupSecurityPinRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceGuardsName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getBackupSecurityPinRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     /**
@@ -2304,37 +1899,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(
-            () -> getBackupSecurityPinRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
-            nextLink -> getBackupSecurityPinRequestsObjectsNextSinglePage(nextLink));
+        return getBackupSecurityPinRequestsObjects(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of the ResourceGuardResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
@@ -2377,11 +1949,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner>
         getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2436,11 +2004,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardResourceInner> getResourcesInResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceGuardResourceList> res
-            = service.getResourcesInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getResourcesInResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2496,11 +2060,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceGuardResourceInner> getResourcesInSubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceGuardResourceList> res
-            = service.getResourcesInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getResourcesInSubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2556,11 +2116,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getDisableSoftDeleteRequestsObjectsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getDisableSoftDeleteRequestsObjectsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2616,11 +2172,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getUpdateProtectedItemRequestsObjectsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getUpdateProtectedItemRequestsObjectsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2677,11 +2229,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner>
         getUpdateProtectionPolicyRequestsObjectsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getUpdateProtectionPolicyRequestsObjectsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getUpdateProtectionPolicyRequestsObjectsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2737,11 +2285,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getDeleteProtectedItemRequestsObjectsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getDeleteProtectedItemRequestsObjectsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2797,11 +2341,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DppBaseResourceList> res = service.getBackupSecurityPinRequestsObjectsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return getBackupSecurityPinRequestsObjectsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

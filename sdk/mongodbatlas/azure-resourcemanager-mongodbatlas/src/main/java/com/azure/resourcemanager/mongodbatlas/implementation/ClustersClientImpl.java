@@ -209,11 +209,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, String clusterName, ClusterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, clusterName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, clusterName, resource,
+            Context.NONE);
     }
 
     /**
@@ -262,42 +259,15 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the MongoDB Atlas Cluster resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String clusterName, ClusterInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, clusterName, resource);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, clusterName, resource,
             Context.NONE);
     }
 
-    /**
-     * Create a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the MongoDB Atlas Cluster resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String clusterName, ClusterInner resource, Context context) {
@@ -327,45 +297,19 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB Atlas Cluster resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String clusterName, ClusterInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, clusterName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, projectName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB Atlas Cluster resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String clusterName, ClusterInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, clusterName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, organizationName, projectName, clusterName, resource, context));
     }
 
     /**
@@ -403,9 +347,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String projectName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, clusterName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, projectName, clusterName, Context.NONE);
     }
 
     /**
@@ -449,39 +391,14 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String projectName, String clusterName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, organizationName, projectName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, projectName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String projectName, String clusterName, Context context) {
@@ -509,38 +426,18 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName, String clusterName) {
-        beginDelete(resourceGroupName, organizationName, projectName, clusterName).getFinalResult();
+        delete(resourceGroupName, organizationName, projectName, clusterName, Context.NONE);
     }
 
-    /**
-     * Delete a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName, String clusterName,
         Context context) {
-        beginDelete(resourceGroupName, organizationName, projectName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, organizationName, projectName, clusterName, context));
     }
 
     /**
@@ -598,11 +495,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
     /**
@@ -627,35 +520,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Cluster resources by Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(String resourceGroupName, String organizationName, String projectName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, projectName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
-    /**
-     * List Cluster resources by Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Cluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(String resourceGroupName, String organizationName, String projectName,
         Context context) {
@@ -705,19 +576,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> getWithResponse(String resourceGroupName, String organizationName, String projectName,
         String clusterName, Context context) {
@@ -726,18 +585,7 @@ public final class ClustersClientImpl implements ClustersClient {
             resourceGroupName, organizationName, projectName, clusterName, accept, context);
     }
 
-    /**
-     * Get a Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param clusterName Name of the MongoDB Atlas Cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner get(String resourceGroupName, String organizationName, String projectName, String clusterName) {
         return getWithResponse(resourceGroupName, organizationName, projectName, clusterName, Context.NONE).getValue();
@@ -773,11 +621,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

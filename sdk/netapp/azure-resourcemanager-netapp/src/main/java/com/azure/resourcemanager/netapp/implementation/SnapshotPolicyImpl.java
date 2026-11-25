@@ -114,11 +114,7 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     public SnapshotPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshotPolicies()
-            .createWithResponse(resourceGroupName, accountName, snapshotPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SnapshotPolicy create(Context context) {
@@ -141,10 +137,7 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     public SnapshotPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshotPolicies()
-            .update(resourceGroupName, accountName, snapshotPolicyName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SnapshotPolicy apply(Context context) {
@@ -170,11 +163,7 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     public SnapshotPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshotPolicies()
-            .getWithResponse(resourceGroupName, accountName, snapshotPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SnapshotPolicy refresh(Context context) {

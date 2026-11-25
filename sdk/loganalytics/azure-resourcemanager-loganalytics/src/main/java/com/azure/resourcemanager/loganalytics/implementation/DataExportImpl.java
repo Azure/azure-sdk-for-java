@@ -95,12 +95,7 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
     }
 
     public DataExport create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataExports()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataExportName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataExport create(Context context) {
@@ -122,12 +117,7 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
     }
 
     public DataExport apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataExports()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataExportName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataExport apply(Context context) {
@@ -154,11 +144,7 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
     }
 
     public DataExport refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataExports()
-            .getWithResponse(resourceGroupName, workspaceName, dataExportName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataExport refresh(Context context) {

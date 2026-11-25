@@ -252,17 +252,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeAction along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeActionInner> getByResourceGroupWithResponse(String resourceGroupName, String edgeActionName,
         Context context) {
@@ -271,16 +261,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             this.client.getSubscriptionId(), resourceGroupName, edgeActionName, accept, context);
     }
 
-    /**
-     * Get a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeAction.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionInner getByResourceGroup(String resourceGroupName, String edgeActionName) {
         return getByResourceGroupWithResponse(resourceGroupName, edgeActionName, Context.NONE).getValue();
@@ -323,11 +304,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String edgeActionName,
         EdgeActionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, edgeActionName, resource, Context.NONE);
     }
 
     /**
@@ -372,39 +349,14 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             EdgeActionInner.class, EdgeActionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginCreate(String resourceGroupName,
         String edgeActionName, EdgeActionInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, edgeActionName, resource);
-        return this.client.<EdgeActionInner, EdgeActionInner>getLroResult(response, EdgeActionInner.class,
-            EdgeActionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, edgeActionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginCreate(String resourceGroupName,
         String edgeActionName, EdgeActionInner resource, Context context) {
@@ -432,38 +384,17 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionInner create(String resourceGroupName, String edgeActionName, EdgeActionInner resource) {
-        return beginCreate(resourceGroupName, edgeActionName, resource).getFinalResult();
+        return create(resourceGroupName, edgeActionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionInner create(String resourceGroupName, String edgeActionName, EdgeActionInner resource,
         Context context) {
-        return beginCreate(resourceGroupName, edgeActionName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, edgeActionName, resource, context));
     }
 
     /**
@@ -509,11 +440,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName,
         EdgeActionUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, edgeActionName, properties, Context.NONE);
     }
 
     /**
@@ -563,43 +490,14 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             EdgeActionInner.class, EdgeActionInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
-     * any supplied sku, including null or the existing value, is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdate(String resourceGroupName,
         String edgeActionName, EdgeActionUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, edgeActionName, properties);
-        return this.client.<EdgeActionInner, EdgeActionInner>getLroResult(response, EdgeActionInner.class,
-            EdgeActionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, edgeActionName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
-     * any supplied sku, including null or the existing value, is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdate(String resourceGroupName,
         String edgeActionName, EdgeActionUpdate properties, Context context) {
@@ -629,42 +527,18 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
-     * any supplied sku, including null or the existing value, is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionUpdate properties) {
-        return beginUpdate(resourceGroupName, edgeActionName, properties).getFinalResult();
+        return update(resourceGroupName, edgeActionName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
-     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
-     * any supplied sku, including null or the existing value, is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, edgeActionName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, edgeActionName, properties, context));
     }
 
     /**
@@ -697,8 +571,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeActionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeActionName, Context.NONE);
     }
 
     /**
@@ -735,33 +608,13 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeActionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeActionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeActionName, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeActionName,
         Context context) {
@@ -785,33 +638,16 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeActionName) {
-        beginDelete(resourceGroupName, edgeActionName).getFinalResult();
+        delete(resourceGroupName, edgeActionName, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeActionName The name of the Edge Action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeActionName, Context context) {
-        beginDelete(resourceGroupName, edgeActionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, edgeActionName, context));
     }
 
     /**
@@ -861,11 +697,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<EdgeActionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -887,31 +719,13 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EdgeAction resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List EdgeAction resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -959,11 +773,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<EdgeActionListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -984,27 +794,13 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EdgeAction resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List EdgeAction resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeAction list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeActionInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1043,11 +839,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeActionListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1101,11 +893,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeActionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeActionListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

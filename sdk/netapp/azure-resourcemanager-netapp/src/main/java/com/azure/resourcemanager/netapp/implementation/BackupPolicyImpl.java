@@ -125,10 +125,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .create(resourceGroupName, accountName, backupPolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupPolicy create(Context context) {
@@ -150,10 +147,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .update(resourceGroupName, accountName, backupPolicyName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupPolicy apply(Context context) {
@@ -179,11 +173,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .getWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupPolicy refresh(Context context) {

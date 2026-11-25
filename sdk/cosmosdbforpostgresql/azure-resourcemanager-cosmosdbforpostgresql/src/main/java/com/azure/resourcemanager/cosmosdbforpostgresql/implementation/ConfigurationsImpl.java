@@ -47,8 +47,7 @@ public final class ConfigurationsImpl implements Configurations {
     }
 
     public PagedIterable<Configuration> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<ConfigurationInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        return this.listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Configuration> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -59,9 +58,7 @@ public final class ConfigurationsImpl implements Configurations {
 
     public PagedIterable<ServerConfiguration> listByServer(String resourceGroupName, String clusterName,
         String serverName) {
-        PagedIterable<ServerConfigurationInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, clusterName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerConfigurationImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, clusterName, serverName, Context.NONE);
     }
 
     public PagedIterable<ServerConfiguration> listByServer(String resourceGroupName, String clusterName,
@@ -91,13 +88,7 @@ public final class ConfigurationsImpl implements Configurations {
 
     public ServerConfiguration updateOnNode(String resourceGroupName, String clusterName, String configurationName,
         ServerConfigurationInner parameters) {
-        ServerConfigurationInner inner
-            = this.serviceClient().updateOnNode(resourceGroupName, clusterName, configurationName, parameters);
-        if (inner != null) {
-            return new ServerConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateOnNode(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
     public ServerConfiguration updateOnNode(String resourceGroupName, String clusterName, String configurationName,
@@ -131,13 +122,7 @@ public final class ConfigurationsImpl implements Configurations {
 
     public ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters) {
-        ServerConfigurationInner inner
-            = this.serviceClient().updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters);
-        if (inner != null) {
-            return new ServerConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
     public ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName,

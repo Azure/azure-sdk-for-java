@@ -147,17 +147,7 @@ public final class ManifestsClientImpl implements ManifestsClient {
         return getWithResponseAsync(providerNamespace, environment).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the manifest from the manifest repository.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param environment The environment supplied to the manifests operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the manifest from the manifest repository along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManifestInfoInner> getWithResponse(String providerNamespace, String environment, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -183,16 +173,7 @@ public final class ManifestsClientImpl implements ManifestsClient {
             providerNamespace, environment, accept, context);
     }
 
-    /**
-     * Gets the manifest from the manifest repository.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param environment The environment supplied to the manifests operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the manifest from the manifest repository.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManifestInfoInner get(String providerNamespace, String environment) {
         return getWithResponse(providerNamespace, environment, Context.NONE).getValue();
@@ -261,19 +242,7 @@ public final class ManifestsClientImpl implements ManifestsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or Updates a manifest in manifest repository.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param environment The environment supplied to the manifests operation.
-     * @param properties The manifest supplied to the CreateOrUpdate manifests operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManifestInfoInner> createOrUpdateWithResponse(String providerNamespace, String environment,
         ManifestInfoInner properties, Context context) {
@@ -307,17 +276,7 @@ public final class ManifestsClientImpl implements ManifestsClient {
             this.client.getSubscriptionId(), providerNamespace, environment, contentType, accept, properties, context);
     }
 
-    /**
-     * Creates or Updates a manifest in manifest repository.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param environment The environment supplied to the manifests operation.
-     * @param properties The manifest supplied to the CreateOrUpdate manifests operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManifestInfoInner createOrUpdate(String providerNamespace, String environment,
         ManifestInfoInner properties) {

@@ -168,10 +168,7 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     }
 
     public ElasticSan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getElasticSans()
-            .create(resourceGroupName, elasticSanName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ElasticSan create(Context context) {
@@ -193,10 +190,7 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     }
 
     public ElasticSan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getElasticSans()
-            .update(resourceGroupName, elasticSanName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ElasticSan apply(Context context) {
@@ -218,11 +212,7 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     }
 
     public ElasticSan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getElasticSans()
-            .getByResourceGroupWithResponse(resourceGroupName, elasticSanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ElasticSan refresh(Context context) {

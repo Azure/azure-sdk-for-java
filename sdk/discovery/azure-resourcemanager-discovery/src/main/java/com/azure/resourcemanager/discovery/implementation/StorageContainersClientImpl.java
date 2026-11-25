@@ -253,17 +253,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageContainer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageContainerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String storageContainerName, Context context) {
@@ -272,16 +262,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             this.client.getSubscriptionId(), resourceGroupName, storageContainerName, accept, context);
     }
 
-    /**
-     * Get a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageContainer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageContainerInner getByResourceGroup(String resourceGroupName, String storageContainerName) {
         return getByResourceGroupWithResponse(resourceGroupName, storageContainerName, Context.NONE).getValue();
@@ -324,11 +305,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String storageContainerName,
         StorageContainerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageContainerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, storageContainerName, resource, Context.NONE);
     }
 
     /**
@@ -374,37 +351,14 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             this.client.getContext());
     }
 
-    /**
-     * Create a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageContainerInner>, StorageContainerInner>
         beginCreateOrUpdate(String resourceGroupName, String storageContainerName, StorageContainerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageContainerName, resource);
-        return this.client.<StorageContainerInner, StorageContainerInner>getLroResult(response,
-            StorageContainerInner.class, StorageContainerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, storageContainerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageContainerInner>, StorageContainerInner> beginCreateOrUpdate(
         String resourceGroupName, String storageContainerName, StorageContainerInner resource, Context context) {
@@ -432,39 +386,19 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageContainerInner createOrUpdate(String resourceGroupName, String storageContainerName,
         StorageContainerInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, storageContainerName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, storageContainerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageContainerInner createOrUpdate(String resourceGroupName, String storageContainerName,
         StorageContainerInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, storageContainerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, storageContainerName, resource, context));
     }
 
     /**
@@ -504,11 +438,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageContainerName,
         StorageContainerInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageContainerName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, storageContainerName, properties, Context.NONE);
     }
 
     /**
@@ -554,37 +484,14 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             this.client.getContext());
     }
 
-    /**
-     * Update a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageContainerInner>, StorageContainerInner> beginUpdate(String resourceGroupName,
         String storageContainerName, StorageContainerInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageContainerName, properties);
-        return this.client.<StorageContainerInner, StorageContainerInner>getLroResult(response,
-            StorageContainerInner.class, StorageContainerInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageContainerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageContainerInner>, StorageContainerInner> beginUpdate(String resourceGroupName,
         String storageContainerName, StorageContainerInner properties, Context context) {
@@ -612,39 +519,19 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageContainerInner update(String resourceGroupName, String storageContainerName,
         StorageContainerInner properties) {
-        return beginUpdate(resourceGroupName, storageContainerName, properties).getFinalResult();
+        return update(resourceGroupName, storageContainerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Container tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageContainerInner update(String resourceGroupName, String storageContainerName,
         StorageContainerInner properties, Context context) {
-        return beginUpdate(resourceGroupName, storageContainerName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, storageContainerName, properties, context));
     }
 
     /**
@@ -678,8 +565,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageContainerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageContainerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageContainerName, Context.NONE);
     }
 
     /**
@@ -717,33 +603,13 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageContainerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageContainerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageContainerName, Context.NONE);
     }
 
-    /**
-     * Delete a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageContainerName,
         Context context) {
@@ -767,33 +633,16 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageContainerName) {
-        beginDelete(resourceGroupName, storageContainerName).getFinalResult();
+        delete(resourceGroupName, storageContainerName, Context.NONE);
     }
 
-    /**
-     * Delete a StorageContainer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageContainerName The name of the StorageContainer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageContainerName, Context context) {
-        beginDelete(resourceGroupName, storageContainerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageContainerName, context));
     }
 
     /**
@@ -843,11 +692,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageContainerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StorageContainerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -870,31 +715,13 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StorageContainer resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageContainer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageContainerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List StorageContainer resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageContainer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageContainerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -942,11 +769,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageContainerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StorageContainerListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -967,27 +790,13 @@ public final class StorageContainersClientImpl implements StorageContainersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StorageContainer resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageContainer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageContainerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List StorageContainer resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageContainer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageContainerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1026,11 +835,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageContainerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageContainerListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1084,11 +889,7 @@ public final class StorageContainersClientImpl implements StorageContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageContainerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageContainerListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

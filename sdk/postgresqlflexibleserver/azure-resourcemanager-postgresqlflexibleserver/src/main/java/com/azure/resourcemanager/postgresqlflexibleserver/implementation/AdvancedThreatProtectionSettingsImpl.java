@@ -49,10 +49,7 @@ public final class AdvancedThreatProtectionSettingsImpl implements AdvancedThrea
 
     public PagedIterable<AdvancedThreatProtectionSettingsModel> listByServer(String resourceGroupName,
         String serverName) {
-        PagedIterable<AdvancedThreatProtectionSettingsModelInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new AdvancedThreatProtectionSettingsModelImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<AdvancedThreatProtectionSettingsModel> listByServer(String resourceGroupName,

@@ -69,10 +69,7 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflows()
-            .createOrUpdate(resourceGroupName, contextName, workflowName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Workflow create(Context context) {
@@ -94,10 +91,7 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflows()
-            .update(resourceGroupName, contextName, workflowName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Workflow apply(Context context) {
@@ -123,11 +117,7 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflows()
-            .getWithResponse(resourceGroupName, contextName, workflowName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Workflow refresh(Context context) {

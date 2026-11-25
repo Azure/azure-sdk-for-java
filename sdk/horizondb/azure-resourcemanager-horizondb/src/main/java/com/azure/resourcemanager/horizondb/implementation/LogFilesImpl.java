@@ -47,8 +47,7 @@ public final class LogFilesImpl implements LogFiles {
     }
 
     public PagedIterable<LogFile> list(String resourceGroupName, String clusterName) {
-        PagedIterable<LogFileInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<LogFile> list(String resourceGroupName, String clusterName, Context context) {

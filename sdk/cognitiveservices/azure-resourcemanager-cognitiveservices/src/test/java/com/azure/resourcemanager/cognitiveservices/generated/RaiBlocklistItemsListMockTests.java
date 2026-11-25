@@ -22,7 +22,7 @@ public final class RaiBlocklistItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"pattern\":\"sxfkzrztirjvqxvw\",\"isRegex\":true},\"etag\":\"xoerjwbuocqfl\",\"tags\":{\"o\":\"rlqxbctatez\",\"lsjxcscnito\":\"dbcqq\",\"jjidodnvltcvmah\":\"mra\",\"bnhi\":\"uwkup\"},\"id\":\"hyzhrcqdfwbifn\",\"name\":\"hlsforsimtf\",\"type\":\"qmmyn\"}]}";
+            = "{\"value\":[{\"properties\":{\"pattern\":\"y\",\"isRegex\":true},\"etag\":\"tiivz\",\"tags\":{\"ywmwtacrscfc\":\"exccwldgfq\",\"fwfpo\":\"crvjcull\",\"hmuby\":\"owoszzwncsjgfxv\"},\"id\":\"qhgnmsvjfgrpr\",\"name\":\"yircba\",\"type\":\"xjrbv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class RaiBlocklistItemsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<RaiBlocklistItem> response
-            = manager.raiBlocklistItems().list("vjf", "r", "uydldp", com.azure.core.util.Context.NONE);
+        PagedIterable<RaiBlocklistItem> response = manager.raiBlocklistItems()
+            .list("ysclwbjgiynqr", "oi", "weofvsxauphzefi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sxfkzrztirjvqxvw", response.iterator().next().properties().pattern());
+        Assertions.assertEquals("y", response.iterator().next().properties().pattern());
         Assertions.assertTrue(response.iterator().next().properties().isRegex());
-        Assertions.assertEquals("rlqxbctatez", response.iterator().next().tags().get("o"));
+        Assertions.assertEquals("exccwldgfq", response.iterator().next().tags().get("ywmwtacrscfc"));
     }
 }

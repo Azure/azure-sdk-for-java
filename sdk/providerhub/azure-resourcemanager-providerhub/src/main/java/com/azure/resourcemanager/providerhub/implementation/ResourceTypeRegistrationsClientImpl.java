@@ -214,17 +214,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         return getWithResponseAsync(providerNamespace, resourceType).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a resource type details in the given subscription and provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource type details in the given subscription and provider along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceTypeRegistrationInner> getWithResponse(String providerNamespace, String resourceType,
         Context context) {
@@ -251,16 +241,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             providerNamespace, resourceType, accept, context);
     }
 
-    /**
-     * Gets a resource type details in the given subscription and provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource type details in the given subscription and provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner get(String providerNamespace, String resourceType) {
         return getWithResponse(providerNamespace, resourceType, Context.NONE).getValue();
@@ -327,35 +308,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String providerNamespace, String resourceType,
         ResourceTypeRegistrationInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, resourceType, contentType, accept, properties,
-            Context.NONE);
+        return createOrUpdateWithResponse(providerNamespace, resourceType, properties, Context.NONE);
     }
 
     /**
@@ -429,41 +382,14 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
         beginCreateOrUpdate(String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
-        Response<BinaryData> response = createOrUpdateWithResponse(providerNamespace, resourceType, properties);
-        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(response,
-            ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class, Context.NONE);
+        return beginCreateOrUpdate(providerNamespace, resourceType, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner> beginCreateOrUpdate(
         String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context) {
@@ -493,41 +419,19 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
         ResourceTypeRegistrationInner properties) {
-        return beginCreateOrUpdate(providerNamespace, resourceType, properties).getFinalResult();
+        return createOrUpdate(providerNamespace, resourceType, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
         ResourceTypeRegistrationInner properties, Context context) {
-        return beginCreateOrUpdate(providerNamespace, resourceType, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(providerNamespace, resourceType, properties, context));
     }
 
     /**
@@ -575,26 +479,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String providerNamespace, String resourceType) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, resourceType, Context.NONE);
+        return deleteWithResponse(providerNamespace, resourceType, Context.NONE);
     }
 
     /**
@@ -649,33 +534,13 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             this.client.getContext());
     }
 
-    /**
-     * Deletes a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String providerNamespace, String resourceType) {
-        Response<BinaryData> response = deleteWithResponse(providerNamespace, resourceType);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(providerNamespace, resourceType, Context.NONE);
     }
 
-    /**
-     * Deletes a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String providerNamespace, String resourceType,
         Context context) {
@@ -698,33 +563,16 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         return beginDeleteAsync(providerNamespace, resourceType).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, String resourceType) {
-        beginDelete(providerNamespace, resourceType).getFinalResult();
+        delete(providerNamespace, resourceType, Context.NONE);
     }
 
-    /**
-     * Deletes a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, String resourceType, Context context) {
-        beginDelete(providerNamespace, resourceType, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(providerNamespace, resourceType, context));
     }
 
     /**
@@ -788,26 +636,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceTypeRegistrationInner>
         listByProviderRegistrationSinglePage(String providerNamespace) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ResourceTypeRegistrationArrayResponseWithContinuation> res
-            = service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), providerNamespace, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProviderRegistrationSinglePage(providerNamespace, Context.NONE);
     }
 
     /**
@@ -845,31 +674,13 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of the resource types for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the resource types for the given provider as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(String providerNamespace) {
-        return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace),
-            nextLink -> listByProviderRegistrationNextSinglePage(nextLink));
+        return listByProviderRegistration(providerNamespace, Context.NONE);
     }
 
-    /**
-     * Gets the list of the resource types for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the resource types for the given provider as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(String providerNamespace,
         Context context) {
@@ -917,20 +728,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceTypeRegistrationInner> listByProviderRegistrationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ResourceTypeRegistrationArrayResponseWithContinuation> res
-            = service.listByProviderRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProviderRegistrationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

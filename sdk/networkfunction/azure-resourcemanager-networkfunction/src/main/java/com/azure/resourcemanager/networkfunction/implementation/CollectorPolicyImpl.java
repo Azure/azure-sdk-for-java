@@ -108,11 +108,7 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCollectorPolicies()
-            .createOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CollectorPolicy create(Context context) {
@@ -136,12 +132,7 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCollectorPolicies()
-            .updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CollectorPolicy apply(Context context) {
@@ -169,11 +160,7 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCollectorPolicies()
-            .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CollectorPolicy refresh(Context context) {

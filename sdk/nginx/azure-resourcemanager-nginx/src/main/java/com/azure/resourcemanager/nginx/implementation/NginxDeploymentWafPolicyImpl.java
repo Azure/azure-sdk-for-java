@@ -20,6 +20,15 @@ public final class NginxDeploymentWafPolicyImpl
         com.azure.resourcemanager.nginx.NginxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}",
+            "resourceGroupName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}",
+            "deploymentName");
+        this.wafPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}",
+            "wafPolicyName");
     }
 
     public String id() {
@@ -63,10 +72,7 @@ public final class NginxDeploymentWafPolicyImpl
     }
 
     public NginxDeploymentWafPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWafPolicies()
-            .create(resourceGroupName, deploymentName, wafPolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxDeploymentWafPolicy create(Context context) {
@@ -83,11 +89,7 @@ public final class NginxDeploymentWafPolicyImpl
     }
 
     public NginxDeploymentWafPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWafPolicies()
-            .getWithResponse(resourceGroupName, deploymentName, wafPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxDeploymentWafPolicy refresh(Context context) {

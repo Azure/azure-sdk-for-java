@@ -88,16 +88,7 @@ public final class TimeZonesClientImpl implements TimeZonesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed instance time zone.
-     * 
-     * @param locationName The location of the database.
-     * @param timeZoneId The time zone ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance time zone along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TimeZoneInner>> getWithResponseAsync(String locationName, String timeZoneId) {
         if (this.client.getEndpoint() == null) {
@@ -155,47 +146,19 @@ public final class TimeZonesClientImpl implements TimeZonesClient {
             locationName, timeZoneId, accept, context);
     }
 
-    /**
-     * Gets a managed instance time zone.
-     * 
-     * @param locationName The location of the database.
-     * @param timeZoneId The time zone ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance time zone on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TimeZoneInner> getAsync(String locationName, String timeZoneId) {
         return getWithResponseAsync(locationName, timeZoneId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed instance time zone.
-     * 
-     * @param locationName The location of the database.
-     * @param timeZoneId The time zone ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance time zone along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TimeZoneInner> getWithResponse(String locationName, String timeZoneId, Context context) {
         return getWithResponseAsync(locationName, timeZoneId, context).block();
     }
 
-    /**
-     * Gets a managed instance time zone.
-     * 
-     * @param locationName The location of the database.
-     * @param timeZoneId The time zone ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance time zone.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TimeZoneInner get(String locationName, String timeZoneId) {
         return getWithResponse(locationName, timeZoneId, Context.NONE).getValue();
@@ -266,15 +229,7 @@ public final class TimeZonesClientImpl implements TimeZonesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed instance time zones by location.
-     * 
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance time zones by location as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TimeZoneInner> listByLocationAsync(String locationName) {
         return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName),
@@ -297,30 +252,13 @@ public final class TimeZonesClientImpl implements TimeZonesClient {
             nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed instance time zones by location.
-     * 
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance time zones by location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TimeZoneInner> listByLocation(String locationName) {
         return new PagedIterable<>(listByLocationAsync(locationName));
     }
 
-    /**
-     * Gets a list of managed instance time zones by location.
-     * 
-     * @param locationName The location of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance time zones by location as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TimeZoneInner> listByLocation(String locationName, Context context) {
         return new PagedIterable<>(listByLocationAsync(locationName, context));

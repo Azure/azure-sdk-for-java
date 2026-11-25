@@ -44,8 +44,7 @@ public final class OpenShiftVersionsImpl implements OpenShiftVersions {
     }
 
     public PagedIterable<OpenShiftVersion> list(String location) {
-        PagedIterable<OpenShiftVersionInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OpenShiftVersionImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<OpenShiftVersion> list(String location, Context context) {

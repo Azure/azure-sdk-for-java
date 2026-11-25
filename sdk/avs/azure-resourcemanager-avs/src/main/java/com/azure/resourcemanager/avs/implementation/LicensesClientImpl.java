@@ -255,29 +255,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<LicenseListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -319,33 +297,13 @@ public final class LicensesClientImpl implements LicensesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List License resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a License list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseInner> list(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List License resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a License list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseInner> list(String resourceGroupName, String privateCloudName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName, context),
@@ -409,18 +367,7 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a License along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LicenseInner> getWithResponse(String resourceGroupName, String privateCloudName,
         LicenseName licenseName, Context context) {
@@ -451,17 +398,7 @@ public final class LicensesClientImpl implements LicensesClient {
             resourceGroupName, privateCloudName, licenseName, accept, context);
     }
 
-    /**
-     * Get a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a License.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner get(String resourceGroupName, String privateCloudName, LicenseName licenseName) {
         return getWithResponse(resourceGroupName, privateCloudName, licenseName, Context.NONE).getValue();
@@ -530,39 +467,7 @@ public final class LicensesClientImpl implements LicensesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         LicenseName licenseName, LicenseInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (licenseName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter licenseName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, licenseName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, licenseName, resource, Context.NONE);
     }
 
     /**
@@ -637,40 +542,14 @@ public final class LicensesClientImpl implements LicensesClient {
             LicenseInner.class, LicenseInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a license resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, LicenseName licenseName, LicenseInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, privateCloudName, licenseName, resource);
-        return this.client.<LicenseInner, LicenseInner>getLroResult(response, LicenseInner.class, LicenseInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, licenseName, resource, Context.NONE);
     }
 
-    /**
-     * Create a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a license resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, LicenseName licenseName, LicenseInner resource, Context context) {
@@ -699,42 +578,19 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a license resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner createOrUpdate(String resourceGroupName, String privateCloudName, LicenseName licenseName,
         LicenseInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, licenseName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, licenseName, resource, Context.NONE);
     }
 
-    /**
-     * Create a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a license resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner createOrUpdate(String resourceGroupName, String privateCloudName, LicenseName licenseName,
         LicenseInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, licenseName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, privateCloudName, licenseName, resource, context));
     }
 
     /**
@@ -790,30 +646,7 @@ public final class LicensesClientImpl implements LicensesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         LicenseName licenseName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (licenseName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter licenseName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, licenseName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, licenseName, Context.NONE);
     }
 
     /**
@@ -877,36 +710,14 @@ public final class LicensesClientImpl implements LicensesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         LicenseName licenseName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, privateCloudName, licenseName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, licenseName, Context.NONE);
     }
 
-    /**
-     * Delete a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         LicenseName licenseName, Context context) {
@@ -931,35 +742,16 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, LicenseName licenseName) {
-        beginDelete(resourceGroupName, privateCloudName, licenseName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, licenseName, Context.NONE);
     }
 
-    /**
-     * Delete a License.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, LicenseName licenseName, Context context) {
-        beginDelete(resourceGroupName, privateCloudName, licenseName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, privateCloudName, licenseName, context));
     }
 
     /**
@@ -1020,18 +812,7 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Just like ArmResourceActionSync, but with no request body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a license along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LicensePropertiesInner> getPropertiesWithResponse(String resourceGroupName, String privateCloudName,
         LicenseName licenseName, Context context) {
@@ -1062,17 +843,7 @@ public final class LicensesClientImpl implements LicensesClient {
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, licenseName, accept, context);
     }
 
-    /**
-     * Just like ArmResourceActionSync, but with no request body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param licenseName Name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a license.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicensePropertiesInner getProperties(String resourceGroupName, String privateCloudName,
         LicenseName licenseName) {
@@ -1116,20 +887,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<LicenseListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
